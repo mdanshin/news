@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Лента новостей</title>
+    <meta name="description" content="Агрегатор свежих новостей по выбранным категориям." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <div class="bg" aria-hidden="true"></div>
+
+    <header class="top">
+      <div class="wrap top__inner">
+        <div class="brand">
+          <div class="brand__mark" aria-hidden="true"></div>
+          <div class="brand__text">
+            <div class="brand__title">Лента</div>
+            <div class="brand__sub">свежие новости по темам</div>
+          </div>
+        </div>
+
+        <div class="top__meta" id="status" role="status" aria-live="polite">
+          Готово
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="panel" aria-label="Фильтры">
+        <div class="panel__row">
+          <div class="panel__title">Категории</div>
+          <div class="panel__actions">
+            <button class="btn btn--ghost" id="selectAllBtn" type="button">Выбрать все</button>
+            <button class="btn btn--ghost" id="clearBtn" type="button">Сброс</button>
+            <button class="btn" id="refreshBtn" type="button">Обновить</button>
+          </div>
+        </div>
+
+        <div class="chips" id="chips" aria-label="Список категорий"></div>
+
+        <div class="panel__hint">
+          Подсказка: можно выбрать несколько тем — лента склеит их в один поток и отсортирует по свежести.
+        </div>
+      </section>
+
+      <section class="feed" aria-label="Лента новостей">
+        <div class="grid" id="grid"></div>
+        <div class="feed__end" id="end">
+          <div class="spinner" aria-hidden="true"></div>
+          <div class="feed__endText" id="endText">Загружаю…</div>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal" id="modal" aria-hidden="true">
+      <div class="modal__backdrop" data-close="1"></div>
+      <div class="modal__card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal__head">
+          <div class="modal__kicker" id="modalMeta"></div>
+          <button class="iconBtn" type="button" aria-label="Закрыть" data-close="1">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <h2 class="modal__title" id="modalTitle"></h2>
+        <div class="modal__body" id="modalBody"></div>
+        <div class="modal__foot">
+          <a class="btn" id="modalLink" href="#" target="_blank" rel="noreferrer noopener">Открыть источник</a>
+          <button class="btn btn--ghost" type="button" data-close="1">Закрыть</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>

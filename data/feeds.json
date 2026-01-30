@@ -1,0 +1,43 @@
+{
+  "sources": [
+    {
+      "id": "lenta",
+      "name": "Lenta.ru",
+      "feedUrl": "https://lenta.ru/rss/news"
+    },
+    {
+      "id": "tass",
+      "name": "ТАСС",
+      "feedUrl": "https://tass.ru/rss/v2.xml"
+    },
+    {
+      "id": "habr",
+      "name": "Хабр",
+      "feedUrl": "https://habr.com/ru/rss/all/all/?fl=ru"
+    }
+  ],
+  "defaultCategoryForSource": {
+    "habr": ["tech"]
+  },
+  "categoryMap": {
+    "lenta": {
+      "Мир": ["world"],
+      "Россия": ["ru"],
+      "Экономика": ["business"],
+      "Наука и техника": ["tech", "science"],
+      "Спорт": ["sports"],
+      "Культура": ["culture"],
+      "Забота о себе": ["health"]
+    },
+    "tass": {
+      "В мире": ["world"],
+      "Экономика и бизнес": ["business"],
+      "Наука": ["science"],
+      "Спорт": ["sports"],
+      "Культура": ["culture"],
+      "Общество": ["ru"],
+      "Москва": ["ru"],
+      "Новости регионов": ["ru"]
+    }
+  }
+}
