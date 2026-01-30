@@ -30,6 +30,9 @@ const READER_FONT_MIN = 13;
 const READER_FONT_MAX = 22;
 const READER_FONT_STEP = 1;
 
+const LOCAL_REBUILD_PATH = "/__rebuild";
+const END_POLL_INTERVAL_MS = 20 * 1000;
+
 const AUTO_REFRESH_MS = 3 * 60 * 1000;
 let lastAutoRefreshAttemptAt = 0;
 
@@ -63,6 +66,13 @@ let rendered = 0;
 let modalItemId = "";
 
 let readerFontPx = READER_FONT_DEFAULT;
+
+let endPollTimer = 0;
+
+function isLocalHost() {
+  const h = window.location.hostname;
+  return h === "localhost" || h === "127.0.0.1" || h === "::1";
+}
 
 function setStatus(text) {
   elStatus.textContent = text;
@@ -215,6 +225,58 @@ function sanitizeHtml(html) {
   }
 
   return root.innerHTML;
+}
+
+function updateEndPoll() {
+  const atEnd = filtered.length > 0 && rendered >= filtered.length;
+  if (!atEnd) {
+    if (endPollTimer) {
+      window.clearInterval(endPollTimer);
+      endPollTimer = 0;
+    }
+    return;
+  }
+
+  if (endPollTimer) return;
+  endPollTimer = window.setInterval(() => {
+    // Only poll while we still sit at the end.
+    if (!(filtered.length > 0 && rendered >= filtered.length)) return;
+    maybeAutoRefresh();
+  }, END_POLL_INTERVAL_MS);
+}
+
+async function waitForLocalRebuild(maxMs = 180_000) {
+  const started = Date.now();
+  for (;;) {
+    if (Date.now() - started > maxMs) throw new Error("Rebuild timeout");
+    const res = await fetch(`${LOCAL_REBUILD_PATH}?t=${Date.now()}`, { cache: "no-store" });
+    if (!res.ok) return;
+    const st = await res.json().catch(() => null);
+    if (!st || typeof st !== "object") return;
+    if (!st.inFlight) return;
+    await new Promise((r) => setTimeout(r, 900));
+  }
+}
+
+async function rebuildDataLocally(reason) {
+  // Best-effort: only works with dev-server.js.
+  if (!isLocalHost()) return;
+
+  const prev = elRefreshBtn.disabled;
+  elRefreshBtn.disabled = true;
+  setStatus(`${reason}: собираю данные…`);
+  elEndText.textContent = "Собираю новости…";
+  try {
+    const res = await fetch(`${LOCAL_REBUILD_PATH}?t=${Date.now()}`, { method: "POST", cache: "no-store" });
+    if (res.status === 409) {
+      await waitForLocalRebuild();
+      return;
+    }
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    await res.json().catch(() => null);
+  } finally {
+    elRefreshBtn.disabled = prev;
+  }
 }
 
 function highlightModalCode() {
@@ -383,22 +445,33 @@ function resetFeed() {
 
 function updateEndText() {
   if (!data.items || data.items.length === 0) {
-    elEndText.textContent = "Данных пока нет. Запустите генератор или дождитесь GitHub Action.";
+    elEndText.textContent = isLocalHost()
+      ? "Данных пока нет. Локально запустите сборщик: npm run build:data (или npm run dev:live)."
+      : "Данных пока нет. Запустите генератор или дождитесь GitHub Action.";
+    updateEndPoll();
     return;
   }
   if (filtered.length === 0) {
     elEndText.textContent = "Нет новостей по выбранным категориям";
+    updateEndPoll();
     return;
   }
   if (rendered < filtered.length) {
     elEndText.textContent = `Показано ${rendered} из ${filtered.length} — листайте дальше`;
+    updateEndPoll();
     return;
   }
   const gen = data.generatedAt ? toAbsTime(data.generatedAt) : "";
-  elEndText.textContent =
-    gen
-      ? `Конец текущего среза (обновлён: ${gen}). Новые появятся после обновления данных — нажмите «Обновить» или подождите.`
-      : "Конец текущего среза. Новые появятся после обновления данных — нажмите «Обновить» или подождите.";
+  if (isLocalHost()) {
+    elEndText.textContent = gen
+      ? `Конец текущего среза (обновлён: ${gen}). Нажмите «Обновить» — пересоберу данные локально.`
+      : "Конец текущего среза. Нажмите «Обновить» — пересоберу данные локально.";
+  } else {
+    elEndText.textContent = gen
+      ? `Конец текущего среза (обновлён: ${gen}). Новые появятся после обновления данных — нажмите «Обновить» или подождите (проверяю каждые ~3 минуты).`
+      : "Конец текущего среза. Новые появятся после обновления данных — нажмите «Обновить» или подождите (проверяю каждые ~3 минуты).";
+  }
+  updateEndPoll();
 }
 
 function renderNextBatch() {
@@ -568,7 +641,17 @@ function bindModal() {
 }
 
 function bindButtons() {
-  elRefreshBtn.addEventListener("click", () => refreshData("Обновить"));
+  elRefreshBtn.addEventListener("click", async () => {
+    if (isLocalHost()) {
+      try {
+        await rebuildDataLocally("Обновить");
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : String(e);
+        setStatus(`Обновить: не удалось собрать данные (${msg})`);
+      }
+    }
+    await refreshData("Обновить");
+  });
   elClearBtn.addEventListener("click", () => {
     selected = new Set();
     saveSelection();
@@ -640,11 +723,21 @@ function bindInfinite() {
 
 async function maybeAutoRefresh() {
   if (elModal.classList.contains("isOpen")) return;
+  if (filtered.length > 0 && rendered < filtered.length) return;
   const now = Date.now();
   if (now - lastAutoRefreshAttemptAt < AUTO_REFRESH_MS) return;
   lastAutoRefreshAttemptAt = now;
 
   const prevGen = typeof data.generatedAt === "string" ? data.generatedAt : "";
+  setStatus("Проверяю обновления…");
+
+  if (isLocalHost()) {
+    try {
+      await rebuildDataLocally("Авто");
+    } catch {
+      // ignore
+    }
+  }
   try {
     const res = await fetch(`${DATA_URL}?t=${Date.now()}`, { cache: "no-store" });
     if (!res.ok) return;
@@ -652,7 +745,11 @@ async function maybeAutoRefresh() {
     if (!next || typeof next !== "object") return;
     if (!Array.isArray(next.items)) return;
     const nextGen = typeof next.generatedAt === "string" ? next.generatedAt : "";
-    if (nextGen && prevGen && nextGen === prevGen) return;
+    if (nextGen && prevGen && nextGen === prevGen) {
+      const gen = nextGen ? ` • срез: ${toAbsTime(nextGen)}` : "";
+      setStatus(`Без изменений${gen}`);
+      return;
+    }
     // Swap data and re-filter; keep already rendered cards if possible.
     data = next;
     applyFilterAndReset("Обновлено");
@@ -662,6 +759,7 @@ async function maybeAutoRefresh() {
 }
 
 async function refreshData(reason) {
+  const prevGen = typeof data.generatedAt === "string" ? data.generatedAt : "";
   setStatus(`${reason}: загружаю…`);
   elEndText.textContent = "Загружаю…";
   try {
@@ -677,7 +775,10 @@ async function refreshData(reason) {
     return;
   }
 
-  applyFilterAndReset(reason);
+  const nextGen = typeof data.generatedAt === "string" ? data.generatedAt : "";
+  const unchanged = Boolean(prevGen && nextGen && prevGen === nextGen);
+  const label = unchanged && reason === "Обновить" ? "Без изменений" : reason;
+  applyFilterAndReset(label);
 }
 
 function init() {
