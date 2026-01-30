@@ -127,6 +127,22 @@ function mapCategories(sourceId, itemCats, cfg) {
   return Array.from(out);
 }
 
+function inferCategoriesByText(title, excerpt) {
+  const t = `${title || ""} ${excerpt || ""}`.toLowerCase();
+  const out = new Set();
+
+  // Health / medicine
+  if (
+    /(\bhealth\b|\bmedicine\b|здоров|медиц|врач|пациент|больниц|клиник|аптек|лекарств|препарат|вакцин|диабет|ожирен|онколог|инфекц|грипп|коронавирус|covid|фарма|психолог|психиатр|депресс|стресс)/i.test(
+      t,
+    )
+  ) {
+    out.add("health");
+  }
+
+  return Array.from(out);
+}
+
 function extractArticleHtml(url, html) {
   const dom = new JSDOM(html, { url });
   const doc = dom.window.document;
@@ -302,12 +318,14 @@ async function main() {
       const publishedAt = normalizePublishedAt(it);
       const catsRaw = toArray(it.category).map(safeText).filter(Boolean);
 
-      const categoryIds = mapCategories(source.id, catsRaw, cfg);
-      if (categoryIds.length === 0) continue;
-
       const image = pickImageFromItem(it);
       const descHtml = safeText(it.description);
       const excerpt = stripHtmlToText(descHtml);
+
+      const mapped = mapCategories(source.id, catsRaw, cfg);
+      const inferred = inferCategoriesByText(title, excerpt);
+      const categoryIds = Array.from(new Set([...mapped, ...inferred]));
+      if (categoryIds.length === 0) continue;
 
       items.push({
         id: buildId(source.id, url, publishedAt, title),

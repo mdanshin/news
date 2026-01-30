@@ -11,6 +11,16 @@
       "feedUrl": "https://tass.ru/rss/v2.xml"
     },
     {
+      "id": "interfax",
+      "name": "Интерфакс",
+      "feedUrl": "https://www.interfax.ru/rss.asp"
+    },
+    {
+      "id": "kommersant",
+      "name": "Коммерсантъ",
+      "feedUrl": "https://www.kommersant.ru/RSS/main.xml"
+    },
+    {
       "id": "habr",
       "name": "Хабр",
       "feedUrl": "https://habr.com/ru/rss/all/all/?fl=ru"
@@ -54,6 +64,31 @@
       "Сибирь": ["ru"],
       "Северный Кавказ": ["ru"],
       "Новости регионов": ["ru"]
+    },
+    "interfax": {
+      "В мире": ["world"],
+      "В России": ["ru"],
+      "Экономика": ["business"],
+      "Спорт": ["sports"],
+      "Культура": ["culture"],
+      "Наука": ["science"],
+      "Технологии": ["tech"],
+      "Общество": ["ru"],
+      "Происшествия": ["ru"],
+      "Здоровье": ["health"]
+    },
+    "kommersant": {
+      "Мир": ["world"],
+      "Бизнес": ["business"],
+      "Экономика": ["business"],
+      "Спорт": ["sports"],
+      "Культура": ["culture"],
+      "КУЛЬТУРА\\СПОРТ": ["culture", "sports"],
+      "Телекоммуникации": ["tech"],
+      "Наука": ["science"],
+      "Общество": ["ru"],
+      "Политика": ["world"],
+      "Здоровье": ["health"]
     }
   }
 }
