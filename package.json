@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "node dev-server.js",
+    "dev:live": "node scripts/dev-live.mjs",
     "build:data": "node scripts/build-data.mjs"
   },
   "dependencies": {

@@ -11,6 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap" rel="stylesheet" />
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css" />
+
     <link rel="stylesheet" href="styles.css" />
   </head>
 
@@ -65,9 +67,14 @@
       <div class="modal__card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <div class="modal__head">
           <div class="modal__kicker" id="modalMeta"></div>
-          <button class="iconBtn" type="button" aria-label="Закрыть" data-close="1">
-            <span aria-hidden="true">×</span>
-          </button>
+          <div class="modal__tools" aria-label="Режим чтения">
+            <button class="toolBtn" id="fontDownBtn" type="button" aria-label="Уменьшить текст">A−</button>
+            <button class="toolBtn" id="fontResetBtn" type="button" aria-label="Сбросить размер текста">A</button>
+            <button class="toolBtn" id="fontUpBtn" type="button" aria-label="Увеличить текст">A+</button>
+            <button class="iconBtn" type="button" aria-label="Закрыть" data-close="1">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
         </div>
         <h2 class="modal__title" id="modalTitle"></h2>
         <div class="modal__body" id="modalBody"></div>
@@ -78,6 +85,7 @@
       </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js" defer></script>
     <script src="app.js" defer></script>
   </body>
 </html>

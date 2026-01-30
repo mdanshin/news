@@ -24,6 +24,14 @@ const CATEGORY_DEFS = [
 const DATA_URL = "data/news.json";
 const BATCH_SIZE = 12;
 const STORAGE_KEY = "news:selectedCats:v2";
+const READER_FONT_KEY = "news:readerFontPx:v1";
+const READER_FONT_DEFAULT = 16;
+const READER_FONT_MIN = 13;
+const READER_FONT_MAX = 22;
+const READER_FONT_STEP = 1;
+
+const AUTO_REFRESH_MS = 3 * 60 * 1000;
+let lastAutoRefreshAttemptAt = 0;
 
 const $ = (sel) => document.querySelector(sel);
 const elGrid = $("#grid");
@@ -39,6 +47,9 @@ const elModalTitle = $("#modalTitle");
 const elModalMeta = $("#modalMeta");
 const elModalBody = $("#modalBody");
 const elModalLink = $("#modalLink");
+const elFontDownBtn = $("#fontDownBtn");
+const elFontUpBtn = $("#fontUpBtn");
+const elFontResetBtn = $("#fontResetBtn");
 
 /** @type {Set<string>} */
 let selected = new Set(["tech"]);
@@ -50,6 +61,8 @@ let data = { generatedAt: "", items: [] };
 let filtered = [];
 let rendered = 0;
 let modalItemId = "";
+
+let readerFontPx = READER_FONT_DEFAULT;
 
 function setStatus(text) {
   elStatus.textContent = text;
@@ -81,12 +94,72 @@ function escapeHtml(s) {
     .replaceAll("'", "&#039;");
 }
 
+function clampInt(n, min, max) {
+  const x = Math.round(Number(n));
+  if (!Number.isFinite(x)) return min;
+  return Math.max(min, Math.min(max, x));
+}
+
+function applyReaderFont() {
+  document.documentElement.style.setProperty("--reader-font-size", `${readerFontPx}px`);
+}
+
+function loadReaderFont() {
+  try {
+    const raw = localStorage.getItem(READER_FONT_KEY);
+    if (!raw) return;
+    readerFontPx = clampInt(raw, READER_FONT_MIN, READER_FONT_MAX);
+  } catch {
+    // ignore
+  }
+}
+
+function saveReaderFont() {
+  try {
+    localStorage.setItem(READER_FONT_KEY, String(readerFontPx));
+  } catch {
+    // ignore
+  }
+}
+
+function bumpReaderFont(delta) {
+  readerFontPx = clampInt(readerFontPx + delta, READER_FONT_MIN, READER_FONT_MAX);
+  applyReaderFont();
+  saveReaderFont();
+}
+
+function resetReaderFont() {
+  readerFontPx = READER_FONT_DEFAULT;
+  applyReaderFont();
+  saveReaderFont();
+}
+
 function sanitizeHtml(html) {
   // Allow a small safe subset; remove all scripts/handlers.
   const doc = new DOMParser().parseFromString(`<div>${html}</div>`, "text/html");
   const root = doc.body.firstElementChild;
 
-  const allowed = new Set(["P", "BR", "B", "STRONG", "I", "EM", "A", "IMG", "UL", "OL", "LI"]);
+  const allowed = new Set([
+    "P",
+    "BR",
+    "B",
+    "STRONG",
+    "I",
+    "EM",
+    "A",
+    "IMG",
+    "UL",
+    "OL",
+    "LI",
+    "H2",
+    "H3",
+    "BLOCKQUOTE",
+    "FIGURE",
+    "FIGCAPTION",
+    "PRE",
+    "CODE",
+    "KBD"
+  ]);
   const walker = doc.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, null);
   /** @type {Element[]} */
   const nodes = [];
@@ -115,6 +188,10 @@ function sanitizeHtml(html) {
       node.setAttribute("referrerpolicy", "no-referrer");
       node.setAttribute("loading", "lazy");
     }
+    if (node.tagName === "CODE" || node.tagName === "PRE" || node.tagName === "KBD") {
+      // Preserve language hints like: class="language-js".
+      keep.add("class");
+    }
 
     const attrs = Array.from(node.attributes);
     for (const a of attrs) {
@@ -138,6 +215,36 @@ function sanitizeHtml(html) {
   }
 
   return root.innerHTML;
+}
+
+function highlightModalCode() {
+  // highlight.js is loaded via CDN; no-op if unavailable.
+  const hljs = window.hljs;
+  if (!hljs || typeof hljs.highlightElement !== "function") return;
+
+  const blocks = Array.from(elModalBody.querySelectorAll("pre code"));
+  for (const code of blocks) {
+    // Habr uses class="bash"/"yaml" etc; highlight.js prefers language-*
+    // Keep original class, but add a language-* hint for deterministic highlighting.
+    try {
+      const cls = Array.from(code.classList).filter((c) => c && c !== "hljs");
+      const hasLang = cls.some((c) => c.startsWith("language-"));
+      if (!hasLang && cls.length === 1) {
+        const hint = cls[0].toLowerCase();
+        code.classList.add(`language-${hint}`);
+      }
+    } catch {
+      // ignore
+    }
+
+    // Re-highlight safely if opened multiple times.
+    code.removeAttribute("data-highlighted");
+    try {
+      hljs.highlightElement(code);
+    } catch {
+      // ignore
+    }
+  }
 }
 
 function saveSelection() {
@@ -220,6 +327,8 @@ function normalizeItem(it) {
   const image = typeof it.image === "string" ? it.image : "";
   const sourceName = typeof it.sourceName === "string" ? it.sourceName : "";
   const contentHtml = typeof it.contentHtml === "string" ? it.contentHtml : "";
+  const contentTruncated = Boolean(it.contentTruncated);
+  const contentMeta = it && typeof it.contentMeta === "object" ? it.contentMeta : null;
   const id = typeof it.id === "string" ? it.id : `${url}:${publishedAt}`;
   const categoryIds = Array.isArray(it.categoryIds) ? it.categoryIds.filter((x) => typeof x === "string") : [];
 
@@ -232,7 +341,9 @@ function normalizeItem(it) {
     sourceName,
     publishedAt,
     categoryIds,
-    contentHtml
+    contentHtml,
+    contentTruncated,
+    contentMeta
   };
 }
 
@@ -283,7 +394,11 @@ function updateEndText() {
     elEndText.textContent = `Показано ${rendered} из ${filtered.length} — листайте дальше`;
     return;
   }
-  elEndText.textContent = "Конец текущего среза";
+  const gen = data.generatedAt ? toAbsTime(data.generatedAt) : "";
+  elEndText.textContent =
+    gen
+      ? `Конец текущего среза (обновлён: ${gen}). Новые появятся после обновления данных — нажмите «Обновить» или подождите.`
+      : "Конец текущего среза. Новые появятся после обновления данных — нажмите «Обновить» или подождите.";
 }
 
 function renderNextBatch() {
@@ -402,10 +517,17 @@ function openModal(id) {
 
   const html = it.contentHtml ? sanitizeHtml(it.contentHtml) : "";
   const fallback = it.excerpt ? `<p>${escapeHtml(it.excerpt)}</p>` : "";
-  elModalBody.innerHTML =
-    html ||
-    fallback ||
-    "<p>Для этой новости в текущем срезе нет текста. Откройте первоисточник.</p>";
+
+  let hint = "";
+  if (it.contentTruncated) {
+    hint =
+      "<p><em>Примечание: текст может быть сокращён сборщиком (ограничение на размер). Откройте первоисточник для полного текста.</em></p>";
+  }
+
+  elModalBody.innerHTML = html ? `${hint}${html}` : (fallback || "<p>Для этой новости в текущем срезе нет текста. Откройте первоисточник.</p>");
+
+  // Apply syntax highlighting after HTML is in DOM.
+  highlightModalCode();
 
   elModal.classList.add("isOpen");
   elModal.setAttribute("aria-hidden", "false");
@@ -426,6 +548,22 @@ function bindModal() {
   });
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && elModal.classList.contains("isOpen")) closeModal();
+
+    // Reader-like zoom controls when modal is open.
+    if (!elModal.classList.contains("isOpen")) return;
+    const ctrl = e.ctrlKey || e.metaKey;
+    if (!ctrl) return;
+
+    if (e.key === "+" || e.key === "=") {
+      e.preventDefault();
+      bumpReaderFont(READER_FONT_STEP);
+    } else if (e.key === "-" || e.key === "_") {
+      e.preventDefault();
+      bumpReaderFont(-READER_FONT_STEP);
+    } else if (e.key === "0") {
+      e.preventDefault();
+      resetReaderFont();
+    }
   });
 }
 
@@ -445,17 +583,82 @@ function bindButtons() {
   });
 }
 
+function bindReaderTools() {
+  elFontDownBtn?.addEventListener("click", () => bumpReaderFont(-READER_FONT_STEP));
+  elFontUpBtn?.addEventListener("click", () => bumpReaderFont(READER_FONT_STEP));
+  elFontResetBtn?.addEventListener("click", () => resetReaderFont());
+}
+
 function bindInfinite() {
+  const margin = 600;
+
+  function endNearViewport() {
+    const r = elEnd.getBoundingClientRect();
+    return r.top <= window.innerHeight + margin;
+  }
+
+  function maybeRenderMore() {
+    // Some browsers won't re-fire IntersectionObserver while the sentinel
+    // remains intersecting. Render in a small loop while the end is still near.
+    let safety = 0;
+    while (safety < 8 && endNearViewport()) {
+      const added = renderNextBatch();
+      if (added <= 0) break;
+      safety += 1;
+    }
+    updateEndText();
+
+    // If we hit the end, try a gentle auto-refresh (won't help unless data/news.json
+    // was updated by the generator / GitHub Action).
+    if (rendered >= filtered.length) maybeAutoRefresh();
+  }
+
   const io = new IntersectionObserver(
     (entries) => {
       const hit = entries.some((e) => e.isIntersecting);
       if (!hit) return;
-      const added = renderNextBatch();
-      if (added > 0) updateEndText();
+      maybeRenderMore();
     },
-    { root: null, rootMargin: "600px 0px", threshold: 0.01 },
+    { root: null, rootMargin: `${margin}px 0px`, threshold: 0.01 },
   );
   io.observe(elEnd);
+
+  // Fallback for cases where IO is flaky.
+  let raf = 0;
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        if (endNearViewport()) maybeRenderMore();
+      });
+    },
+    { passive: true },
+  );
+}
+
+async function maybeAutoRefresh() {
+  if (elModal.classList.contains("isOpen")) return;
+  const now = Date.now();
+  if (now - lastAutoRefreshAttemptAt < AUTO_REFRESH_MS) return;
+  lastAutoRefreshAttemptAt = now;
+
+  const prevGen = typeof data.generatedAt === "string" ? data.generatedAt : "";
+  try {
+    const res = await fetch(`${DATA_URL}?t=${Date.now()}`, { cache: "no-store" });
+    if (!res.ok) return;
+    const next = await res.json();
+    if (!next || typeof next !== "object") return;
+    if (!Array.isArray(next.items)) return;
+    const nextGen = typeof next.generatedAt === "string" ? next.generatedAt : "";
+    if (nextGen && prevGen && nextGen === prevGen) return;
+    // Swap data and re-filter; keep already rendered cards if possible.
+    data = next;
+    applyFilterAndReset("Обновлено");
+  } catch {
+    // ignore
+  }
 }
 
 async function refreshData(reason) {
@@ -478,11 +681,15 @@ async function refreshData(reason) {
 }
 
 function init() {
+  loadReaderFont();
+  applyReaderFont();
+
   loadSelection();
   renderChips();
   bindButtons();
   bindInfinite();
   bindModal();
+  bindReaderTools();
   refreshData("Старт");
 }
 
