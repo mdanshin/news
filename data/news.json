@@ -1,6 +1,471 @@
 {
-  "generatedAt": "2026-02-04T19:35:19.496Z",
+  "generatedAt": "2026-02-04T20:24:49.948Z",
   "items": [
+    {
+      "id": "lenta:https://lenta.ru/news/2026/02/04/bank/:2026-02-04T20:20:06.000Z:Шохин предрек постепенное снижение ключе",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Шохин предрек постепенное снижение ключевой ставки Центробанком",
+      "url": "https://lenta.ru/news/2026/02/04/bank/",
+      "publishedAt": "2026-02-04T20:20:06.000Z",
+      "categoryIds": [
+        "business"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/02/04/23/20260204231640194/pic_2c9f6ee1a177d7c51ae9b392ad3a8e24.jpg",
+      "excerpt": "Фото: Natalia Shatokhina / NEWS.ru / Globallookpress.comЦентробанк России не пойдет на резкое снижение ключевой ставки, до апреля ее могут понижать «маленькими шажками» на 50 базисных пунктов на каждом заседании, рассказал глава Российского",
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/bank/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/23/20260204231640194/owl_detail_240_dbe16fdcab7746594e827c74d477370b.jpg\"></a><figcaption><p>Фото: Natalia Shatokhina / NEWS.ru / Globallookpress.com</p></figcaption></figure><p><a href=\"https://lenta.ru/tags/organizations/bank-rossii/\">Центробанк России</a> не пойдет на резкое снижение ключевой ставки, до апреля ее могут понижать «маленькими шажками» на 50 базисных пунктов на каждом заседании, рассказал глава <a href=\"https://lenta.ru/tags/organizations/rossiyskiy-soyuz-promyshlennikov-i-predprinimateley/\">Российского союза промышленников и предпринимателей</a> (РСПП) <a href=\"https://lenta.ru/tags/persons/shohin-aleksandr/\">Александр Шохин</a>. Об этом пишет <a href=\"http://ria.ru/\">РИА Новости</a>.</p><p>«Звучала опять цифра 12-13 процентов. Если исходить из оптимального, с 16 процентов спуститься до 13 процентов. Но это надо по 50 базисных пунктов снижать на каждом заседании практически», — отметил он.</p><p>По мнению эксперта, резких снижений никто не ждет, так как «непонятно влияние повышения налогов». По мнению специалиста, все надеются, что на ситуацию также может повлиять геополитика.</p><p>Ранее председатель комитета <a href=\"https://lenta.ru/tags/organizations/gosduma/\">Госдумы</a> по финансовому рынку <a href=\"https://lenta.ru/tags/persons/aksakov-anatoliy/\">Анатолий Аксаков</a> <a href=\"https://lenta.ru/news/2026/02/02/aksakov-predskazal-tempy-snizheniya-klyuchevoy-stavki/\">предрек</a>, что Банк России понизит ключевую ставку на 0,5 процентного пункта.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 978,
+        "approxBlocks": 8
+      }
+    },
+    {
+      "id": "habr:https://habr.com/ru/articles/992872/?utm_source=habrahabr&utm_medium=rss&utm_campaign=992872:2026-02-04T20:19:01.000Z:Карта российских ИИ-платформ для аналити",
+      "sourceId": "habr",
+      "sourceName": "Хабр",
+      "title": "Карта российских ИИ-платформ для аналитика",
+      "url": "https://habr.com/ru/articles/992872/?utm_source=habrahabr&utm_medium=rss&utm_campaign=992872",
+      "publishedAt": "2026-02-04T20:19:01.000Z",
+      "categoryIds": [
+        "tech"
+      ],
+      "image": "https://habrastorage.org/getpro/habr/upload_files/050/3e2/424/0503e2424d23d3cfac7492a3b62272ec.jpg",
+      "excerpt": "GigaCode vs SourceCraft Code Assistant: что выбрать аналитику в 2025?Сравнил две российские AI-IDE по критериям, важным не разработчику, а аналитику: работа с документами, контекстное окно, агентный режим, бесплатные квоты. Плюс пошаговые инструкции — от регистрации до первого запроса в чате.SourceCraft: 3000 предложений + 1000 чат-запросов в неделю бесплатно, лимиты прозрачны. GigaCode: бесплатен для пользователей GitVerse, квоты не публикуются.Бонус: таблица соответствия концепций Roo Code → российские платформы. Для тех, кто читал мои предыдущие статьи и хочет применить подходы на одобренном стеке. Читать далее",
+      "contentHtml": "<blockquote><p>В прошлых комментариях меня спросили: зачем предлагать людям возиться с установкой Roo Code и openrouter (который не оплатить просто так), если можно предложить Sourcecraft с бесплатными квотами? В этой статье дам развёрнутый ответ, подсветив различия.</p></blockquote><h3>Зачем эта статья</h3><p>В предыдущих материалах я показывал, как аналитик может использовать Roo Code для извлечения требований, работы с документацией и генерации артефактов. Но у части читателей возникает закономерный вопрос: <em>«Всё это прекрасно, но мне это недоступно»</em>.</p><p>Причины разные:</p><ul><li><p>Работа с персональными данными и 152-ФЗ</p></li><li><p>Требования регулятора для КИИ (критической информационной инфраструктуры)</p></li><li><p>Внутренние политики ИБ крупных компаний</p></li><li><p>Работа с гостайной или ДСП-документами</p></li></ul><p>Хорошая новость: российские альтернативы существуют и активно развиваются. Плохая новость: они пока не дотягивают до Roo Code по удобству для не-разработчиков. Но работать можно — и эта статья покажет, как.</p><h3>Три сценария ограничений</h3><p>Прежде чем выбирать инструмент, определите свой сценарий:</p>Сценарий 1: Жёсткий (только on-premise)<p><strong>Кто:</strong> банки, госструктуры с КИИ, режимные организации.</p><p><strong>Ограничения:</strong> никакие данные не должны покидать периметр организации. Облачные сервисы запрещены полностью.</p><p><strong>Решение:</strong></p><ul><li><p>GigaChat on-premise (развёртывание внутри инфраструктуры)</p></li><li><p>GigaCode в связке с локальным GigaChat</p></li><li><p>Альтернатива: локально развёрнутый Qwen + Roo Code (если ИБ разрешает open source модели)</p></li></ul>Сценарий 2: Средний (облако РФ-вендоров)<p><strong>Кто:</strong> большинство крупных компаний, финтех, ритейл, телеком.</p><p><strong>Ограничения:</strong> можно использовать облачные сервисы, но только от российских провайдеров с хранением данных в РФ.</p><p><strong>Решение:</strong></p><ul><li><p>GitVerse + GigaCode (облако Сбера)</p></li><li><p>SourceCraft + Code Assistant (облако Яндекса)</p></li></ul>Сценарий 3: Мягкий (Roo Code + российские модели)<p><strong>Кто:</strong> компании с ограничениями на конкретные сервисы (ChatGPT, Claude), но без запрета на open source инструменты.</p><p><strong>Ограничения:</strong> нельзя отправлять данные в OpenAI/Anthropic, но можно использовать российские API.</p><p><strong>Решение:</strong></p><ul><li><p>Roo Code + gpt2giga (прокси к GigaChat API)</p></li><li><p>Roo Code + YandexGPT через OpenAI-совместимый endpoint</p></li><li><p>Roo Code + локальный Qwen</p></li></ul><p>Об этом сценарии я писал в статье про gpt2giga — он позволяет сохранить привычный интерфейс Roo Code, но использовать российские модели.</p><h3>GitVerse + GigaCode: экосистема Сбера</h3>Что это<figure><img src=\"https://habrastorage.org/r/w1560/webt/zg/qv/k6/zgqvk6ezqhreezkqqyjd_0ylhok.png\" alt=\"Интерфейс GitVerse — создание и управление проектами\"><figcaption>Интерфейс GitVerse — создание и управление проектами</figcaption></figure><p><strong>GitVerse</strong> — российский аналог GitHub от Сбера. Включает:</p><ul><li><p>Git-репозитории с веб-интерфейсом</p></li><li><p>CI/CD (GitVerse Actions)</p></li><li><p>Реестр пакетов и контейнеров</p></li><li><p>Встроенную IDE в браузере (GigaIDE Cloud)</p></li></ul><p><strong>GigaCode</strong> — AI-ассистент для разработки, работающий на базе GigaChat. В 2025 году вышла версия GigaCode 2.0 с улучшенной производительностью. Доступен как:</p><ul><li><p>Плагин для VS Code</p></li><li><p>Плагин для JetBrains IDE и Android Studio</p></li><li><p>Встроенный в GigaIDE (Desktop и Cloud)</p></li></ul><blockquote><p><strong>GigaIDE Pro</strong> — Enterprise-версия IDE, доступна юрлицам. Для частных разработчиков откроется в начале 2026 года.</p></blockquote>Регистрация и начало работы<ol><li><p><strong>Создать СберID или Cloud.ru ID</strong> — если есть карта Сбера, СберID уже есть. Или можно войти через аккаунт Cloud.ru</p></li><li><p><strong>Войти на gitverse.ru</strong> через СберID или Cloud.ru ID</p></li><li><p><strong>Задать пароль</strong> в настройках профиля (Settings → Password) — он нужен для git clone/push по HTTPS</p></li><li><p><strong>Установить плагин GigaCode</strong> в вашу IDE: </p><ul><li><p>VS Code: Extensions → искать «GigaCode» или установить из VSIX-файла</p></li><li><p>JetBrains / Android Studio: Settings → Plugins → установить из ZIP-архива</p></li></ul></li><li><p><strong>Привязать устройство</strong> — при первом запуске плагин попросит авторизацию через браузер</p></li></ol>Что умеет GigaCode<figure><img src=\"https://habrastorage.org/r/w1560/webt/v6/zo/ck/v6zockoruw3a8a-rn-wdokejb78.png\" alt=\"Автодополнение кода в GigaCode\"><figcaption>Автодополнение кода в GigaCode</figcaption></figure><p>Функция</p><p>Описание</p><p>Полезность для аналитика</p><p><strong>Code Completion</strong></p><p>Автодополнение кода в реальном времени</p><p>Средняя — помогает с SQL, Python-скриптами</p><p><strong>CodeChat</strong></p><p>Чат с AI прямо в IDE</p><p>Высокая — можно задавать вопросы по документам</p><p><strong>Explain Code</strong></p><p>Объяснение выделенного кода</p><p>Средняя — полезно при ревью чужого кода</p><p><strong>Generate Docstring</strong></p><p>Генерация документации</p><p>Низкая — редко нужна аналитику</p><p><strong>GigaCode Agent</strong></p><p>Агентный режим для комплексных задач</p><p>Высокая — автоматизирует рутинные операции</p><figure><img src=\"https://habrastorage.org/r/w1560/webt/ig/hp/mp/ighpmprzl5qjnawjurj05olacx4.png\" alt=\"CodeChat — чат с AI прямо в IDE\"><figcaption>CodeChat — чат с AI прямо в IDE</figcaption></figure><figure><img src=\"https://habrastorage.org/r/w1560/webt/rk/u1/et/rku1et6my-s8flq8q4gk6b1zfxw.png\" alt=\"Агентный режим GigaCode\"><figcaption>Агентный режим GigaCode</figcaption></figure>Ограничения для аналитика<ul><li><p><strong>Нет режимов работы</strong> как в Roo Code (Architect, Ask, Code). GigaCode заточен под разработчиков.</p></li><li><p><strong>Контекст ограничен</strong> — нельзя явно указать «прочитай эти 5 файлов как контекст».</p></li><li><p><strong>Нет .roo/ структуры</strong> — придётся адаптировать подход с «чертогами разума».</p></li><li><p><strong>CodeChat не сохраняет историю между сессиями</strong> — каждый раз с чистого листа.</p></li></ul>Что делать аналитику<ol><li><p><strong>CodeChat — основной инструмент</strong>: открыть файл с контекстом (ТЗ, протокол интервью), выделить текст, задать вопрос в чате.</p></li><li><p><strong>Контекст в одном файле</strong>: GigaCode лучше работает, когда весь нужный контекст виден в открытом файле.</p></li><li><p><strong>Полные запросы</strong>: без опоры на «помнишь, мы обсуждали» — модель не помнит предыдущие сессии.</p></li></ol><h3>SourceCraft + Code Assistant: экосистема Яндекса</h3>Что это<p><strong>SourceCraft</strong> — платформа для разработки от Яндекса. Включает:</p><ul><li><p>Git-репозитории</p></li><li><p>CI/CD</p></li><li><p>Интеграцию с Yandex Cloud</p></li><li><p>Кодонавигацию (поиск по всей кодовой базе)</p></li></ul><p><strong>Code Assistant</strong> (ранее Yandex Code Assistant) — AI-ассистент на базе YandexGPT. Доступен как:</p><ul><li><p>Плагин для VS Code и VSCodium</p></li><li><p>Плагин для JetBrains IDE (версии 2024.1 — 2025.2)</p></li></ul>Регистрация и начало работы<ol><li><p><strong>Завести Яндекс ID</strong> — подойдёт обычный аккаунт Яндекса</p></li><li><p><strong>Войти на sourcecraft.dev</strong> через Яндекс ID</p></li><li><p><strong>Установить плагин Code Assistant</strong>: </p><ul><li><p>VS Code / VSCodium: скачать VSIX-файл (<code>yandex-code-assist.vsix</code>) с сайта, установить через Extensions → Install from VSIX</p></li><li><p>JetBrains: Settings → Plugins → ⚙️ → Manage Plugin Repositories → добавить <code>https://proxy.src.yandexcloud.net/proxy/plugin/jetbrains/stable</code> → найти и установить плагин</p></li></ul></li><li><p><strong>Авторизоваться в плагине</strong> — откроется браузер для входа через Яндекс ID</p></li></ol>Что умеет Code Assistant<p>Функция</p><p>Описание</p><p>Полезность для аналитика</p><p><strong>Автодополнение</strong></p><p>Предложения по мере ввода</p><p>Средняя</p><p><strong>Чат в IDE</strong></p><p>Общение с YandexGPT</p><p>Высокая</p><p><strong>Генерация кода по описанию</strong></p><p>«Напиши функцию, которая...»</p><p>Средняя</p><p><strong>Рефакторинг</strong></p><p>Улучшение существующего кода</p><p>Низкая для аналитика</p><p><strong>Агент полного цикла</strong></p><p>От кода до деплоя</p><p>Высокая для автоматизации</p><figure><img src=\"https://habrastorage.org/r/w1560/webt/ov/i-/zd/ovi-zdtglvea8uixiohdl4i3nas.png\" alt=\"Интерфейс чата Code Assistant в VS Code\"><figcaption>Интерфейс чата Code Assistant в VS Code</figcaption></figure><figure><img src=\"https://habrastorage.org/r/w1560/webt/en/x-/ts/enx-tsyczx4kixq5aas6it8ackw.png\" alt=\"Агентный режим Code Assistant\"><figcaption>Агентный режим Code Assistant</figcaption></figure>Ключевое преимущество<p>YandexGPT 5 Pro может использовать <strong>AI Search</strong> для поиска актуальной информации. В Code Assistant эта функция работает ограниченно — для полноценного поиска лучше Yandex Cloud AI Studio или Алиса. Но даже ограниченная интеграция с экосистемой Яндекса помогает бизнес-консультанту работать с актуальными данными.</p>Ограничения для аналитика<ul><li><p><strong>Контекстное окно 32K токенов</strong> (~50 страниц) — меньше, чем у GigaChat 2/3, и значительно меньше, чем у Qwen.</p></li><li><p><strong>Нет явной структуры проекта</strong> для не-кодовых задач.</p></li><li><p><strong>Плагин заточен под код</strong> — работа с markdown/текстами возможна, но не оптимизирована.</p></li></ul>Что делать аналитику<ol><li><p><strong>AI Search для проверки фактов</strong> — для актуальных данных используйте Yandex Cloud AI Studio в связке с Code Assistant.</p></li><li><p><strong>Дробите большие документы</strong> — 50 страниц максимум, длинные ТЗ придётся разбивать на части.</p></li><li><p><strong>Интеграция с Yandex Cloud</strong> — если инфраструктура там, связка бесшовная.</p></li></ol><h3>Сравнительная таблица</h3><p>Критерии выбраны с точки зрения аналитика/архитектора, а не разработчика.</p><p>Критерий</p><p>Roo Code</p><p>GigaCode</p><p>SourceCraft CA</p><p><strong>Регистрация</strong></p><p>GitHub / email</p><p>СберID / Cloud.ru ID</p><p>Яндекс ID</p><p><strong>Модель по умолчанию</strong></p><p>Claude / GPT</p><p>GigaChat 2</p><p>YandexGPT 5</p><p><strong>Контекстное окно</strong></p><p>До 200K (Claude)</p><p>До 128K (GigaChat 2 MAX)</p><p>32K</p><p><strong>Режимы работы (Architect/Ask/Code)</strong></p><p>Да</p><p>Нет</p><p>Нет</p><p><strong>Структура проекта (.roo/)</strong></p><p>Да</p><p>Нет</p><p>Нет</p><p><strong>Работа с не-кодовыми файлами</strong></p><p>Отлично</p><p>Средне</p><p>Средне</p><p><strong>Агентный режим</strong></p><p>Да (мощный)</p><p>Да (с ноября 2025)</p><p>Да</p><p><strong>Доступ к интернету</strong></p><p>Нет</p><p>Нет</p><p>Ограниченно (AI Search)</p><p><strong>Русский язык модели</strong></p><p>Хорошо</p><p>Отлично</p><p>Отлично</p><p><strong>On-premise вариант</strong></p><p>Да (с Ollama)</p><p>Да</p><p>Планируется</p><p><strong>Соответствие 152-ФЗ</strong></p><p>Зависит от модели</p><p>Да</p><p>Да</p><p><strong>Бесплатный тариф</strong></p><p>Да (с ограничениями)</p><p>Да (лимиты не публикуются)</p><p>Да (3K предложений/нед)</p><p><strong>Сохранение контекста между сессиями</strong></p><p>Да (.roo/)</p><p>Нет</p><p>Нет</p>Бесплатные квоты: подробности<p><strong>SourceCraft Code Assistant</strong> — бесплатен, billing account не требуется:</p><ul><li><p>3000 непустых предложений автодополнения в неделю</p></li><li><p>1000 запросов в чат IDE в неделю</p></li><li><p>200 запросов в веб-чат SourceCraft в день</p></li><li><p>После превышения лимита ассистент продолжает работать, но реже даёт ответы</p></li><li><p>Платные тарифы планируются с 2026 года</p></li></ul><p><strong>GigaCode</strong> — бесплатен для авторизованных пользователей GitVerse:</p><ul><li><p>Конкретные лимиты не публикуются</p></li><li><p>Агентный режим доступен бесплатно (с ноября 2025)</p></li><li><p>Для расширенных возможностей — платные тарифы от 1699 ₽/мес</p></li><li><p>Корпоративные лицензии (SaaS и on-premise) — по запросу</p></li></ul><p><strong>Вывод:</strong> для старта SourceCraft прозрачнее — известны точные лимиты. GigaCode не публикует квоты, но по отзывам для личных проектов хватает.</p><h3>Как читать мои следующие статьи</h3><p>Если вы ограничены российскими платформами, вот как адаптировать концепции из статей про Roo Code:</p>Таблица соответствия<p>Концепция Roo Code</p><p>GigaCode</p><p>SourceCraft CA</p><p><strong>Architect Mode</strong></p><p>CodeChat с промптом «Проанализируй структуру, не пиши код»</p><p>Чат с таким же промптом</p><p><strong>Ask Mode</strong></p><p>CodeChat</p><p>Чат в IDE</p><p><strong>Code Mode</strong></p><p>Обычный режим GigaCode</p><p>Обычный режим</p><p><strong>.roo/rules.md</strong></p><p>Вставлять правила в начало каждого промпта</p><p>То же</p><p><strong>.roo/context/*</strong></p><p>Держать файлы открытыми в IDE или копировать в промпт</p><p>То же</p><p><strong>@-упоминания файлов</strong></p><p>Выделить текст в файле → CodeChat</p><p>Копировать в чат</p><p><strong>Memory Bank</strong></p><p>Вести отдельный .md файл, копировать в промпт</p><p>То же</p><p><strong>Итеративный промптинг</strong></p><p>Работает</p><p>Работает</p>Практические советы<ol><li><p><strong>Создайте шаблон промпта</strong> с правилами проекта и вставляйте в начало каждого разговора — это заменит .roo/rules.md.</p></li><li><p><strong>Ведите «внешнюю память»</strong> в обычном текстовом файле — краткое описание проекта, ключевые решения, терминология. Копируйте релевантные части в промпт.</p></li><li><p><strong>Разбивайте задачи</strong> на более мелкие — без сохранения контекста между сессиями большие задачи сложнее.</p></li><li><p><strong>Используйте структурированные промпты</strong>:</p></li></ol><pre><code>## Контекст\n[вставить описание проекта]\n\n## Задача\n[что нужно сделать]\n\n## Формат ответа\n[как должен выглядеть результат]\n\n## Ограничения\n[что нельзя делать]\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><ol><li><p><strong>Для GigaCode</strong>: промпты, написанные под Claude/GPT, в GigaChat часто работают хуже. GigaChat лучше реагирует на директивные формулировки и конкретные примеры.</p></li><li><p><strong>Для SourceCraft CA</strong>: для работы с актуальной информацией комбинируйте Code Assistant с Yandex Cloud AI Studio или Алисой, где AI Search работает полноценно.</p></li></ol><h3>Что дальше</h3><p>В следующих статьях серии я буду давать примеры и для Roo Code, и для российских платформ, где это возможно. Но учитывайте:</p><ul><li><p><strong>Базовые концепции переносимы</strong> — итеративный промптинг, структурирование контекста, декомпозиция задач работают везде.</p></li><li><p><strong>Конкретные приёмы требуют адаптации</strong> — особенно всё, что связано с режимами работы и автоматическим контекстом.</p></li><li><p><strong>Модели разные</strong> — GigaChat лучше в русском, YandexGPT может использовать поиск через AI Studio, Claude/GPT пока сильнее в сложных рассуждениях.</p></li></ul><p>Выбирайте платформу по своему сценарию ограничений и адаптируйте подходы под её особенности. Главное — начать использовать AI-ассистента в своей работе, а конкретный инструмент вторичен.</p><p><em>Если у вас есть опыт использования GigaCode или SourceCraft Code Assistant для аналитических задач — делитесь в комментариях. Особенно интересны кейсы работы с требованиями, бизнес-процессами и документацией.</em></p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 15878,
+        "approxBlocks": 315
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/proisshestviya/26350021:2026-02-04T20:18:17.000Z:Напавший на ребенка в аэропорту Шереметь",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Напавший на ребенка в аэропорту Шереметьево не отдавал отчета своим действиям",
+      "url": "https://tass.ru/proisshestviya/26350021",
+      "publishedAt": "2026-02-04T20:18:17.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Мужчина схватил пострадавшего, поднял его и со значительной силой бросил на пол",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26350041:2026-02-04T20:17:53.000Z:Вэнс: администрация Трампа готова искать",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Вэнс: администрация Трампа готова искать точки соприкосновения с Россией",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/26350041",
+      "publishedAt": "2026-02-04T20:17:53.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/obschestvo/26350029:2026-02-04T20:17:34.000Z:СК завел дело против сотрудников \"Росжил",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "СК завел дело против сотрудников \"Росжилкомплекса\" и жилищного департамента МО РФ",
+      "url": "https://tass.ru/obschestvo/26350029",
+      "publishedAt": "2026-02-04T20:17:34.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/02/04/v-rossii-upreknuli-nato-v-popytke/:2026-02-04T20:16:04.000Z:В России упрекнули НАТО в попытке продол",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "В России упрекнули НАТО в попытке продолжить украинский конфликт",
+      "url": "https://lenta.ru/news/2026/02/04/v-rossii-upreknuli-nato-v-popytke/",
+      "publishedAt": "2026-02-04T20:16:04.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/02/04/23/20260204231603031/pic_8fb182868bdc0123ff636e5c086189b9.jpg",
+      "excerpt": "Фото: Алекс Макнотон / РИА НовостиПосол России в Лондоне Андрей Келин заявил, что НАТО подталкивает Киев к продолжению войны, а не к переговорам. Его слова приводит РИА Новости.По словам дипломата, НАТО готова перебирать свои склады, чтобы ",
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/v-rossii-upreknuli-nato-v-popytke/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/23/20260204231603031/owl_detail_240_81499dda45a5c03514656b28ce9cc01c.jpg\"></a><figcaption><p>Фото: Алекс Макнотон / РИА Новости</p></figcaption></figure><p>Посол России в <a href=\"https://lenta.ru/tags/geo/london/\">Лондоне</a> <a href=\"https://lenta.ru/tags/persons/kelin-andrey/\">Андрей Келин</a> заявил, что <a href=\"https://lenta.ru/tags/organizations/nato/\">НАТО</a> подталкивает <a href=\"https://lenta.ru/tags/geo/kiev/\">Киев</a> к продолжению войны, а не к переговорам. Его слова приводит <a href=\"http://ria.ru/\">РИА Новости</a>.</p><p>По словам дипломата, НАТО готова перебирать свои склады, чтобы обеспечить Киев дополнительными вооружениями.</p><p>Ранее генсек НАТО <a href=\"https://lenta.ru/tags/persons/ryutte-mark/\">Марк Рютте</a> <a href=\"https://lenta.ru/news/2026/02/03/ryutte-nazval-uslovie-poyavleniya-voysk-nato-na-ukraine/\">заявил</a>, что войска стран НАТО, которые дадут свое согласие, появятся на <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украине</a> сразу после заключения мирного соглашения. Он добавил, что остальные члены альянса будут помогать Киеву «другим способом».</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 584,
+        "approxBlocks": 7
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/sport/26350035:2026-02-04T20:15:54.000Z:ФИФА сняла с \"Ростова\" запрет на трансфе",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "ФИФА сняла с \"Ростова\" запрет на трансферы",
+      "url": "https://tass.ru/sport/26350035",
+      "publishedAt": "2026-02-04T20:15:54.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "",
+      "excerpt": "Запрет был наложен 14 января из-за долга \"Ростова\" за переход Родриго Саравии из \"Пеньяроля\"",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26350015:2026-02-04T20:15:09.000Z:The Spectator: скандал вокруг дела Эпште",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "The Spectator: скандал вокруг дела Эпштейна может стоить Стармеру кресла премьера",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/26350015",
+      "publishedAt": "2026-02-04T20:15:09.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/02/05/pozharnye-tushat-16-tsistern-s-benzinom-i-gazom-posle-intsidenta-v-tambovskoy-oblasti/:2026-02-04T20:11:00.000Z:В Тамбовской области загорелись 16 цисте",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "В Тамбовской области загорелись 16 цистерн с бензином и газом",
+      "url": "https://lenta.ru/news/2026/02/05/pozharnye-tushat-16-tsistern-s-benzinom-i-gazom-posle-intsidenta-v-tambovskoy-oblasti/",
+      "publishedAt": "2026-02-04T20:11:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/02/04/23/20260204231105962/pic_b6913b149fdc82175837140db62b2da7.jpg",
+      "excerpt": "В результате схода поезда с рельсов в Мичуринске Тамбовской области загорелись сразу 16 цистерн. В 11 из них находился бензин, еще в 5 — газ. Подробности инцидента привел губернатор Евгений Первышов в Telegram-канале.«На данный момент пожар",
+      "contentHtml": "<p>В результате схода поезда с рельсов  в Мичуринске Тамбовской области загорелись сразу 16 цистерн. В 11 из них находился бензин, еще в 5 — газ. Подробности инцидента привел губернатор <a href=\"https://lenta.ru/tags/persons/pervyshov-evgeniy/\">Евгений Первышов</a> в <a href=\"https://t.me/PervyshovEA/3775\">Telegram</a>-канале.</p><p>«На данный момент пожар локализован. На месте происшествия работают 2&nbsp;пожарных поезда и 25 единиц техники», — поделился глава региона. По его словам, никто не пострадал, угроза населению и объектам инфраструктуры отсутствует.</p><p>Первышов добавил, что после ликвидации пожара железнодорожные пути обследуют на наличие повреждений. После этого ремонтные бригады начнут восстановительные работы.</p><p>О произошедшем в городе Мичуринске стало известно ранее 4 февраля. Там на железной дороге <a href=\"https://lenta.ru/news/2026/02/04/moschnyy-vzryv-progremel-na-zheleznoy-doroge-v-rossiyskom-regione-poezd-s-toplivom-soshel-s-relsov-ognennyy-grib-popal-na-video/\">взорвались</a> две цистерны с бензином. На опубликованных кадрах видно мощный взрыв, в результате которого образуется многометровый огненный гриб высотой в несколько этажей.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 864,
+        "approxBlocks": 4
+      }
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/world/1071146:2026-02-04T20:09:00.000Z:США продолжают перебрасывать военные гру",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "США продолжают перебрасывать военные грузы на Ближний Восток",
+      "url": "https://www.interfax.ru/world/1071146",
+      "publishedAt": "2026-02-04T20:09:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Тяжелые военно-транспортные самолеты ВВС США продолжают активно доставлять грузы в регион Ближнего Востока, следует из данных авиационных ресурсов Flightradar24 и ADS-B Exchange.",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/armiya-i-opk/26349991:2026-02-04T20:03:06.000Z:В Запорожской области отразили массирова",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "В Запорожской области отразили массированную атаку БПЛА",
+      "url": "https://tass.ru/armiya-i-opk/26349991",
+      "publishedAt": "2026-02-04T20:03:06.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260204/8792273.jpg",
+      "excerpt": "ВС РФ обезвредили более 30 дронов",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/proisshestviya/26349961:2026-02-04T20:02:33.000Z:В Херсоне произошли взрывы",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "В Херсоне произошли взрывы",
+      "url": "https://tass.ru/proisshestviya/26349961",
+      "publishedAt": "2026-02-04T20:02:33.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "В подконтрольных ВСУ районах Херсонской области воздушная тревога не была объявлена",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/ekonomika/26349983:2026-02-04T20:01:42.000Z:Bloomberg: SpaceX привлекла иностранные ",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Bloomberg: SpaceX привлекла иностранные банки к подготовке IPO",
+      "url": "https://tass.ru/ekonomika/26349983",
+      "publishedAt": "2026-02-04T20:01:42.000Z",
+      "categoryIds": [
+        "business"
+      ],
+      "image": "",
+      "excerpt": "Зарубежные банки претендовали на младшие роли в синдикате по подготовке листинга",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/02/05/genseka-nato-obvinili-v-popytke-sryva-peregovorov-mezhdu-rossiey-i-ukrainoy/:2026-02-04T20:01:00.000Z:Генсека НАТО обвинили в попытке срыва пе",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Генсека НАТО обвинили в попытке срыва переговоров между Россией и Украиной",
+      "url": "https://lenta.ru/news/2026/02/05/genseka-nato-obvinili-v-popytke-sryva-peregovorov-mezhdu-rossiey-i-ukrainoy/",
+      "publishedAt": "2026-02-04T20:01:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/02/04/23/20260204230058026/pic_bee1df79d9de50072c7f814eaac88684.jpg",
+      "excerpt": "Марк Рютте. Фото: Anatolii Stepanov / ReutersГенеральный секретарь НАТО Марк Рютте прикладывает все усилия, чтобы сорвать переговоры между Россией, Украиной и США. С такой точкой зрения выступил аналитик венгерского Центра фундаментальных п",
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/05/genseka-nato-obvinili-v-popytke-sryva-peregovorov-mezhdu-rossiey-i-ukrainoy/\"><img alt=\"Марк Рютте\" src=\"https://icdn.lenta.ru/images/2026/02/04/23/20260204230058026/owl_detail_240_4aedcba766755c57dad591cac954ee0d.jpg\"></a><figcaption><p>Марк Рютте. Фото: Anatolii Stepanov / Reuters</p></figcaption></figure><p>Генеральный секретарь <a href=\"https://lenta.ru/tags/organizations/nato/\">НАТО</a> <a href=\"https://lenta.ru/tags/persons/ryutte-mark/\">Марк Рютте</a> прикладывает все усилия, чтобы сорвать переговоры между Россией, <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украиной</a> и <a href=\"https://lenta.ru/tags/geo/ssha/\">США</a>. С такой точкой зрения выступил аналитик венгерского Центра фундаментальных прав Золтан Кошкович в социальной сети <a href=\"https://x.com/KoskovicsZ/status/2019031263466737761?s=20\">X</a>.</p><p>«Рютте, который так стремился поставить нас на колени, отдал бы все Украине: оружие, самолеты, корабли и солдат. Тот факт, что это может привести к крупной войне, его не беспокоит», — написал эксперт.</p><p>По его мнению, генсек НАТО готов заплатить любую цену за то, чтобы трехсторонние переговоры по конфликту на Украине не увенчались успехом.</p><p>Ранее Рютте <a href=\"https://lenta.ru/news/2026/02/03/ryutte-nazval-uslovie-poyavleniya-voysk-nato-na-ukraine/\">заявил</a>, что войска стран НАТО, которые дадут свое согласие, появятся на Украине сразу после заключения мирного соглашения. Он добавил, что остальные члены альянса будут помогать <a href=\"https://lenta.ru/tags/geo/kiev/\">Киеву</a> «другим способом».</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 922,
+        "approxBlocks": 8
+      }
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/russia/1071145:2026-02-04T19:59:00.000Z:Экс-начальник \"Росжилкомплекса\" арестова",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Экс-начальник \"Росжилкомплекса\" арестован по подозрению в мошенничестве с жилфондом Минобороны",
+      "url": "https://www.interfax.ru/russia/1071145",
+      "publishedAt": "2026-02-04T19:59:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Под подозрением",
+      "contentHtml": "\n\t\t\t\t\t<h2>Экс-начальник \"Росжилкомплекса\" арестован по подозрению в мошенничестве с жилфондом Минобороны</h2>\n\t\t\t\t\t\t<p>Под подозрением</p>\n\n\t\t\t\t\t\n\n\n\n<p>Москва. 4 февраля. INTERFAX.RU - Бывший начальник ФГАУ \"Росжилкомплекс\" Валерий Абраменков арестован по подозрению в мошенничестве на 1 млрд рублей с жилфондом Минобороны РФ, сообщили в Следственном комитете России (СКР).</p>\n<p>\"Возбуждено уголовное дело в отношении должностных лиц ФГАУ \"Росжилкомплекс\" и Департамента жилищного обеспечения и управления жилищным фондом Минобороны России, а также лиц, осуществляющих управленческие функции в ООО \"ЕРЦ ЖКХ\", ООО \"ЕИЦ\", ООО \"ЕПЦ\", ООО \"Апартпейдж Невский\", ООО \"АСУ\", ООО \"Стройкомплекс\" и ООО \"ЦФКУ\", подозреваемых в совершении мошенничества в особо крупном размере (ч. 4 ст. 159 УК РФ)\", - говорится в <a href=\"https://t.me/sledcom_press/27184\">сообщении</a>.</p>\n<p>По данным следствия, \"в период с 2021 по 2024 годов указанные должностные лица, введя в заблуждение работников наблюдательного совета ФГАУ \"Росжилкомплекс\", организовали заключение однотипных договоров на эксплуатацию, обслуживание недвижимого имущества и оказание иных жилищно-коммунальных услуг в жилищном фонде министерства обороны РФ по завышенным ценам, всего на общую сумму более 1 млрд руб\".</p>\n<p>\"В ходе проведенных следственных действий следователями ГВСУ СК России установлены лица, подозреваемые в совершении преступления, в связи с чем в порядке ст.ст. 91-92 УПК РФ задержаны бывший начальник ФГАУ \"Росжилкомплекс\" Валерий Абраменков, а также руководители ООО \"ЕРЦ ЖКХ\", ООО \"ЕИЦ\", ООО \"ЕПЦ\", ООО \"Апартпейдж Невский\", ООО \"АСУ\", ООО \"Стройкомплекс\" и ООО \"ЦФКУ\" Инна Миль, Илья Волк, Ниджад Гусейнов\", - сообщили в ведомстве.</p>\n<p>Там добавили, что по ходатайству следователя Главного военного следственного управления (ГВСУ) СКР, \"Абраменков заключен под стражу, в отношении Миль, Волк и Гусейнова перед судом также заявлены ходатайства об избрании меры пресечения, связанной с лишением свободы\".</p>\n<p>\"В результате преступления государству и ФГАУ \"Росжилкомплекс\" причинен ущерб в особо крупном размере\", - заявили в СКР, добавив, что \"допрашиваются свидетели, а также проводятся обыски в организациях, по местам жительства фигурантов дела\".</p>\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\n\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 2103,
+        "approxBlocks": 8
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/nauka/26349931:2026-02-04T19:57:29.000Z:Биоразлагаемый пластик может быть опасне",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Биоразлагаемый пластик может быть опаснее, чем обычные полимеры",
+      "url": "https://tass.ru/nauka/26349931",
+      "publishedAt": "2026-02-04T19:57:29.000Z",
+      "categoryIds": [
+        "science"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260204/8792269.jpg",
+      "excerpt": "Стремясь решить проблему пластикового загрязнения, стали чаще использоваться биоразлагаемые пластики - материалы, которые способны разрушаться в природной среде под действием микроорганизмов, превращаясь в воду и углекислый газ, отметили в Минобрнауки РФ",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/ekonomika/26349933:2026-02-04T19:56:02.000Z:Трамп почти не сомневается в снижении ба",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Трамп почти не сомневается в снижении базовой ставки в США",
+      "url": "https://tass.ru/ekonomika/26349933",
+      "publishedAt": "2026-02-04T19:56:02.000Z",
+      "categoryIds": [
+        "business"
+      ],
+      "image": "",
+      "excerpt": "У Соединенных Штатов есть долг, но есть и рост, который скоро заставит долг выглядеть крайне небольшим, подчеркнул американский лидер",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26349939:2026-02-04T19:54:38.000Z:L&#039;Express: дипломатический советник",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "L&#039;Express: дипломатический советник Макрона посетил Москву 3 февраля",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/26349939",
+      "publishedAt": "2026-02-04T19:54:38.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Эмманюэль Бонн находился в столице РФ для встречи с помощником президента России Юрием Ушаковым",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26349967:2026-02-04T19:53:43.000Z:Глава МИД Ирана опроверг информацию об о",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Глава МИД Ирана опроверг информацию об отмене переговоров с США 6 февраля",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/26349967",
+      "publishedAt": "2026-02-04T19:53:43.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Встреча сторон запланирована в Омане, уточнил Аббас Арагчи",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/02/04/v-rossii-zayavili-ob-otsutstvii-reaktsii-ssha-na-prodlenie-dsnv/:2026-02-04T19:53:00.000Z:В России заявили об отсутствии реакции С",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "В России заявили об отсутствии реакции США на продление ДСНВ",
+      "url": "https://lenta.ru/news/2026/02/04/v-rossii-zayavili-ob-otsutstvii-reaktsii-ssha-na-prodlenie-dsnv/",
+      "publishedAt": "2026-02-04T19:53:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/02/04/22/20260204225256443/pic_797de612a525807e9de259706dd64043.jpg",
+      "excerpt": "США не дали официального ответа на предложение Москвы по Договору о о сокращении стратегических наступательных вооружений (ДСНВ), говорится в заявлении МИД России.В ведомстве подчеркнули, что Москва предложила сторонам ДСНВ добровольно сохр",
+      "contentHtml": "<p><a href=\"https://lenta.ru/tags/geo/ssha/\">США</a> не дали официального ответа на предложение <a href=\"https://lenta.ru/tags/geo/moskva/\">Москвы</a> по Договору о о сокращении стратегических наступательных вооружений (ДСНВ), говорится в <a href=\"https://www.mid.ru/ru/foreign_policy/news/2076815/\">заявлении</a> <a href=\"https://lenta.ru/tags/organizations/mid-rossii/\">МИД России</a>.</p><p>В ведомстве подчеркнули, что Москва предложила сторонам ДСНВ добровольно сохранить соблюдение установленных договором лимитов на вооружения — даже после окончания действия соглашения.</p><p>Однако никакой реакции США на предложение России не последовало. «Речь идет о том, что наши идеи преднамеренно оставлены без ответа», — отмечается в документе.</p><p>Ранее МИД России <a href=\"https://lenta.ru/news/2026/02/04/rossiya-prigotovilas-k-kontrmeram-dlya-kupirovaniya-ugroz-posle-istecheniya-dsnv/\">заявил</a>, что Москва готова к решительным военно-техническим контрмерам для купирования потенциальных угроз после истечения действия ДСНВ.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 658,
+        "approxBlocks": 4
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26349951:2026-02-04T19:51:53.000Z:Мелания Трамп надеется на новый скорый у",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Мелания Трамп надеется на новый скорый успех в работе по детям с Украины",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/26349951",
+      "publishedAt": "2026-02-04T19:51:53.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Первая леди США пообещала позже предоставить на этот счет дополнительную информацию",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26349925:2026-02-04T19:50:16.000Z:Израиль намерен построить международный ",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Израиль намерен построить международный аэропорт к востоку от сектора Газа",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/26349925",
+      "publishedAt": "2026-02-04T19:50:16.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "В канцелярии израильского премьер-министра Биньямина Нетаньяху назвали создание дополнительного аэропорта \"национальной необходимостью\"",
+      "contentHtml": ""
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/russia/1071144:2026-02-04T19:49:00.000Z:Из-за инцидента на станции в Тамбовской ",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Из-за инцидента на станции в Тамбовской области отстают от графика 16 поездов",
+      "url": "https://www.interfax.ru/russia/1071144",
+      "publishedAt": "2026-02-04T19:49:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "После происшествия на железнодорожной станции в Мичуринске (Тамбовская область), где сошли с рельсов и загорелись цистерны с топливом, нарушен график движения 16 пассажирских поездов, сообщила пресс-служба РЖД.",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/politika/26349915:2026-02-04T19:47:32.000Z:Посол Келин: РФ не допустит размещения б",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Посол Келин: РФ не допустит размещения британско-французских войск на Украине",
+      "url": "https://tass.ru/politika/26349915",
+      "publishedAt": "2026-02-04T19:47:32.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Европейские страны не обсуждали с РФ многоуровневый план по обеспечению режима прекращения огня, указал посол России в Лондоне",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/02/04/vsu-atakovali-raketami-rossiyskiy-region/:2026-02-04T19:47:00.000Z:ВСУ атаковали ракетами российский регион",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "ВСУ атаковали ракетами российский регион",
+      "url": "https://lenta.ru/news/2026/02/04/vsu-atakovali-raketami-rossiyskiy-region/",
+      "publishedAt": "2026-02-04T19:47:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/02/04/22/20260204224817936/pic_c641aa2ae42db24f8d562e292e79305d.jpg",
+      "excerpt": "Фото: MOD Russia / Globallookpress.comВооруженные силы Украины (ВСУ) атаковали ракетами Белгород, об этом сообщил военкор Евгений Поддубный.«Белгород под огнем. Силы ПВО отражают ракетный налет противника. В небе над областным центром прозв",
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/vsu-atakovali-raketami-rossiyskiy-region/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/22/20260204224817936/owl_detail_240_072bf855b805ba7225524ee2e57810a3.jpg\"></a><figcaption><p>Фото: MOD Russia / Globallookpress.com</p></figcaption></figure><p><a href=\"https://lenta.ru/tags/organizations/vsu/\">Вооруженные силы </a><a href=\"https://lenta.ru/tags/geo/ukraina/\">Украины</a> (ВСУ) атаковали ракетами <a href=\"https://lenta.ru/tags/geo/belgorod/\">Белгород</a>, об этом <a href=\"https://t.me/epoddubny/26276\">сообщил</a> военкор <a href=\"https://lenta.ru/tags/persons/poddubnyy-evgeniy/\">Евгений Поддубный</a>.</p><p>«Белгород под огнем. Силы ПВО отражают ракетный налет противника. В небе над областным центром прозвучало не менее десяти взрывов», — рассказал он.</p><p>Работу ПВО над Белгородом и Белгородским округом <a href=\"https://t.me/vvgladkov/19036\">подтвердил</a> губернатор российского региона <a href=\"https://lenta.ru/tags/persons/gladkov-vyacheslav/\">Вячеслав Гладков</a>. По его словам, сбиты воздушные цели противника, предварительно пострадавших нет. В области объявлялась ракетная опасность.</p><p>По информации <a href=\"https://t.me/shot_shot/91994\">Telegram</a>-канала Shot, ВСУ попытались атаковать город в том числи при помощи ракет <a href=\"https://lenta.ru/tags/tech/m142-himars/\">HIMARS</a>. Местные жители слышали взрывы и видели яркие вспышки над Белгородом. Также очевидцы рассказали о срабатывании сирен тревоги в разных районах города.</p><p>Ранее в <a href=\"https://lenta.ru/tags/organizations/minoborony-rossii/\">Минобороны России</a> <a href=\"https://lenta.ru/news/2026/02/04/raskryty-detali/\">сообщили</a>, что система противовоздушной обороны в ночь на 4 февраля сбила 24 беспилотника Вооруженных сил Украины.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 985,
+        "approxBlocks": 9
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/obschestvo/26349883:2026-02-04T19:39:25.000Z:ФПК использует автобусы для перевозки па",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "ФПК использует автобусы для перевозки пассажиров поездов в Тамбовской области",
+      "url": "https://tass.ru/obschestvo/26349883",
+      "publishedAt": "2026-02-04T19:39:25.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Специалисты принимают меры, чтобы сократить отставание от графика",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26349901:2026-02-04T19:37:39.000Z:Axios: Уиткофф и Кушнер 5 февраля направ",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Axios: Уиткофф и Кушнер 5 февраля направятся в Катар для переговоров по Ирану",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/26349901",
+      "publishedAt": "2026-02-04T19:37:39.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Если иранцы готовы вернуться к первоначальному формату переговоров в Стамбуле, США готовы провести встречу на этой или следующей неделе, указал журналист портала Барак Равид",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/obschestvo/26349881:2026-02-04T19:36:55.000Z:Костромские судостроители получили медал",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Костромские судостроители получили медали ордена \"За заслуги перед Отечеством\"",
+      "url": "https://tass.ru/obschestvo/26349881",
+      "publishedAt": "2026-02-04T19:36:55.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Губернатор Костромской области Сергея Ситникова поблагодарил награжденных за доблестное служение Родине и заботу о России",
+      "contentHtml": ""
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/world/1071143:2026-02-04T19:34:00.000Z:Трамп пригрозил Ирану серьезными мерами ",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Трамп пригрозил Ирану серьезными мерами в случае возобновления ядерной программы",
+      "url": "https://www.interfax.ru/world/1071143",
+      "publishedAt": "2026-02-04T19:34:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "США готовы пойти на жесткие меры против Ирана, если Тегеран попытается воссоздать свою ядерную программу, заявил в среду американский президент Дональд Трамп.\"Мы узнали, что они думали о том, чтобы создать новый ядерный объект в совершенно другой части страны.",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/02/04/ukrainskih-bezhentsev-perestali-prinimat-na-yazykovye-kursy-v-germanii/:2026-02-04T19:33:00.000Z:Украинских беженцев перестали принимать ",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Украинских беженцев перестали принимать на языковые курсы в Германии",
+      "url": "https://lenta.ru/news/2026/02/04/ukrainskih-bezhentsev-perestali-prinimat-na-yazykovye-kursy-v-germanii/",
+      "publishedAt": "2026-02-04T19:33:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/02/04/22/20260204223336567/pic_0b448da20a0b63bfcd2be7ae24306700.jpg",
+      "excerpt": "Украинских беженцев перестали принимать на языковые курсы в Германии, сообщает издание Deutsche Welle.По его данным, с декабря Федеральное управление по делам миграции и беженцев (BAMF) по всей Германии не выдало ни одного нового разрешения",
+      "contentHtml": "<p>Украинских беженцев перестали принимать на языковые курсы в Германии, сообщает издание <a href=\"https://www.dw.com/ru/smi-v-germanii-priostanovili-nabor-migrantov-na-azykovye-kursy/a-75809884\">Deutsche Welle</a>.</p><p>По его данным, с декабря Федеральное управление по делам миграции и беженцев (BAMF) по всей Германии не выдало ни одного нового разрешения на проведение интеграционных курсов для мигрантов — об этом сообщила в открытом письме Ассоциация центров дополнительного образования.</p><p>Организаторы, по их словам, не были заранее уведомлены о внезапной приостановке приема заявок, что создало непредвиденную ситуацию.</p><p>Ранее известный журналист и публицист Александр Сосновский, живущий в Германии 35 лет, <a href=\"https://lenta.ru/news/2026/02/02/zhivuschiy-v-germanii-izvestnyy-zhurnalist-raskryl-otnoshenie-nemtsev-k-ukrainskim-bezhentsam/\">раскрыл</a> отношение немцев к беженцам с <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украины</a>. На вопрос Манучарова о том, как немцы реагируют на украинских беженцев, Сосновский ответил, что «скорее негативно». По его словам, жителей Германии перестало устраивать то, что приезжающие с Украины люди фактически находились на полном обеспечении государства.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 900,
+        "approxBlocks": 4
+      }
+    },
     {
       "id": "habr:https://habr.com/ru/articles/989298/?utm_source=habrahabr&utm_medium=rss&utm_campaign=989298:2026-02-04T19:30:21.000Z:[Перевод] Подростковый период технологий",
       "sourceId": "habr",
@@ -35,23 +500,32 @@
       "contentHtml": ""
     },
     {
-      "id": "lenta:https://lenta.ru/news/2026/02/04/tramp-prizval-ayatollu-hamenei-ochen-pobespokoitsya/:2026-02-04T19:28:18.000Z:Трамп призвал аятоллу Хаменеи «очень поб",
+      "id": "interfax:https://www.interfax.ru/world/1071142:2026-02-04T19:29:00.000Z:Французские СМИ пишут, что советник Макр",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Французские СМИ пишут, что советник Макрона посетил Россию для консультаций",
+      "url": "https://www.interfax.ru/world/1071142",
+      "publishedAt": "2026-02-04T19:29:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Дипломатический советник президента Франции Эммануэля Макрона - Эммануэль Бонн - во вторник отправился на переговоры в Москву, сообщает в среду французский журнал L`Express со ссылкой на источник.\"По нашим даным, Эммануэль Бонн (...), не афишируя это, 3 февраля отправился в Москву, чтобы провести там встречу со своим российским визави Юрием Ушаковым\", - говорится в статье.",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/02/04/tramp-prizval-ayatollu-hamenei-ochen-pobespokoitsya/:2026-02-04T19:28:00.000Z:Трамп призвал аятоллу Хаменеи «очень поб",
       "sourceId": "lenta",
       "sourceName": "Lenta.ru",
       "title": "Трамп призвал аятоллу Хаменеи «очень побеспокоиться»",
       "url": "https://lenta.ru/news/2026/02/04/tramp-prizval-ayatollu-hamenei-ochen-pobespokoitsya/",
-      "publishedAt": "2026-02-04T19:28:18.000Z",
+      "publishedAt": "2026-02-04T19:28:00.000Z",
       "categoryIds": [
         "world"
       ],
       "image": "https://icdn.lenta.ru/images/2026/02/04/22/20260204222845191/pic_afe47943b3d9bb01302a3b055060fdd5.jpg",
       "excerpt": "Дональд Трамп. Фото: Globallookpress.comПрезидент США Дональд Трамп в интервью NBC News призвал верховного лидера Ирана аятоллу Али Хаменеи «очень побеспокоиться».«Иранскому лидеру Хаменеи стоит очень побеспокоиться», — заявил журналисту гл",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/tramp-prizval-ayatollu-hamenei-ochen-pobespokoitsya/\"><img alt=\"Дональд Трамп\" src=\"https://icdn.lenta.ru/images/2026/02/04/22/20260204222845191/owl_detail_240_e6c291efe250d3f2fce19d46c3668bd3.jpg\"></a><figcaption><p>Дональд Трамп. Фото: Globallookpress.com</p></figcaption></figure><p>Президент <a href=\"https://lenta.ru/tags/geo/ssha/\">США</a> <a href=\"https://lenta.ru/tags/persons/tramp-donald/\">Дональд Трамп</a> в <a href=\"https://www.nbcnews.com/politics/donald-trump\">интервью</a> NBC News призвал верховного лидера <a href=\"https://lenta.ru/tags/geo/iran/\">Ирана</a> аятоллу <a href=\"https://lenta.ru/tags/persons/hamenei-ali/\">Али Хаменеи</a> «очень побеспокоиться».</p><p>«Иранскому лидеру Хаменеи стоит очень побеспокоиться», — заявил журналисту глава Белого дома.</p><p>Эти слова прозвучали на фоне сообщений о срыве переговоров между <a href=\"https://lenta.ru/tags/geo/vashington/\">Вашингтоном</a> и <a href=\"https://lenta.ru/tags/geo/tegeran/\">Тегераном</a>. Как <a href=\"https://lenta.ru/news/2026/02/04/stalo-izvestno-o-sryve-peregovorov-ssha-i-irana/\">отмечал</a> Axios со ссылкой на источники, переговоры по ядерной программе между США и Ираном, запланированные на пятницу, 6 февраля, могут не состояться из-за того, что американская сторона не согласилась на требование перенести место встречи в <a href=\"https://lenta.ru/tags/geo/oman/\">Оман</a>.</p><p>Ранее агентство Reuters сообщило, что Иран потребовал, чтобы переговоры с США на этой неделе проходили в Омане, а не в <a href=\"https://lenta.ru/tags/geo/turtsiya/\">Турции</a>, и ограничить их только двусторонними переговорами исключительно по ядерным вопросам.<br></p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 888,
-        "approxBlocks": 8
-      }
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/tramp-prizval-ayatollu-hamenei-ochen-pobespokoitsya/\"><img alt=\"Дональд Трамп\" src=\"https://icdn.lenta.ru/images/2026/02/04/22/20260204222845191/owl_detail_240_e6c291efe250d3f2fce19d46c3668bd3.jpg\"></a><figcaption><p>Дональд Трамп. Фото: Globallookpress.com</p></figcaption></figure><p>Президент <a href=\"https://lenta.ru/tags/geo/ssha/\">США</a> <a href=\"https://lenta.ru/tags/persons/tramp-donald/\">Дональд Трамп</a> в <a href=\"https://www.nbcnews.com/politics/donald-trump\">интервью</a> NBC News призвал верховного лидера <a href=\"https://lenta.ru/tags/geo/iran/\">Ирана</a> аятоллу <a href=\"https://lenta.ru/tags/persons/hamenei-ali/\">Али Хаменеи</a> «очень побеспокоиться».</p><p>«Иранскому лидеру Хаменеи стоит очень побеспокоиться», — заявил журналисту глава Белого дома.</p><p>Эти слова прозвучали на фоне сообщений о срыве переговоров между <a href=\"https://lenta.ru/tags/geo/vashington/\">Вашингтоном</a> и <a href=\"https://lenta.ru/tags/geo/tegeran/\">Тегераном</a>. Как <a href=\"https://lenta.ru/news/2026/02/04/stalo-izvestno-o-sryve-peregovorov-ssha-i-irana/\">отмечал</a> Axios со ссылкой на источники, переговоры по ядерной программе между США и Ираном, запланированные на пятницу, 6 февраля, могут не состояться из-за того, что американская сторона не согласилась на требование перенести место встречи в <a href=\"https://lenta.ru/tags/geo/oman/\">Оман</a>.</p><p>Ранее агентство Reuters сообщило, что Иран потребовал, чтобы переговоры с США на этой неделе проходили в Омане, а не в <a href=\"https://lenta.ru/tags/geo/turtsiya/\">Турции</a>, и ограничить их только двусторонними переговорами исключительно по ядерным вопросам.<br></p>"
     },
     {
       "id": "tass:https://tass.ru/obschestvo/26349869:2026-02-04T19:26:49.000Z:Прокуратура Ставрополья обязала вернуть ",
@@ -93,12 +567,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/02/04/22/20260204222405303/pic_29e66bc7a0645260c88c7de0ef6473cf.jpg",
       "excerpt": "Шведские полицейские требуют, чтобы им разрешили посещать гей-парады (международное общественное движение ЛГБТ признано экстремистским и запрещено в РФ) в форме и в рабочее время. Об этом сообщает Sputnik.В профсоюзе полиции объяснили это т",
-      "contentHtml": "<p>Шведские полицейские требуют, чтобы им разрешили посещать гей-парады (<i>международное общественное движение ЛГБТ признано экстремистским и запрещено в <a href=\"https://lenta.ru/tags/geo/rf/\">РФ</a></i>) в форме и в рабочее время. Об этом сообщает <a href=\"https://t.me/sputniklive/110014\">Sputnik</a>.</p><p>В профсоюзе полиции объяснили это требование тем, что многие геи испытывают дискомфорт при виде полицейских. «Присутствие человека в форме в их рядах означает защиту демократических ценностей и безопасность», — добавили там.</p><p>Ранее сотрудникам полиции в стране запретили публиковать в социальных сетях фото и видео в форме, а также надевать ее на акции ЛГБТ.</p><p>В марте 2025 года парламент <a href=\"https://lenta.ru/tags/geo/vengriya/\">Венгрии</a> большинством <a href=\"https://lenta.ru/news/2025/03/18/odna-strana-nato-prinyala-zakonoproekt-o-zaprete-lgbt-paradov/\">принял</a> законопроект о запрете ЛГБТ-парадов.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 653,
-        "approxBlocks": 4
-      }
+      "contentHtml": "<p>Шведские полицейские требуют, чтобы им разрешили посещать гей-парады (<i>международное общественное движение ЛГБТ признано экстремистским и запрещено в <a href=\"https://lenta.ru/tags/geo/rf/\">РФ</a></i>) в форме и в рабочее время. Об этом сообщает <a href=\"https://t.me/sputniklive/110014\">Sputnik</a>.</p><p>В профсоюзе полиции объяснили это требование тем, что многие геи испытывают дискомфорт при виде полицейских. «Присутствие человека в форме в их рядах означает защиту демократических ценностей и безопасность», — добавили там.</p><p>Ранее сотрудникам полиции в стране запретили публиковать в социальных сетях фото и видео в форме, а также надевать ее на акции ЛГБТ.</p><p>В марте 2025 года парламент <a href=\"https://lenta.ru/tags/geo/vengriya/\">Венгрии</a> большинством <a href=\"https://lenta.ru/news/2025/03/18/odna-strana-nato-prinyala-zakonoproekt-o-zaprete-lgbt-paradov/\">принял</a> законопроект о запрете ЛГБТ-парадов.</p>"
     },
     {
       "id": "tass:https://tass.ru/sport/26349855:2026-02-04T19:22:47.000Z:\"Даллас\" обменяет баскетболиста Энтони Д",
@@ -197,12 +666,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/02/04/20/20260204204025807/pic_42e279e7f693979951281a28d9693e91.jpg",
       "excerpt": "Фото: Jim Young / ReutersПочетный президент Международной федерации хоккея (IIHF) Рене Фазель раскритиковал отстранение сборной России. Его слова со ссылкой на пресс-службу «Норильского никеля» приводит ТАСС.«Я очень сожалею, что россияне н",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/pochetnyy-prezident-mezhdunarodnoy-federatsii-hokkeya-raskritikoval-otstranenie-sbornoy-rossii/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/20/20260204204025807/owl_detail_240_3f9b94ca597c2a42db008e3594ffcebc.jpg\"></a><figcaption><p>Фото: Jim Young / Reuters</p></figcaption></figure><p>Почетный президент Международной федерации хоккея (IIHF) <a href=\"https://lenta.ru/tags/persons/fazel-rene/\">Рене Фазель</a> раскритиковал отстранение <a href=\"https://lenta.ru/tags/organizations/sbornaya-rossii/\">сборной России</a>. Его слова со ссылкой на пресс-службу <a href=\"https://lenta.ru/tags/organizations/nornikel/\">«Норильского никеля»</a> <a href=\"https://tass.ru/sport/26347127\">приводит</a> ТАСС.</p><p>«Я очень сожалею, что россияне не могут принять участие в Олимпийских играх - 2026 по политическим причинам. Если не играют представители шести лучших стран, это все равно что есть суп без соли, чего-то не хватает», — заявил Фазель. Кроме того, он отметил, что решение отстранить сборную России от участия в международных турнирах является политизированным и противоречит уставам олимпийского движения.</p><p>Мужской олимпийский турнир по хоккею пройдет в <a href=\"https://lenta.ru/tags/geo/milan/\">Милане</a> с 11 по 22 февраля. Впервые с 2014 года в нем примут участие игроки Национальной хоккейной лиги (НХЛ).</p><p>Сборная России отстранена от участия в международных соревнованиях под эгидой IIHF с 2022 года. 21 января организация <a href=\"https://lenta.ru/news/2026/01/22/glava-iihf-vyskazalsya-o-prodlenii-otstraneniya-rossiyskih-hokkeistov/\">продлила</a> действие санкций в отношении россиян и белорусов до 2027-го.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 1003,
-        "approxBlocks": 8
-      }
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/pochetnyy-prezident-mezhdunarodnoy-federatsii-hokkeya-raskritikoval-otstranenie-sbornoy-rossii/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/20/20260204204025807/owl_detail_240_3f9b94ca597c2a42db008e3594ffcebc.jpg\"></a><figcaption><p>Фото: Jim Young / Reuters</p></figcaption></figure><p>Почетный президент Международной федерации хоккея (IIHF) <a href=\"https://lenta.ru/tags/persons/fazel-rene/\">Рене Фазель</a> раскритиковал отстранение <a href=\"https://lenta.ru/tags/organizations/sbornaya-rossii/\">сборной России</a>. Его слова со ссылкой на пресс-службу <a href=\"https://lenta.ru/tags/organizations/nornikel/\">«Норильского никеля»</a> <a href=\"https://tass.ru/sport/26347127\">приводит</a> ТАСС.</p><p>«Я очень сожалею, что россияне не могут принять участие в Олимпийских играх - 2026 по политическим причинам. Если не играют представители шести лучших стран, это все равно что есть суп без соли, чего-то не хватает», — заявил Фазель. Кроме того, он отметил, что решение отстранить сборную России от участия в международных турнирах является политизированным и противоречит уставам олимпийского движения.</p><p>Мужской олимпийский турнир по хоккею пройдет в <a href=\"https://lenta.ru/tags/geo/milan/\">Милане</a> с 11 по 22 февраля. Впервые с 2014 года в нем примут участие игроки Национальной хоккейной лиги (НХЛ).</p><p>Сборная России отстранена от участия в международных соревнованиях под эгидой IIHF с 2022 года. 21 января организация <a href=\"https://lenta.ru/news/2026/01/22/glava-iihf-vyskazalsya-o-prodlenii-otstraneniya-rossiyskih-hokkeistov/\">продлила</a> действие санкций в отношении россиян и белорусов до 2027-го.</p>"
     },
     {
       "id": "lenta:https://lenta.ru/news/2026/02/04/peskov-ob-yasnil-uhod-spetspredstavitelya-putina/:2026-02-04T19:07:00.000Z:Песков объяснил уход спецпредставителя П",
@@ -216,12 +680,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/02/04/22/20260204220751722/pic_95bd0219e60aac36547cdac294682509.jpg",
       "excerpt": "Фото: Юрий Кочетков / РИА НовостиПресс-секретарь российского лидера Дмитрий Песков пояснил, что Сергей Иванов ушел с должности спецпредставителя президента РФ Владимира Путина по вопросам природоохранной деятельности, экологии и транспорта ",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/peskov-ob-yasnil-uhod-spetspredstavitelya-putina/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/22/20260204220751722/owl_detail_240_07bbfa64398cc7e006af3c5c684054be.jpg\"></a><figcaption><p>Фото: Юрий Кочетков / РИА Новости</p></figcaption></figure><p>Пресс-секретарь российского лидера <a href=\"https://lenta.ru/tags/persons/peskov-dmitriy/\">Дмитрий Песков</a> пояснил, что <a href=\"https://lenta.ru/tags/persons/ivanov-sergey/\">Сергей Иванов</a> ушел с должности спецпредставителя президента РФ <a href=\"https://lenta.ru/tags/persons/putin-vladimir/\">Владимира Путина</a> по вопросам природоохранной деятельности, экологии и транспорта по собственному желанию. Об этом он рассказал журналисту <a href=\"https://t.me/Yunashev_Live/107257\">Life</a> Александру Юнашеву.</p><p>«Указ по должности. По собственному желанию Иванова», — отметил Песков.</p><p>Ранее Песков <a href=\"https://lenta.ru/news/2026/02/04/v-kremle-poblagodarili-ssha-za-organizatsiyu-peregovorov-s-ukrainoy/\">заявил</a>, что <a href=\"https://lenta.ru/tags/geo/moskva/\">Москва</a> признательна <a href=\"https://lenta.ru/tags/geo/vashington/\">Вашингтону</a> за усилия по урегулированию конфликта на <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украине</a>.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 563,
-        "approxBlocks": 7
-      }
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/peskov-ob-yasnil-uhod-spetspredstavitelya-putina/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/22/20260204220751722/owl_detail_240_07bbfa64398cc7e006af3c5c684054be.jpg\"></a><figcaption><p>Фото: Юрий Кочетков / РИА Новости</p></figcaption></figure><p>Пресс-секретарь российского лидера <a href=\"https://lenta.ru/tags/persons/peskov-dmitriy/\">Дмитрий Песков</a> пояснил, что <a href=\"https://lenta.ru/tags/persons/ivanov-sergey/\">Сергей Иванов</a> ушел с должности спецпредставителя президента РФ <a href=\"https://lenta.ru/tags/persons/putin-vladimir/\">Владимира Путина</a> по вопросам природоохранной деятельности, экологии и транспорта по собственному желанию. Об этом он рассказал журналисту <a href=\"https://t.me/Yunashev_Live/107257\">Life</a> Александру Юнашеву.</p><p>«Указ по должности. По собственному желанию Иванова», — отметил Песков.</p><p>Ранее Песков <a href=\"https://lenta.ru/news/2026/02/04/v-kremle-poblagodarili-ssha-za-organizatsiyu-peregovorov-s-ukrainoy/\">заявил</a>, что <a href=\"https://lenta.ru/tags/geo/moskva/\">Москва</a> признательна <a href=\"https://lenta.ru/tags/geo/vashington/\">Вашингтону</a> за усилия по урегулированию конфликта на <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украине</a>.</p>"
     },
     {
       "id": "lenta:https://lenta.ru/news/2026/02/05/stalo-izvestno-o-vizite-sovetnika-makrona-v-moskvu/:2026-02-04T19:06:00.000Z:Стало известно о визите советника Макрон",
@@ -235,12 +694,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/02/04/22/20260204220539401/pic_5ab7dca196de26aa6a2e25915f446592.jpg",
       "excerpt": "Дипломатический советник французского лидера Эммануэля Макрона Эммануэль Бонн 3 февраля якобы нанес визит в Москву, чтобы встретиться с официальными лицами России. Об этом сообщает Reuters со ссылкой на источник.«Эммануэль Бонн, дипломатиче",
-      "contentHtml": "<p>Дипломатический советник французского лидера <a href=\"https://lenta.ru/tags/persons/makron-emmanuel/\">Эммануэля Макрона</a> Эммануэль <a href=\"https://lenta.ru/tags/geo/bonn/\">Бонн</a> 3 февраля якобы нанес визит в <a href=\"https://lenta.ru/tags/geo/moskva/\">Москву</a>, чтобы встретиться с официальными лицами России. Об этом сообщает <a href=\"http://www.reuters.com/\">Reuters</a> со ссылкой на источник.</p><p>«Эммануэль Бонн, дипломатический советник президента … Макрона во вторник отправился в Москву для встречи с российскими официальными лицами», — сказано в материале.</p><p>Уточняется, что Бонн посетил Россию с целью установить диалог между Парижем и Москвой. Другие подробности не приводятся. При этом в Елисейском дворце не подтвердили, но и не опровергли эту информацию.</p><p>Ранее глава МИД <a href=\"https://lenta.ru/tags/geo/frantsiya/\">Франции</a> Жан-Ноэль Барро <a href=\"https://lenta.ru/news/2026/02/02/glava-mid-evropeyskoy-strany-prizval-k-dialogu-s-rossiey/\">заявил</a>, что у европейских стран должна быть возможность говорить с Россией напрямую, чтобы отстаивать свои интересы.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 732,
-        "approxBlocks": 4
-      }
+      "contentHtml": "<p>Дипломатический советник французского лидера <a href=\"https://lenta.ru/tags/persons/makron-emmanuel/\">Эммануэля Макрона</a> Эммануэль <a href=\"https://lenta.ru/tags/geo/bonn/\">Бонн</a> 3 февраля якобы нанес визит в <a href=\"https://lenta.ru/tags/geo/moskva/\">Москву</a>, чтобы встретиться с официальными лицами России. Об этом сообщает <a href=\"http://www.reuters.com/\">Reuters</a> со ссылкой на источник.</p><p>«Эммануэль Бонн, дипломатический советник президента … Макрона во вторник отправился в Москву для встречи с российскими официальными лицами», — сказано в материале.</p><p>Уточняется, что Бонн посетил Россию с целью установить диалог между Парижем и Москвой. Другие подробности не приводятся. При этом в Елисейском дворце не подтвердили, но и не опровергли эту информацию.</p><p>Ранее глава МИД <a href=\"https://lenta.ru/tags/geo/frantsiya/\">Франции</a> Жан-Ноэль Барро <a href=\"https://lenta.ru/news/2026/02/02/glava-mid-evropeyskoy-strany-prizval-k-dialogu-s-rossiey/\">заявил</a>, что у европейских стран должна быть возможность говорить с Россией напрямую, чтобы отстаивать свои интересы.</p>"
     },
     {
       "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26349819:2026-02-04T19:05:01.000Z:Mehr: Иран изначально не был готов обсуж",
@@ -296,12 +750,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/02/04/22/20260204220527698/pic_5e0e3b2cda973f1fb59f0297fa1b72eb.jpg",
       "excerpt": "Фото: Mihir Melwani / Globallookpress.comУкраинский военнослужащий с позывным Алекс в Telegram-канале подтвердил отключение части терминалов Starlink в ВСУ.Ранее российский военблогер с позывным Ветеран, автор канала «Zаписки Vетерана» заяв",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/na-ukraine-podtverdili-otklyuchenie-chasti-terminalov-starlink-v-vsu/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/22/20260204220527698/owl_detail_240_568fedf1dccc77be2e31b87c6dd9ce76.jpg\"></a><figcaption><p>Фото: Mihir Melwani / Globallookpress.com</p></figcaption></figure><p>Украинский военнослужащий с позывным Алекс в <a href=\"https://t.me/officer_33/6675\">Telegram</a>-канале подтвердил отключение части терминалов Starlink в <a href=\"https://lenta.ru/tags/organizations/vsu/\">ВСУ</a>.</p><p>Ранее российский военблогер с позывным Ветеран, автор канала «Zаписки Vетерана» <a href=\"https://lenta.ru/news/2026/02/04/v-rossii-zayavili-o-massovom-otklyuchenii-terminalov-starlink-u-voennyh-s-obeih-storon/\">заявил</a> о массовом отключении терминалов Starlink по обе стороны линии боевого соприкосновения, как у российских, так и у украинских военных.</p><p>По словам военного, из-за необходимости верификации терминалов в белых списках отключились некоторые аппараты с украинской стороны. При этом Алекс отметил, что «легли» и некоторые Starlink, уже внесенные в список, равно как некоторые незарегистрированные продолжают работать, поэтому четкой статистики сейчас нет.</p><p><a href=\"https://lenta.ru/tags/geo/kiev/\">Киев</a> начал процедуру верификации терминалов в Вооруженных силах <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украины</a> (ВСУ), о чем ранее <a href=\"https://lenta.ru/news/2026/02/02/na-ukraine-poobeschali-otklyuchit-neverifitsirovannye-terminaly-starlink/\">заявил</a> министр обороны <a href=\"https://lenta.ru/tags/persons/fedorov-mihail/\">Михаил Федоров</a>. Он подчеркивал, что неавторизованные устройства будут отключены.</p><p>Также известно, что <a href=\"https://lenta.ru/tags/organizations/spacex/\">компания SpaceX</a> приняла меры против якобы использования Россией спутниковой системы Starlink, о котором заявляла Украина. Об этом <a href=\"https://lenta.ru/news/2026/02/01/mask-zayavil-o-borbe-s-yakoby-ispolzovaniem-rossiey-starlink/\">заявил</a> американский миллиардер <a href=\"https://lenta.ru/tags/persons/mask-ilon/\">Илон Маск</a>.<br></p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 1156,
-        "approxBlocks": 9
-      }
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/na-ukraine-podtverdili-otklyuchenie-chasti-terminalov-starlink-v-vsu/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/22/20260204220527698/owl_detail_240_568fedf1dccc77be2e31b87c6dd9ce76.jpg\"></a><figcaption><p>Фото: Mihir Melwani / Globallookpress.com</p></figcaption></figure><p>Украинский военнослужащий с позывным Алекс в <a href=\"https://t.me/officer_33/6675\">Telegram</a>-канале подтвердил отключение части терминалов Starlink в <a href=\"https://lenta.ru/tags/organizations/vsu/\">ВСУ</a>.</p><p>Ранее российский военблогер с позывным Ветеран, автор канала «Zаписки Vетерана» <a href=\"https://lenta.ru/news/2026/02/04/v-rossii-zayavili-o-massovom-otklyuchenii-terminalov-starlink-u-voennyh-s-obeih-storon/\">заявил</a> о массовом отключении терминалов Starlink по обе стороны линии боевого соприкосновения, как у российских, так и у украинских военных.</p><p>По словам военного, из-за необходимости верификации терминалов в белых списках отключились некоторые аппараты с украинской стороны. При этом Алекс отметил, что «легли» и некоторые Starlink, уже внесенные в список, равно как некоторые незарегистрированные продолжают работать, поэтому четкой статистики сейчас нет.</p><p><a href=\"https://lenta.ru/tags/geo/kiev/\">Киев</a> начал процедуру верификации терминалов в Вооруженных силах <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украины</a> (ВСУ), о чем ранее <a href=\"https://lenta.ru/news/2026/02/02/na-ukraine-poobeschali-otklyuchit-neverifitsirovannye-terminaly-starlink/\">заявил</a> министр обороны <a href=\"https://lenta.ru/tags/persons/fedorov-mihail/\">Михаил Федоров</a>. Он подчеркивал, что неавторизованные устройства будут отключены.</p><p>Также известно, что <a href=\"https://lenta.ru/tags/organizations/spacex/\">компания SpaceX</a> приняла меры против якобы использования Россией спутниковой системы Starlink, о котором заявляла Украина. Об этом <a href=\"https://lenta.ru/news/2026/02/01/mask-zayavil-o-borbe-s-yakoby-ispolzovaniem-rossiey-starlink/\">заявил</a> американский миллиардер <a href=\"https://lenta.ru/tags/persons/mask-ilon/\">Илон Маск</a>.<br></p>"
     },
     {
       "id": "tass:https://tass.ru/ekonomika/26349773:2026-02-04T19:00:51.000Z:Оверчук назвал ЕАЭС важным экономическим",
@@ -372,12 +821,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/02/04/21/20260204215612530/pic_7f4c7fa29da01b097856693a9d994041.jpg",
       "excerpt": "Фото: Jonathan Ernst / ReutersПомощник американского президента по национальной безопасности Марко Рубио заявил, что конфликт на Украине «в какой-то момент закончится» и Вашингтон уже сейчас обсуждает с Киевом возможные реконструкционные пр",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/rubio-vyskazalsya-o-zavershenii-konflikta-na-ukraine/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/21/20260204215612530/owl_detail_240_7512e2b7eace8491239c77c7718310d6.jpg\"></a><figcaption><p>Фото: Jonathan Ernst / Reuters</p></figcaption></figure><p>Помощник американского президента по национальной безопасности <a href=\"https://lenta.ru/tags/persons/rubio-marko/\">Марко Рубио</a> заявил, что конфликт на <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украине</a> «в какой-то момент закончится» и <a href=\"https://lenta.ru/tags/geo/vashington/\">Вашингтон</a> уже сейчас обсуждает с <a href=\"https://lenta.ru/tags/geo/kiev/\">Киевом</a> возможные реконструкционные проекты. Его слова приводит <a href=\"http://tass.ru/\">ТАСС</a>.</p><p>«Когда это произойдет, Украина должна быть в состоянии мобилизовать все свои экономические ресурсы, чтобы быть в состоянии восстановиться», — заявил он.</p><p>Рубио подчеркнул, что Украина обладает невероятным экономическим потенциалом — при грамотной экономической политике ее ВВП может удвоиться в течение ближайших десяти лет. Он отметил, что такие возможности неотъемлемо входят в состав стратегии устойчивого мира.</p><p>По его словам, этому вопросу уже посвящено немало труда и глубоких размышлений и американское руководство рассчитывает приступить к реализации инициатив сразу после завершения военных действий. Особое внимание, отметил госсекретарь, уделяется критически важным минералам, которые составляют ключевую часть экономической основы будущего благополучия Украины.</p><p>Ранее Рубио <a href=\"https://lenta.ru/news/2026/02/04/gossekretar-ssha-otsenil-shans-proryva-v-ukrainskom-uregulirovanii/\">заявил</a>, что прорыв в урегулировании украинского конфликта может произойти в момент, когда ситуация кажется безнадежной. Он привел в пример ситуацию в <a href=\"https://lenta.ru/tags/geo/gaza/\">Газе</a>, где многие считали прогресс невозможным, однако впоследствии возникли условия для достижения соглашения. Он выразил надежду, что похожий прорыв может случиться и в украинском урегулировании.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 1458,
-        "approxBlocks": 9
-      }
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/rubio-vyskazalsya-o-zavershenii-konflikta-na-ukraine/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/21/20260204215612530/owl_detail_240_7512e2b7eace8491239c77c7718310d6.jpg\"></a><figcaption><p>Фото: Jonathan Ernst / Reuters</p></figcaption></figure><p>Помощник американского президента по национальной безопасности <a href=\"https://lenta.ru/tags/persons/rubio-marko/\">Марко Рубио</a> заявил, что конфликт на <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украине</a> «в какой-то момент закончится» и <a href=\"https://lenta.ru/tags/geo/vashington/\">Вашингтон</a> уже сейчас обсуждает с <a href=\"https://lenta.ru/tags/geo/kiev/\">Киевом</a> возможные реконструкционные проекты. Его слова приводит <a href=\"http://tass.ru/\">ТАСС</a>.</p><p>«Когда это произойдет, Украина должна быть в состоянии мобилизовать все свои экономические ресурсы, чтобы быть в состоянии восстановиться», — заявил он.</p><p>Рубио подчеркнул, что Украина обладает невероятным экономическим потенциалом — при грамотной экономической политике ее ВВП может удвоиться в течение ближайших десяти лет. Он отметил, что такие возможности неотъемлемо входят в состав стратегии устойчивого мира.</p><p>По его словам, этому вопросу уже посвящено немало труда и глубоких размышлений и американское руководство рассчитывает приступить к реализации инициатив сразу после завершения военных действий. Особое внимание, отметил госсекретарь, уделяется критически важным минералам, которые составляют ключевую часть экономической основы будущего благополучия Украины.</p><p>Ранее Рубио <a href=\"https://lenta.ru/news/2026/02/04/gossekretar-ssha-otsenil-shans-proryva-v-ukrainskom-uregulirovanii/\">заявил</a>, что прорыв в урегулировании украинского конфликта может произойти в момент, когда ситуация кажется безнадежной. Он привел в пример ситуацию в <a href=\"https://lenta.ru/tags/geo/gaza/\">Газе</a>, где многие считали прогресс невозможным, однако впоследствии возникли условия для достижения соглашения. Он выразил надежду, что похожий прорыв может случиться и в украинском урегулировании.</p>"
     },
     {
       "id": "lenta:https://lenta.ru/news/2026/02/04/rossiyanin-propal-bez-vesti-v-zabroshennyh-kamenolomnyah-pod-moskvoy/:2026-02-04T18:55:00.000Z:Россиянин пропал без вести в заброшенных",
@@ -391,12 +835,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/02/04/21/20260204215720730/pic_53743d4a03ef467e45d162e4ffc67a8c.jpg",
       "excerpt": "Россиянин пропал без вести в заброшенных Девятовских каменоломнях под Москвой. Об этом сообщает Telegram-канал Shot.По его данным, 21-летний мужчина спустился на экскурсию под землю около 08:00 утра и должен был выйти около 14:00. По словам",
-      "contentHtml": "<p>Россиянин пропал без вести в заброшенных Девятовских каменоломнях под <a href=\"https://lenta.ru/tags/geo/moskva/\">Москвой</a>. Об этом сообщает <a href=\"https://t.me/shot_shot/91993\">Telegram</a>-канал Shot.</p><p>По его данным, 21-летний мужчина спустился на экскурсию под землю около 08:00 утра и должен был выйти около 14:00. По словам родственников, на связь он не вышел до сих пор.</p><p>Вход в каменоломни находится в деревне к северу от <a href=\"https://lenta.ru/tags/geo/podolsk/\">Подольска</a> под названием Девятское. Сейчас туда на поиски пропавшего направились сотрудники МЧС.</p><p>Девятовские каменоломни — это комплекс заброшенных подземных выработок известняка (белого камня) в Подольском районе <a href=\"https://lenta.ru/tags/geo/podmoskovie/\">Подмосковья</a>. Место стало популярным не только у профессиональных спелеологов, но и у туристов.</p><p>Ранее на Камчатке в ходе поездки на Пущинские источники <a href=\"https://lenta.ru/news/2026/02/02/na-kamchatke-propali-vosem-turistov/\">пропали</a> восемь человек, включая троих детей.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 745,
-        "approxBlocks": 5
-      }
+      "contentHtml": "<p>Россиянин пропал без вести в заброшенных Девятовских каменоломнях под <a href=\"https://lenta.ru/tags/geo/moskva/\">Москвой</a>. Об этом сообщает <a href=\"https://t.me/shot_shot/91993\">Telegram</a>-канал Shot.</p><p>По его данным, 21-летний мужчина спустился на экскурсию под землю около 08:00 утра и должен был выйти около 14:00. По словам родственников, на связь он не вышел до сих пор.</p><p>Вход в каменоломни находится в деревне к северу от <a href=\"https://lenta.ru/tags/geo/podolsk/\">Подольска</a> под названием Девятское. Сейчас туда на поиски пропавшего направились сотрудники МЧС.</p><p>Девятовские каменоломни — это комплекс заброшенных подземных выработок известняка (белого камня) в Подольском районе <a href=\"https://lenta.ru/tags/geo/podmoskovie/\">Подмосковья</a>. Место стало популярным не только у профессиональных спелеологов, но и у туристов.</p><p>Ранее на Камчатке в ходе поездки на Пущинские источники <a href=\"https://lenta.ru/news/2026/02/02/na-kamchatke-propali-vosem-turistov/\">пропали</a> восемь человек, включая троих детей.</p>"
     },
     {
       "id": "kommersant:https://www.kommersant.ru/doc/8400664:2026-02-04T18:53:09.000Z:Неба на всех не хватит // Российские ави",
@@ -508,12 +947,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/02/04/21/20260204214519646/pic_45e363ecfc36835714d3a579272c5023.jpg",
       "excerpt": "Дмитрий Медведев. Фото: Globallookpress.comЗампред Совбеза России Дмитрий Медведев в англоязычном аккаунте в соцсети X отреагировал на истечение Договора о сокращении стратегических наступательных вооружений (ДСНВ, СНВ-3) картинкой и фразой",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/medvedev-otreagiroval-na-istechenie-dsnv-kartinkoy-i-frazoy-iz-igry-prestolov/\"><img alt=\"Дмитрий Медведев\" src=\"https://icdn.lenta.ru/images/2026/02/04/21/20260204214519646/owl_detail_240_ff4d280975dda792c160a9d7c3215688.jpg\"></a><figcaption><p>Дмитрий Медведев. Фото: Globallookpress.com</p></figcaption></figure><p>Зампред <a href=\"https://lenta.ru/tags/organizations/sovet-bezopasnosti-rf/\">Совбеза России</a> <a href=\"https://lenta.ru/tags/persons/medvedev-dmitriy/\">Дмитрий Медведев</a> в англоязычном аккаунте в соцсети <a href=\"https://x.com/MedvedevRussiaE/status/2019115643455639634\">X</a> отреагировал на истечение Договора о сокращении стратегических наступательных вооружений (ДСНВ, СНВ-3) картинкой и фразой из «Игры престолов».</p><p>Он опубликовал картинку с Королем Ночи и словами «Winter is coming» («Зима близко»).</p><p>«Все! Впервые с 1972 года у России (бывшего СССР) и <a href=\"https://lenta.ru/tags/geo/ssha/\">США</a> нет договоренности об ограничении стратегических ядерных сил. ОСВ-I, ОСВ-II, СНВ-I, СНВ-II, СНП, СНВ-III — все это в прошлом», — написал он, перечисляя предыдущие договоренности о вооружениях с <a href=\"https://lenta.ru/tags/geo/vashington/\">Вашингтоном</a>.</p><p>Ранее <a href=\"https://lenta.ru/tags/organizations/mid-rossii/\">МИД России</a> <a href=\"https://lenta.ru/news/2026/02/04/rossiya-prigotovilas-k-kontrmeram-dlya-kupirovaniya-ugroz-posle-istecheniya-dsnv/\">заявил</a>, что <a href=\"https://lenta.ru/tags/geo/moskva/\">Москва</a> готова к решительным военно-техническим контрмерам для купирования потенциальных угроз после истечения действия ДСНВ.</p><p>22 сентября 2025 года президент РФ <a href=\"https://lenta.ru/tags/persons/putin-vladimir/\">Владимир Путин</a> <a href=\"https://lenta.ru/news/2025/09/22/putin-nazval-uslovie/\">заявил</a>, что Россия готова добровольно соблюдать ДСНВ после 5 февраля 2026 года, если аналогичный шаг сделают США. <br></p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 1009,
-        "approxBlocks": 9
-      }
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/medvedev-otreagiroval-na-istechenie-dsnv-kartinkoy-i-frazoy-iz-igry-prestolov/\"><img alt=\"Дмитрий Медведев\" src=\"https://icdn.lenta.ru/images/2026/02/04/21/20260204214519646/owl_detail_240_ff4d280975dda792c160a9d7c3215688.jpg\"></a><figcaption><p>Дмитрий Медведев. Фото: Globallookpress.com</p></figcaption></figure><p>Зампред <a href=\"https://lenta.ru/tags/organizations/sovet-bezopasnosti-rf/\">Совбеза России</a> <a href=\"https://lenta.ru/tags/persons/medvedev-dmitriy/\">Дмитрий Медведев</a> в англоязычном аккаунте в соцсети <a href=\"https://x.com/MedvedevRussiaE/status/2019115643455639634\">X</a> отреагировал на истечение Договора о сокращении стратегических наступательных вооружений (ДСНВ, СНВ-3) картинкой и фразой из «Игры престолов».</p><p>Он опубликовал картинку с Королем Ночи и словами «Winter is coming» («Зима близко»).</p><p>«Все! Впервые с 1972 года у России (бывшего СССР) и <a href=\"https://lenta.ru/tags/geo/ssha/\">США</a> нет договоренности об ограничении стратегических ядерных сил. ОСВ-I, ОСВ-II, СНВ-I, СНВ-II, СНП, СНВ-III — все это в прошлом», — написал он, перечисляя предыдущие договоренности о вооружениях с <a href=\"https://lenta.ru/tags/geo/vashington/\">Вашингтоном</a>.</p><p>Ранее <a href=\"https://lenta.ru/tags/organizations/mid-rossii/\">МИД России</a> <a href=\"https://lenta.ru/news/2026/02/04/rossiya-prigotovilas-k-kontrmeram-dlya-kupirovaniya-ugroz-posle-istecheniya-dsnv/\">заявил</a>, что <a href=\"https://lenta.ru/tags/geo/moskva/\">Москва</a> готова к решительным военно-техническим контрмерам для купирования потенциальных угроз после истечения действия ДСНВ.</p><p>22 сентября 2025 года президент РФ <a href=\"https://lenta.ru/tags/persons/putin-vladimir/\">Владимир Путин</a> <a href=\"https://lenta.ru/news/2025/09/22/putin-nazval-uslovie/\">заявил</a>, что Россия готова добровольно соблюдать ДСНВ после 5 февраля 2026 года, если аналогичный шаг сделают США. <br></p>"
     },
     {
       "id": "lenta:https://lenta.ru/news/2026/02/05/orban-prigrozil-ukrainskim-chinovnikam-vysylkoy-za-prinuditelnuyu-mobilizatsiyu-na-ukraine/:2026-02-04T18:44:00.000Z:Орбан пригрозил украинским чиновникам вы",
@@ -527,12 +961,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/02/04/21/20260204214357675/pic_23d62b092bb74fc9252e3e8f2806e191.jpg",
       "excerpt": "Премьер-министр Венгрии Виктор Орбан раскритиковал принудительную мобилизацию на Украине, жертвой которой стал закарпатский венгр. В социальной сети X он осудил ответственных за это и пригрозил украинским чиновникам высылкой.«Еще один венгр",
-      "contentHtml": "<p>Премьер-министр <a href=\"https://lenta.ru/tags/geo/vengriya/\">Венгрии</a> <a href=\"https://lenta.ru/tags/persons/orban-viktor/\">Виктор Орбан</a> раскритиковал принудительную мобилизацию на <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украине</a>, жертвой которой стал закарпатский венгр. В социальной сети <a href=\"https://x.com/PM_ViktorOrban/status/2019093155363086695?s=20\">X</a> он осудил ответственных за это и пригрозил украинским чиновникам высылкой.</p><p>«Еще один венгр, отправленный на войну, погиб в результате принудительной мобилизации на Украине. Это недопустимо. (...) Все украинские чиновники, ответственные за принудительную мобилизацию, будут незамедлительно высланы из Венгрии», — заявил Орбан.</p><p>Он добавил, что Венгрия не позволит <a href=\"https://lenta.ru/tags/geo/kiev/\">Киеву</a> использовать свой народ в качестве «пушечного мяса».</p><p>В конце января глава МИД Венгрии <a href=\"https://lenta.ru/tags/persons/siyyarto-peter/\">Петер Сийярто</a> <a href=\"https://lenta.ru/news/2026/01/31/v-vengrii-obvinili-ukrainu-v-ohote-na-lyudey/\">заявил</a>, что на Украине происходит открытая охота на людей.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 674,
-        "approxBlocks": 4
-      }
+      "contentHtml": "<p>Премьер-министр <a href=\"https://lenta.ru/tags/geo/vengriya/\">Венгрии</a> <a href=\"https://lenta.ru/tags/persons/orban-viktor/\">Виктор Орбан</a> раскритиковал принудительную мобилизацию на <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украине</a>, жертвой которой стал закарпатский венгр. В социальной сети <a href=\"https://x.com/PM_ViktorOrban/status/2019093155363086695?s=20\">X</a> он осудил ответственных за это и пригрозил украинским чиновникам высылкой.</p><p>«Еще один венгр, отправленный на войну, погиб в результате принудительной мобилизации на Украине. Это недопустимо. (...) Все украинские чиновники, ответственные за принудительную мобилизацию, будут незамедлительно высланы из Венгрии», — заявил Орбан.</p><p>Он добавил, что Венгрия не позволит <a href=\"https://lenta.ru/tags/geo/kiev/\">Киеву</a> использовать свой народ в качестве «пушечного мяса».</p><p>В конце января глава МИД Венгрии <a href=\"https://lenta.ru/tags/persons/siyyarto-peter/\">Петер Сийярто</a> <a href=\"https://lenta.ru/news/2026/01/31/v-vengrii-obvinili-ukrainu-v-ohote-na-lyudey/\">заявил</a>, что на Украине происходит открытая охота на людей.</p>"
     },
     {
       "id": "lenta:https://lenta.ru/news/2026/02/04/stalo-izvestno-o-roli-deripaski-v-vize-dlya/:2026-02-04T18:42:00.000Z:Стало известно о роли Дерипаски в визе д",
@@ -546,12 +975,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/02/04/21/20260204214144364/pic_9668a5e0b6a6041e6d0eb477d6641679.jpg",
       "excerpt": "Фото: Алексей Никольский / РИА НовостиПитер Мандельсон и Бенджамин Вегг-Проссер, основавшие лоббистскую фирму Global Counsel, пытались получить российскую визу для финансиста Джеффри Эпштейна через миллиардера Олега Дерипаску. Об этом сообщ",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/stalo-izvestno-o-roli-deripaski-v-vize-dlya/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/21/20260204214144364/owl_detail_240_850842561342a8bb28aee8eba6c3ee76.jpg\"></a><figcaption><p>Фото: Алексей Никольский / РИА Новости</p></figcaption></figure><p><a href=\"https://lenta.ru/tags/persons/mandelson-piter/\">Питер Мандельсон</a> и Бенджамин Вегг-Проссер, основавшие лоббистскую фирму Global Counsel, пытались получить российскую визу для финансиста Джеффри Эпштейна через миллиардера <a href=\"https://lenta.ru/tags/persons/deripaska-oleg/\">Олега Дерипаску</a>. Об этом сообщает агентство <a href=\"https://www.bloomberg.com/news/articles/2026-02-04/papers-show-mandelson-sought-visa-for-epstein-via-deripaska\">Bloomberg</a>.</p><p>В переписке между бывшим британским министром Мандельсоном, Вегг-Проссером, Эпштейном и, предположительно, представителями офиса Дерипаски, обнаруженными <a href=\"https://lenta.ru/tags/organizations/ministerstvo-yustitsii-ssha/\">Минюстом США</a>, содержатся свидетельства попыток задействовать российские контакты для получения виз для Эпштейна и его сопровождающего в <a href=\"https://lenta.ru/tags/geo/moskva/\">Москву</a> — в ноябре 2010 года, за месяц до основания консалтинговой фирмы Global Counsel.</p><p>Несмотря на усилия, документы указывают, что запросы остались без результата. Тем не менее раскрытая переписка вновь привлекает внимание к тесным связям Global Counsel с Россией и личным контактам Мандельсона, которые в последнее время стали объектом острого парламентского расследования после его ухода из <a href=\"https://lenta.ru/tags/organizations/parlament-velikobritanii/\">Палаты лордов</a>.</p><p>Ранее <a href=\"https://lenta.ru/news/2026/02/04/andrey-makarevich-okazalsya-v-faylah-po-delu-epshteyna/\">сообщалось</a>, что покинувший Россию лидер рок-группы «Машина времени» <a href=\"https://lenta.ru/tags/persons/makarevich-andrey/\">Андрей Макаревич</a> (<i>признан <a href=\"https://lenta.ru/tags/organizations/minyust-rossii/\">Минюстом РФ</a> иностранным агентом</i>) фигурирует в материалах по делу Джеффри Эпштейна, осужденного за организацию секс-трафика, торговлю людьми и создание сети педофилов. Музыкант упоминается в обзоре прессы, полученном Эпштейном в мае 2012 года, в связи с участием музыканта в акциях протеста в начале 2010-х годов.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 1450,
-        "approxBlocks": 8
-      }
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/stalo-izvestno-o-roli-deripaski-v-vize-dlya/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/21/20260204214144364/owl_detail_240_850842561342a8bb28aee8eba6c3ee76.jpg\"></a><figcaption><p>Фото: Алексей Никольский / РИА Новости</p></figcaption></figure><p><a href=\"https://lenta.ru/tags/persons/mandelson-piter/\">Питер Мандельсон</a> и Бенджамин Вегг-Проссер, основавшие лоббистскую фирму Global Counsel, пытались получить российскую визу для финансиста Джеффри Эпштейна через миллиардера <a href=\"https://lenta.ru/tags/persons/deripaska-oleg/\">Олега Дерипаску</a>. Об этом сообщает агентство <a href=\"https://www.bloomberg.com/news/articles/2026-02-04/papers-show-mandelson-sought-visa-for-epstein-via-deripaska\">Bloomberg</a>.</p><p>В переписке между бывшим британским министром Мандельсоном, Вегг-Проссером, Эпштейном и, предположительно, представителями офиса Дерипаски, обнаруженными <a href=\"https://lenta.ru/tags/organizations/ministerstvo-yustitsii-ssha/\">Минюстом США</a>, содержатся свидетельства попыток задействовать российские контакты для получения виз для Эпштейна и его сопровождающего в <a href=\"https://lenta.ru/tags/geo/moskva/\">Москву</a> — в ноябре 2010 года, за месяц до основания консалтинговой фирмы Global Counsel.</p><p>Несмотря на усилия, документы указывают, что запросы остались без результата. Тем не менее раскрытая переписка вновь привлекает внимание к тесным связям Global Counsel с Россией и личным контактам Мандельсона, которые в последнее время стали объектом острого парламентского расследования после его ухода из <a href=\"https://lenta.ru/tags/organizations/parlament-velikobritanii/\">Палаты лордов</a>.</p><p>Ранее <a href=\"https://lenta.ru/news/2026/02/04/andrey-makarevich-okazalsya-v-faylah-po-delu-epshteyna/\">сообщалось</a>, что покинувший Россию лидер рок-группы «Машина времени» <a href=\"https://lenta.ru/tags/persons/makarevich-andrey/\">Андрей Макаревич</a> (<i>признан <a href=\"https://lenta.ru/tags/organizations/minyust-rossii/\">Минюстом РФ</a> иностранным агентом</i>) фигурирует в материалах по делу Джеффри Эпштейна, осужденного за организацию секс-трафика, торговлю людьми и создание сети педофилов. Музыкант упоминается в обзоре прессы, полученном Эпштейном в мае 2012 года, в связи с участием музыканта в акциях протеста в начале 2010-х годов.</p>"
     },
     {
       "id": "kommersant:https://www.kommersant.ru/doc/8400656:2026-02-04T18:41:51.000Z:Отказ без причины // Минфин признал аукц",
@@ -605,7 +1029,7 @@
       "categoryIds": [
         "ru"
       ],
-      "image": "",
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260204/8792249.jpg",
       "excerpt": "Один из участников процесса сообщил, что 5 февраля будут дополнения к судебному следствию, а затем прения сторон",
       "contentHtml": ""
     },
@@ -666,10 +1090,10 @@
       "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/05/zelenskiy-anonsiroval-obmen-plennymi/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/21/20260204213542698/owl_detail_240_d68fae16cc331d4d9302b89779bc1891.jpg\"></a><figcaption><p>Фото: Anatolii Stepanov / Reuters</p></figcaption></figure><p>В скором времени Россия и <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украина</a> могут обменяться военнопленными. Соответствующее заявление в <a href=\"https://t.me/V_Zelenskiy_official/17850\">Telegram</a>-канале сделал украинский лидер <a href=\"https://lenta.ru/tags/persons/zelenskiy-vladimir/\">Владимир Зеленский</a>.</p><p>«Будет значительный шаг: мы ожидаем обмена военнопленными в ближайшем будущем», — написал президент Украины. При этом он не раскрыл даже примерные даты возможного обмена.</p><p>Кроме того, Зеленский призвал закончить текущий конфликт «реалистично». По его мнению, западные партнеры должны предоставить <a href=\"https://lenta.ru/tags/geo/kiev/\">Киеву</a> гарантии безопасности и оказать давление на <a href=\"https://lenta.ru/tags/geo/moskva/\">Москву</a>, «чтобы люди в Украине это почувствовали — что ситуация действительно движется к миру».</p><p>Ранее <a href=\"https://lenta.ru/news/2026/02/04/zavershilsya-pervyy-den-peregovorov-po-ukraine-v-abu-dabi-ego-nazvali-soderzhatelnym-i-produktivnym/\">завершился</a> первый день переговоров по урегулированию конфликта на Украине в <a href=\"https://lenta.ru/tags/geo/abu-dabi/\">Абу-Даби</a>. Они продолжатся 5 февраля.</p>"
     },
     {
-      "id": "tass:https://tass.ru/proisshestviya/26349645:2026-02-04T18:35:13.000Z:В Сумах произошел взрыв",
+      "id": "tass:https://tass.ru/proisshestviya/26349645:2026-02-04T18:35:13.000Z:В Сумах произошли взрывы",
       "sourceId": "tass",
       "sourceName": "ТАСС",
-      "title": "В Сумах произошел взрыв",
+      "title": "В Сумах произошли взрывы",
       "url": "https://tass.ru/proisshestviya/26349645",
       "publishedAt": "2026-02-04T18:35:13.000Z",
       "categoryIds": [
@@ -980,10 +1404,10 @@
       "contentHtml": ""
     },
     {
-      "id": "tass:https://tass.ru/proisshestviya/26349525:2026-02-04T18:18:40.000Z:В Запорожье произошел взрыв",
+      "id": "tass:https://tass.ru/proisshestviya/26349525:2026-02-04T18:18:40.000Z:В Запорожье произошли взрывы",
       "sourceId": "tass",
       "sourceName": "ТАСС",
-      "title": "В Запорожье произошел взрыв",
+      "title": "В Запорожье произошли взрывы",
       "url": "https://tass.ru/proisshestviya/26349525",
       "publishedAt": "2026-02-04T18:18:40.000Z",
       "categoryIds": [
@@ -1735,7 +2159,7 @@
         "world"
       ],
       "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260204/8792149.jpg",
-      "excerpt": "Намеченные на 5 февраля переговоры отменили из-за того, что стороны не смогли согласовать формат их проведения",
+      "excerpt": "Намеченные на 6 февраля переговоры отменили из-за того, что стороны не смогли согласовать формат их проведения",
       "contentHtml": ""
     },
     {
@@ -8823,12 +9247,7 @@
       ],
       "image": "https://habrastorage.org/getpro/habr/upload_files/8de/d15/ac9/8ded15ac907029e881d85797afba0644.jpg",
       "excerpt": "Согласно новому исследованию, частицы из атмосферы Земли уже миллиарды лет переносятся в космос солнечным ветром и оседают на Луне, смешиваясь с лунным грунтом.Это исследование даёт возможные ответы на загадку, которая оставалась неразгаданной более полувека с тех пор, как миссии «Аполлон» привезли обратно образцы лунного грунта со следами таких веществ, как вода, углекислый газ, гелий и азот, вкраплённых в реголит — пылевой поверхностный слой Луны. Читать далее",
-      "contentHtml": "<figure><img src=\"https://habr.com/images/px.gif#https%3A%2F%2Fmedia.cnn.com%2Fapi%2Fv1%2Fimages%2Fstellar%2Fprod%2Fjpg-1920-1080cc-mhc-900dpi.jpg%3Fc%3D16x9%26q%3Dw_1544%2Cc_fill%2Ff_avif\" alt=\" Иллюстрация того, как солнечный ветер вместе с магнитным полем Земли на протяжении миллиардов лет доставляет частицы из атмосферы нашей планеты на поверхность Луны\"><figcaption> Иллюстрация того, как солнечный ветер вместе с магнитным полем Земли на протяжении миллиардов лет доставляет частицы из атмосферы нашей планеты на поверхность Луны</figcaption></figure><p>Согласно <a href=\"https://www.nature.com/articles/s43247-025-02960-4\">новому исследованию</a>, частицы из атмосферы Земли уже миллиарды лет переносятся в космос солнечным ветром и оседают на Луне, смешиваясь с лунным грунтом.</p><p>Это исследование даёт возможные ответы на загадку, которая оставалась неразгаданной более полувека с тех пор, как миссии «Аполлон» привезли обратно образцы лунного грунта со следами таких веществ, как вода, углекислый газ, гелий и азот, вкраплённых в реголит — пылевой поверхностный слой Луны.</p><p>В ранних исследованиях предполагалось, что источником некоторых из этих веществ было Солнце. Но в 2005 году исследователи из Токийского университета предположили, что они могли попасть туда из атмосферы молодой Земли до того, как около 3,7 миллиарда лет назад у неё сформировалось магнитное поле. Авторы высказали предположение, что магнитное поле, однажды сформировавшись, остановило бы поток, удерживая частицы, затрудняя их уход в космос или делая его полностью невозможным.</p><p>Новое исследование опровергает это предположение, предполагая, что магнитное поле Земли наоборот, способствовало, а не препятствовало переносу атмосферных частиц на Луну — и этот перенос продолжается и по сей день.</p><p>«Получается, что всё это время Земля поставляла в лунный грунт летучие газы, такие как кислород и азот», — сказал Эрик Блэкман, соавтор нового исследования и профессор кафедры физики и астрономии Университета Рочестера в Нью-Йорке.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr//post_images/cc1/6e2/420/cc16e2420a1e08a70ee2a765151629f7.webp\" alt=\" Пилот лунного модуля «Аполлон-17» Харрисон Шмитт собрал образцы лунного грунта на Луне в 1972 году.\"><figcaption> Пилот лунного модуля «Аполлон-17» Харрисон Шмитт собрал образцы лунного грунта на Луне в 1972 году.</figcaption></figure><p>«Долгое время считалось, что Луна образовалась в результате столкновения астероида с прото-Землёй, в ходе которого произошло значительное смешивание летучих веществ с Земли и Луны, — добавил он в электронном письме. — Наши результаты показывают, что обмен летучими веществами продолжается даже спустя миллиарды лет».</p><p>Наличие полезных элементов, таких как кислород и водород, на поверхности Луны может представлять интерес для лунной экспедиции.</p><p>«Лунным миссиям и, в конечном итоге, лунным колониям, которые потенциально могут возникнуть когда-нибудь, придётся быть самодостаточными в плане ресурсов, чтобы их не нужно было доставлять с Земли», — сказал Блэкман.</p><p>«Например, люди изучали, как можно перерабатывать воду из лунного реголита и извлекать водород и кислород для производства топлива. Есть также исследования топлива на основе аммиака, которое будет использовать азот, переносимый на Луну солнечным ветром. Этот материал, переносимый солнечным ветром, попадает в почву и становится частью местных ресурсов, которые могут быть использованы для таких инноваций».</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr//post_images/ce0/264/cd1/ce0264cd19d75d192c6cf62dd1f1be54.webp\" alt=\" Лунные образцы, привезённые миссией «Аполлон-14», были проанализированы в карантинном центре в 1971 году.\"><figcaption> Лунные образцы, привезённые миссией «Аполлон-14», были проанализированы в карантинном центре в 1971 году.</figcaption></figure><h2>Ценная химическая запись</h2><p>Для исследования учёные использовали компьютерное моделирование и протестировали два сценария. В одном из них был сильный солнечный ветер — высокоскоростной поток частиц, исходящий от Солнца, — и отсутствие магнитного поля вокруг Земли. В другом — более слабый солнечный ветер и сильное магнитное поле вокруг Земли. Эти сценарии примерно соответствуют древнему и современному состоянию нашей планеты. Сценарий с современной Землёй оказался наиболее эффективным для переноса фрагментов земной атмосферы на Луну.</p><p>Затем исследователи сравнили результаты с данными, полученными непосредственно из анализа лунного грунта в предыдущих исследованиях.</p><p>«Мы использовали лунные образцы, привезённые на Землю миссиями „Аполлон-14“ и „Аполлон-17“, чтобы подтвердить наши результаты», — сказал Шубхонкар Параманик, аспирант факультета физики и астрономии Университета Рочестера. Параманик был ведущим автором исследования, опубликованного в декабре в журнале Nature Communications Earth &amp; Environment.</p><p>«У нас есть солнечный ветер, который попадает в земную атмосферу, и у нас есть утечка земной атмосферы. Поэтому мы попытались определить, каким будет соотношение этой смеси частиц, или отличить, какие частицы имеют солнечное происхождение, а какие — земное», — добавил он.</p><p>Магнитное поле Земли генерируется электрическими токами, возникающими в результате движения расплавленного железа и никеля в жидкой внешней части ядра планеты. Поле простирается далеко в космос, образуя щит, который отклоняет большую часть солнечного ветра, который иначе разрушал бы атмосферу.</p><p>Когда магнитное поле взаимодействует с солнечным ветром, оно создаёт магнитосферу — структуру, похожую на комету, со сжатым фронтом и длинным хвостом. Когда частицы солнечного ветра перемещаются вдоль линий магнитосферы вблизи полюсов, мы получаем полярные сияния, также известные как северное и южное сияние.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr//post_images/280/aed/8a8/280aed8a8cee3a01d89a8607e432eb03.webp\" alt=\" Северное сияние — здесь оно наблюдается к северу от Инувика, в Северо-Западных территориях Канады — возникает, когда заряженные частицы из корональных выбросов массы достигают магнитного поля Земли и взаимодействуют с газами атмосферы.\"><figcaption> Северное сияние — здесь оно наблюдается к северу от Инувика, в Северо-Западных территориях Канады — возникает, когда заряженные частицы из корональных выбросов массы достигают магнитного поля Земли и взаимодействуют с газами атмосферы.</figcaption></figure><p>Форма магнитосферы объясняет, почему солнечный ветер может отрывать некоторые частицы от атмосферы Земли и выносить их в космос. По словам Блэкмана, это также позволяет переносить на Луну большую часть атмосферы Земли, чем в немагнитной или древней модели Земли.</p><p>«Магнитное поле не является чисто защитным по двум причинам: оно оказывает давление, которое несколько раздувает атмосферу Земли, давая солнечному ветру немного больше доступа к атмосфере, — сказал он. — А когда Луна находится в фазе полнолуния на своей орбите, она проходит через область, называемую „магнитохвостом“ [magnetotail], где магнитное поле открывает канал, позволяющий выдуваемому атмосферному материалу проходить более прямой путь к Луне».</p><p>Луна проходит через магнитохвост в течение нескольких дней каждый месяц, и частицы приземляются на лунную поверхность, где они встраиваются в почву, поскольку у Луны нет атмосферы, которая могла бы их заблокировать.</p><p>Понимание истории этого взаимодействия между Луной и Землёй важно, поскольку оно предоставляет ценные химические данные о древней атмосфере Земли, которая может содержаться в лунном грунте, утверждается в исследовании. Состав атмосферы, по словам Блэкмана, связан с эволюцией жизни на разных этапах истории Земли.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr//post_images/436/238/5c2/4362385c29941f89e676688b889c8b4e.webp\" alt=\" Вид Земли над лунным горизонтом, снятый с борта «Аполлон-11»\"><figcaption> Вид Земли над лунным горизонтом, снятый с борта «Аполлон-11»</figcaption></figure><h2>Новая точка зрения</h2><p>Кентаро Терада, профессор изотопной космохимии и геохимии в японском Университете Осаки, очень рад тому, что его наблюдения были теоретически подтверждены. Терада возглавил исследование 2017 года, которое показало, как солнечный ветер и магнитное поле Земли переносили кислород на Луну, но он не участвовал в новом исследовании.</p><p>«Уже давно известно, что Земля и Луна физически сосуществовали с момента своего образования», — написал он в электронном письме. Открытие лунных метеоритов и наблюдение потоков частиц с Земли, переносимых солнечным ветром, открывают новую перспективу: «Эти два тела также влияли друг на друга химически — это своего рода обмен материалами», — пояснил он, добавив, что статья «очень интересна своим всесторонним обсуждением истории Земли».</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr//post_images/8b5/daf/d7c/8b5dafd7c851c4babe44f1a5d1cb652b.webp\" alt=\" Брекчия реголита возрастом 3,2 миллиарда лет была собрана миссией «Аполлон-15»\"><figcaption> Брекчия реголита возрастом 3,2 миллиарда лет была собрана миссией «Аполлон-15»</figcaption></figure><p>Луна может многое рассказать нам об истории и эволюции Земли, и новое исследование подтверждает эту идею, по словам Симеона Барбера, старшего научного сотрудника Открытого университета в Великобритании, который не участвовал в этой работе.</p><p>Он добавил, что исследование также является своевременным, поскольку в 2020 году китайская миссия «Чанъэ-5» получила новые образцы молодой лунной почвы, а в 2024 году миссия «Чанъэ-6» получит первые образцы с обратной стороны Луны, что даст возможность дополнительно проверить полученные результаты.</p><p>Кроме того, по словам Барбера, эта работа будет полезна для интерпретации результатов предстоящих лунных роботизированных посадочных аппаратов, способных непосредственно выявлять летучие элементы в лунном реголите.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 8584,
-        "approxBlocks": 44
-      }
+      "contentHtml": "<figure><img src=\"https://habr.com/images/px.gif#https%3A%2F%2Fmedia.cnn.com%2Fapi%2Fv1%2Fimages%2Fstellar%2Fprod%2Fjpg-1920-1080cc-mhc-900dpi.jpg%3Fc%3D16x9%26q%3Dw_1544%2Cc_fill%2Ff_avif\" alt=\" Иллюстрация того, как солнечный ветер вместе с магнитным полем Земли на протяжении миллиардов лет доставляет частицы из атмосферы нашей планеты на поверхность Луны\"><figcaption> Иллюстрация того, как солнечный ветер вместе с магнитным полем Земли на протяжении миллиардов лет доставляет частицы из атмосферы нашей планеты на поверхность Луны</figcaption></figure><p>Согласно <a href=\"https://www.nature.com/articles/s43247-025-02960-4\">новому исследованию</a>, частицы из атмосферы Земли уже миллиарды лет переносятся в космос солнечным ветром и оседают на Луне, смешиваясь с лунным грунтом.</p><p>Это исследование даёт возможные ответы на загадку, которая оставалась неразгаданной более полувека с тех пор, как миссии «Аполлон» привезли обратно образцы лунного грунта со следами таких веществ, как вода, углекислый газ, гелий и азот, вкраплённых в реголит — пылевой поверхностный слой Луны.</p><p>В ранних исследованиях предполагалось, что источником некоторых из этих веществ было Солнце. Но в 2005 году исследователи из Токийского университета предположили, что они могли попасть туда из атмосферы молодой Земли до того, как около 3,7 миллиарда лет назад у неё сформировалось магнитное поле. Авторы высказали предположение, что магнитное поле, однажды сформировавшись, остановило бы поток, удерживая частицы, затрудняя их уход в космос или делая его полностью невозможным.</p><p>Новое исследование опровергает это предположение, предполагая, что магнитное поле Земли наоборот, способствовало, а не препятствовало переносу атмосферных частиц на Луну — и этот перенос продолжается и по сей день.</p><p>«Получается, что всё это время Земля поставляла в лунный грунт летучие газы, такие как кислород и азот», — сказал Эрик Блэкман, соавтор нового исследования и профессор кафедры физики и астрономии Университета Рочестера в Нью-Йорке.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr//post_images/cc1/6e2/420/cc16e2420a1e08a70ee2a765151629f7.webp\" alt=\" Пилот лунного модуля «Аполлон-17» Харрисон Шмитт собрал образцы лунного грунта на Луне в 1972 году.\"><figcaption> Пилот лунного модуля «Аполлон-17» Харрисон Шмитт собрал образцы лунного грунта на Луне в 1972 году.</figcaption></figure><p>«Долгое время считалось, что Луна образовалась в результате столкновения астероида с прото-Землёй, в ходе которого произошло значительное смешивание летучих веществ с Земли и Луны, — добавил он в электронном письме. — Наши результаты показывают, что обмен летучими веществами продолжается даже спустя миллиарды лет».</p><p>Наличие полезных элементов, таких как кислород и водород, на поверхности Луны может представлять интерес для лунной экспедиции.</p><p>«Лунным миссиям и, в конечном итоге, лунным колониям, которые потенциально могут возникнуть когда-нибудь, придётся быть самодостаточными в плане ресурсов, чтобы их не нужно было доставлять с Земли», — сказал Блэкман.</p><p>«Например, люди изучали, как можно перерабатывать воду из лунного реголита и извлекать водород и кислород для производства топлива. Есть также исследования топлива на основе аммиака, которое будет использовать азот, переносимый на Луну солнечным ветром. Этот материал, переносимый солнечным ветром, попадает в почву и становится частью местных ресурсов, которые могут быть использованы для таких инноваций».</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr//post_images/ce0/264/cd1/ce0264cd19d75d192c6cf62dd1f1be54.webp\" alt=\" Лунные образцы, привезённые миссией «Аполлон-14», были проанализированы в карантинном центре в 1971 году.\"><figcaption> Лунные образцы, привезённые миссией «Аполлон-14», были проанализированы в карантинном центре в 1971 году.</figcaption></figure><h2>Ценная химическая запись</h2><p>Для исследования учёные использовали компьютерное моделирование и протестировали два сценария. В одном из них был сильный солнечный ветер — высокоскоростной поток частиц, исходящий от Солнца, — и отсутствие магнитного поля вокруг Земли. В другом — более слабый солнечный ветер и сильное магнитное поле вокруг Земли. Эти сценарии примерно соответствуют древнему и современному состоянию нашей планеты. Сценарий с современной Землёй оказался наиболее эффективным для переноса фрагментов земной атмосферы на Луну.</p><p>Затем исследователи сравнили результаты с данными, полученными непосредственно из анализа лунного грунта в предыдущих исследованиях.</p><p>«Мы использовали лунные образцы, привезённые на Землю миссиями „Аполлон-14“ и „Аполлон-17“, чтобы подтвердить наши результаты», — сказал Шубхонкар Параманик, аспирант факультета физики и астрономии Университета Рочестера. Параманик был ведущим автором исследования, опубликованного в декабре в журнале Nature Communications Earth &amp; Environment.</p><p>«У нас есть солнечный ветер, который попадает в земную атмосферу, и у нас есть утечка земной атмосферы. Поэтому мы попытались определить, каким будет соотношение этой смеси частиц, или отличить, какие частицы имеют солнечное происхождение, а какие — земное», — добавил он.</p><p>Магнитное поле Земли генерируется электрическими токами, возникающими в результате движения расплавленного железа и никеля в жидкой внешней части ядра планеты. Поле простирается далеко в космос, образуя щит, который отклоняет большую часть солнечного ветра, который иначе разрушал бы атмосферу.</p><p>Когда магнитное поле взаимодействует с солнечным ветром, оно создаёт магнитосферу — структуру, похожую на комету, со сжатым фронтом и длинным хвостом. Когда частицы солнечного ветра перемещаются вдоль линий магнитосферы вблизи полюсов, мы получаем полярные сияния, также известные как северное и южное сияние.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr//post_images/280/aed/8a8/280aed8a8cee3a01d89a8607e432eb03.webp\" alt=\" Северное сияние — здесь оно наблюдается к северу от Инувика, в Северо-Западных территориях Канады — возникает, когда заряженные частицы из корональных выбросов массы достигают магнитного поля Земли и взаимодействуют с газами атмосферы.\"><figcaption> Северное сияние — здесь оно наблюдается к северу от Инувика, в Северо-Западных территориях Канады — возникает, когда заряженные частицы из корональных выбросов массы достигают магнитного поля Земли и взаимодействуют с газами атмосферы.</figcaption></figure><p>Форма магнитосферы объясняет, почему солнечный ветер может отрывать некоторые частицы от атмосферы Земли и выносить их в космос. По словам Блэкмана, это также позволяет переносить на Луну большую часть атмосферы Земли, чем в немагнитной или древней модели Земли.</p><p>«Магнитное поле не является чисто защитным по двум причинам: оно оказывает давление, которое несколько раздувает атмосферу Земли, давая солнечному ветру немного больше доступа к атмосфере, — сказал он. — А когда Луна находится в фазе полнолуния на своей орбите, она проходит через область, называемую „магнитохвостом“ [magnetotail], где магнитное поле открывает канал, позволяющий выдуваемому атмосферному материалу проходить более прямой путь к Луне».</p><p>Луна проходит через магнитохвост в течение нескольких дней каждый месяц, и частицы приземляются на лунную поверхность, где они встраиваются в почву, поскольку у Луны нет атмосферы, которая могла бы их заблокировать.</p><p>Понимание истории этого взаимодействия между Луной и Землёй важно, поскольку оно предоставляет ценные химические данные о древней атмосфере Земли, которая может содержаться в лунном грунте, утверждается в исследовании. Состав атмосферы, по словам Блэкмана, связан с эволюцией жизни на разных этапах истории Земли.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr//post_images/436/238/5c2/4362385c29941f89e676688b889c8b4e.webp\" alt=\" Вид Земли над лунным горизонтом, снятый с борта «Аполлон-11»\"><figcaption> Вид Земли над лунным горизонтом, снятый с борта «Аполлон-11»</figcaption></figure><h2>Новая точка зрения</h2><p>Кентаро Терада, профессор изотопной космохимии и геохимии в японском Университете Осаки, очень рад тому, что его наблюдения были теоретически подтверждены. Терада возглавил исследование 2017 года, которое показало, как солнечный ветер и магнитное поле Земли переносили кислород на Луну, но он не участвовал в новом исследовании.</p><p>«Уже давно известно, что Земля и Луна физически сосуществовали с момента своего образования», — написал он в электронном письме. Открытие лунных метеоритов и наблюдение потоков частиц с Земли, переносимых солнечным ветром, открывают новую перспективу: «Эти два тела также влияли друг на друга химически — это своего рода обмен материалами», — пояснил он, добавив, что статья «очень интересна своим всесторонним обсуждением истории Земли».</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr//post_images/8b5/daf/d7c/8b5dafd7c851c4babe44f1a5d1cb652b.webp\" alt=\" Брекчия реголита возрастом 3,2 миллиарда лет была собрана миссией «Аполлон-15»\"><figcaption> Брекчия реголита возрастом 3,2 миллиарда лет была собрана миссией «Аполлон-15»</figcaption></figure><p>Луна может многое рассказать нам об истории и эволюции Земли, и новое исследование подтверждает эту идею, по словам Симеона Барбера, старшего научного сотрудника Открытого университета в Великобритании, который не участвовал в этой работе.</p><p>Он добавил, что исследование также является своевременным, поскольку в 2020 году китайская миссия «Чанъэ-5» получила новые образцы молодой лунной почвы, а в 2024 году миссия «Чанъэ-6» получит первые образцы с обратной стороны Луны, что даст возможность дополнительно проверить полученные результаты.</p><p>Кроме того, по словам Барбера, эта работа будет полезна для интерпретации результатов предстоящих лунных роботизированных посадочных аппаратов, способных непосредственно выявлять летучие элементы в лунном реголите.</p>"
     },
     {
       "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26346519:2026-02-04T13:18:01.000Z:ОАЭ рассчитывают, что консультации по Ук",
@@ -20832,446 +21251,6 @@
       ],
       "image": "",
       "excerpt": "Как отметил глава фонда Владимир Беспалов, организация также отдельно поддерживает молодых ученых в рамках конкурсов проектов молодых исследователей, реализуемых на предприятиях",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26340939:2026-02-04T08:04:38.000Z:Алиев и Пашинян договорились продолжить ",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Алиев и Пашинян договорились продолжить изучение возможностей расширения торговли",
-      "url": "https://tass.ru/mezhdunarodnaya-panorama/26340939",
-      "publishedAt": "2026-02-04T08:04:38.000Z",
-      "categoryIds": [
-        "world",
-        "business"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20251211/8668443.jpg",
-      "excerpt": "Президент Азербайджана и премьер-министр Армении выразили удовлетворение началом двусторонней торговли и продолжающимся экспортом нефтепродуктов",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/26340927:2026-02-04T08:04:11.000Z:На Херсонщине из-за атак ВСУ погибли чет",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "На Херсонщине из-за атак ВСУ погибли четверо мирных жителей за сутки",
-      "url": "https://tass.ru/proisshestviya/26340927",
-      "publishedAt": "2026-02-04T08:04:11.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Ранения получили 13 человек",
-      "contentHtml": ""
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/russia/1070993:2026-02-04T08:04:00.000Z:Аэропорт Саратова возобновил обслуживани",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "Аэропорт Саратова возобновил обслуживание рейсов",
-      "url": "https://www.interfax.ru/russia/1070993",
-      "publishedAt": "2026-02-04T08:04:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Для аэропорта Саратова \"Гагарин\" отменили ограничения на посадку и взлет самолетов, сообщил представитель Росавиации.",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/26340889:2026-02-04T08:03:24.000Z:В РПЦ призвали ужесточить наказание для ",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В РПЦ призвали ужесточить наказание для педофилов после дела Эпштейна",
-      "url": "https://tass.ru/obschestvo/26340889",
-      "publishedAt": "2026-02-04T08:03:24.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Председатель Патриаршей комиссии по вопросам семьи, защиты материнства и детства иерей Федор Лукьянов отметил, что \"проблема носит общемировой характер\"",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/02/04/mulla-iz-rossiyskogo-regiona-vybrosil-na-svalku-vtoruyu-zhenu/:2026-02-04T08:03:00.000Z:Мулла из российского региона убил вторую",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Мулла из российского региона убил вторую жену",
-      "url": "https://lenta.ru/news/2026/02/04/mulla-iz-rossiyskogo-regiona-vybrosil-na-svalku-vtoruyu-zhenu/",
-      "publishedAt": "2026-02-04T08:03:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/02/04/10/20260204105403834/pic_7635e6a4ad6cac631f7c77c6aecd59f7.jpg",
-      "excerpt": "Фото: Константин Кокошкин / КоммерсантъВ дагестанском селе Тарумовка мулла расправился со второй женой на почве ревности. Об этом сообщает Telegram-канал Mash.Священнослужитель во время ссоры удушил женщину, после чего закопал тело на свалк",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/mulla-iz-rossiyskogo-regiona-vybrosil-na-svalku-vtoruyu-zhenu/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/10/20260204105403834/owl_detail_240_523d38b77e48a34c689a6c36ddefe3ff.jpg\"></a><figcaption><p>Фото: Константин Кокошкин / Коммерсантъ</p></figcaption></figure><p>В дагестанском селе Тарумовка мулла расправился со второй женой на почве ревности. Об этом сообщает <a href=\"https://t.me/mash_gor/9840\">Telegram</a>-канал Mash.</p><p>Священнослужитель во время ссоры удушил женщину, после чего закопал тело на свалке. Знакомые говорят, что в семье были частые конфликты из-за беспочвенных подозрений мужа. Ревнивец постоянно избивал супругу, обвиняя ее в изменах.</p><p>У женщины остались пятеро детей, самый младший — младенец, родившийся от муллы.</p><p>Кизлярский межрайонный следственный отдел возбудил уголовное дело, сообщили «Ленте.ру» в управлении Следственного комитета России по Республике Дагестан. Подозреваемый задержан, на допросе он полностью признал свою вину и подробно рассказал об обстоятельствах и мотивах преступления.</p><p>По версии следствия, семейная ссора произошла еще 13 декабря 2025 года. Мужчина умышленно сдавил жене шею локтем, отчего она перестала дышать. После чего подозреваемый принял меры по сокрытию преступления.</p><p>Ранее в подмосковном Сергиевом Посаде местный житель <a href=\"https://lenta.ru/news/2026/01/27/poyavilis-podrobnosti-smertelnoy-semeynoy-tragedii-v-rossiyskom-gorode/\">расправился</a> с женой, ранил еще одну женщину, а потом выпал из окна 17-го этажа.</p>"
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/02/04/ugrozu-massovyh-protestov-na-ukraine-otsenili/:2026-02-04T08:03:00.000Z:Угрозу массовых протестов на Украине оце",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Угрозу массовых протестов на Украине оценили",
-      "url": "https://lenta.ru/news/2026/02/04/ugrozu-massovyh-protestov-na-ukraine-otsenili/",
-      "publishedAt": "2026-02-04T08:03:00.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/02/04/10/20260204104758510/pic_c9c3f2b121f6c458038ebce25763cae3.jpg",
-      "excerpt": "Фото: Valentyn Ogirenko / ReutersВ такой жесткой диктаторской системе с большими репрессивными инструментами, как на Украине, массовые протесты невозможны, считает политолог Александр Асафов. Своим мнением он поделился в разговоре с «Лентой",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/ugrozu-massovyh-protestov-na-ukraine-otsenili/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/10/20260204104758510/owl_detail_240_ce956627c9a8f24f42580169f40ea483.jpg\"></a><figcaption><p>Фото: Valentyn Ogirenko / Reuters</p></figcaption></figure><p>В такой жесткой диктаторской системе с большими репрессивными инструментами, как на <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украине</a>, массовые протесты невозможны, считает политолог <a href=\"https://lenta.ru/tags/persons/asafov-aleksandr/\">Александр Асафов</a>. Своим мнением он поделился в разговоре с «Лентой.ру».</p><p>Ранее сенатор от Донецкой народной республики (ДНР) <a href=\"https://lenta.ru/tags/persons/nikonorova-natalya/\">Наталья Никонорова</a> <a href=\"https://lenta.ru/news/2026/02/04/vysokoe-napryazhenie-vo-vseh-sferah-v-sovfede-zayavili-o-massovyh-protestah-na-ukraine/\">сообщила</a>, что массовые протесты периодически вспыхивают на Украине из-за серьезных проблем в основных сферах государства. В частности, по словам политика, в соседствующей с Россией стране наблюдаются большие проблемы в экономической и социальной сферах.</p><p>«Дело в том, что, как пример, врагом общества на Украине является не только офис президента, но, например, ТЦК. Но организованное сопротивление невозможно, ровно потому, что существуют спецслужбы и другие репрессивные инструменты, которые активно применяются. В том числе и посадки, в том числе и применение огнестрельного оружия и других инструментов. Поэтому такое невозможно», — прокомментировал политолог.</p><p>Ранее сообщалось, что 1 февраля киевляне <a href=\"https://lenta.ru/news/2026/02/01/avianosnaya-gruppa-ssha-otoshla-ot-irana/\">перекрыли</a> автомагистраль из-за отключений света, в частности, Харьковское шоссе. В результате акции протеста на шоссе образовалась пробка. <br></p>"
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/02/04/posadivshemu-samolet-v-pole-rossiyskomu-pilotu-predlozhili-rabotu-v-azii/:2026-02-04T08:02:56.000Z:Посадившему самолет в поле российскому п",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Посадившему самолет в поле российскому пилоту предложили работу в Азии",
-      "url": "https://lenta.ru/news/2026/02/04/posadivshemu-samolet-v-pole-rossiyskomu-pilotu-predlozhili-rabotu-v-azii/",
-      "publishedAt": "2026-02-04T08:02:56.000Z",
-      "categoryIds": [
-        "culture"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/02/04/09/20260204095700502/pic_52732a7c9bc1206d723e4e6beef6c7b2.jpg",
-      "excerpt": "Пилоту «Уральских авиалиний» Сергею Белову, аварийно посадившему самолет в пшеничном поле под Новосибирском, предложили работу в Юго-Восточной Азии. Об этом сообщает Telegram-канал Mash.Не уточняется, какая именно авиакомпания захотела сотр",
-      "contentHtml": "<p>Пилоту <a href=\"https://lenta.ru/tags/organizations/uralskie-avialinii/\">«Уральских авиалиний»</a> <a href=\"https://lenta.ru/tags/persons/belov-sergey/\">Сергею Белову</a>, аварийно посадившему самолет в пшеничном поле под <a href=\"https://lenta.ru/tags/geo/novosibirsk/\">Новосибирском</a>, предложили работу в Юго-Восточной Азии. Об этом сообщает <a href=\"https://t.me/mash/71608\">Telegram</a>-канал Mash.</p><p>Не уточняется, какая именно авиакомпания захотела сотрудничать с Беловым. Интерес представителей перевозчика вызвало умение россиянина действовать в стрессовых ситуациях. Сам пилот предпочел бы остаться на родине и работать по профессии, однако его решение будет зависеть от ситуации — в настоящее время мужчина не может летать и вынужден работать курьером.</p><p>Ранее в отношении Белова <a href=\"https://lenta.ru/news/2026/01/28/posadivshiy-samolet-v-pole-pilot-lishilsya-raboty-i-stal-kurierom-radi-pomoschi-materi-invalidu/\">возбудили</a> уголовное дело о нарушении правил безопасности движения и эксплуатации транспорта. При этом у авиакомпании и пассажиров к нему претензий нет. Кроме того, в конце января от экс-пилота потребовали компенсацию в размере 119 миллионов рублей за последствия авиапроисшествия.</p>"
-    },
-    {
-      "id": "tass:https://tass.ru/nauka/26340905:2026-02-04T08:02:28.000Z:Раскрыта роль микроокружения опухоли в р",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Раскрыта роль микроокружения опухоли в развитии рецидивов рака груди",
-      "url": "https://tass.ru/nauka/26340905",
-      "publishedAt": "2026-02-04T08:02:28.000Z",
-      "categoryIds": [
-        "science"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260204/8790045.jpg",
-      "excerpt": "Примерно в 15-20% случаев клетки рака груди не обладают тремя ключевыми рецепторами, с которыми обычно соединяются ускоряющие их рост гормоны, отмечают специалисты",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/ekonomika/26340901:2026-02-04T08:02:00.000Z:Москва заняла лидирующие позиции в более",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Москва заняла лидирующие позиции в более чем 30 рейтингах городов и регионов России",
-      "url": "https://tass.ru/ekonomika/26340901",
-      "publishedAt": "2026-02-04T08:02:00.000Z",
-      "categoryIds": [
-        "ru",
-        "business"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260204/8790105.jpg",
-      "excerpt": "Также столица лидирует в рейтинге по рынку труда, оценивающем в том числе уровень занятости населения, условия труда и емкость рынка труда, а также сохраняет минимальный уровень безработицы в стране",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/26340857:2026-02-04T08:01:56.000Z:В Приамурье арестовали мужчину по обвине",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В Приамурье арестовали мужчину по обвинению в насилии над детьми",
-      "url": "https://tass.ru/proisshestviya/26340857",
-      "publishedAt": "2026-02-04T08:01:56.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Ему грозит пожизненное лишение свободы",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/politika/26340879:2026-02-04T08:01:36.000Z:Сенатор Перминова стала первым замглавы ",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Сенатор Перминова стала первым замглавы СФ по международным делам",
-      "url": "https://tass.ru/politika/26340879",
-      "publishedAt": "2026-02-04T08:01:36.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "",
-      "excerpt": "От этой должности освободили Сергея Кисляка",
-      "contentHtml": ""
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/world/1070989:2026-02-04T08:01:00.000Z:Миран покинул пост главы совета экономич",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "Миран покинул пост главы совета экономических консультантов Белого дома",
-      "url": "https://www.interfax.ru/world/1070989",
-      "publishedAt": "2026-02-04T08:01:00.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "",
-      "excerpt": "Стивен Миран, занявший пост в совете управляющих Федеральной резервной системы США в сентябре 2025 года, покинул должность главы совета экономических консультантов Белого дома, передает Bloomberg.",
-      "contentHtml": ""
-    },
-    {
-      "id": "habr:https://habr.com/ru/companies/selectel/articles/992502/?utm_source=habrahabr&utm_medium=rss&utm_campaign=992502:2026-02-04T08:00:40.000Z:Как подружить Spring Boot и Redis для эф",
-      "sourceId": "habr",
-      "sourceName": "Хабр",
-      "title": "Как подружить Spring Boot и Redis для эффективного кэширования",
-      "url": "https://habr.com/ru/companies/selectel/articles/992502/?utm_source=habrahabr&utm_medium=rss&utm_campaign=992502",
-      "publishedAt": "2026-02-04T08:00:40.000Z",
-      "categoryIds": [
-        "tech"
-      ],
-      "image": "https://habrastorage.org/getpro/habr/upload_files/1e7/4ad/9f3/1e74ad9f318c97c8bddc80b8bc9e6a22.jpg",
-      "excerpt": "Когда проект вырастает из простых задач, каждый повторный запрос к базе данных превращается в бесполезную нагрузку на диски и процессор. И вместо того чтобы заставлять систему раз за разом искать, фильтровать и считывать одни и те же данные, логичнее отдавать их напрямую из оперативной памяти.В этой статье разберем, как эффективно внедрить слой кэширования на связке Redis + Spring Boot 3 / Java 21.Пробежимся по базовым командам Redis, реализуем cache‑aside вручную и через аннотации Spring Cache, а затем разберем два полезных паттерна для микросервисов: Fixed‑Window Rate Limiter и распределенный лок. Не пугайтесь сложных терминов, все понятным языком рассказал под катом. Читать далее",
-      "contentHtml": "<figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/ac8/93f/2d1/ac893f2d1be673a6b5ead6083df79588.jpg\"></figure><p>Когда проект вырастает из простых задач, каждый повторный запрос <a href=\"https://selectel.ru/services/cloud/managed-databases/dbaas_article_%20redisspringboot_040226_content\">к базе данных</a> превращается в бесполезную нагрузку на диски и процессор. И вместо того чтобы заставлять систему раз за разом искать, фильтровать и считывать одни и те же данные, логичнее отдавать их напрямую из оперативной памяти.</p><p>В этой статье разберем, как эффективно внедрить слой кэширования на связке Redis + Spring Boot 3 / Java 21.</p><p>Пробежимся по базовым командам Redis, реализуем cache‑aside вручную и через аннотации Spring Cache, а затем разберем два полезных паттерна для микросервисов: Fixed‑Window Rate Limiter и распределенный лок. Не пугайтесь сложных терминов, все понятным языком рассказал под катом.</p><blockquote><p>Статья подготовлена Павлом Сорокиным, автором одноименного <a href=\"https://youtube.com/@sorokinpavel?si=prm5cPLuejXVSyLl\">YouTube-канала</a>.</p></blockquote><h2>Что такое кэширование</h2><p>Договоримся о терминах.&nbsp;</p><blockquote><p>Кэш — это дополнительный «быстрый карман» данных рядом с приложением.&nbsp;</p></blockquote><p>Мы складываем туда то, что часто читают и относительно редко меняют. За счет этого уменьшаем походы в «медленные места» — диск и сеть, убирая пиковые задержки (так называемые «хвосты» p95/p99). Давайте посмотрим на порядок величин, чтобы почувствовать разницу.</p><p><strong>Интуитивная пирамида скоростей:</strong></p><ul><li><p>CPU L1/L2 — наносекунды;</p></li><li><p>RAM — десятки–сотни наносекунд;</p></li><li><p>локальный SSD — десятки–сотни микросекунд;</p></li><li><p>сеть / удаленная БД — миллисекунды и выше.</p></li></ul><p>&nbsp;<br></p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/275/489/f39/275489f393d4cde56d96ac02af203892.png\"></figure><p>Кэш фактически сдвигает большинство чтений из миллисекунд в микро‑ и наносекунды. Поэтому эффект заметен не только по среднему времени ответа, но и по «хвостам» — система становится стабильнее.</p><p>Кэш уместен для хранения часто просматриваемых данных, которые редко меняются. Например, для карточек продуктов, профилей пользователей или различных справочников. Также кэширование подходит для ресурсоемких операций: результаты «дорогих» агрегаций, объемные/сложные DTO для API и ответы внешних сервисов, которые хочется переиспользовать.</p><p>Избегать кэша следует для строго консистентных вещей вроде балансов и остатков. Он также неэффективен для очень часто меняющихся сущностей и гигантских объектов с дорогой сериализацией, которые лишь создают лишнюю нагрузку.</p><blockquote><p>Важная мысль: кэш — это всегда компромисс. Да, мы ускоряем чтения, но платим риском устаревших данных. Значит, нам нужны TTL и продуманная инвалидация, то есть удаление устаревших версий.</p></blockquote><p>Сразу расскажу о термине, который еще встретится не раз:</p><blockquote><p>Время жизни (TTL) — это срок действия ключа, необходимый для предотвращения «зависания» блокировки в случае падения инстанса. Его нужно выбирать с запасом, превышающим ожидаемую длительность обработки.</p></blockquote><h3>Паттерны кэширования</h3><p>Паттернов много, но если вы на Java/Spring и используете Redis, в 90% случаев побеждает cache‑aside.</p><p>Что реально используют с Redis:</p><ul><li><p>Cache‑aside (наш выбор). Приложение сначала читает кэш; при промахе идет в БД, получает данные и само кладет их в кэш. На запись — инвалидация. Просто, прозрачно, предсказуемо.</p></li><li><p>Read‑through. Кэш сам умеет грузить данные при промахе. В мире Spring это похоже на <code>@Cacheable</code>, где «загрузчик» — ваш метод.</p></li><li><p>Write‑through. Пишем одновременно в БД и кэш. Запись дороже и чаще встречается в встроенных кэшах платформ.</p></li><li><p>Write‑behind. Пишем в БД отложено. Рискованно для многих доменов — используйте только если четко понимаете последствия.</p></li></ul><blockquote><p>С Redis в продакшене почти всегда делают cache‑aside: вы точно знаете, где положили, где удалили и какой TTL стоит.</p></blockquote><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/baf/6e7/d31/baf6e7d3131d3bdd6989eca80f9c3b30.png\"></figure><figure><img src=\"https://habrastorage.org/getpro/habr/upload_files/e92/245/a10/e92245a10d2ae42634601522e0448681.gif\"></figure><p><strong>Создайте готовый к&nbsp;работе кластер Redis</strong>. Мы&nbsp;позаботимся об&nbsp;инфраструктуре: возьмем на&nbsp;себя настройку и обслуживание, оптимизируем производительность и&nbsp;подключим бесплатные бэкапы.</p><p><a href=\"https://selectel.ru/services/cloud/managed-databases/redis/?utm_source=habr.com&amp;utm_medium=referral&amp;utm_campaign=db_article_%20redisspringboot_040226_banner_i095_ord\"><strong>Подробнее →</strong></a> </p><h2>Быстрый старт: поднимаем Redis в Docker и щупаем команды</h2><p>Начнем с практики. Запустим локальный Redis одной командой:</p><pre><code class=\"bash\">docker run --name redis -p 6379:6379 -d redis:7-alpine</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Проверим, что работает:</p><pre><code class=\"bash\">docker exec -it redis redis-cli\nPING &nbsp; # → PONG</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Если у вас в консоли похожий вывод, то Redis запущен успешно и работает.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/cac/b8e/a95/cacb8ea95098cb5f14bb77e79414ff19.png\"></figure><h3>Основные команды Redis и что они делают</h3><p>Ключевой момент — в Redis по умолчанию все основано на парах «ключ – значение» (строки или массив байт). Для кэша просто читаем и кладем обычные строки, которые могут быть числами, каким-то текстом или JSON-объектами.&nbsp;</p><p>Этот тип данных (строки) чаще всего используют, когда нужно быстро получать или класть объект по ID без сложных вычислений. Значение сохраняется целиком — если большой объект, то может быть очень дорого помещать его полностью в кэш. В этом случае лучше помещать какую-то его часть, к которой чаще всего происходит обращение.</p><p><strong>SET key value [EX sec] [PX ms] [NX|XX]&nbsp;</strong></p><p>Это синтаксис, который записывает значение под ключом. Одновременно можно указать время жизни (EX в секундах / PX в миллисекундах), а также условия. NX — только если ключ еще не существует, XX — только если ключ уже существует.&nbsp;</p><p>Пример:&nbsp;</p><pre><code class=\"sql\"># Устанавливает ключ user:1 со значением Alice и временем истечения 600 секунд\nSET user:1 «Alice» EX 600</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Используйте команду при создании записи в кэш-хранилище с TTL, либо для реализации одноразовой операции, например, только если еще нет. Нюансы использования: Если время жизни задается отдельно через EXPIRE, между SET и EXPIRE существует микровременной промежуток, в котором ключ может жить без срока.</p><p><strong>GET key&nbsp;</strong></p><p>Это синтаксис команды, которая возвращает значение по ключу, или (nil), если ключ отсутствует. Используется для чтения из кэша и его проверки перед обращением к более медленной подсистеме.&nbsp;</p><p>Пример:</p><pre><code class=\"sql\">SET user:1 «Alice»\nGET user:1 # Вернет «Alice»</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p><strong>DEL key … / UNLINK key …&nbsp;</strong></p><p>Тот же синтаксис команд, но уже для удаления ключа или ключей из хранилища. DEL — синхронное удаление, может блокировать при больших значениях. UNLINK — неблокирующее удаление (удаляет фоновой задачей).&nbsp;</p><p>Пример:</p><pre><code class=\"sql\">DEL user:1 # удаляет ключ и связанное с ним значение</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Пригодиться, когда необходимо инвалидировать кэш-запись, например, после обновления или удаления объекта. Но, для больших коллекций предпочтителен UNLINK, чтобы не тормозить Redis.</p><p><strong>TTL key / PTTL key&nbsp;</strong></p><p>Синтаксис, с помощью которого возвращают время жизни ключа. То есть, TTL возвращает секунды, PTTL — миллисекунды. При значении -1 срок не задан, -2 — ключ отсутствует.&nbsp;</p><p>Пример:</p><pre><code class=\"sql\">TTL token:xyz # Вернет оставшееся время жизни ключа</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Используйте при диагностике либо мониторинге, чтобы узнать сколько еще живет кэш-запись, если нам это необходимо.</p><p><strong>EXPIRE key sec / PEXPIRE key ms / PERSIST key&nbsp;</strong></p><p>Команды, которые устанавливают/изменяют срок жизни ключа или делают его бессрочным (PERSIST).&nbsp;</p><p>Пример:</p><pre><code class=\"sql\">EXPIRE token:xyz 120 # устанавливает ключу срок жизни 120 секунд\nPERSIST token:xyz # убирает время жизни ключа, теперь он «вечно» хранится</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Применяют команду если данные обновились и нужно продлить срок жизни, либо убрать TTL, либо наоборот уменьшить.</p><p><strong>MSET k1 v1 k2 v2 … / MGET k1 k2 …&nbsp;</strong></p><p>Пакетные операции: MSET сразу записывает несколько ключей-значений, MGET — считывает несколько ключей. Уменьшают количество RTT (Round-Trip Time) при групповых операциях.&nbsp;</p><p>Пример:</p><pre><code class=\"sql\">MSET user:1 Bob user:2 Kate # устанавливает одной командой две пары ключ-значение\nMGET user:1 user:2 # получаем одной командой значения сразу по двум ключам — вернет «Bob» и «Kate»</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Для пакетной записи и загрузки сразу нескольких связанных объектов (например, несколько карточек продуктов).</p><p><strong>INCR/INCRBY/DECRBY&nbsp;</strong></p><p>Атомарные операции инкремента или декремента числового значения, хранящегося как строка. Если ключ отсутствует, считается как 0 перед выполнением.</p><p>Пример:</p><pre><code class=\"sql\">INCR demo:ctr:page \nINCRBY demo:ctr:page 10 \nDECRBY demo:ctr:page 2&nbsp;&nbsp;</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Реализуйте через счетчики (просмотры, лимиты). Но помните: значение должно быть числом, иначе попытка увеличения вызовет ошибку.</p><p><strong>Best practice — дизайн ключей&nbsp;</strong></p><p>Хороший дизайн ключей помогает ясности и масштабируемости. Рекомендуется использовать читаемые префиксы, версии и ID объекта.&nbsp;</p><p>Пример схемы: <code>resource:version:{id}</code> → <code>product:v1:{42}</code></p><p>Примеры дизайнов:</p><pre><code class=\"yaml\">product:v1:{id} \nrate:{client}:{window} \nlock:{key}</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p><strong>TTL и точность&nbsp;</strong></p><p>Удаление просроченных ключей в Redis происходит лениво (при обращении) и фоново — поэтому точность может варьироваться около одной секунды. Если система требует удаление через доли секунды, то стоит учитывать, что ключ может находиться в живых чуть дольше.&nbsp;</p><p>А если хочется максимально точное поведение — либо уменьшайте TTL, либо применяйте дополнительную логику по проверке того не была ли прочитана старая запись.</p><h2>Подготовка проекта — Spring Boot + Redis</h2><p>Приступим к написанию кода. Чтобы все заработало как надо, нужны три простых шага.</p><ol><li><p><strong>Подключить библиотеку-стартер для Spring + Redis&nbsp;</strong></p></li></ol><p>В вашем pom.xml или build.gradle добавьте зависимость типа:</p><p><code>implementation 'org.springframework.boot:spring-boot-starter-data-redis'</code></p><p>Это упаковка, которая сразу дает вам базовую интеграцию Spring Data Redis.</p><ol><li><p><strong>&nbsp;Настроить подключение к Redis&nbsp;</strong></p></li></ol><p>В <a href=\"http://application.properties\">application.properties</a> или application.yml пропишите настройки подключения:</p><pre><code>spring.redis.host=localhost\nspring.redis.port=6379\nspring.redis.timeout=60000\n# если пароль нужен:\nspring.redis.password=strong-password</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>После этого Spring уже будет знать, где находится Redis.</p><ol><li><p><strong>Выбрать шаблон работы с Redis: StringRedisTemplate или RedisTemplate</strong></p></li></ol><p>StringRedisTemplate — доступен сразу, ничего дополнительно настраивать не надо, он работает с ключами и значениями как с обычными строками. Прокидываем в нужный сервис просто как обычный Bean.</p><p>Если вы хотите сохранять объекты (например, сущности) с сериализацией json, тогда используйте <code>RedisTemplate&lt;String, YourType&gt;</code>, и настройте сериализаторы.</p><p><strong>Пример конфигурации:</strong></p><pre><code class=\"java\">@Configuration\npublic class RedisConfig {\n&nbsp; @Bean\n&nbsp; public RedisTemplate&lt;String, ProductEntity&gt; redisTemplate(RedisConnectionFactory cf) {\n&nbsp; &nbsp; RedisTemplate&lt;String, ProductEntity&gt; tpl = new RedisTemplate&lt;&gt;();\n&nbsp; &nbsp; tpl.setConnectionFactory(cf);\n&nbsp; &nbsp; tpl.setKeySerializer(new StringRedisSerializer());\n&nbsp; &nbsp; tpl.setValueSerializer(new GenericJackson2JsonRedisSerializer());\n&nbsp; &nbsp; return tpl;\n&nbsp; }\n}</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Таким образом, вы можете сразу в коде писать и читать объекты, а не вручную переводить их в json-строки.</p><h2>Cache-aside в Spring на практике</h2><p>Начнем с ручной версии — так понятнее, что происходит под капотом. Рассмотрим два подхода.&nbsp;</p><ul><li><p><strong>Вариант A</strong> — <code>StringRedisTemplate</code>, где значение хранится как json-строка.&nbsp;</p></li><li><p><strong>Вариант B </strong>— <code>RedisTemplate&lt;String, ProductEntity&gt;</code>, где сразу сохраняется объект.&nbsp;</p></li></ul><p>В обеих версиях реализована логика: сначала проверка кэша, если промах, то чтение из БД и запись в кэш с TTL.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/a66/d08/0ba/a66d080ba3afd0b1933b3d096bdc023c.png\"></figure><h3>Вариант A: StringRedisTemplate&nbsp;</h3><p>Мы будем вручную сохранять данные в строковом виде: ключ и значение — строки. Это подходит для сценариев, когда значение — объект, который переводится в json-строку. Но он требует, чтобы мы сами заботились о преобразовании объектов в строки (сериализация и десериализация).</p><pre><code class=\"java\">@Service\n@RequiredArgsConstructor\npublic class ProductService {\n\n&nbsp; &nbsp; private final ProductRepository repo;\n&nbsp; &nbsp; private final StringRedisTemplate redis;\n&nbsp; &nbsp; private final ObjectMapper mapper;\n\n&nbsp; &nbsp; private static final String CACHE_KEY_PREFIX = \"product:\";\n&nbsp; &nbsp; private static final Duration TTL = Duration.ofMinutes(10);\n\n&nbsp; &nbsp; public Optional&lt;ProductDto&gt; getById(long id) {\n&nbsp; &nbsp; &nbsp; &nbsp; log.info(\"Getting product: id={}\", id);\n &nbsp; &nbsp; \n&nbsp; &nbsp; &nbsp; &nbsp; String key = CACHE_KEY_PREFIX + id;\n&nbsp; &nbsp; &nbsp; &nbsp; // Проверяем, есть ли запись в кэш-хранилище\n&nbsp; &nbsp; &nbsp; &nbsp; String hit = redis.opsForValue().get(key);\n\n&nbsp; &nbsp; &nbsp; &nbsp; if (hit != null) {\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return Optional.of(Json.read(hit, ProductDto.class));\n&nbsp; &nbsp; &nbsp; &nbsp; }\n\n&nbsp; &nbsp; &nbsp; &nbsp; // Промах: загружаем из БД\n&nbsp; &nbsp; &nbsp; &nbsp; return repo.findById(id)\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .map(dto -&gt; {\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; // Записываем в кэш, сразу с TTL\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; redis.opsForValue().set(key, mapper.writeValueAsString(dto), TTL);\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return dto;\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; })\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .orElseThrow(() -&gt; new RuntimeException(\"Product not found: \" + id));\n&nbsp; &nbsp; }\n}&nbsp;</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><h3>Вариант B: RedisTemplate&nbsp;</h3><p>Сейчас рассмотрим как можно обойти необходимость ручной сериализации-десериализации (вручную переводить в json-строку и обратно): мы используем <code>RedisTemplate&lt;String, ProductEntity&gt;</code>.&nbsp;</p><pre><code class=\"java\">@Service\n@AllArgsConstructor\npublic class ManualCachingProductService {\n \n&nbsp; &nbsp; private final ProductRepository productRepository;\n&nbsp; &nbsp; private final RedisTemplate&lt;String, ProductEntity&gt; redisTemplate;\n\n&nbsp; &nbsp; private static final String CACHE_KEY_PREFIX = \"product:\";\n&nbsp; &nbsp; private static final Duration TTL = Duration.ofMinutes(10);\n\n&nbsp; &nbsp; public ProductEntity getById(Long id) {\n&nbsp; &nbsp; &nbsp; &nbsp; log.info(\"Getting product: id={}\", id);\n&nbsp; &nbsp; &nbsp; &nbsp; String cacheKey = CACHE_KEY_PREFIX + id;\n\n&nbsp; &nbsp; &nbsp; &nbsp; // Проверяем кэш\n&nbsp; &nbsp; &nbsp; &nbsp; ProductEntity cached = redisTemplate.opsForValue().get(cacheKey);\n&nbsp; &nbsp; &nbsp; &nbsp; if (cached != null) {\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; log.info(\"Product found in cache: id={}\", id);\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return cached;\n&nbsp; &nbsp; &nbsp; &nbsp; }\n\n&nbsp; &nbsp; &nbsp; &nbsp; log.info(\"Product not found in cache: id={}\", id);\n&nbsp; &nbsp; &nbsp; &nbsp; // Загружаем из базы\n&nbsp; &nbsp; &nbsp; &nbsp; ProductEntity fromDb = productRepository.findById(id)\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .orElseThrow(() -&gt; new RuntimeException(\"Product not found: \" + id));\n\n&nbsp; &nbsp; &nbsp; &nbsp; // Кэшируем объект с TTL\n&nbsp; &nbsp; &nbsp; &nbsp; redisTemplate.opsForValue().set(cacheKey, fromDb, TTL);\n&nbsp; &nbsp; &nbsp; &nbsp; log.info(\"Product cached: id={}\", id);\n&nbsp; &nbsp; &nbsp; &nbsp; return fromDb;\n&nbsp; &nbsp; }\n}</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><h2>Инвалидация кэша при изменениях&nbsp;</h2><p>Когда данные обновляются или удаляются — необходимо удалить соответствующую кэш-запись, чтобы старые данные не выдавались. В этой версии, после успешного сохранения или удаления в БД мы просто удаляем запись из кэша. Это удобно и понятно для большинства CRUD-кейсов.</p><pre><code class=\"java\">public ProductEntity update(Long id, ProductUpdateRequest updateRequest) {\n&nbsp; &nbsp; log.info(\"Updating product in DB: {}\", id);\n&nbsp; &nbsp; ProductEntity product = productRepository.findById(id)\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .orElseThrow(() -&gt; new RuntimeException(\"Product not found: \" + id));\n\n&nbsp; &nbsp; // Применяем изменения\n&nbsp; &nbsp; if (updateRequest.price() != null) {\n&nbsp; &nbsp; &nbsp; product.setPrice(updateRequest.price());\n&nbsp; &nbsp; }\n&nbsp; &nbsp; if (updateRequest.description() != null) {\n&nbsp; &nbsp; &nbsp; product.setDescription(updateRequest.description());\n&nbsp; &nbsp; }\n\n&nbsp; &nbsp; // Сохраняем в БД\n&nbsp; &nbsp; var saved = productRepository.save(product);\n\n&nbsp; &nbsp; // Удаляем кэш-запись — инвалидация\n&nbsp; &nbsp; String cacheKey = CACHE_KEY_PREFIX + id;\n&nbsp; &nbsp; redisTemplate.delete(cacheKey);\n&nbsp; &nbsp; log.info(\"Cache invalidated for updated product: id={}\", id);\n\n&nbsp; &nbsp; return saved;\n}\n\npublic void delete(Long id) {\n&nbsp; &nbsp; log.info(\"Deleting product from DB: {}\", id);\n&nbsp; &nbsp; if (!productRepository.existsById(id)) {\n&nbsp; &nbsp; &nbsp; &nbsp; throw new RuntimeException(\"Product not found: \" + id);\n&nbsp; &nbsp; }\n&nbsp; &nbsp; productRepository.deleteById(id);\n\n&nbsp; &nbsp; // Также удаляем кэш-запись\n&nbsp; &nbsp; String cacheKey = CACHE_KEY_PREFIX + id;\n&nbsp; &nbsp; redisTemplate.delete(cacheKey);\n&nbsp; &nbsp; log.info(\"Cache invalidated for deleted product: id={}\", id);\n}</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><h3>Применяем Spring Cache — аннотации и AOП</h3><p>После того как мы реализовали кэширование вручную, стоит вспомнить, что в Spring уже есть готовая инфраструктура. Она позволяет делать то же самое буквально в пару аннотаций.</p><p>Чтобы использовать встроенные аннотации: <code>@Cacheable</code>​​​​ — для кэширования результатов, и&nbsp; ​​​​<code>@CacheEvict</code> — для очистки кэша после изменений.</p><p>Необходимо создать Bean RedisCacheManager и вся рутина по управлению кэшем ляжет на Spring. Так что, когда кэш‑логика типовая, проще довериться инфраструктуре.</p><p><strong>CacheManager</strong></p><pre><code class=\"java\">@Configuration\n@EnableCaching\npublic class CacheConfig {\n&nbsp; &nbsp; @Bean\n&nbsp; &nbsp; public RedisCacheManager cacheManager(RedisConnectionFactory cf) {\n&nbsp; &nbsp; &nbsp; &nbsp; RedisCacheConfiguration cfg = RedisCacheConfiguration.defaultCacheConfig()\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; new GenericJackson2JsonRedisSerializer()))\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .entryTtl(Duration.ofMinutes(10))\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .disableCachingNullValues();\n&nbsp; &nbsp; &nbsp; &nbsp; return RedisCacheManager.builder(cf).cacheDefaults(cfg).build();\n&nbsp; &nbsp; }\n}</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p><strong>Использование аннотаций Spring</strong></p><pre><code class=\"java\">@Service\n@RequiredArgsConstructor\npublic class ProductCachedService {\n&nbsp; &nbsp; private final ProductRepository repo;\n\n&nbsp; &nbsp; @Cacheable(value = \"product:byId\", key = \"#id\", sync = true)\n&nbsp; &nbsp; public Optional&lt;ProductDto&gt; getById(long id) {\n&nbsp; &nbsp; &nbsp; &nbsp; // При первом вызове (промахе) будет выполнен метод и результат закэширован\n&nbsp; &nbsp; &nbsp; &nbsp; return repo.findById(id);\n&nbsp; &nbsp; }\n\n&nbsp; &nbsp; @CacheEvict(value = \"product:byId\", key = \"#id\")\n&nbsp; &nbsp; @Transactional\n&nbsp; &nbsp; public void update(long id, UpdateProduct cmd) {\n&nbsp; &nbsp; &nbsp; &nbsp; // Метод записи — сперва изменяем в БД, затем удаляется кэш-запись\n&nbsp; &nbsp; &nbsp; &nbsp; var p = repo.findByIdOrThrow(id);\n&nbsp; &nbsp; &nbsp; &nbsp; p.apply(cmd);\n&nbsp; &nbsp; }\n}</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><h3>Нюансы АОП</h3><p>При работе со Spring Cache нужно понимать, что все строится на базе АОП (аспектно-ориентированного программирования) через прокси, которые перехватывают вызовы методов. Это значит, что:</p><ul><li><p>если метод вызывается внутри того же класса (self-invocation), то прокси не сработает, и кэш не применится;</p></li><li><p>методы, помеченные как final или private, не могут быть перехвачены, поэтому кэширование на них не действует;</p></li><li><p>параметр <code>​​​​sync=true</code> синхронизирует вычисления только в пределах одного инстанса приложения, то есть защищает от дубликатов вызовов на конкретной ноде, но не является распределенным локом. Если у вас несколько инстансов приложения, то каждый будет работать со своим кэшем независимо.</p></li></ul><h3>Эксплуатация Redis: RDB/AOF, восстановление, репликация и кластер</h3><p><strong>Redis — in‑memory</strong>. Чтобы переживать рестарты и не терять все содержимое, в реальных системах включают персистентность.&nbsp;</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/da8/7d1/816/da87d181672861198902c8f2ac8dc57f.png\"></figure><p>Есть два базовых механизма: RDB и AOF.</p><ul><li><p>RDB (Redis Database) — периодические бинарные снимки памяти.&nbsp;Экономно по диску и CPU, быстро грузится на старте, но можно потерять изменения между снимками.</p></li><li><p>AOF (Append‑Only File) — журнал всех команд записи. Режимы <code>​​​​always/everysec/no</code>​​​​ управляют частотой fsync. На практике чаще берут <code>everysec</code>​​​​: максимум минус одна секунда команд, зато скорость адекватная. Чтобы журнал не разрастался, используется AOF‑rewrite.</p></li></ul><p>Если AOF включен и цел — он применится первым (самый полный источник истины). Если AOF нет — берем последний RDB‑снимок.</p><h2>Репликация&nbsp;</h2><p>Реплики в Redis используются для того, чтобы разгрузить мастер и обеспечить устойчивость. Мы можем направить все операции чтения на реплики, а записи — на мастер. При этом важно помнить, что репликация асинхронная, и данные на реплике могут немного отставать (replication lag).</p><p>Один мастер → одна или несколько реплик (асинхронно). Это про масштабирование чтения и про отказоустойчивость. Имейте в виду replication lag: записали на мастер — реплика может отставать.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/73c/d33/6f9/73cd336f9f44d099c6bba409cf329ccb.png\"></figure><h3>Redis Cluster — масштабирование по мастерам</h3><p>Когда данных становится много и одного мастер-инстанса уже не хватает, Redis позволяет поднять кластер. Он делит все пространство ключей на 16 384 слота и распределяет их между несколькими мастерами. Благодаря этому мы можем горизонтально масштабировать кэш, не меняя логику работы приложения.&nbsp;</p><p>Ключ живет на одном мастере, у которого есть свои копии (реплики). Если мастер падает, то есть выходит из строя, запускается процесс автофейловера (auto-failover).&nbsp;</p><blockquote><p>Auto-failover — это автоматическое переключение на одну из реплик, чтобы система продолжала работу без стороннего вмешательства.&nbsp;</p></blockquote><p>Для операций над несколькими ключами используйте хэштеги ​​​​<code>{}</code>. Они заставляют Redis сохранять разные ключи (например, user:{42}:cart и user:{42}:promo) в один и тот же слот. Это необходимо, так как Redis Cluster умеет обрабатывать транзакции только внутри одного слота.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/066/a3f/95a/066a3f95a0ed4e8e4361fae01c3f916d.png\"></figure><h2>Паттерн: Fixed‑Window Rate Limiter&nbsp;</h2><p>Паттерн нужен, чтобы не позволить одному шумному клиенту «съесть» всю пропускную способность и чтобы сервис оставался стабильным при всплесках нагрузки. Это такой «предохранитель» перед БД.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/fea/484/c4e/fea484c4e023b1381dddaec56d60cdb7.png\"></figure><p><strong>Принцип работы</strong></p><p>Время делим на окна фиксированной длины (например, 60 секунд). Для каждого клиента считаем, сколько запросов он сделал в текущем окне. Превысил лимит — отвечаем ​​​​<code>429 Too Many Requests​​​​</code> и, по желанию, добавляем ​​​​<code>Retry‑After</code>.</p><p><strong>Ключевая идея в Redis. </strong>Один ключ на клиента и текущее окно — rate:<code>rate:{client}:{bucket}​​​​</code>; инкрементим <code>INCR​​​​</code>, при первом хите ставим <code>EXPIRE​​​​</code> на длину окна.</p><p>Псевдокод:</p><pre><code class=\"markdown\">// Параметры:\n// window = 60 сек (длина временного окна)\n// client = идентификатор клиента (например, IP или API-ключ)\n// limit = максимальное число запросов в окне\n\nbucket &nbsp; = now() / window // вычисляем номер окна\nkey&nbsp; &nbsp; &nbsp; = \"rate:\" + client + \":\" + bucket\nn&nbsp; &nbsp; &nbsp; &nbsp; = INCR key&nbsp; // атомарно увеличиваем счетчик\nif n == 1 then\n&nbsp; &nbsp; EXPIRE key window&nbsp; // если первый запрос в этом окне — ставим срок жизни\nend\nif n &lt;= limit then\n&nbsp; &nbsp; allow &nbsp; &nbsp; &nbsp; // разрешаем запрос\nelse\n&nbsp; &nbsp; respond 429 + Retry-After&nbsp; // превышен лимит\nend</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p><strong>Вот так это работает:</strong></p><ol><li><p>bucket определяет текущий временной интервал (например, 0–59 с, 60–119 с и т. д.);</p></li><li><p>мы формируем Redis-ключ, уникальный для клиента и окна: «rate:client123:456»;</p></li><li><p>INCR увеличивает счетчик запросов в этом окне;</p></li><li><p>если счетчик стал 1 — значит это первый запрос в этом окне → ставим EXPIRE, чтобы ключ автоматически удалился по истечении окна;</p></li><li><p>если счетчик ≤ limit — все ок, иначе отвечаем ошибкой 429 и заголовком Retry-After (опционально).</p></li></ol><p>Его используют, чтобы ограничить частоту запросов клиента и защитить сервис от всплесков. Но помните, на границе окна возможен скачок (например, запрос в конце окна N и сразу в начале нового окна). При этом перегрузка возможна. Если это нежелательно для вашей системы, то рассмотрите другие подходы (sliding-window, token-bucket).</p><figure><img src=\"https://habrastorage.org/getpro/habr/upload_files/064/e95/0dd/064e950dd739abadf6110cc0c86d59d3.gif\" alt=\"\"></figure><p><strong>Облачная инфраструктура для ваших проектов</strong></p><p>Виртуальные машины в&nbsp;Москве, Санкт-Петербурге и&nbsp;Новосибирске с&nbsp;оплатой по&nbsp;потреблению.</p><p><a href=\"https://selectel.ru/services/cloud/servers/?utm_source=habr.com&amp;utm_medium=referral&amp;utm_campaign=cloud_article_%20redisspringboot_040226_banner_i001_ord\"><strong>Подробнее →</strong></a></p><h2>Паттерн: распределенный лок&nbsp;</h2><p>Используется, когда несколько экземпляров сервиса могут попытаться работать с одним ресурсом одновременно, и нужно гарантировать, что только один из них это делает. Типичные кейсы: генерация отчета, пересчет каких-то общих значений, синхронизация для доступа к единому ресурсу.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/fea/9be/5ca/fea9be5caa8902d42604ec0ac1343854.png\"></figure><p>Все конкуренты пытаются создать ключ <code>lock:{key}</code> с опциями NX (создать, только если не существует) и PX ttl (время жизни). Кто успел — тот «лидер». Остальные ждут, ретраят или уходят. Этот подход, вместе с использованием Lua‑скриптов для безопасной разблокировки — стандартное решение.</p><p>Снимать лок должен только владелец, проверив свой token — небольшой Lua‑скрипт делает это атомарно.</p><p>Псевдокод:</p><pre><code class=\"markdown\">// tryLock: пытаемся захватить лок\ntoken = uuid() // генерируем уникальный токен для владельца\n\nok = SET(\"lock:\" + key, token, NX, PX, ttl) // захват блокировки\n\nif ok == true then\n&nbsp; &nbsp; return token // владение локом подтверждено\nelse\n&nbsp; &nbsp; return null // не удалось — кто-то уже владеет\nend\n\n\n// unlock: освобождаем лок, только если мы его владелец (Lua скрипт)\nEVAL \"\"\"\n&nbsp; &nbsp; if redis.call('GET', KEYS[1]) == ARGV[1] then\n&nbsp; &nbsp; &nbsp; &nbsp; return redis.call('DEL', KEYS[1])\n&nbsp; &nbsp; else\n&nbsp; &nbsp; &nbsp; &nbsp; return 0\n&nbsp; &nbsp; end\n\"\"\" KEYS=[\"lock:\" + key] ARGV=[token]</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Для реализации этого в приложении на Spring Boot можно использовать стандартный RedisTemplate. Он позволяет легко загружать и выполнять такие скрипты.</p><p><strong>Объяснение принципа работы распределенной блокировки</strong></p><p>В основе механизма лежит работа с уникальным ключом, который должен быть обработан только одним инстансом приложения (например, product:42:update). Процесс начинается с попытки захвата (tryLock): инстанс пытается создать этот ключ&nbsp; в Redis, используя флаг NX и заданное время жизни.</p><p>При успешном захвате Redis сохраняет уникальный token в качестве значения ключа, после чего инстанс приступает к работе с ресурсом. Завершается процесс стадией освобождения: через Lua-скрипт система проверяет, совпадает ли текущий токен в Redis с тем, что был получен при захвате.&nbsp;</p><p>Если они идентичны, ключ удаляется. Такая атомарная проверка необходима, чтобы инстанс случайно не удалил чужой лок, если его собственный уже истек по TTL.&nbsp;</p><h2>Заключение</h2><p>Этого набора инструментов достаточно, чтобы уверенно внедрять Redis в свои проекты. А еще анализировать, где он нужен и принесет пользу, а где лучше оставить данные в реляционной БД, чтобы не усложнять архитектуру.</p><p>Если у вас есть дополнения по работе с Redis и Spring Cache или вы хотите поделиться своим опытом— добро пожаловать в комментарии ниже.&nbsp;</p>"
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/26340645:2026-02-04T08:00:01.000Z:В \"Одноклассниках\" пройдет месяц осведом",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В \"Одноклассниках\" пройдет месяц осведомленности об онкологических заболеваниях",
-      "url": "https://tass.ru/obschestvo/26340645",
-      "publishedAt": "2026-02-04T08:00:01.000Z",
-      "categoryIds": [
-        "ru",
-        "health"
-      ],
-      "image": "",
-      "excerpt": "Специальный проект стартует 4 февраля и продлится до конца месяца",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/interviews/26334425:2026-02-04T08:00:00.000Z:Посол в Бенине и Того: у РФ и Африки ест",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Посол в Бенине и Того: у РФ и Африки есть четкие планы",
-      "url": "https://tass.ru/interviews/26334425",
-      "publishedAt": "2026-02-04T08:00:00.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260203/8788929.jpg",
-      "excerpt": "Посол России в Бенине и Того Игорь Евдокимов в интервью ТАСС охарактеризовал главные сферы партнерства Москвы с двумя африканскими странами, назвал приоритеты России в Западной Африке и рассказал о подготовке третьего саммита Россия — Африка",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/02/04/tsb-zayavil-o-trevozhnoy-situatsii-s-tsenami-v-rossii/:2026-02-04T07:59:00.000Z:ЦБ заявил о тревожной ситуации с ценами ",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "ЦБ заявил о тревожной ситуации с ценами в России",
-      "url": "https://lenta.ru/news/2026/02/04/tsb-zayavil-o-trevozhnoy-situatsii-s-tsenami-v-rossii/",
-      "publishedAt": "2026-02-04T07:59:00.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/02/04/10/20260204103905206/pic_c21c29d567d75225bb3bba5170d4f212.jpg",
-      "excerpt": "Фото: Кирилл Пономарев / «Лента.ру»Повышение налога на добавленную стоимость (НДС) с 20 до 22 процентов в начале 2026 года привело к росту потребительских цен в России. Об этом говорится в бюллетене Центробанка (ЦБ) «О чем говорят тренды».Э",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/tsb-zayavil-o-trevozhnoy-situatsii-s-tsenami-v-rossii/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/10/20260204103905206/owl_detail_240_803387139a8626dc5d6bb7700c745f8f.jpg\"></a><figcaption><p>Фото: Кирилл Пономарев / «Лента.ру»</p></figcaption></figure><p>Повышение налога на добавленную стоимость (НДС) с 20 до 22 процентов в начале 2026 года привело к росту потребительских цен в России. Об этом <a href=\"https://www.cbr.ru/press/event/?id=28277\">говорится</a> в бюллетене <a href=\"https://lenta.ru/tags/organizations/bank-rossii/\">Центробанка</a> (ЦБ) «О чем говорят тренды».</p><p>Это обстоятельство является тревожным сигналом, так как может привести к сохранению инфляционных ожиданий россиян и бизнеса на повышенном уровне, пояснили в регуляторе. Эффект от увеличения ставки НДС рискует закрепиться в среднесрочной перспективе.</p><p>Подобное чревато замедлением дальнейшего снижения инфляции на внутреннем рынке, отметили в ЦБ. Реакция цен на повышение налогов и тарифов в начале года в конечном счете может удлинить инерционный инфляционный «хвост» от январского роста стоимости товаров и услуг, констатировали в ЦБ.</p><p>На этом фоне руководство регулятора будет сохранять жесткую денежно-кредитную политику в обозримом будущем. Это необходимо для приближения инфляции к целевому уровню в 4 процента годовых. «Устойчивое инфляционное давление и инфляционные ожидания остаются повышенными», — заключили в Банке России.</p><p>Темпы роста потребительских цен на внутреннем рынке начали резко ускоряться в начале января. За новогодние праздники инфляция в России <a href=\"https://lenta.ru/news/2026/01/14/chto-tvoritsya/\">разогналась</a> до 1,26 процента, а к 19 января прирост <a href=\"https://lenta.ru/news/2026/01/21/infl/\">составил</a> 1,72 процента, превысив на треть план на весь год.</p><p>На динамику повлияло в том числе повышение тарифов логистическими компаниями, <a href=\"https://lenta.ru/news/2026/01/20/tcena/\">отмечал</a> глава <a href=\"https://lenta.ru/tags/organizations/torgovo-promyshlennaya-palata/\">Торгово-промышленной палаты</a> (ТПП) <a href=\"https://lenta.ru/tags/persons/katyrin-sergey/\">Сергей Катырин</a>. Другими причинами разгона цен в России эксперты назвали удорожание бензина и обслуживания техники. На этом фоне аналитики заговорили о возможных злоупотреблениях со стороны бизнеса.</p>"
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/02/04/v-rossii-vyskazalis-o-peregovorah-na-fone-zayavleniy-o-razmeschenii-voysk-nato-na-ukraine/:2026-02-04T07:59:00.000Z:В России высказались о переговорах на фо",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "В России высказались о переговорах на фоне заявлений о размещении войск НАТО на Украине",
-      "url": "https://lenta.ru/news/2026/02/04/v-rossii-vyskazalis-o-peregovorah-na-fone-zayavleniy-o-razmeschenii-voysk-nato-na-ukraine/",
-      "publishedAt": "2026-02-04T07:59:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/02/04/11/20260204110244154/pic_1fa783ddedd2c8b5267a874252ddad3b.jpg",
-      "excerpt": "Фото: Yves Herman / ReutersНа фоне заявлений об отправке войск НАТО на Украину переговоры по урегулированию конфликта, которые состоятся 4 февраля в Абу-Даби, будут крайне тяжелыми. Такое мнение высказал в беседе с «Газетой.Ru» член Совета ",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/v-rossii-vyskazalis-o-peregovorah-na-fone-zayavleniy-o-razmeschenii-voysk-nato-na-ukraine/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/11/20260204110244154/owl_detail_240_a5b47c65f28fcdda067b47ca98012bcd.jpg\"></a><figcaption><p>Фото: Yves Herman / Reuters</p></figcaption></figure><p>На фоне заявлений об отправке войск <a href=\"https://lenta.ru/tags/organizations/nato/\">НАТО</a> на <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украину</a> переговоры по урегулированию конфликта, которые состоятся 4 февраля в <a href=\"https://lenta.ru/tags/geo/abu-dabi/\">Абу-Даби</a>, будут крайне тяжелыми. Такое мнение высказал в <a href=\"https://www.gazeta.ru/politics/news/2026/02/04/27774679.shtml?utm_auth=false\">беседе</a> с «Газетой.Ru» член <a href=\"https://lenta.ru/tags/organizations/sovet-federatsii/\">Совета Федерации</a>, председатель международного комитета <a href=\"https://lenta.ru/tags/persons/karasin-grigoriy/\">Григорий Карасин</a>.</p><p>«Впереди тяжелая работа группы российских участников переговоров не только в силу выступлений [президента Украины Владимира] Зеленского, в основном связанных с позицией, заявленной Западом, насчет размещения неких вооруженных сил натовских на территории Украины», — обозначил Карасин.</p><p>По его словам, быстрых результатов от предстоящих переговоров ожидать не следует.</p><p>Ранее в Кремле <a href=\"https://lenta.ru/news/2026/02/03/v-kremle-raskryli-sostav-delegatsii-rossii-na-novyh-peregovorah-s-ukrainoy/\">раскрыли</a> состав делегации России на новых переговорах с Украиной. Ее возглавит начальник Главного управления <a href=\"https://lenta.ru/tags/organizations/genshtab/\">Генерального штаба</a> адмирал <a href=\"https://lenta.ru/tags/persons/kostyukov-igor/\">Игорь Костюков</a>.</p>"
-    },
-    {
-      "id": "tass:https://tass.ru/ekonomika/26340845:2026-02-04T07:58:46.000Z:ОАК считает, что Ил-114 тоже должны лока",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "ОАК считает, что Ил-114 тоже должны локализовать в Индии",
-      "url": "https://tass.ru/ekonomika/26340845",
-      "publishedAt": "2026-02-04T07:58:46.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260204/8790193.jpg",
-      "excerpt": "По самолету подписали предварительные поставочные контракты, отметил глава Объединенной авиастроительной корпорации Вадим Бадеха",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/ekonomika/26340839:2026-02-04T07:58:21.000Z:ОАК планирует нарастить выпуск самолетов",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "ОАК планирует нарастить выпуск самолетов на 25-30% в 2026 году",
-      "url": "https://tass.ru/ekonomika/26340839",
-      "publishedAt": "2026-02-04T07:58:21.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260204/8790167.jpg",
-      "excerpt": "Глава корпорации Вадим Бадеха рассказал об этом в кулуарах выставки NAIS",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/02/04/povsednevnuyu-pischevuyu-privychku-svyazali-so-snizheniem-riska-vozrastnyh-narusheniy-pamyati/:2026-02-04T07:58:00.000Z:Повседневную пищевую привычку связали со",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Повседневную пищевую привычку связали со снижением риска возрастных нарушений памяти",
-      "url": "https://lenta.ru/news/2026/02/04/povsednevnuyu-pischevuyu-privychku-svyazali-so-snizheniem-riska-vozrastnyh-narusheniy-pamyati/",
-      "publishedAt": "2026-02-04T07:58:00.000Z",
-      "categoryIds": [
-        "tech",
-        "science"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/02/04/10/20260204101937454/pic_45c2a0403b3c253274614683cd424f4e.jpg",
-      "excerpt": "Фото: Otavio Pires / Shutterstock / FotodomЛюди старше 50 лет, которые регулярно едят овощи, реже сталкиваются с ранними когнитивными нарушениями — ухудшением памяти, внимания и мышления без признаков деменции. К такому выводу пришли бразил",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/povsednevnuyu-pischevuyu-privychku-svyazali-so-snizheniem-riska-vozrastnyh-narusheniy-pamyati/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/10/20260204101937454/owl_detail_240_e38922dd56f01199cd16c4bfe7531079.jpg\"></a><figcaption><p>Фото: Otavio Pires / Shutterstock / Fotodom</p></figcaption></figure><p>Люди старше 50 лет, которые регулярно едят овощи, реже сталкиваются с ранними когнитивными нарушениями — ухудшением памяти, внимания и мышления без признаков деменции. К такому выводу пришли бразильские исследователи, проанализировав данные Бразильского лонгитюдного исследования старения. Результаты <a>опубликованы</a> в журнале Nutrients.</p><p>В исследование вошли данные 2865 участников. Ученые оценивали, как часто люди употребляют фрукты и овощи, а также результаты когнитивных тестов, проверяющих память, речевые навыки и ориентацию во времени. Регулярным считалось ежедневное употребление этих продуктов в течение всей недели.</p><p>Анализ показал, что у людей, которые ежедневно ели овощи, нарушения памяти и мышления встречались значительно реже. Похожий защитный эффект наблюдался и у тех, кто регулярно сочетал в рационе фрукты и овощи. При этом связь между употреблением только фруктов и лучшими когнитивными показателями обнаружена не была.</p><p>Авторы отмечают, что работа носит наблюдательный характер и не позволяет говорить о прямой причинно-следственной связи. Тем не менее результаты дополняют данные о возможной роли питания в поддержании когнитивного здоровья и подчеркивают необходимость дальнейших исследований.</p><p>Ранее ученые <a href=\"https://lenta.ru/news/2026/01/27/naydeno-prirodnoe-sredstvo-dlya-zaschity-kishechnika-ot-vospaleniya/\">выяснили</a>, что кожура груши играет важную роль в защите кишечника от воспаления.</p>"
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/26340811:2026-02-04T07:57:26.000Z:На Запорожье открыли ПВР для жителей осв",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "На Запорожье открыли ПВР для жителей освобожденных населенных пунктов ДНР",
-      "url": "https://tass.ru/obschestvo/26340811",
-      "publishedAt": "2026-02-04T07:57:26.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Уже приняты 50 человек из Андреевки, Красноармейска и Димитрова",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/nauka/26340639:2026-02-04T07:57:20.000Z:В Тольятти начали серийный выпуск магние",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В Тольятти начали серийный выпуск магниевых имплантов по контрактам",
-      "url": "https://tass.ru/nauka/26340639",
-      "publishedAt": "2026-02-04T07:57:20.000Z",
-      "categoryIds": [
-        "business",
-        "science",
-        "health"
-      ],
-      "image": "",
-      "excerpt": "Речь идет о 60 видах медицинских спиц и винтов",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/ekonomika/26340825:2026-02-04T07:57:16.000Z:ОАК планирует подписать контракт с \"Аэро",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "ОАК планирует подписать контракт с \"Аэрофлотом\" на 90 самолетов МС-21",
-      "url": "https://tass.ru/ekonomika/26340825",
-      "publishedAt": "2026-02-04T07:57:16.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "Договор должен быть подписан в первом квартале 2026 года",
-      "contentHtml": ""
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/business/1070988:2026-02-04T07:57:00.000Z:В Сбербанке назвали непростой ситуацию с",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "В Сбербанке назвали непростой ситуацию с обслуживанием долга в ряде отраслей",
-      "url": "https://www.interfax.ru/business/1070988",
-      "publishedAt": "2026-02-04T07:57:00.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "Это коммерческая недвижимость, угольная отрасль, офлайн-торговля и торговля машинами",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/26340693:2026-02-04T07:56:56.000Z:Осужденный хотел убить сотрудников колон",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Осужденный хотел убить сотрудников колонии. На Кубани предотвратили теракт",
-      "url": "https://tass.ru/proisshestviya/26340693",
-      "publishedAt": "2026-02-04T07:56:56.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260204/8790033.jpg",
-      "excerpt": "Мужчину задержали, никто не пострадал",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/02/04/v-rossii-rezko-upali-prodazhi-novyh-avtomobiley/:2026-02-04T07:56:12.000Z:В России резко упали продажи новых автом",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "В России резко упали продажи новых автомобилей",
-      "url": "https://lenta.ru/news/2026/02/04/v-rossii-rezko-upali-prodazhi-novyh-avtomobiley/",
-      "publishedAt": "2026-02-04T07:56:12.000Z",
-      "categoryIds": [
-        "tech"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/02/04/11/20260204110016057/pic_f1cb22eabf7518d6cb22343108d64614.jpg",
-      "excerpt": "В январе 2026 года в России было реализовано 80,6 тысячи новых легковых автомобилей, что меньше показателя годичной давности на 9,5 процента, сообщает «Автостат». По словам аналитиков, спад реализации произошел впервые за последние три меся",
-      "contentHtml": "<p>В январе 2026 года в России было реализовано 80,6 тысячи новых легковых автомобилей, что меньше показателя годичной давности на 9,5 процента, сообщает <a href=\"https://www.autostat.ru/news/61732/\">«Автостат»</a>. По словам аналитиков, спад реализации произошел впервые за последние три месяца. Они уточнили, что в последние два месяца минувшего года был зафиксирован подъем продаж.</p><p>Почти 60 процентов всех машин, проданных в январе, пришлось на пять брендов. Лидером снова стала российская марка Lada, которая реализовала 19,6 тысячи единиц техники. На ее долю пришлась примерно четверть всех покупок новых автомобилей в стране. Вслед за ней расположились Haval (10,7 тысячи единиц), Tenet (8,9 тысячи), Geely (4,7 тысячи) и Belgee (2,9 тысячи).</p><p>В десятку наиболее продаваемых марок также вошли Changan, Toyota, Jetour, Mazda и Solaris. Их результаты находятся в диапазоне от 1,5 до 2,4 тысячи автомобилей.</p><p>В модельном рейтинге место лидера традиционно заняла Lada Granta (7,6 тысячи). Самой популярной среди россиян иномаркой остался кроссовер Haval Jolion (4,4 тысячи).</p><p>Ранее российские владельцы популярного на вторичном рынке автомобиля Skoda Octavia второго поколения <a href=\"https://lenta.ru/news/2026/02/04/nazvany-glavnye-problemy-populyarnoy-modeli-skoda/\">перечислили</a> его многочисленные недостатки.</p>"
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/02/04/na-ukraine-ob-yasnili-smenu-tona-rossiyskoy-delegatsii-na-peregovorah/:2026-02-04T07:56:00.000Z:На Украине объяснили смену тона российск",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "На Украине объяснили смену тона российской делегации на переговорах",
-      "url": "https://lenta.ru/news/2026/02/04/na-ukraine-ob-yasnili-smenu-tona-rossiyskoy-delegatsii-na-peregovorah/",
-      "publishedAt": "2026-02-04T07:56:00.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/02/04/10/20260204105638850/pic_3f4fbac247bace28cfb9bb65fc92385e.jpg",
-      "excerpt": "Фото: Stephanie Lecocq / ReutersРоссийская делегация сменила тон на переговорах с Украиной и США в Абу-Даби, так как Москва намерена затормозить милитаризацию Европейского Союза. Об этом сообщило издание Politico со ссылкой на неназванного ",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/04/na-ukraine-ob-yasnili-smenu-tona-rossiyskoy-delegatsii-na-peregovorah/\"><img src=\"https://icdn.lenta.ru/images/2026/02/04/10/20260204105638850/owl_detail_240_f05b5d82063e636d0af4686ca107c0c6.jpg\"></a><figcaption><p>Фото: Stephanie Lecocq / Reuters</p></figcaption></figure><p>Российская делегация сменила тон на переговорах с <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украиной</a> и <a href=\"https://lenta.ru/tags/geo/ssha/\">США</a> в <a href=\"https://lenta.ru/tags/geo/abu-dabi/\">Абу-Даби</a>, так как <a href=\"https://lenta.ru/tags/geo/moskva/\">Москва</a> намерена затормозить милитаризацию <a href=\"https://lenta.ru/tags/organizations/es/\">Европейского Союза</a>. Об этом <a href=\"https://www.politico.eu/article/is-vladimir-putin-ready-for-peace-abu-dhabi-talks-will-tell/\">сообщило</a> издание Politico со ссылкой на неназванного бывшего украинского чиновника, с которым до сих пор консультируется офис президента страны.</p><p>По его словам, руководству европейских стран будет значительно сложнее объяснить своим избирателям необходимость увеличения оборонных расходов в случае окончания конфликта, на что делает ставку Москва, меняя подход переговорной группы.</p><p>«Мирное соглашение, конец войны, может сильно ослабить этот импульс — европейским лидерам будет гораздо сложнее убедить своих избирателей пойти на жертвы, необходимые для перехода к более высоким оборонным расходам», — сказал он.</p><p>23 и 24 января в столице Объединенных Арабских Эмиратов (<a href=\"https://lenta.ru/tags/geo/oae/\">ОАЭ</a>) — Абу-Даби — состоялись трехсторонние переговоры по урегулированию конфликта на Украине с участием представителей России, США и Украины. Встреча <a href=\"https://lenta.ru/news/2026/01/23/raskryty-detali-peregovorov-po-ukraine-v-oae/\">проходила</a> в закрытом режиме.</p><p>Новый раунд переговоров начнется 4 февраля. Состав российской делегации <a href=\"https://lenta.ru/news/2026/02/03/v-kremle-raskryli-sostav-delegatsii-rossii-na-novyh-peregovorah-s-ukrainoy/\">не изменился</a>, ее также возглавит начальник Главного управления <a href=\"https://lenta.ru/tags/organizations/genshtab/\">Генерального штаба</a> адмирал <a href=\"https://lenta.ru/tags/persons/kostyukov-igor/\">Игорь Костюков</a>.</p>"
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/world/1070985:2026-02-04T07:56:00.000Z:Самолет Уиткоффа прибыл в Абу-Даби, где ",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "Самолет Уиткоффа прибыл в Абу-Даби, где пройдут переговоры по Украине",
-      "url": "https://www.interfax.ru/world/1070985",
-      "publishedAt": "2026-02-04T07:56:00.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "",
-      "excerpt": "Самолет, на борту которого, предположительно, находится спецпосланник президента США Стив Уиткофф, прибыл в Абу-Даби, где ожидается очередной раунд переговоров по украинскому урегулированию.",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/26340817:2026-02-04T07:55:49.000Z:В аэропорту Саратова сняли ограничения",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В аэропорту Саратова сняли ограничения",
-      "url": "https://tass.ru/obschestvo/26340817",
-      "publishedAt": "2026-02-04T07:55:49.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Их вводили для обеспечения безопасности полетов",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/politika/26340797:2026-02-04T07:54:37.000Z:Дмитриев: мир устал от лжи либеральных э",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Дмитриев: мир устал от лжи либеральных элит",
-      "url": "https://tass.ru/politika/26340797",
-      "publishedAt": "2026-02-04T07:54:37.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260204/8789995.jpg",
-      "excerpt": "Попытки сохранить влияние с помощью пропаганды больше не дают результата, заявил спецпредставитель президента России по инвестиционно-экономическому сотрудничеству с зарубежными странами",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/ekonomika/26340749:2026-02-04T07:54:36.000Z:СФ уточнил условия налоговых льгот резид",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "СФ уточнил условия налоговых льгот резидентам территорий преференциальных режимов",
-      "url": "https://tass.ru/ekonomika/26340749",
-      "publishedAt": "2026-02-04T07:54:36.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "Компании получат льготы в случае, если за три предыдущих года они не привлекались более двух раз к административной ответственности за несвоевременное представление бухгалтерской отчетности",
       "contentHtml": ""
     }
   ]
