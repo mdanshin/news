@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-24T22:28:59.140Z",
+  "generatedAt": "2026-02-24T23:00:41.716Z",
   "items": [
     {
       "id": "lenta:https://lenta.ru/news/2026/02/22/proschenoe-voskresenie/:2026-03-01T21:05:00.000Z:Прощеное воскресенье в 2026 году: истори",
@@ -13,6 +13,168 @@
       ],
       "image": "https://icdn.lenta.ru/images/2025/02/27/11/20250227112554475/pic_2bf7d2db2a2fed511f22b1ca557c61bc.jpg",
       "excerpt": "Сегодня, 22 февраля, в церковном календаре — Прощеное воскресенье. Это праздник на стыке языческих и православных традиций, он завершает Масленичную неделю и предваряет Великий пост — самый строгий период ограничений перед Пасхой. «Лента.ру» рассказывает, откуда взялся этот праздник, какие существуют традиции.",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26542489:2026-02-24T22:52:16.000Z:В Испании госпитализировали 89-летнего к",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "В Испании госпитализировали 89-летнего короля Норвегии",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/26542489",
+      "publishedAt": "2026-02-24T22:52:16.000Z",
+      "categoryIds": [
+        "world",
+        "health"
+      ],
+      "image": "",
+      "excerpt": "Харальд V лечится от инфекции и обезвоживания",
+      "contentHtml": ""
+    },
+    {
+      "id": "habr:https://habr.com/ru/articles/982498/?utm_source=habrahabr&utm_medium=rss&utm_campaign=982498:2026-02-24T22:48:42.000Z:B4 — обход DPI с веб-интерфейсом",
+      "sourceId": "habr",
+      "sourceName": "Хабр",
+      "title": "B4 — обход DPI с веб-интерфейсом",
+      "url": "https://habr.com/ru/articles/982498/?utm_source=habrahabr&utm_medium=rss&utm_campaign=982498",
+      "publishedAt": "2026-02-24T22:48:42.000Z",
+      "categoryIds": [
+        "tech"
+      ],
+      "image": "https://habrastorage.org/getpro/habr/upload_files/b80/b8c/03a/b80b8c03a257e2db3ab230ec24c76ceb.png",
+      "excerpt": "B4 - инструмент обхода DPI на Go с веб-интерфейсом.Хотелось сделать инструмент, который можно поставить на роутер или любой другой linux-девайс, открыть в браузере и получить работающий результат без возни с десятками аргументов командной строки. Читать далее",
+      "contentHtml": "<p>B4 - <a href=\"https://github.com/DanielLavrushin/b4\">инструмент обхода разноуровневых DPI</a> на Go с удобной веб-мордой. Работает на уровне ядра Linux через NFQUEUE - перехватывает сетевые пакеты и применяет к ним техники обхода.</p><p>Написан с нуля на Go - хех, не очередной форк zapret или других существующих решений. Zapret - мощный CLI-инструмент с тонкой ручной настройкой. B4 - другой подход: веб-интерфейс, полная интеграция <a href=\"https://github.com/v2fly/domain-list-community\">v2ray geodat-файлов</a> и автоматический подбор стратегий и применение изменений на лету без перезапуска.</p><p>Мне хотелось сделать инструмент, который можно поставить на роутер или любой другой Linux-девайс, открыть в браузере и получить работающий результат - без возни с десятками аргументов командной строки.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/b80/b8c/03a/b80b8c03a257e2db3ab230ec24c76ceb.png\" alt=\"общий интерфейс конфигурационных сетов\"><figcaption>общий интерфейс конфигурационных сетов</figcaption></figure><p>B4 устанавливается одной командой, настраивается через веб-интерфейс и умеет автоматически подбирать рабочую стратегию обхода для конкретной сети. Поддерживает geodata-базы (v2ray/xray) - вместо ручного добавления сотен доменов/ip/asn можно подключить категорию youtube или facebook и получить актуальный список, который обновляется вместе с базой. Изменения применяются на лету - без перезапуска сервиса и разрыва текущих соединений.</p><p>Работает на Linux-системах, серверах и роутерах (OpenWRT, Keenetic, Entware).</p><h2>Техническая спецификация</h2><ul><li><p><strong>Ядро:</strong>&nbsp;Go, перехват пакетов через netfilter queue (NFQUEUE), отправка через raw sockets</p></li><li><p><strong>Geodata:</strong>&nbsp;интеграция с geosite/geoip базами <a href=\"https://github.com/v2fly/domain-list-community\">(v2ray/xray</a>) - таргетирование по категориям доменов и IP-диапазонам, есть поддержка своего<a href=\"https://github.com/DanielLavrushin/b4geoip\"> b4geoip-файла</a> (обновляется раз в сутки)</p></li><li><p><strong>Firewall:</strong>&nbsp;автоматическая настройка iptables/nftables - правила создаются и восстанавливаются автоматически (возможность переопределить)</p></li><li><p><strong>Обработка:</strong>&nbsp;многопоточная - от 1 до 16 воркеров, каждый со своей очередью</p></li><li><p><strong>Протоколы:</strong>&nbsp;TCP, UDP, QUIC, IPv4/IPv6</p></li><li><p><strong>Веб-интерфейс:</strong>&nbsp;React 19, TypeScript, встроен в бинарник - один файл ~13 МБ (amd64), без внешних зависимостей</p></li><li><p><strong>Установка:</strong>&nbsp;одна команда или через <a href=\"https://hub.docker.com/r/lavrushin/b4\">Docker</a></p></li></ul><h2>Установка</h2><p><code>wget -qO- https://raw.githubusercontent.com/DanielLavrushin/b4/main/install.sh | bash</code></p><p>На некоторых роутерах home-директория может быть tmpfs (RAM), который очищается при перезагрузке. Для таких случаев лучше скачать скрипт на постоянное хранилище:</p><ul><li><p>Asus Merlin:&nbsp;<code>/jffs/scripts/</code></p></li><li><p>Keenetic/Entware:&nbsp;<code>/opt/</code></p></li></ul><p>После установки веб-интерфейс доступен по адресу <code>http://&lt;ip-устройства&gt;:7000</code></p><p>Поддерживаемые архитектуры: x86_64, ARM (arm64, armv7, armv6, armv5), MIPS (mipsle, mips softfloat), RISC-V.</p><h2>Интерфейс</h2><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/78e/c09/b37/78ec09b37c4d8b138764ef4ead2aaa6c.png\"></figure><p>Интерфейс разбит на несколько разделов:</p><ul><li><p><strong>Dashboard</strong>&nbsp;- общая картина: активные соединения, статистика пакетов, активность устройств, топ доменов, непокрытые домены, аптайм и нагрузка.</p></li><li><p><strong>Sets</strong>&nbsp;- наборы правил обхода: какие домены/IP обходить и какой стратегией. Вообще это основной рабочий раздел.</p></li><li><p><strong>Discovery</strong>&nbsp;- автоматический подбор рабочей стратегии для конкретного домена.</p></li><li><p><strong>Connections</strong>&nbsp;- живой поток соединений в реальном времени: куда идут пакеты, по какому протоколу, попадают ли под правила. Можно прямо отсюда добавить домен в сет.</p></li><li><p><strong>Logs</strong>&nbsp;- лог-стрим с фильтрацией.</p></li><li><p><strong>Settings</strong>&nbsp;- настройки ядра, geodata, discovery, API-интеграции, захват TLS ClientHello payload.</p></li></ul><p>Основная работа происходит в разделе <code>Sets</code>. Каждый сет - это связка \"что обходить\" + \"как обходить\". Домены и IP можно добавлять вручную или подключать категории из <code>geodata</code>-баз (v2ray/xray).</p><p>Все изменения применяются мгновенно - сохранил и работает, без перезапуска. Двинул ползунок - применилось.</p><h2>Первичная настройка</h2><p>После установки открываем <a href=\"http://ip-%D1%83%D1%81%D1%82%D1%80%D0%BE%D0%B9%D1%81%D1%82%D0%B2%D0%B0:7000\"><code>http://ip-устройства:7000</code></a> и переходим в <strong>Settings</strong>.<br><br><strong>Settings → Geodat Settings → Download Files</strong></p><p>Можно скачать только geosite, только geoip или оба сразу. После загрузки файлы подхватываются автоматически - кеш категорий пересоздаётся, перезапуск не нужен.</p><p>Рекомендую:<br>- для <strong>geosite</strong>:  <code>RUNET Freedom</code> - наиболее полный и актуальный список для рунета. (для слабых роутеров сильно рекомендуется выбирать <code>Loyalsoldier</code>).</p><ul><li><p>для <strong>geoip</strong>: <a href=\"https://github.com/DanielLavrushin/b4geoip\">b4geoip</a></p></li></ul><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/3e0/fb0/cc6/3e0fb0cc6300792ad88638b5cc7b8efe.png\" alt=\"загрузка баз данных\"><figcaption>загрузка баз данных</figcaption></figure>API-токены<p><strong>Settings → API → </strong><a href=\"http://IPINFO.IO\"><strong>IPINFO.IO</strong></a></p><p>Опционально - токен для обогащения IP-адресов информацией об ASN (ниже будет описано, зачем это нужно). Позволяет добавлять целые подсети провайдера одной кнопкой. Бесплатный тариф - 10k запросов/неделя.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/495/0d7/918/4950d7918109da69adf8f097001a4ad2.png\"></figure><p>Таким образом можно таргетировать визуально все пакеты</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/0db/1ba/488/0db1ba48871e81e2b94f094da3d8bc45.png\" alt=\"Asn проставлены, нам все понятно\"><figcaption>Asn проставлены, нам все понятно</figcaption></figure>IP Протоколы<p><strong>Settings → Core → Feature Flags</strong></p><p>По умолчанию включён только IPv4. Если нужен IPv6 - включаем здесь.</p>Фильтрация устройств<p>Если B4 стоит на роутере, не всегда нужно обрабатывать весь трафик. Можно выбрать конкретные устройства в сети.</p><p><strong>Settings → Core → Device Filtering</strong></p><p>На роутере можно ограничить работу B4 конкретными устройствами. Два режима:</p><ul><li><p><strong>Whitelist</strong> - обход DPI только для выбранных устройств</p></li><li><p><strong>Blacklist</strong> - обход для всех, кроме выбранных</p></li></ul><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/3fa/608/ac6/3fa608ac6d266335ad5d4d848279b2c5.png\"></figure><p>Устройства подтягиваются из DHCP-leases роутера автоматически.</p><h2>Discovery</h2><p>Главная фича для тех, кто не хочет разбираться в параметрах фрагментации и фейковых пакетов.</p><p><strong>Discovery</strong> автоматически перебирает стратегии обхода и находит рабочую для вашей сети. Запускается из интерфейса сета или с главной страницы.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/5af/d68/159/5afd68159f7d9ade1fad202d4baafdc2.png\" alt=\"что-то нашлось\"><figcaption>что-то нашлось</figcaption></figure>Как работает<ol><li><p>Устанавливает TLS-соединение с тестовой целью.</p></li><li><p>Последовательно применяет динамические пресеты (ну... честно пытается).</p></li><li><p>Сравнивает время ответа с эталонным (незаблокированный домен из настроек).</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/09b/e59/d3c/09be59d3c1ce330fa8b6d51cccd819f9.png\" alt=\"если повезет\"><figcaption>если повезет</figcaption></figure></li></ol><h2>Примеры сетов</h2><p>Каждый сет можно экспортировать в JSON и импортировать на другом устройстве. Открываем сет,  секция Import/Export - вставляем JSON.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/e9c/248/690/e9c248690ef58dc55a3bcfadc99ae124.png\" alt=\"импорт/экспорт\"><figcaption>импорт/экспорт</figcaption></figure><p>Ниже примеры рабочих конфигураций. Стратегии подбирались для российских провайдеров - на вашей сети результат может отличаться, используйте Discovery для автоматического подбора.</p><p><strong>YouTube</strong><br><code>{\"id\":\"f506c73d-9b25-4be0-b117-c9d70591befe\",\"name\":\"youtube\",\"tcp\":{\"conn_bytes_limit\":19,\"seg2delay\":20,\"seg2delay_max\":60,\"syn_fake\":false,\"syn_fake_len\":0,\"syn_ttl\":7,\"drop_sack\":false,\"incoming\":{\"mode\":\"off\",\"min\":14,\"max\":14,\"fake_ttl\":7,\"fake_count\":3,\"strategy\":\"badsum\"},\"desync\":{\"mode\":\"off\",\"ttl\":7,\"count\":3,\"post_desync\":false},\"win\":{\"mode\":\"off\",\"values\":[0,1460,8192,65535]},\"duplicate\":{\"enabled\":false,\"count\":3}},\"udp\":{\"mode\":\"fake\",\"fake_seq_length\":6,\"fake_len\":64,\"faking_strategy\":\"none\",\"dport_filter\":\"\",\"filter_quic\":\"parse\",\"filter_stun\":true,\"conn_bytes_limit\":8,\"seg2delay\":10,\"seg2delay_max\":40},\"fragmentation\":{\"strategy\":\"combo\",\"reverse_order\":true,\"tlsrec_pos\":0,\"middle_sni\":true,\"sni_position\":1,\"oob_position\":0,\"oob_char\":120,\"seq_overlap_pattern\":[],\"combo\":{\"first_byte_split\":true,\"extension_split\":true,\"shuffle_mode\":\"full\",\"first_delay_ms\":30,\"jitter_max_us\":1000,\"decoy_enabled\":false,\"decoy_snis\":[\"ya.ru\",\"vk.com\",\"mail.ru\",\"dzen.ru\"]},\"disorder\":{\"shuffle_mode\":\"full\",\"min_jitter_us\":1000,\"max_jitter_us\":3000}},\"faking\":{\"sni\":true,\"ttl\":8,\"strategy\":\"pastseq\",\"seq_offset\":10000,\"sni_seq_length\":1,\"sni_type\":3,\"custom_payload\":\"\",\"payload_file\":\"\",\"tls_mod\":[],\"timestamp_decrease\":600000,\"sni_mutation\":{\"mode\":\"off\",\"grease_count\":3,\"padding_size\":2048,\"fake_ext_count\":5,\"fake_snis\":[]},\"tcp_md5\":true},\"targets\":{\"sni_domains\":[],\"ip\":[],\"geosite_categories\":[\"youtube\"],\"geoip_categories\":[]},\"enabled\":true,\"dns\":{\"enabled\":false,\"target_dns\":\"\",\"fragment_query\":false},\"stats\":{\"manual_domains\":0,\"manual_ips\":0,\"geosite_domains\":178,\"geoip_ips\":0,\"total_domains\":178,\"total_ips\":0,\"geosite_category_breakdown\":{\"youtube\":178}}}</code></p><p><br><strong>Hyperion</strong></p><p>сет зависим от payload: gosuslugi.ru (генерируется в разделе настроек -&gt; <strong>Capture</strong>) (основан на сервисе <a href=\"https://hyperion-cs.github.io/dpi-checkers/ru/tcp-16-20/\">Гиперион</a> </p><p><code>{\"id\":\"1731ef6f-ec56-43b6-bc72-daec1e484daf\",\"name\":\"hyperion\",\"tcp\":{\"conn_bytes_limit\":19,\"seg2delay\":20,\"seg2delay_max\":90,\"syn_fake\":false,\"syn_fake_len\":0,\"syn_ttl\":7,\"drop_sack\":false,\"incoming\":{\"mode\":\"off\",\"min\":14,\"max\":14,\"fake_ttl\":7,\"fake_count\":3,\"strategy\":\"badsum\"},\"desync\":{\"mode\":\"off\",\"ttl\":7,\"count\":3,\"post_desync\":false},\"win\":{\"mode\":\"off\",\"values\":[0,1460,8192,65535]},\"duplicate\":{\"enabled\":false,\"count\":3}},\"udp\":{\"mode\":\"fake\",\"fake_seq_length\":6,\"fake_len\":64,\"faking_strategy\":\"none\",\"dport_filter\":\"\",\"filter_quic\":\"disabled\",\"filter_stun\":true,\"conn_bytes_limit\":8,\"seg2delay\":0,\"seg2delay_max\":0},\"fragmentation\":{\"strategy\":\"combo\",\"reverse_order\":true,\"tlsrec_pos\":0,\"middle_sni\":true,\"sni_position\":1,\"oob_position\":0,\"oob_char\":120,\"seq_overlap_pattern\":[],\"combo\":{\"first_byte_split\":true,\"extension_split\":true,\"shuffle_mode\":\"full\",\"first_delay_ms\":30,\"jitter_max_us\":1500,\"decoy_enabled\":false,\"decoy_snis\":[\"ya.ru\",\"vk.com\",\"mail.ru\",\"dzen.ru\"]},\"disorder\":{\"shuffle_mode\":\"full\",\"min_jitter_us\":1000,\"max_jitter_us\":3000}},\"faking\":{\"sni\":true,\"ttl\":8,\"strategy\":\"pastseq\",\"seq_offset\":10000,\"sni_seq_length\":1,\"sni_type\":4,\"custom_payload\":\"\",\"payload_file\":\"captures/tls_gosuslugi_ru.bin\",\"tls_mod\":[],\"timestamp_decrease\":600000,\"sni_mutation\":{\"mode\":\"off\",\"grease_count\":3,\"padding_size\":2048,\"fake_ext_count\":5,\"fake_snis\":[]},\"tcp_md5\":true},\"targets\":{\"sni_domains\":[\"kinopub.online\",\"linuxserver.io\",\"euronews.com\",\"shikimori.one\",\"proton.me\"],\"ip\":[],\"geosite_categories\":[\"cloudflare\",\"ru-blocked\",\"meta\",\"discord\",\"kinopub\",\"youtube\",\"intel\",\"twitter\",\"protonmail\",\"canva\",\"dw\",\"category-media-ru\",\"linkedin\",\"instagram\",\"hdrezka\",\"fastly\",\"hetzner\",\"oracle\",\"cdn77\",\"digitalocean\",\"akamai\"],\"geoip_categories\":[\"cloudflare\",\"digitalocean\",\"contabo\",\"akamai\",\"amazon\",\"hetzner\",\"ovh\",\"telegram\",\"twitter\",\"cdn77\",\"scaleway\",\"oracle\",\"fastly\"]},\"enabled\":true,\"dns\":{\"enabled\":false,\"target_dns\":\"\",\"fragment_query\":false},\"stats\":{\"manual_domains\":5,\"manual_ips\":0,\"geosite_domains\":76395,\"geoip_ips\":7137,\"total_domains\":76400,\"total_ips\":7137,\"geosite_category_breakdown\":{\"akamai\":81,\"canva\":6,\"category-media-ru\":131,\"cdn77\":2,\"cloudflare\":74,\"digitalocean\":4,\"discord\":28,\"dw\":2,\"fastly\":8,\"hdrezka\":11,\"hetzner\":15,\"instagram\":74,\"intel\":288,\"kinopub\":11,\"linkedin\":12,\"meta\":553,\"oracle\":18,\"protonmail\":9,\"ru-blocked\":74866,\"twitter\":24,\"youtube\":178},\"geoip_category_breakdown\":{\"akamai\":596,\"amazon\":3447,\"cdn77\":213,\"cloudflare\":900,\"contabo\":284,\"digitalocean\":173,\"fastly\":62,\"hetzner\":117,\"oracle\":737,\"ovh\":554,\"scaleway\":21,\"telegram\":12,\"twitter\":21}}}</code></p><h2>Заключение</h2><p>B4 - один бинарник на Go, который ставится одной командой, настраивается из браузера и умеет сам подбирать рабочую стратегию. Работает на Linux - от VPS до роутера на MIPS.</p><p><a href=\"https://github.com/DanielLavrushin/b4\">Проект</a> в активной разработке. Буду рад багрепортам, идеям и рекомендациям.</p><p>Есть <a href=\"https://t.me/byebyebigbro\">Telegram-группа</a>, где можно попросить помощи с настройкой, предложить фичу или просто  дать обратную связь.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/f32/203/0ea/f322030eaca0df9f74dda2def7a33427.png\" alt=\"без b4\"><figcaption>без b4</figcaption></figure><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/f19/4d2/4e7/f194d24e72becd25987caacb1ea5db55.png\" alt=\"при b4\"><figcaption>при b4</figcaption></figure><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/9ea/6d0/abe/9ea6d0abe329a7285498dc331b3d2003.png\" alt=\"без b4\"><figcaption>без b4</figcaption></figure><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/39b/9a1/0a3/39b9a10a379c3b5b61fa22665ac8da12.png\" alt=\"до \"><figcaption>после b4</figcaption></figure><p>Важно понимать: рабочая стратегия обхода зависит от провайдера, региона и конкретного оборудования на сети. То, что работает у одного - может не работать у другого. Именно поэтому в B4 есть Discovery - автоматический подбор стратегии для вашей сети.</p><h2>Дисклеймер</h2><p>B4 не является VPN, прокси или туннелем. Принципиальное отличие:</p><ul><li><p><strong>VPN/прокси</strong> - трафик идёт через промежуточный сервер. Провайдер не видит конечный адрес, но видит подключение к VPN. Именно такие инструменты попадают под регуляцию - они позволяют скрывать назначение трафика и получать доступ к заблокированным ресурсам.</p></li><li><p><strong>B4</strong> - трафик идёт напрямую, без промежуточных серверов. Провайдер видит, куда вы подключаетесь. Инструмент не меняет маршрут и не открывает доступ к заблокированным ресурсам. Он работает на уровне структуры TCP-пакето. Программа работает на уровне структуры TCP-пакетов, не позволяя оборудованию DPI корректно классифицировать трафик.</p></li></ul><p>На момент публикации (февраль 2026) использование подобных инструментов в РФ не запрещено законодательно. Автор не несёт ответственности за использование в юрисдикциях, где это может быть ограничено.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 13722,
+        "approxBlocks": 128
+      }
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/02/25/vs-rossii-udarili-po-ukrainskoy-gazovoy-infrastrukture/:2026-02-24T22:47:00.000Z:ВС России ударили по украинской газовой ",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "ВС России ударили по украинской газовой инфраструктуре",
+      "url": "https://lenta.ru/news/2026/02/25/vs-rossii-udarili-po-ukrainskoy-gazovoy-infrastrukture/",
+      "publishedAt": "2026-02-24T22:47:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/02/25/01/20260225015212425/pic_d9d14323ad51f0529dcc0cd90082291b.jpg",
+      "excerpt": "Фото: Gleb Garanich / ReutersРоссийские дроны-камикадзе «Герань-2» нанесли удары по объектам газовой инфраструктуры на Украине. Об этом сообщает Telegram-канал «Военный осведомитель».Уточняется, что Вооруженные силы (ВС) России атаковали це",
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/25/vs-rossii-udarili-po-ukrainskoy-gazovoy-infrastrukture/\"><img src=\"https://icdn.lenta.ru/images/2026/02/25/01/20260225015212425/owl_detail_240_9443188151e4fd6a9a2143e417a42564.jpg\"></a><figcaption><p>Фото: Gleb Garanich / Reuters</p></figcaption></figure><p>Российские дроны-камикадзе «Герань-2» нанесли удары по объектам газовой инфраструктуры на <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украине</a>. Об этом сообщает <a href=\"https://t.me/milinfolive/166778\">Telegram</a>-канал «Военный осведомитель».</p><p>Уточняется, что Вооруженные силы (ВС) России атаковали цели в населенных пунктах <a href=\"https://lenta.ru/tags/geo/nezhin/\">Нежин</a> и <a href=\"https://lenta.ru/tags/geo/nosovka/\">Носовка</a> Черниговской области Украины.</p><p>В январе <a href=\"https://lenta.ru/news/2026/01/13/na-ukraine-rasskazali-o-rossiyskoy-gerani-s-verboy/\">стало известно</a>, что часть «Гераней-2», которые применяют для поражения украинских объектов, оснастили переносными зенитными ракетными комплексами «Верба» для борьбы с авиацией противника. Также аппарат получил камеру и модем для связи с оператором.</p><p>До этого портал Business Insider <a href=\"https://lenta.ru/news/2026/01/12/v-ssha-otsenili-noveyshuyu-geran/\">отмечал</a>, что новый российский дрон-камикадзе, который на Украине отнесли к семейству аппаратов «Герань», получит увеличенную дальность за счет запуска с борта самолета.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 825,
+        "approxBlocks": 8
+      }
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/02/25/nebenzya-vyskazalsya-o-vozmozhnoy-peredache-ukraine-yadernoy-bomby/:2026-02-24T22:38:00.000Z:Небензя высказался о возможной передаче ",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Небензя высказался о возможной передаче Украине ядерного оружия",
+      "url": "https://lenta.ru/news/2026/02/25/nebenzya-vyskazalsya-o-vozmozhnoy-peredache-ukraine-yadernoy-bomby/",
+      "publishedAt": "2026-02-24T22:38:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/02/25/01/20260225014041780/pic_d6494f63fc68862963be61f91bb1259b.jpg",
+      "excerpt": "Василий Небензя. Фото: Валерий Шарифулин / РИА НовостиРоссия обладает всеми возможностями дать отпор в случае решения Лондона и Парижа передать Украине ядерное оружие. Об этом заявил постоянный представитель России при ООН Василий Небензя, ",
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/25/nebenzya-vyskazalsya-o-vozmozhnoy-peredache-ukraine-yadernoy-bomby/\"><img alt=\"Василий Небензя\" src=\"https://icdn.lenta.ru/images/2026/02/25/01/20260225014041780/owl_detail_240_f36a96ed61bb61e9210e0599e09400a8.jpg\"></a><figcaption><p>Василий Небензя. Фото: Валерий Шарифулин / РИА Новости</p></figcaption></figure><p>Россия обладает всеми возможностями дать отпор в случае решения <a href=\"https://lenta.ru/tags/geo/london/\">Лондона</a> и Парижа передать <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украине</a> ядерное оружие. Об этом заявил постоянный представитель России при <a href=\"https://lenta.ru/tags/organizations/oon/\">ООН</a> <a href=\"https://lenta.ru/tags/persons/nebenzya-vasiliy/\">Василий Небензя</a>, передает <a href=\"http://tass.ru/\">ТАСС</a>.</p><p>По его словам, <a href=\"https://lenta.ru/tags/geo/moskva/\">Москва</a> призывает Европу пересмотреть курс нагнетания конфронтации и прекратить руководствоваться логикой войны до последнего украинца.</p><p>Ранее <a href=\"https://lenta.ru/tags/organizations/svr-rossii/\">Служба внешней разведки России</a> <a href=\"https://lenta.ru/news/2026/02/24/razvedka-raskryla-plany-po-vooruzheniyu-ukrainy-yadernoy-bomboy/\">сообщила</a>, что <a href=\"https://lenta.ru/tags/geo/frantsiya/\">Франция</a> и <a href=\"https://lenta.ru/tags/geo/velikobritaniya/\">Великобритания</a> готовятся вооружить Украину ядерной бомбой. По данным российской разведки, Лондон и Париж планируют замаскировать передачу ядерного оружия под самостоятельную разработку украинцев.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 767,
+        "approxBlocks": 7
+      }
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/02/25/v-latvii-vo-vremya-lektsii-zaderzhali-rossiyskogo-uchenogo/:2026-02-24T22:37:00.000Z:В Латвии во время лекции задержали корее",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "В Латвии во время лекции задержали корееведа Андрея Ланькова",
+      "url": "https://lenta.ru/news/2026/02/25/v-latvii-vo-vremya-lektsii-zaderzhali-rossiyskogo-uchenogo/",
+      "publishedAt": "2026-02-24T22:37:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/02/25/01/20260225014147387/pic_ba6ca7bfd1410555a3a8f8dfcd16277d.jpg",
+      "excerpt": "Фото: Евгений Биятов / РИА НовостиВ Риге сотрудники латвийской полиции задержали российского ученого, профессора Университета Кукмин Андрея Ланькова. Об этом сообщает Delfi.По данным издания, это произошло во время его лекции под названием ",
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/25/v-latvii-vo-vremya-lektsii-zaderzhali-rossiyskogo-uchenogo/\"><img src=\"https://icdn.lenta.ru/images/2026/02/25/01/20260225014147387/owl_detail_240_deca573448ff7e652c8067a4229d7f59.jpg\"></a><figcaption><p>Фото: Евгений Биятов / РИА Новости</p></figcaption></figure><p>В <a href=\"https://lenta.ru/tags/geo/riga/\">Риге</a> сотрудники латвийской полиции задержали российского ученого, профессора Университета Кукмин <a href=\"https://lenta.ru/tags/persons/lankov-andrey/\">Андрея Ланькова</a>. Об этом <a href=\"https://rus.delfi.lv/57863/criminal/120108155/v-rige-pryamo-vo-vremya-lekcii-policiya-zaderzhala-vostokoveda-andreya-lankova\">сообщает</a> Delfi.</p><p>По данным издания, это произошло во время его лекции под названием «Северная Корея: чего хотят и чего боятся верхи». По словам очевидцев, на лекцию приехало две полицейских машины.</p><p>Андрей Ланьков является одним из ведущих российских корееведов. В 1990-х ученый работал в Южной Корее и <a href=\"https://lenta.ru/tags/geo/avstraliya/\">Австралии</a>, с 2004 года преподает в <a href=\"https://lenta.ru/tags/geo/seul/\">Сеуле</a>.</p><p>Ранее шведская полиция безопасности (SÄPO) <a href=\"https://lenta.ru/news/2026/02/18/rossiyanina-zaderzhali-v-evrope-po-zaprosu-ssha/\">задержала</a> россиянина по запросу <a href=\"https://lenta.ru/tags/geo/ssha/\">США</a>. Гражданин <a href=\"https://lenta.ru/tags/geo/rf/\">РФ</a> оказался в международном розыске после того, как в Соединенных Штатах суд заочно избрал ему меру пресечения в виде ареста.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 781,
+        "approxBlocks": 8
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/politika/26542479:2026-02-24T22:35:59.000Z:Степашин: СССР и затем Россия ставили во",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Степашин: СССР и затем Россия ставили вопрос о вступлении в НАТО",
+      "url": "https://tass.ru/politika/26542479",
+      "publishedAt": "2026-02-24T22:35:59.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Как отметил экс-премьер РФ, когда распалась Организация Варшавского договора, стало совершенно непонятно, зачем нужен альянс",
+      "contentHtml": ""
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/russia/1074454:2026-02-24T22:34:00.000Z:Аэропорт Калуги приостановил работу",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Аэропорт Калуги приостановил работу",
+      "url": "https://www.interfax.ru/russia/1074454",
+      "publishedAt": "2026-02-24T22:34:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Временные ограничения введены в аэропорту Калуги, сообщили в Росавиации.\"Аэропорт Калуга (Грабцево).",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/sport/26542453:2026-02-24T22:32:50.000Z:Инфантино уверен, что матчи ЧМ по футбол",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Инфантино уверен, что матчи ЧМ по футболу не перенесут из Мексики",
+      "url": "https://tass.ru/sport/26542453",
+      "publishedAt": "2026-02-24T22:32:50.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "",
+      "excerpt": "Стартовый матч планируется провести 11 июня в Мехико",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/ekonomika/26542467:2026-02-24T22:31:24.000Z:В аэропорту Калуги ввели временные огран",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "В аэропорту Калуги ввели временные ограничения",
+      "url": "https://tass.ru/ekonomika/26542467",
+      "publishedAt": "2026-02-24T22:31:24.000Z",
+      "categoryIds": [
+        "business"
+      ],
+      "image": "",
+      "excerpt": "Они необходимы для обеспечения безопасности полетов",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26542445:2026-02-24T22:28:57.000Z:Syria TV: сирийская армия подверглась ат",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Syria TV: сирийская армия подверглась атаке террористов в провинции Дейр-эз-Зор",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/26542445",
+      "publishedAt": "2026-02-24T22:28:57.000Z",
+      "categoryIds": [
+        "world",
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "В правительственных силах есть убитые и раненые, их численность уточняется, сообщил телеканал",
       "contentHtml": ""
     },
     {
@@ -44,6 +206,132 @@
       "contentHtml": ""
     },
     {
+      "id": "kommersant:https://www.kommersant.ru/doc/8461792:2026-02-24T22:19:16.000Z:Аудиторы идут по проводам // Обмен актив",
+      "sourceId": "kommersant",
+      "sourceName": "Коммерсантъ",
+      "title": "Аудиторы идут по проводам // Обмен активами между «РусГидро» и СГК проверит Счетная палата",
+      "url": "https://www.kommersant.ru/doc/8461792",
+      "publishedAt": "2026-02-24T22:19:16.000Z",
+      "categoryIds": [
+        "business"
+      ],
+      "image": "",
+      "excerpt": "По данным “Ъ”, Счетная палата проверяет «законность и эффективность» обмена активами между «РусГидро» (MOEX: HYDR) и Сибирской генерирующей компанией (СГК), в результате чего последняя получила крупнейшую на Дальнем Востоке Приморскую ГРЭС и Лучегорский угольный разрез. Стоимость активов оценивалась в 7,6–7,9 млрд руб. После закрытия сделки в 2020 году СГК увеличила оценку инвестиций в модернизацию ГРЭС в 1,5 раза, до 108 млрд руб. Если отчет аудиторов покажет ущерб интересам государства или угрозу энергетической безопасности региона, сделка может быть оспорена в суде, считают юристы.",
+      "contentHtml": ""
+    },
+    {
+      "id": "kommersant:https://www.kommersant.ru/doc/8461837:2026-02-24T22:19:16.000Z:Плюс НДС // Минстрой предлагает механизм",
+      "sourceId": "kommersant",
+      "sourceName": "Коммерсантъ",
+      "title": "Плюс НДС // Минстрой предлагает механизм пересмотра цен строительных госконтрактов из-за роста налога",
+      "url": "https://www.kommersant.ru/doc/8461837",
+      "publishedAt": "2026-02-24T22:19:16.000Z",
+      "categoryIds": [
+        "business"
+      ],
+      "image": "https://im2.kommersant.ru/Issues.photo2/DAILY/2026/032/KMO_202613_00024_1_t219_213656.jpg",
+      "excerpt": "В связи с состоявшимся повышением ставки НДС с 20% до 22% Минстрой предлагает разрешить пересмотр цен строительных госконтрактов, заключенных до 2026 года, в отношении работ, приемка которых осуществляется уже после 1 января. Предполагается, что вносить корректировки можно будет до 1 октября этого года, что должно сгладить эффект от роста налоговой нагрузки. Эксперты считают меру необходимой: отсутствие компенсации стало бы критичным для подрядчиков, реализующих проекты с невысокой рентабельностью.",
+      "contentHtml": ""
+    },
+    {
+      "id": "kommersant:https://www.kommersant.ru/doc/8461786:2026-02-24T22:19:16.000Z:В феврале промышленники стали слегка опт",
+      "sourceId": "kommersant",
+      "sourceName": "Коммерсантъ",
+      "title": "В феврале промышленники стали слегка оптимистичнее // Мониторинг конъюнктуры",
+      "url": "https://www.kommersant.ru/doc/8461786",
+      "publishedAt": "2026-02-24T22:19:16.000Z",
+      "categoryIds": [
+        "business"
+      ],
+      "image": "https://im2.kommersant.ru/Issues.photo2/DAILY/2026/032/KSP_017966_00130_1_t219_221046.jpg",
+      "excerpt": "По данным опроса Института народнохозяйственного прогнозирования (ИНП) РАН, по состоянию на 19 февраля деловые настроения представителей российской промышленности несколько улучшились после январского провала до минимума со времен ковидного кризиса (см. график). Соответствующий индекс промышленного оптимизма рассчитывается аналитиками ИНП как среднее арифметическое фактического изменения спроса, его оценок на будущее, запасов готовой продукции и планов изменения выпуска.",
+      "contentHtml": ""
+    },
+    {
+      "id": "kommersant:https://www.kommersant.ru/doc/8461790:2026-02-24T22:19:16.000Z:Депутата отделяют от мандата // В якутск",
+      "sourceId": "kommersant",
+      "sourceName": "Коммерсантъ",
+      "title": "Депутата отделяют от мандата // В якутском парламенте разгорелся очередной «сепаратистский» скандал",
+      "url": "https://www.kommersant.ru/doc/8461790",
+      "publishedAt": "2026-02-24T22:19:16.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Депутаты Государственного собрания (парламента) Якутии от «Единой России» пытаются отправить в отставку своего коллегу Александра Иванова, который заявил, что народ республики лишен «свободы воли» — права изучать родной язык и распоряжаться «землями предков». Однако забрать мандат у народного избранника они просто так не могут, поэтому просят возбудить против него уголовное дело о призывах к сепаратизму. Ранее господина Иванова уже исключили из фракции «Новых людей» за похожие высказывания.",
+      "contentHtml": ""
+    },
+    {
+      "id": "kommersant:https://www.kommersant.ru/doc/8461825:2026-02-24T22:19:16.000Z:Код доступа к деньгам // Российский рыно",
+      "sourceId": "kommersant",
+      "sourceName": "Коммерсантъ",
+      "title": "Код доступа к деньгам // Российский рынок ПО к 2030 году может превысить отметку в 1,5 триллиона рублей",
+      "url": "https://www.kommersant.ru/doc/8461825",
+      "publishedAt": "2026-02-24T22:19:16.000Z",
+      "categoryIds": [
+        "tech"
+      ],
+      "image": "https://im2.kommersant.ru/Issues.photo2/DAILY/2026/032/KMO_201523_00215_1_t219_211451.jpg",
+      "excerpt": "В 2025 году российский рынок ПО прибавил 21% и достиг 808 млрд руб., а к 2030 году может вырасти до 1,7 трлн руб. при динамике 15% в год. Аналитики и участники рынка называют драйверами гибридную инфраструктуру для банков, ИИ в автоматизации и прогнозировании, а также более глубокое импортозамещение и удвоение госвложений в IT.",
+      "contentHtml": ""
+    },
+    {
+      "id": "kommersant:https://www.kommersant.ru/doc/8461738:2026-02-24T22:19:16.000Z:Баррели взяли южнее // Доля Балтики в от",
+      "sourceId": "kommersant",
+      "sourceName": "Коммерсантъ",
+      "title": "Баррели взяли южнее // Доля Балтики в отгрузках российской нефти сократилась в пользу Черноморья",
+      "url": "https://www.kommersant.ru/doc/8461738",
+      "publishedAt": "2026-02-24T22:19:16.000Z",
+      "categoryIds": [
+        "business"
+      ],
+      "image": "https://im2.kommersant.ru/Issues.photo2/DAILY/2026/032/KMO_189093_00009_1_t219_190648.jpg",
+      "excerpt": "Снижение экспорта нефти из Балтики в связи со сложной ледовой обстановкой частично компенсировано поставками через южные и дальневосточные порты. В результате по итогам 1–20 февраля морские отгрузки сырья почти не изменились месяц к месяцу. Эксперты ожидают, что перераспределение потоков продолжится.",
+      "contentHtml": ""
+    },
+    {
+      "id": "kommersant:https://www.kommersant.ru/doc/8461605:2026-02-24T22:19:16.000Z:Дизель дождался спроса // Оптовая стоимо",
+      "sourceId": "kommersant",
+      "sourceName": "Коммерсантъ",
+      "title": "Дизель дождался спроса // Оптовая стоимость дизтоплива обновляет максимумы с декабря",
+      "url": "https://www.kommersant.ru/doc/8461605",
+      "publishedAt": "2026-02-24T22:19:16.000Z",
+      "categoryIds": [
+        "business"
+      ],
+      "image": "https://im2.kommersant.ru/Issues.photo2/DAILY/2026/032/KMO_152405_00156_1_t219_162823.jpg",
+      "excerpt": "Биржевые котировки дизельного топлива в России достигли максимума за последние два месяца на фоне сезонного роста спроса и снижения производства. С начала февраля дизтопливо подорожало на 5,7–6,4% в зависимости от вида. Участники рынка считают, что такая ситуация может сохраниться до завершения посевной кампании, то есть до апреля.",
+      "contentHtml": ""
+    },
+    {
+      "id": "kommersant:https://www.kommersant.ru/doc/8461845:2026-02-24T22:19:16.000Z:Лондон смотрит в трубу // Контекст",
+      "sourceId": "kommersant",
+      "sourceName": "Коммерсантъ",
+      "title": "Лондон смотрит в трубу // Контекст",
+      "url": "https://www.kommersant.ru/doc/8461845",
+      "publishedAt": "2026-02-24T22:19:16.000Z",
+      "categoryIds": [
+        "business"
+      ],
+      "image": "",
+      "excerpt": "Великобритания 24 февраля ввела санкции против ряда компаний, связанных с торговлей российской нефтью и ее транспортировкой, сообщило правительство страны. Под ограничения подпали «Транснефть», 175 структур, которые Великобритания считает связанными с трейдером 2Rivers, а также 48 нефтяных танкеров.",
+      "contentHtml": ""
+    },
+    {
+      "id": "kommersant:https://www.kommersant.ru/doc/8461702:2026-02-24T22:19:16.000Z:Клик имеет значение // В 2025 году компа",
+      "sourceId": "kommersant",
+      "sourceName": "Коммерсантъ",
+      "title": "Клик имеет значение // В 2025 году компании активно инвестировали в performance-маркетинг",
+      "url": "https://www.kommersant.ru/doc/8461702",
+      "publishedAt": "2026-02-24T22:19:16.000Z",
+      "categoryIds": [
+        "tech"
+      ],
+      "image": "https://im2.kommersant.ru/Issues.photo2/DAILY/2026/032/KSP_017293_00257_1_t219_181434.jpg",
+      "excerpt": "Объем рынка performance-маркетинга за 2025 год достиг 450 млрд руб. Больше всего рекламодатели тратили на таргетированную и контекстную рекламу и на продвижение через маркетплейсы. Участники рынка прогнозируют, что в 2026 году в цене может сильно вырасти продвижение через Telegram. В случае же блокировки платформы разрешенные медиаканалы не смогут справиться со спросом на рекламу, который сейчас удовлетворяет мессенджер, считают они.",
+      "contentHtml": ""
+    },
+    {
       "id": "tass:https://tass.ru/obschestvo/26542429:2026-02-24T22:18:46.000Z:В ГД предложили расширить льготы на опла",
       "sourceId": "tass",
       "sourceName": "ТАСС",
@@ -53,7 +341,7 @@
       "categoryIds": [
         "ru"
       ],
-      "image": "",
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260225/8838857.jpg",
       "excerpt": "Россияне должны получать субсидии автоматически, без сбора справок и документов, заявил глава комитета Госдумы по труду, соцполитике и делам ветеранов Ярослав Нилов",
       "contentHtml": ""
     },
@@ -65,6 +353,7 @@
       "url": "https://tass.ru/ekonomika/26542423",
       "publishedAt": "2026-02-24T22:12:54.000Z",
       "categoryIds": [
+        "ru",
         "business"
       ],
       "image": "",
@@ -83,12 +372,7 @@
       ],
       "image": "https://habrastorage.org/getpro/habr/upload_files/42c/417/093/42c417093867b4fca815f39ff36cbee9.jpg",
       "excerpt": "Привет, Хабр. Сегодня поговорим о новой версии Allure Report — Allure 3, а именно о её модульной архитектуре. В ней можно настроить сколько угодно отображений тестовой иерархии в разных форматах; я покажу это на простом примере. В какой ситуации может это быть полезно?Когда с тестами работает несколько команд, обычно удобно, чтобы у каждой был своя классификация тестов. Кто-то хочет, чтобы тесты были организованы по фичам, т.е. близко к требованиям. Кто-то предпочитает видеть организацию по сюитам - ближе к коду проверяемого приложения.Мы сделаем так, чтобы при каждом запуске тестов Allure генерировал два отчёта, каждый со своим отображением тестов. Читать далее",
-      "contentHtml": "<p>Привет, Хабр. Сегодня поговорим о новой версии Allure Report — Allure 3, а именно о её модульной архитектуре. В ней можно настроить сколько угодно отображений тестовой иерархии в разных форматах; я покажу это на простом примере. В какой ситуации может это быть полезно?</p><p>Когда с тестами работает несколько команд, обычно удобно, чтобы у каждой был своя классификация тестов. Кто-то хочет, чтобы тесты были организованы по фичам, т.е. близко к требованиям. Кто-то предпочитает видеть организацию по сюитам - ближе к коду проверяемого приложения.</p><p>Мы сделаем так, чтобы при каждом запуске тестов Allure генерировал два отчёта, каждый со своим отображением тестов. Тренироваться будем на PyTest; все принципы можно применять к коду, на котором рабоотал Allure 2 — менять в старых тестах ничего не нужно.</p><h3>1. Подготовка</h3>Код демонстрации<p><a href=\"https://github.com/rattus-aristarchus/allure-3-plugins-demo\">https://github.com/rattus-aristarchus/allure-3-plugins-demo</a></p>Список зависимостей<p><a href=\"https://pypi.org/project/pytest/9.0.2/\">pytest: 9.0.2</a></p><p><a href=\"https://pypi.org/project/allure-pytest/2.15.3/\">allure-pytest: 2.15.3</a></p>Установка<p>Перед началом работы нужно установить:</p><ul><li><p><a href=\"https://wiki.python.org/moin/BeginnersGuide/Download\">Python</a></p></li><li><p><a href=\"https://allurereport.org/docs/v3/install/\">Allure Report 3</a></p></li></ul><p>Затем нам понадобится проект Python. Если его нужно создать с нуля, проще всего скачать проект-«болванку» с <a href=\"https://allurereport.org/start/\">Allure Start</a> — этот инструмент работает с Allure 3 так же, как с прошлыми версиями. Правда, нам понадобится добавить к скачанному проекту файл настроек <code>allurerc.js</code> - об этом ниже.</p><p>В скачанном проекте установим зависимости:</p><pre><code>pip install -r requirements.txt</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><h3>2. Пробные тесты</h3><p>Напишем несколько тестов. Их содержание нам безразлично, зато нас будет интересовать организация их в разные иерархии - это мы реализуем через декораторы:</p><pre><code class=\"python\">import allure\n\n\n# Сортировка по фичам:\n@allure.feature(\"Feature 1\")\n# Сортировка по сюитам:\n@allure.suite(\"Suite 1\")\n@allure.title(\"Первый тест\")\ndef test_allure_3_first():\n&nbsp; &nbsp; pass\n\n  \n@allure.feature(\"Feature 2\")\n@allure.suite(\"Suite 2\")\n@allure.title(\"Второй тест\")\ndef test_allure_3_second():\n&nbsp; &nbsp; pass\n\n  \n@allure.feature(\"Feature 1\")\n@allure.suite(\"Suite 2\")\n@allure.title(\"Третий тест\")\ndef test_allure_3_third():\n&nbsp; &nbsp; pass\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Третий тест у нас попадёт в разные категории в зависимости от того, организуем мы тесты по фичам или по сюитам.</p><h3>3. Настройка отчётов</h3><p>Теперь настроим отчёты, которые обеспечат нам несколько отображений иерархии тестов.</p><p>Для этого нужно создать файл настроек <code>allurerc.js</code> в корне проекта:</p><pre><code class=\"javascript\">export default {\n&nbsp; // Общий заголовок\n&nbsp; name: \"Демонстрация деревьев в Allure 3\",\n&nbsp; // Путь к папке с отчётом\n&nbsp; output: \"./allure-report\",\n&nbsp; // Путь к файлу с историей\n&nbsp; historyPath: \"./test-history/history.jsonl\",\n&nbsp; // Отчёты\n&nbsp; plugins: {\n&nbsp; &nbsp; // Отчёт с группировкой по фичам\n&nbsp; &nbsp; \"awesome-by-feature\": {\n&nbsp; &nbsp; &nbsp; import: \"@allurereport/plugin-awesome\",\n&nbsp; &nbsp; &nbsp; options: {\n&nbsp; &nbsp; &nbsp;   // Имя отчёта\n&nbsp; &nbsp; &nbsp; &nbsp; reportName: \"Группируем по фичам\",\n&nbsp; &nbsp; &nbsp; &nbsp; // Язык отчёта\n&nbsp; &nbsp; &nbsp; &nbsp; reportLanguage: \"ru\",\n&nbsp; &nbsp; &nbsp; &nbsp; // Поля, по которым группируются тесты в отчёте\n&nbsp; &nbsp; &nbsp; &nbsp; groupBy: [\"feature\"],\n&nbsp; &nbsp; &nbsp; },\n&nbsp; &nbsp; },\n&nbsp; &nbsp; // Отчёт с группировкой по сюитам\n&nbsp; &nbsp; \"awesome-by-suite\": {\n&nbsp; &nbsp; &nbsp; import: \"@allurereport/plugin-awesome\",\n&nbsp; &nbsp; &nbsp; options: {\n&nbsp; &nbsp; &nbsp; &nbsp; reportName: \"Группируем по сюитам\",\n&nbsp; &nbsp; &nbsp; &nbsp; reportLanguage: \"ru\",\n&nbsp; &nbsp; &nbsp; &nbsp; groupBy: [\"suite\"],\n&nbsp; &nbsp; &nbsp; },\n&nbsp; &nbsp; },\n&nbsp; },\n};\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Сейчас нас интересует поле <code>plugins</code>. В нём можно импортировать несколько плагинов или один плагин несколько раз; каждый раз будет создан отдельный отчёт.</p><p>Формат отчёта определяется полем <code>import</code>; здесь мы будем использовать базовый для Allure 3 - <strong>awesome</strong>.</p><p>В options мы прописываем имя отчёта, язык, и, главное, поля, по которым будут группироваться тесты. Здесь можно прописать несколько полей, и они будут выстроены в иерархию (первое поле - первый уровень иерархии). У нас сейчас прописан только один уровень, но можно было бы написать:</p><pre><code class=\"javascript\">groupBy: [\"epic\", \"feature\", \"story\"],\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Тогда мы бы получили трёхуровневую иерархию.</p><h3>4. Результат</h3><p>Теперь сгенерируем отчёты.</p><p>Тесты и генерация отчёта (а также создание файла истории) в Allure 3 выполняются одной командой такого формата: <code>npx allure run -- &lt;команда_запуска_тестов&gt;</code>.</p><p>В нашем случае команда выглядит так:</p><pre><code>npx allure run --config=./allurerc.js -- \"pytest --alluredir allure-results\"\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>В флаге <code>--config</code> для <code>allure run</code> здесь указан путь к файлу конфигурации.</p><p>После того, как тесты выполнены, отчёт можно открыть командой <code>allure open &lt;местоположение_отчёта&gt;</code> (у нас местоположение по умолчанию, <code>./allure-report</code>, поэтому можно просто <code>allure open</code>).</p><p>И вот перед нами два плагина:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/ccb/dc9/ec8/ccbdc9ec89e718ea07522bc76a348af1.png\"></figure><p>В одном отображении третий тест находится в первой фиче:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/151/8c2/001/1518c20015329571158cdbc723045d70.png\"></figure><p>В другом - во второй сюите:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/656/1cf/44a/6561cf44a93d792c243c6f2ddf5662dd.png\"></figure><h3>5. Allure 2 в Allure 3</h3><p>Строго говоря, это поведение можно было реализовать и в старом Аллюре. Чтобы разобраться, что тут изменилось, запустим старый Аллюр отдельным отчётом в новом Аллюре.</p><p>Для этого добавим несколько строк в <code>allurerc.js</code>, чтобы поле <code>plugins</code> выглядело так:</p><pre><code class=\"javascript\">plugins: {\t\n  // Отчёт с группировкой по фичам\n  \"awesome-by-feature\": {\n    import: \"@allurereport/plugin-awesome\",\n    options: {\n      reportName: \"Группируем по фичам\",\n      reportLanguage: \"ru\",\n      groupBy: [\"feature\"],\n    },\n  },\n  // Отчёт с группировкой по сюитам\n  \"awesome-by-suite\": {\n    import: \"@allurereport/plugin-awesome\",\n    options: {\n      reportName: \"Группируем по сюитам\",\n      reportLanguage: \"ru\",\n      groupBy: [\"suite\"],\n    },\n  },\n  // Классический отчёт\n  \"classic view\": {\t&nbsp; \n    // Импорт пакета классического отчёта &nbsp; &nbsp; &nbsp; \n    import: \"@allurereport/plugin-classic\",\n    options: {\n      reportName: \"Классическое отображение\",\n      reportLanguage: \"ru\",\n    },\n  },\n},\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Обратите внимание, что в последнем отчёте мы использовали другой плагин, чем раньше: <code>\"@allurereport/plugin-classic\"</code>; ровно так указывается формат отчёта. Список доступных плагинов можно посмотреть <a href=\"https://allurereport.org/docs/v3/configure/#plugin-system-overview\">здесь</a>.</p><p>Запустим тесты, откроем Аллюр и увидим, что появился третий отчёт:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/685/9fe/4a4/6859fe4a4cb7e1fcd78c99be1980bb99.png\"></figure><p>В нём - привычный интерфейс Allure 2. Отображение по фичам и сюитам здесь зашито в отдельные вкладки:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/385/545/646/385545646404f3698499920929dad942.png\"></figure><p>Итак, если старое отображение привычнее - оно никуда не делось.</p><h3>6. Отличие нового подхода</h3><p>Allure 2 предоставлял ограниченное число жёстко прописанных отображений; сейчас же тесты можно группировать по любому полю (tag, label), и организовывать иерархию этих полей в любом порядке.</p><p>Хотим сгруппировать по уровням (API, UI)? Добавляем к тесту метку (т.е. label), определяющую его уровень:</p><pre><code class=\"python\">@allure.label(\"level\", \"UI\")\ndef test_ui():\n&nbsp; &nbsp; pass\n\n  \n@allure.label(\"level\", \"API\")\ndef test_api():\n&nbsp; &nbsp; pass\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>И добавляем в <code>allurerc.js</code> новый плагин, использующий имя нашей метки в <code>groupBy</code>:</p><pre><code class=\"javascript\">\"layer view\": {\n  import: \"@allurereport/plugin-awesome\",\n  options: {\n    reportName: \"Группируем по уровням\",\n    reportLanguage: \"ru\",\n    groupBy: [\"level\"],\n  },\n},\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Или вот другой возможный кейс использования модульных отчётов. Предположим, мы начинаем новый проект, который в будущем может вольётся в старый, а может и нет. Заранее может быть неизвестно, какая структура отображения будет наиболее удобной; это не беда - можно просто создать новый отчёт, а дальше при необходимости менять в нём поля.</p><h3>Выводы</h3><p>Модульная архитектура позволяет приспособить инструмент к рабочему процессу, а не наоборот. И ещё - с ней всегда интересно экспериментировать. Весь код Аллюра открытый, все возможности можно подробно изучить на <a href=\"https://github.com/allure-framework/allure3\">GitHub</a>.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 6683,
-        "approxBlocks": 73
-      }
+      "contentHtml": "<p>Привет, Хабр. Сегодня поговорим о новой версии Allure Report — Allure 3, а именно о её модульной архитектуре. В ней можно настроить сколько угодно отображений тестовой иерархии в разных форматах; я покажу это на простом примере. В какой ситуации может это быть полезно?</p><p>Когда с тестами работает несколько команд, обычно удобно, чтобы у каждой был своя классификация тестов. Кто-то хочет, чтобы тесты были организованы по фичам, т.е. близко к требованиям. Кто-то предпочитает видеть организацию по сюитам - ближе к коду проверяемого приложения.</p><p>Мы сделаем так, чтобы при каждом запуске тестов Allure генерировал два отчёта, каждый со своим отображением тестов. Тренироваться будем на PyTest; все принципы можно применять к коду, на котором рабоотал Allure 2 — менять в старых тестах ничего не нужно.</p><h3>1. Подготовка</h3>Код демонстрации<p><a href=\"https://github.com/rattus-aristarchus/allure-3-plugins-demo\">https://github.com/rattus-aristarchus/allure-3-plugins-demo</a></p>Список зависимостей<p><a href=\"https://pypi.org/project/pytest/9.0.2/\">pytest: 9.0.2</a></p><p><a href=\"https://pypi.org/project/allure-pytest/2.15.3/\">allure-pytest: 2.15.3</a></p>Установка<p>Перед началом работы нужно установить:</p><ul><li><p><a href=\"https://wiki.python.org/moin/BeginnersGuide/Download\">Python</a></p></li><li><p><a href=\"https://allurereport.org/docs/v3/install/\">Allure Report 3</a></p></li></ul><p>Затем нам понадобится проект Python. Если его нужно создать с нуля, проще всего скачать проект-«болванку» с <a href=\"https://allurereport.org/start/\">Allure Start</a> — этот инструмент работает с Allure 3 так же, как с прошлыми версиями. Правда, нам понадобится добавить к скачанному проекту файл настроек <code>allurerc.js</code> - об этом ниже.</p><p>В скачанном проекте установим зависимости:</p><pre><code>pip install -r requirements.txt</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><h3>2. Пробные тесты</h3><p>Напишем несколько тестов. Их содержание нам безразлично, зато нас будет интересовать организация их в разные иерархии - это мы реализуем через декораторы:</p><pre><code class=\"python\">import allure\n\n\n# Сортировка по фичам:\n@allure.feature(\"Feature 1\")\n# Сортировка по сюитам:\n@allure.suite(\"Suite 1\")\n@allure.title(\"Первый тест\")\ndef test_allure_3_first():\n&nbsp; &nbsp; pass\n\n  \n@allure.feature(\"Feature 2\")\n@allure.suite(\"Suite 2\")\n@allure.title(\"Второй тест\")\ndef test_allure_3_second():\n&nbsp; &nbsp; pass\n\n  \n@allure.feature(\"Feature 1\")\n@allure.suite(\"Suite 2\")\n@allure.title(\"Третий тест\")\ndef test_allure_3_third():\n&nbsp; &nbsp; pass\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Третий тест у нас попадёт в разные категории в зависимости от того, организуем мы тесты по фичам или по сюитам.</p><h3>3. Настройка отчётов</h3><p>Теперь настроим отчёты, которые обеспечат нам несколько отображений иерархии тестов.</p><p>Для этого нужно создать файл настроек <code>allurerc.js</code> в корне проекта:</p><pre><code class=\"javascript\">export default {\n&nbsp; // Общий заголовок\n&nbsp; name: \"Демонстрация деревьев в Allure 3\",\n&nbsp; // Путь к папке с отчётом\n&nbsp; output: \"./allure-report\",\n&nbsp; // Путь к файлу с историей\n&nbsp; historyPath: \"./test-history/history.jsonl\",\n&nbsp; // Отчёты\n&nbsp; plugins: {\n&nbsp; &nbsp; // Отчёт с группировкой по фичам\n&nbsp; &nbsp; \"awesome-by-feature\": {\n&nbsp; &nbsp; &nbsp; import: \"@allurereport/plugin-awesome\",\n&nbsp; &nbsp; &nbsp; options: {\n&nbsp; &nbsp; &nbsp;   // Имя отчёта\n&nbsp; &nbsp; &nbsp; &nbsp; reportName: \"Группируем по фичам\",\n&nbsp; &nbsp; &nbsp; &nbsp; // Язык отчёта\n&nbsp; &nbsp; &nbsp; &nbsp; reportLanguage: \"ru\",\n&nbsp; &nbsp; &nbsp; &nbsp; // Поля, по которым группируются тесты в отчёте\n&nbsp; &nbsp; &nbsp; &nbsp; groupBy: [\"feature\"],\n&nbsp; &nbsp; &nbsp; },\n&nbsp; &nbsp; },\n&nbsp; &nbsp; // Отчёт с группировкой по сюитам\n&nbsp; &nbsp; \"awesome-by-suite\": {\n&nbsp; &nbsp; &nbsp; import: \"@allurereport/plugin-awesome\",\n&nbsp; &nbsp; &nbsp; options: {\n&nbsp; &nbsp; &nbsp; &nbsp; reportName: \"Группируем по сюитам\",\n&nbsp; &nbsp; &nbsp; &nbsp; reportLanguage: \"ru\",\n&nbsp; &nbsp; &nbsp; &nbsp; groupBy: [\"suite\"],\n&nbsp; &nbsp; &nbsp; },\n&nbsp; &nbsp; },\n&nbsp; },\n};\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Сейчас нас интересует поле <code>plugins</code>. В нём можно импортировать несколько плагинов или один плагин несколько раз; каждый раз будет создан отдельный отчёт.</p><p>Формат отчёта определяется полем <code>import</code>; здесь мы будем использовать базовый для Allure 3 - <strong>awesome</strong>.</p><p>В options мы прописываем имя отчёта, язык, и, главное, поля, по которым будут группироваться тесты. Здесь можно прописать несколько полей, и они будут выстроены в иерархию (первое поле - первый уровень иерархии). У нас сейчас прописан только один уровень, но можно было бы написать:</p><pre><code class=\"javascript\">groupBy: [\"epic\", \"feature\", \"story\"],\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Тогда мы бы получили трёхуровневую иерархию.</p><h3>4. Результат</h3><p>Теперь сгенерируем отчёты.</p><p>Тесты и генерация отчёта (а также создание файла истории) в Allure 3 выполняются одной командой такого формата: <code>npx allure run -- &lt;команда_запуска_тестов&gt;</code>.</p><p>В нашем случае команда выглядит так:</p><pre><code>npx allure run --config=./allurerc.js -- \"pytest --alluredir allure-results\"\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>В флаге <code>--config</code> для <code>allure run</code> здесь указан путь к файлу конфигурации.</p><p>После того, как тесты выполнены, отчёт можно открыть командой <code>allure open &lt;местоположение_отчёта&gt;</code> (у нас местоположение по умолчанию, <code>./allure-report</code>, поэтому можно просто <code>allure open</code>).</p><p>И вот перед нами два плагина:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/ccb/dc9/ec8/ccbdc9ec89e718ea07522bc76a348af1.png\"></figure><p>В одном отображении третий тест находится в первой фиче:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/151/8c2/001/1518c20015329571158cdbc723045d70.png\"></figure><p>В другом - во второй сюите:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/656/1cf/44a/6561cf44a93d792c243c6f2ddf5662dd.png\"></figure><h3>5. Allure 2 в Allure 3</h3><p>Строго говоря, это поведение можно было реализовать и в старом Аллюре. Чтобы разобраться, что тут изменилось, запустим старый Аллюр отдельным отчётом в новом Аллюре.</p><p>Для этого добавим несколько строк в <code>allurerc.js</code>, чтобы поле <code>plugins</code> выглядело так:</p><pre><code class=\"javascript\">plugins: {\t\n  // Отчёт с группировкой по фичам\n  \"awesome-by-feature\": {\n    import: \"@allurereport/plugin-awesome\",\n    options: {\n      reportName: \"Группируем по фичам\",\n      reportLanguage: \"ru\",\n      groupBy: [\"feature\"],\n    },\n  },\n  // Отчёт с группировкой по сюитам\n  \"awesome-by-suite\": {\n    import: \"@allurereport/plugin-awesome\",\n    options: {\n      reportName: \"Группируем по сюитам\",\n      reportLanguage: \"ru\",\n      groupBy: [\"suite\"],\n    },\n  },\n  // Классический отчёт\n  \"classic view\": {\t&nbsp; \n    // Импорт пакета классического отчёта &nbsp; &nbsp; &nbsp; \n    import: \"@allurereport/plugin-classic\",\n    options: {\n      reportName: \"Классическое отображение\",\n      reportLanguage: \"ru\",\n    },\n  },\n},\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Обратите внимание, что в последнем отчёте мы использовали другой плагин, чем раньше: <code>\"@allurereport/plugin-classic\"</code>; ровно так указывается формат отчёта. Список доступных плагинов можно посмотреть <a href=\"https://allurereport.org/docs/v3/configure/#plugin-system-overview\">здесь</a>.</p><p>Запустим тесты, откроем Аллюр и увидим, что появился третий отчёт:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/685/9fe/4a4/6859fe4a4cb7e1fcd78c99be1980bb99.png\"></figure><p>В нём - привычный интерфейс Allure 2. Отображение по фичам и сюитам здесь зашито в отдельные вкладки:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/385/545/646/385545646404f3698499920929dad942.png\"></figure><p>Итак, если старое отображение привычнее - оно никуда не делось.</p><h3>6. Отличие нового подхода</h3><p>Allure 2 предоставлял ограниченное число жёстко прописанных отображений; сейчас же тесты можно группировать по любому полю (tag, label), и организовывать иерархию этих полей в любом порядке.</p><p>Хотим сгруппировать по уровням (API, UI)? Добавляем к тесту метку (т.е. label), определяющую его уровень:</p><pre><code class=\"python\">@allure.label(\"level\", \"UI\")\ndef test_ui():\n&nbsp; &nbsp; pass\n\n  \n@allure.label(\"level\", \"API\")\ndef test_api():\n&nbsp; &nbsp; pass\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>И добавляем в <code>allurerc.js</code> новый плагин, использующий имя нашей метки в <code>groupBy</code>:</p><pre><code class=\"javascript\">\"layer view\": {\n  import: \"@allurereport/plugin-awesome\",\n  options: {\n    reportName: \"Группируем по уровням\",\n    reportLanguage: \"ru\",\n    groupBy: [\"level\"],\n  },\n},\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Или вот другой возможный кейс использования модульных отчётов. Предположим, мы начинаем новый проект, который в будущем может вольётся в старый, а может и нет. Заранее может быть неизвестно, какая структура отображения будет наиболее удобной; это не беда - можно просто создать новый отчёт, а дальше при необходимости менять в нём поля.</p><h3>Выводы</h3><p>Модульная архитектура позволяет приспособить инструмент к рабочему процессу, а не наоборот. И ещё - с ней всегда интересно экспериментировать. Весь код Аллюра открытый, все возможности можно подробно изучить на <a href=\"https://github.com/allure-framework/allure3\">GitHub</a>.</p>"
     },
     {
       "id": "lenta:https://lenta.ru/news/2026/02/25/stala-izvestna-prichina-moschnogo-vzryva-na-levom-beregu-kieva/:2026-02-24T22:07:00.000Z:Названа предварительная причина взрыва н",
@@ -102,31 +386,7 @@
       ],
       "image": "https://icdn.lenta.ru/assets/webpack/images/lenta_og.8735b949.png",
       "excerpt": "Фото: Gleb Garanich / ReutersНа левом берегу Киева вечером 24 февраля прогремел мощный взрыв. Как сообщает Telegram-канал «Политика Страны», причиной стало возгорание трансформатора.«По предварительной информации, в Днепровском районе вспых",
-      "contentHtml": "<figure><figcaption><p>Фото: Gleb Garanich / Reuters</p></figcaption></figure><p>На левом берегу <a href=\"https://lenta.ru/tags/geo/kiev/\">Киева</a> вечером 24 февраля прогремел мощный взрыв. Как сообщает <a href=\"https://t.me/stranaua/227247\">Telegram</a>-канал «Политика Страны», причиной стало возгорание трансформатора.</p><p>«По предварительной информации, в Днепровском районе вспыхнула подстанция», — говорится в сообщении.</p><p>Официальной информации от местных властей не было. Полиция проводит проверку.</p><p>Ранее российские войска <a href=\"https://lenta.ru/news/2026/02/23/vs-rossii-nanesli-novye-udary-po-ob-ektam-infrastruktury-vsu/\">нанесли</a> удары по объектам инфраструктуры, которые используют <a href=\"https://lenta.ru/tags/organizations/vsu/\">Вооруженные силы </a><a href=\"https://lenta.ru/tags/geo/ukraina/\">Украины</a> (ВСУ).</p><p>Кроме того, были поражены пункты временной дислокации украинских вооруженных формирований и иностранных наемников, которые расположены в 148 районах страны.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 689,
-        "approxBlocks": 8
-      }
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/02/25/glava-mid-danii-propustil-vstrechu-es-iz-za-odnoy-nepriyatnosti/:2026-02-24T22:04:47.000Z:Глава МИД Дании пропустил встречу ЕС из-",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Глава МИД Дании пропустил встречу ЕС из-за одной неприятности",
-      "url": "https://lenta.ru/news/2026/02/25/glava-mid-danii-propustil-vstrechu-es-iz-za-odnoy-nepriyatnosti/",
-      "publishedAt": "2026-02-24T22:04:47.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/02/25/01/20260225010727341/pic_5c98a12fcb413bb1dbee2d6cac1ce040.jpg",
-      "excerpt": "Фото: Ida Marie Odgaard / ReutersДатский министр иностранных дел Ларс Лёкке Расмуссен пропустил встречу глав МИД государств Евросоюза из-за неприятности с его самолетом. Его поездку отменили, когла обноружили поломку в авиалайнере, утвержда",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/25/glava-mid-danii-propustil-vstrechu-es-iz-za-odnoy-nepriyatnosti/\"><img src=\"https://icdn.lenta.ru/images/2026/02/25/01/20260225010727341/owl_detail_240_4fd49d19b75487e7a906af1bb35d5c38.jpg\"></a><figcaption><p>Фото: Ida Marie Odgaard / Reuters</p></figcaption></figure><p>Датский министр иностранных дел <a href=\"https://lenta.ru/tags/persons/rasmussen-lars/\">Ларс Лёкке Расмуссен</a> пропустил встречу глав МИД государств <a href=\"https://lenta.ru/tags/organizations/es/\">Евросоюза</a> из-за неприятности с его самолетом. Его поездку отменили, когла обноружили поломку в авиалайнере, утверждает газета <a href=\"https://www.berlingske.dk/internationalt/lars-loekke-om-ukraine-det-er-haardt-sagt-men-en-pause-har-ingen-interesse\">Berlingske</a>.</p><p>Технические проблемы возникли с обогревателем лобового стекла кабины — он вышел из строя.</p><p>На встрече, которую пропустил глава МИД <a href=\"https://lenta.ru/tags/geo/daniya/\">Дании</a>, ЕС <a href=\"https://lenta.ru/news/2026/02/23/vengriya-zablokirovala-novyy-kredit-kievu-i-ocherednoy-paket-sanktsiy-protiv-rossii/\">не смог</a> принять 20-й пакет антироссийских санкций, поскольку <a href=\"https://lenta.ru/tags/geo/vengriya/\">Венгрия</a> наложила вето. Причиной такого решения стала остановка <a href=\"https://lenta.ru/tags/geo/kiev/\">Киевом</a> транзита нефти по трубопроводу «Дружба», что, по словам венгерского министра, ставит под угрозу энергоснабжение страны.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 716,
-        "approxBlocks": 7
-      }
+      "contentHtml": "<figure><figcaption><p>Фото: Gleb Garanich / Reuters</p></figcaption></figure><p>На левом берегу <a href=\"https://lenta.ru/tags/geo/kiev/\">Киева</a> вечером 24 февраля прогремел мощный взрыв. Как сообщает <a href=\"https://t.me/stranaua/227247\">Telegram</a>-канал «Политика Страны», причиной стало возгорание трансформатора.</p><p>«По предварительной информации, в Днепровском районе вспыхнула подстанция», — говорится в сообщении.</p><p>Официальной информации от местных властей не было. Полиция проводит проверку.</p><p>Ранее российские войска <a href=\"https://lenta.ru/news/2026/02/23/vs-rossii-nanesli-novye-udary-po-ob-ektam-infrastruktury-vsu/\">нанесли</a> удары по объектам инфраструктуры, которые используют <a href=\"https://lenta.ru/tags/organizations/vsu/\">Вооруженные силы </a><a href=\"https://lenta.ru/tags/geo/ukraina/\">Украины</a> (ВСУ).</p><p>Кроме того, были поражены пункты временной дислокации украинских вооруженных формирований и иностранных наемников, которые расположены в 148 районах страны.</p>"
     },
     {
       "id": "tass:https://tass.ru/armiya-i-opk/26542409:2026-02-24T22:04:01.000Z:Марочко: зачистив Бересток под Константи",
@@ -143,6 +403,20 @@
       "contentHtml": ""
     },
     {
+      "id": "lenta:https://lenta.ru/news/2026/02/25/glava-mid-danii-propustil-vstrechu-es-iz-za-odnoy-nepriyatnosti/:2026-02-24T22:04:00.000Z:Глава МИД Дании пропустил встречу ЕС из-",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Глава МИД Дании пропустил встречу ЕС из-за одной неприятности",
+      "url": "https://lenta.ru/news/2026/02/25/glava-mid-danii-propustil-vstrechu-es-iz-za-odnoy-nepriyatnosti/",
+      "publishedAt": "2026-02-24T22:04:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/02/25/01/20260225010727341/pic_5c98a12fcb413bb1dbee2d6cac1ce040.jpg",
+      "excerpt": "Фото: Ida Marie Odgaard / ReutersДатский министр иностранных дел Ларс Лёкке Расмуссен пропустил встречу глав МИД государств Евросоюза из-за неприятности с его самолетом. Его поездку отменили, когла обноружили поломку в авиалайнере, утвержда",
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/25/glava-mid-danii-propustil-vstrechu-es-iz-za-odnoy-nepriyatnosti/\"><img src=\"https://icdn.lenta.ru/images/2026/02/25/01/20260225010727341/owl_detail_240_4fd49d19b75487e7a906af1bb35d5c38.jpg\"></a><figcaption><p>Фото: Ida Marie Odgaard / Reuters</p></figcaption></figure><p>Датский министр иностранных дел <a href=\"https://lenta.ru/tags/persons/rasmussen-lars/\">Ларс Лёкке Расмуссен</a> пропустил встречу глав МИД государств <a href=\"https://lenta.ru/tags/organizations/es/\">Евросоюза</a> из-за неприятности с его самолетом. Его поездку отменили, когла обноружили поломку в авиалайнере, утверждает газета <a href=\"https://www.berlingske.dk/internationalt/lars-loekke-om-ukraine-det-er-haardt-sagt-men-en-pause-har-ingen-interesse\">Berlingske</a>.</p><p>Технические проблемы возникли с обогревателем лобового стекла кабины — он вышел из строя.</p><p>На встрече, которую пропустил глава МИД <a href=\"https://lenta.ru/tags/geo/daniya/\">Дании</a>, ЕС <a href=\"https://lenta.ru/news/2026/02/23/vengriya-zablokirovala-novyy-kredit-kievu-i-ocherednoy-paket-sanktsiy-protiv-rossii/\">не смог</a> принять 20-й пакет антироссийских санкций, поскольку <a href=\"https://lenta.ru/tags/geo/vengriya/\">Венгрия</a> наложила вето. Причиной такого решения стала остановка <a href=\"https://lenta.ru/tags/geo/kiev/\">Киевом</a> транзита нефти по трубопроводу «Дружба», что, по словам венгерского министра, ставит под угрозу энергоснабжение страны.</p>"
+    },
+    {
       "id": "lenta:https://lenta.ru/news/2026/02/25/sudmedekspert-vyskazalas-o-samoy-optimalnoy-smerti/:2026-02-24T22:00:51.000Z:Судмедэксперт высказалась о самой оптима",
       "sourceId": "lenta",
       "sourceName": "Lenta.ru",
@@ -154,12 +428,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/02/20/11/20260220113202806/pic_ad92acd6dbb4813b466afc76ce24a1d1.jpg",
       "excerpt": "Фото: Verin / Shutterstock / FotodomСудмедэксперт Ольга Фатеева заявила, что каждый человек имеет свое представление о «правильной» и «красивой» смерти. На эту тему она высказалась во время интервью для YouTube-канала предпринимателя Кирилл",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/25/sudmedekspert-vyskazalas-o-samoy-optimalnoy-smerti/\"><img src=\"https://icdn.lenta.ru/images/2026/02/20/11/20260220113202806/owl_detail_240_b87908a8b0bae57adb7c7c602c0d762a.jpg\"></a><figcaption><p>Фото: Verin / Shutterstock / Fotodom</p></figcaption></figure><p>Судмедэксперт <a href=\"https://lenta.ru/tags/persons/fateeva-olga/\">Ольга Фатеева</a> заявила, что каждый человек имеет свое представление о «правильной» и «красивой» смерти. На эту тему она высказалась во время интервью для <a href=\"https://youtu.be/eNZ77Ia-BeQ?si=dimpLVmgwK9g3aXh\">YouTube</a>-канала предпринимателя <a href=\"https://lenta.ru/tags/persons/fomin-kirill/\">Кирилла Фомина</a>.</p><p>По словам Фатеевой, в настоящее время оптимальной смертью большинство людей считают уход из жизни во сне. Дело в том, что это происходит быстро, а человек не ощущает страданий. Однако так было не всегда, подчеркнула специалистка.</p><p>«Еще несколько веков назад скоропостижная и быстрая смерть не считалась желанной, поскольку у человека были обязательства перед собой, перед окружающими, перед Богом. Он должен был подготовиться к наступлению смерти, отдать последние какие-то распоряжения, поэтому скоропостижно умирать никто не хотел. Все хотели, чтобы было время дано», — пояснила судмедэксперт.</p><p>Ранее уфимские врачи <a href=\"https://lenta.ru/news/2024/11/21/rossiyanam-podskazali-prostoy-test-dlya-opredeleniya-biologicheskogo-vozrasta/\">рассказали</a>, как определить свой биологический возраст. Для этого, утверждают они, дома необходимо проверить способность сохранять баланс тела.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 1077,
-        "approxBlocks": 8
-      }
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/25/sudmedekspert-vyskazalas-o-samoy-optimalnoy-smerti/\"><img src=\"https://icdn.lenta.ru/images/2026/02/20/11/20260220113202806/owl_detail_240_b87908a8b0bae57adb7c7c602c0d762a.jpg\"></a><figcaption><p>Фото: Verin / Shutterstock / Fotodom</p></figcaption></figure><p>Судмедэксперт <a href=\"https://lenta.ru/tags/persons/fateeva-olga/\">Ольга Фатеева</a> заявила, что каждый человек имеет свое представление о «правильной» и «красивой» смерти. На эту тему она высказалась во время интервью для <a href=\"https://youtu.be/eNZ77Ia-BeQ?si=dimpLVmgwK9g3aXh\">YouTube</a>-канала предпринимателя <a href=\"https://lenta.ru/tags/persons/fomin-kirill/\">Кирилла Фомина</a>.</p><p>По словам Фатеевой, в настоящее время оптимальной смертью большинство людей считают уход из жизни во сне. Дело в том, что это происходит быстро, а человек не ощущает страданий. Однако так было не всегда, подчеркнула специалистка.</p><p>«Еще несколько веков назад скоропостижная и быстрая смерть не считалась желанной, поскольку у человека были обязательства перед собой, перед окружающими, перед Богом. Он должен был подготовиться к наступлению смерти, отдать последние какие-то распоряжения, поэтому скоропостижно умирать никто не хотел. Все хотели, чтобы было время дано», — пояснила судмедэксперт.</p><p>Ранее уфимские врачи <a href=\"https://lenta.ru/news/2024/11/21/rossiyanam-podskazali-prostoy-test-dlya-opredeleniya-biologicheskogo-vozrasta/\">рассказали</a>, как определить свой биологический возраст. Для этого, утверждают они, дома необходимо проверить способность сохранять баланс тела.</p>"
     },
     {
       "id": "lenta:https://lenta.ru/news/2026/02/25/67-letnyaya-madonna-v-otkrovennom-vide-pomyla-poly-dlya-reklamy-dolce-gabbana/:2026-02-24T22:00:40.000Z:67-летняя Мадонна в откровенном виде пом",
@@ -173,12 +442,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/02/24/15/20260224155623258/pic_9c07fc1bdaf05b83aa5caf79538e78b3.jpg",
       "excerpt": "Американская певица Мадонна в откровенном виде помыла полы для рекламы итальянского бренда Dolce & Gabbana. Публикация появилась в Instagram-аккаунте (принадлежит компании Meta, признанной экстремистской организацией и запрещенной в РФ) аме",
-      "contentHtml": "<p>Американская певица <a href=\"https://lenta.ru/tags/persons/madonna/\">Мадонна</a> в откровенном виде помыла полы для рекламы итальянского бренда Dolce &amp; Gabbana. Публикация появилась в Instagram-аккаунте <i>(принадлежит компании Meta, признанной экстремистской организацией и запрещенной в <a href=\"https://lenta.ru/tags/geo/rf/\">РФ</a>)</i> американского фотографа и видеографа <a href=\"https://lenta.ru/tags/persons/klyayn-stiven/\">Стивена Кляйна</a>.</p><p>67-летнюю знаменитость запечатлели в ультракороткой черной комбинации с глубоким декольте и туфлях на каблуках. Она позировала на мокром полу рядом с жестяным ведром, пока мимо нее из другого зала выбегали десятки мужчин и женщин. В качестве аксессуаров для нее подобрали перчатки для уборки и колье.</p><p>Ранее в феврале 67-летняя Мадонна в прозрачном белье и леопардовой шубе <a href=\"https://lenta.ru/news/2026/02/05/67-letnyaya-madonna-snyalas-v-prozrachnom-belie-i-leopardovoy-shube/\">станцевала</a> на камеру. Знаменитость исполнила движения под собственный хит Thief of Hearts.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 751,
-        "approxBlocks": 3
-      }
+      "contentHtml": "<p>Американская певица <a href=\"https://lenta.ru/tags/persons/madonna/\">Мадонна</a> в откровенном виде помыла полы для рекламы итальянского бренда Dolce &amp; Gabbana. Публикация появилась в Instagram-аккаунте <i>(принадлежит компании Meta, признанной экстремистской организацией и запрещенной в <a href=\"https://lenta.ru/tags/geo/rf/\">РФ</a>)</i> американского фотографа и видеографа <a href=\"https://lenta.ru/tags/persons/klyayn-stiven/\">Стивена Кляйна</a>.</p><p>67-летнюю знаменитость запечатлели в ультракороткой черной комбинации с глубоким декольте и туфлях на каблуках. Она позировала на мокром полу рядом с жестяным ведром, пока мимо нее из другого зала выбегали десятки мужчин и женщин. В качестве аксессуаров для нее подобрали перчатки для уборки и колье.</p><p>Ранее в феврале 67-летняя Мадонна в прозрачном белье и леопардовой шубе <a href=\"https://lenta.ru/news/2026/02/05/67-letnyaya-madonna-snyalas-v-prozrachnom-belie-i-leopardovoy-shube/\">станцевала</a> на камеру. Знаменитость исполнила движения под собственный хит Thief of Hearts.</p>"
     },
     {
       "id": "tass:https://tass.ru/sport/26542401:2026-02-24T21:53:50.000Z:\"Будё-Глимт\" с Хайкиным обыграл \"Интер\" ",
@@ -458,7 +722,7 @@
         "science"
       ],
       "image": "",
-      "excerpt": "",
+      "excerpt": "Премиальный фонд составляет 60 млн рублей",
       "contentHtml": ""
     },
     {
@@ -21029,272 +21293,6 @@
       "image": "",
       "excerpt": "Старший прапорщик погиб 19 октября 2023",
       "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/26533419:2026-02-24T05:03:24.000Z:ГД в приоритетном порядке рассмотрит изм",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "ГД в приоритетном порядке рассмотрит изменения миграционной политики",
-      "url": "https://tass.ru/obschestvo/26533419",
-      "publishedAt": "2026-02-24T05:03:24.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260224/8836611.jpg",
-      "excerpt": "Документом предусматривается, что трудовые мигранты должны оплачивать налог в виде фиксированного авансового платежа не только на себя, но и на всех членов семьи, находящихся в России на их иждивении",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/26533405:2026-02-24T05:03:01.000Z:В аэропорту Екатеринбурга задерживается ",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В аэропорту Екатеринбурга задерживается вылет шести рейсов",
-      "url": "https://tass.ru/obschestvo/26533405",
-      "publishedAt": "2026-02-24T05:03:01.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Речь идет о рейсах в Сочи, Ташкент, Самарканд, Москву и Белоярский",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/02/24/perespavshaya-s-tysyachey-muzhchin-pornozvezda-bonni-blyu-nazvala-samoe-vazhnoe-v-horoshem-sekse/:2026-02-24T05:02:57.000Z:Переспавшая с тысячей мужчин порнозвезда",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Переспавшая с тысячей мужчин порнозвезда Бонни Блю назвала самое важное в хорошем сексе",
-      "url": "https://lenta.ru/news/2026/02/24/perespavshaya-s-tysyachey-muzhchin-pornozvezda-bonni-blyu-nazvala-samoe-vazhnoe-v-horoshem-sekse/",
-      "publishedAt": "2026-02-24T05:02:57.000Z",
-      "categoryIds": [
-        "culture"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/02/20/14/20260220143506670/pic_f6bef202528c5b47ffc27103376fe7d0.jpg",
-      "excerpt": "Фото: Oleg Elkov / Shutterstock / FotodomСкандальная британская порнозвезда Бонни Блю, которая прославилась тем, что переспала с 1000 мужчин за 12 часов, назвала главное условие хорошего секса. Об этом пишет Daily Star.В эксклюзивном интерв",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/24/perespavshaya-s-tysyachey-muzhchin-pornozvezda-bonni-blyu-nazvala-samoe-vazhnoe-v-horoshem-sekse/\"><img src=\"https://icdn.lenta.ru/images/2026/02/20/14/20260220143506670/owl_detail_240_6fdea8e6cb9036aaf5dd784b60764bfd.jpg\"></a><figcaption><p>Фото: Oleg Elkov / Shutterstock / Fotodom</p></figcaption></figure><p>Скандальная британская порнозвезда Бонни Блю, которая прославилась тем, что переспала с 1000 мужчин за 12 часов, назвала главное условие хорошего секса. Об этом <a href=\"https://www.dailystar.co.uk/showbiz/bonnie-blue-reveals-secret-having-36748005\">пишет</a> Daily Star.</p><p>В эксклюзивном интервью изданию Блю заявила, что залогом отличных сексуальных отношений является умение расслабиться. По ее мнению, самое главное, чтобы секс приносил удовольствие. Блю посоветовала не думать слишком много и не смущаться. Она считает, что для хорошего секса не нужно ничего изображать, а мужчинам необязательно обладать огромным половым органом или идеальным телом.</p><p>Занимайтесь этим и получайте удовольствие. Продержитесь вы 10 секунд или за час не управитесь — все в порядке. Доставьте удовольствие партнеру, а дальше все случится само собой</p><p>Бонни Блю</p><p>Ранее Бонни Блю <a href=\"https://lenta.ru/news/2025/07/04/zapreschennaya-pornozvezda-bonni-blyu-nazvala-samoe-vazhnoe-v-sekse/\">назвала</a> согласие одной из самых важных вещей в сексе. По ее словам, партнеры должны позаботиться, чтобы им было комфортно друг с другом.<br></p>"
-    },
-    {
-      "id": "tass:https://tass.ru/sport/26533455:2026-02-24T05:02:10.000Z:Андреев рассказал, что гимнастов из РФ х",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Андреев рассказал, что гимнастов из РФ хорошо судили на турнире в Германии",
-      "url": "https://tass.ru/sport/26533455",
-      "publishedAt": "2026-02-24T05:02:10.000Z",
-      "categoryIds": [
-        "sports"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260224/8836595.jpg",
-      "excerpt": "В Коттбусе прошел этап Кубка мира по спортивной гимнастике",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26533425:2026-02-24T05:01:00.000Z:Нидерланды останутся в статусе наблюдате",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Нидерланды останутся в статусе наблюдателя при Совете мира",
-      "url": "https://tass.ru/mezhdunarodnaya-panorama/26533425",
-      "publishedAt": "2026-02-24T05:01:00.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "",
-      "excerpt": "Премьер-министр королевства Роб Йеттен заявил, что Гаага поддерживает \"все инициативы, направленные на улучшение положения\" жителей Газы",
-      "contentHtml": ""
-    },
-    {
-      "id": "kommersant:https://www.kommersant.ru/doc/8460874:2026-02-24T05:00:00.000Z:Погрузка подкинула проблем // В 2025 год",
-      "sourceId": "kommersant",
-      "sourceName": "Коммерсантъ",
-      "title": "Погрузка подкинула проблем // В 2025 году грузооборот на сети ОАО РЖД сократился на 1,8%",
-      "url": "https://www.kommersant.ru/doc/8460874",
-      "publishedAt": "2026-02-24T05:00:00.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "https://im2.kommersant.ru/Issues.photo2/DAILY/2026/031T/KMO_199395_00134_1_t219_000643.jpg",
-      "excerpt": "Несмотря на падение погрузки по итогам 2025 года, ОАО РЖД показало увеличение доходов, EBITDA и прибыли от продаж за этот период. В то же время чистый долг компании, для снижения которого рассматривается в том числе продажа части активов ОАО РЖД, увеличился в 2025 году на 20%. В 2026 году перед компанией стоит задача увеличить перевозки грузов, но при нынешней экономической конъюнктуре это будет непросто, отмечают аналитики.",
-      "contentHtml": ""
-    },
-    {
-      "id": "kommersant:https://www.kommersant.ru/doc/8460228:2026-02-24T05:00:00.000Z:Яблоку не дают упасть // Выпуск натураль",
-      "sourceId": "kommersant",
-      "sourceName": "Коммерсантъ",
-      "title": "Яблоку не дают упасть // Выпуск натурального сидра увеличился за год на 7,5% в условиях нехватки сырья",
-      "url": "https://www.kommersant.ru/doc/8460228",
-      "publishedAt": "2026-02-24T05:00:00.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "https://im2.kommersant.ru/Issues.photo2/DAILY/2026/031T/KMO_199965_00037_1_t219_224430.jpg",
-      "excerpt": "Разлив натурального сидра в 2025 году увеличился примерно на 7,5% год к году, до 527,13 тыс. декалитров (дал), что почти в четыре раза меньше, чем рост всей категории. Производством такой продукции в основном занимаются небольшие ремесленные предприятия, так как крупные заводы технически не приспособлены для этого.",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/26533391:2026-02-24T04:57:43.000Z:В Приморье произошел природный пожар пло",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В Приморье произошел природный пожар площадью 1 тыс. га",
-      "url": "https://tass.ru/proisshestviya/26533391",
-      "publishedAt": "2026-02-24T04:57:43.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "В ликвидации огня участвуют 101 человек, 19 единиц техники и 2 квадрокоптера",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/26533399:2026-02-24T04:56:24.000Z:В Саратовской области отменили угрозу ат",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В Саратовской области отменили угрозу атаки БПЛА",
-      "url": "https://tass.ru/proisshestviya/26533399",
-      "publishedAt": "2026-02-24T04:56:24.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Об этом сообщили в МЧС России",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/26533395:2026-02-24T04:56:02.000Z:На компанию в Красноярском крае завели д",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "На компанию в Красноярском крае завели дело за загрязнение воздуха канцерогенами",
-      "url": "https://tass.ru/proisshestviya/26533395",
-      "publishedAt": "2026-02-24T04:56:02.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Речь идет о бензапирене, сильном токсичном веществе",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/02/24/kia/:2026-02-24T04:56:00.000Z:В России сменился лидер в продажах машин",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "В России сменился лидер в продажах машин с пробегом",
-      "url": "https://lenta.ru/news/2026/02/24/kia/",
-      "publishedAt": "2026-02-24T04:56:00.000Z",
-      "categoryIds": [
-        "tech"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/02/24/07/20260224075929490/pic_dd52267d36fb38406f78e222aa6d62e1.jpg",
-      "excerpt": "Фото: Igor Stepanov / UnsplashПо итогам января самыми продаваемыми легковыми автомобилями с пробегом в России стали южнокорейские Kia Rio и Hyundai Solaris. Об этом со ссылкой на отчет аналитического агентства «Автостат» сообщает РИА Новост",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/24/kia/\"><img src=\"https://icdn.lenta.ru/images/2026/02/24/07/20260224075929490/owl_detail_240_37217aeef36c462581b961e231886a94.jpg\"></a><figcaption><p>Фото: Igor Stepanov / Unsplash</p></figcaption></figure><p>По итогам января самыми продаваемыми легковыми автомобилями с пробегом в России стали южнокорейские Kia Rio и <a href=\"https://lenta.ru/tags/organizations/hyundai/\">Hyundai</a> Solaris. Об этом со ссылкой на отчет аналитического агентства «Автостат» сообщает <a href=\"http://ria.ru/\">РИА Новости</a>.</p><p>У первой модели продажи составили 10,1 тысячи единиц, что на 26 процентов больше, чем годом ранее, а у второй — 9,8 тысячи. На третьем месте идет Ford Focus (8,3 тысячи).</p><p>Эти модели смогли подвинуть с первых мест российские автомобили. В 2025 году лидирующую позицию занимала Lada 2107, но теперь она делит с  Lada 2114 пятое и шестое места (7,8 тысячи единиц)/</p><p>Между этими моделями встроилась Lada Niva (8,1 тысячи). Из иномарок в первую десятку также попали Toyota Camry (7,2 тысячи) и Volkswagen Polo (6,8 тысячи штук) — восьмое и девятое места. Оставшиеся седьмое и десятое места заняли Lada Priora (7,7 тысячи единиц) и Lada Granta (6,7 тысячи). Всего в январе россияне приобрели 437 тысячи легковых автомобилей с пробегом, что на четыре процента больше, чем годом ранее.</p><p>Ранее сообщалось, что в начале 2026 года суммарные продажи новых легковых автомобилей в России <a href=\"https://lenta.ru/news/2026/02/13/rossiyskiy-avtorynok-pogruzilsya-v-depressiyu/\">упали</a> на 9,5 процента даже по сравнению с кризисным 2025 годом. По оценке главы группы компаний «АвтоСпецЦентр» Андрея Терлюкевича, можно констатировать, что национальный авторынок погрузился в полноценную депрессию.</p>"
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/russia/1074312:2026-02-24T04:56:00.000Z:Аэропорт Ульяновска приостановил работу",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "Аэропорт Ульяновска приостановил работу",
-      "url": "https://www.interfax.ru/russia/1074312",
-      "publishedAt": "2026-02-24T04:56:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Временные ограничения на прием и выпуск воздушных судов введены в аэропорту Ульяновска (Баратаевка), сообщили в Росавиации.\"Аэропорт Ульяновск (Баратаевка).",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/02/24/grobovyh-za-svo/:2026-02-24T04:55:48.000Z:Бросившего сына россиянина обвинили в пр",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Бросившего сына россиянина обвинили в присвоении миллионов из его гробовых за СВО",
-      "url": "https://lenta.ru/news/2026/02/24/grobovyh-za-svo/",
-      "publishedAt": "2026-02-24T04:55:48.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/02/24/08/20260224080118831/pic_87b30170cb2fb17179ad6d11071db136.jpg",
-      "excerpt": "Фото: Ilya Moskovets / GloballookpressНа Урале бросившего семью отца участника специальной военной операции (СВО) обвинили в присвоении миллионов из гробовых выплат. Об этом сообщает портал E1.ru.Как рассказала порталу бывшая жена россиянин",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/02/24/grobovyh-za-svo/\"><img src=\"https://icdn.lenta.ru/images/2026/02/24/08/20260224080118831/owl_detail_240_7793419d830d4eb042d7cf862e8d54a7.jpg\"></a><figcaption><p>Фото: Ilya Moskovets / Globallookpress</p></figcaption></figure><p>На Урале бросившего семью отца участника специальной военной операции (СВО) обвинили в присвоении миллионов из гробовых выплат. Об этом <a href=\"https://www.e1.ru/text/world/2026/02/24/76274611/\">сообщает</a> портал E1.ru.</p><p>Как рассказала порталу бывшая жена россиянина Екатерина, мужчина бросил ее с маленьким ребенком в 2005 году, а когда она попыталась добиться алиментов, начал угрожать, и женщина отозвала заявление. Кроме того, утверждает она, во время совместной жизни бывший муж избивал ее и сильно злоупотреблял алкоголем. После расставания бывший супруг провел много лет в колонии за различные преступления и не занимался ребенком.</p><p>Сын россиянина вырос, отправился на СВО, был тяжело ранен и не выжил, и россиянка попыталась лишить бывшего мужа права на получение гробовых выплат. Однако пока та оформляла нужные бумаги, мужчина успел забрать себе половину из положенной суммы — два с половиной миллиона рублей.</p><p>Это жуткая несправедливость. Мать потеряла единственного сына, пережила такое горе потери, ездила в зону военных действий в госпиталь, после смерти сына занималась оформлением документов — такое не каждый вынесет</p><p>Инна Суроваадвокат Екатерины</p><p>Ранее <a href=\"https://lenta.ru/news/2026/01/28/semya-ushedshego-na-svo-rossiyskogo-detdomovtsa-ustroila-konflikt-iz-za-grobovyh/\">сообщалось</a>, что семья ушедшего на СВО российского детдомовца из Тюменской области устроила конфликт из-за гробовых.</p>"
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/02/23/amerikanskiy-bokser-upal-v-obmorok-mezhdu-raundami/:2026-02-24T04:55:22.000Z:Американский боксер упал в обморок между",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Американский боксер упал в обморок между раундами",
-      "url": "https://lenta.ru/news/2026/02/23/amerikanskiy-bokser-upal-v-obmorok-mezhdu-raundami/",
-      "publishedAt": "2026-02-24T04:55:22.000Z",
-      "categoryIds": [
-        "sports"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/02/23/20/20260223203241946/pic_9fff15a437a1edd164b0d66a58c7998b.jpg",
-      "excerpt": "Американский боксер Джозеф Джордж упал в обморок после первого раунда боя с Атифом Оберлтоном. Об этом сообщает ESPN.В концовке первого раунда боксеры столкнулись головами. После этого Джордж дошел до своего угла, сел на стул и упал в обмор",
-      "contentHtml": "<p>Американский боксер Джозеф Джордж упал в обморок после первого раунда боя с Атифом Оберлтоном. Об этом сообщает <a href=\"https://www.espn.com/boxing/story?id=48011576&amp;_slug_=boxer-joe-george-jr-collapses-corner-fight-vs-atif-oberlton\">ESPN</a>.</p><p>В концовке первого раунда боксеры столкнулись головами. После этого Джордж дошел до своего угла, сел на стул и упал в обморок между раундами. Бой завершился победой Оберлтона техническим нокаутом, Джорджа увезли в больницу на МРТ.</p><p>«Я никогда не видел ничего подобного в своей карьере. Как боец, ты всегда хочешь покинуть ринг так же, как ты туда вошел. Я сказал Джорджу: \"Брат, я люблю тебя\". Мне хотелось удостовериться, что с ним все в порядке», — сказал Оберлтон после поединка.</p><p>36-летний Джордж провел на профессиональном ринге 15 боев, в которых одержал 13 побед (восемь из них — нокаутом) и потерпел два поражения. Оберлтон выиграл во всех своих 15 поединках, в 13 из них он отправлял своих соперников на настил.</p>"
-    },
-    {
-      "id": "tass:https://tass.ru/sport/26533389:2026-02-24T04:53:11.000Z:Селехметьеву представили с флагом России",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Селехметьеву представили с флагом России в трансляции турнира WTA в США",
-      "url": "https://tass.ru/sport/26533389",
-      "publishedAt": "2026-02-24T04:53:11.000Z",
-      "categoryIds": [
-        "sports"
-      ],
-      "image": "",
-      "excerpt": "Флаг был показан один раз",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/26533379:2026-02-24T04:51:54.000Z:В Геленджике отменили угрозу атаки БПЛА",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В Геленджике отменили угрозу атаки БПЛА",
-      "url": "https://tass.ru/proisshestviya/26533379",
-      "publishedAt": "2026-02-24T04:51:54.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Для жителей и гостей курорта опасности нет, отметил глава города Алексей Богодистов",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/ekonomika/26533373:2026-02-24T04:51:01.000Z:\"Агроэкспорт\": экспорт мороженой малины ",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "\"Агроэкспорт\": экспорт мороженой малины в 2025 году вырос на 69%",
-      "url": "https://tass.ru/ekonomika/26533373",
-      "publishedAt": "2026-02-24T04:51:01.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "Крупнейшими импортерами оказались Белоруссия, Казахстан и Сербия",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/26533363:2026-02-24T04:50:54.000Z:В Пензенской области отменили режим бесп",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В Пензенской области отменили режим беспилотной опасности",
-      "url": "https://tass.ru/proisshestviya/26533363",
-      "publishedAt": "2026-02-24T04:50:54.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Об этом сообщил губернатор региона Олег Мельниченко",
-      "contentHtml": ""
-    },
-    {
-      "id": "habr:https://habr.com/ru/articles/991220/?utm_source=habrahabr&utm_medium=rss&utm_campaign=991220:2026-02-24T04:50:46.000Z:Правила DATEADD в DAX",
-      "sourceId": "habr",
-      "sourceName": "Хабр",
-      "title": "Правила DATEADD в DAX",
-      "url": "https://habr.com/ru/articles/991220/?utm_source=habrahabr&utm_medium=rss&utm_campaign=991220",
-      "publishedAt": "2026-02-24T04:50:46.000Z",
-      "categoryIds": [
-        "tech"
-      ],
-      "image": "https://habrastorage.org/getpro/habr/upload_files/54e/14e/4c3/54e14e4c3e60d774e7d6243e2d489ce5.png",
-      "excerpt": "Привет, Хабр! Важной составной частью Time Intelligence в DAX являются функции работы со временем, в частности, DATEADD, т.к. она является базовой для других (например, SAMEPERIODLASTYEAR является псевдонимом DATEADD('Date'[Date], -1, YEAR)) и возвращает таблицу (в отличие, например, от EDATE , которая возвращает только скаляр), так и использоваться в качестве фильтра в CALCULATE.Информацию о DATEADD приходится собирать из разных источников. Часть описано в официальной документации DATEADD, что-то есть в DAX Guide, что-то есть в материалах SQL BI, поэтому картина составляется по частям, хотя логика функции неочевидна и велики риски ошибок при использовании DATEADD в случае некорректного её использования.Интересующимся правилами DATEADD для обеспечения Time Intelligence в DAX — добро пожаловать под кат :) Читать далее",
-      "contentHtml": "<p>Привет, Хабр! Важной составной частью Time Intelligence в DAX являются функции работы со временем, в частности, <code>DATEADD</code>, т.к. она является базовой для других (например, <code>SAMEPERIODLASTYEAR</code> является псевдонимом <code>DATEADD('Date'[Date], -1, YEAR)</code>) и возвращает таблицу (в отличие, например, от <a href=\"https://dax.guide/edate\"><code>EDATE</code></a> , которая возвращает только скаляр), так и использоваться в качестве фильтра в <code>CALCULATE</code>.</p><p>Информацию о <code>DATEADD</code> приходится собирать из разных источников. Часть описано в официальной документации <a href=\"https://learn.microsoft.com/en-us/dax/dateadd-function-dax\">DATEADD</a>, что-то есть в <a href=\"https://dax.guide/dateadd\">DAX Guide</a>, что-то есть в <a href=\"https://www.sqlbi.com/articles/differences-between-dateadd-and-parallelperiod-in-dax\">материалах SQL BI</a>,  поэтому картина составляется по частям, хотя логика функции неочевидна и велики риски ошибок при использовании <code>DATEADD</code> в случае некорректного её использования.</p><p>Интересующимся правилами <code>DATEADD</code> для обеспечения Time Intelligence в DAX&nbsp;— добро пожаловать под кат :)</p><p>Важной задачей при смещении периодов времени (месяцы, годы) является необходимость учесть разное количество дней в разных месяцах и годах (для смещений на годы&nbsp;— с&nbsp;учетом високосного года).  Можно сказать, что  у функции  <code>DATEADD</code> нет таких проблем, она возвращает целый месяц при  смещении, если в исходном диапазоне был выбран ровно месяц. Для реализации такого поведения функция DATEADD  следует трем следующим правилам.</p><p>1. Функция  <code>DATEADD</code> возвращает только даты, существующие в столбце с датами. Если после смещения даты в этой таблице не найдены, функция вернет только те даты, которые есть в таблице.</p><p>2.  Если дата отсутствует в соответствующем месяце после операции смещения, то функция  <code>DATEADD</code> вернет последний день соответствующего  месяца.</p><p>3.  Если текущие даты для сдвига включают в себя два последних дня месяца, то в результат функции  <code>DATEADD</code> войдут все даты между соответствующими  днями в смещенной таблице и окончанием месяца. Как следствие, если выбрана одна дата, то Time Intelligence логика с периодами не применяется к одной дате, поскольку единственная дата&nbsp;— это не период.</p><p>Рассмотрим правила детальнее с DAX примерами и примерами из ClickHouse. Примеры ClickHouse нужны лишь для демонстрации базовой возможной реализации.</p><h2>Правило 1 — только даты из календаря</h2><p>DAX при сдвиге периодов времени не генерирует даты — он берёт их только из таблицы дат <code>date</code>.</p><p>В связи с этим следующее поведение не соответствует DAX:</p><pre><code>SELECT addMonths(date, 1)\nFROM selected_dates</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Приведенный выше пример создаёт даты, даже если их нет в календаре, что не соответствует DAX. DAX-эквивалент в ClickHouse может быть следующим:</p><pre><code>SELECT c.date\nFROM selected_dates s\nINNER JOIN calendar c\n    ON c.date = addMonths(s.date, 1)</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>В этом случае если даты нет в календаре, то она не попадёт в результат, что совпадает с DAX.</p><h2>Правило 2 — если дня нет, то берется последний день месяца</h2><p>Пример DAX:</p><pre><code>31 января + 1 месяц = 28 февраля</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>В ClickHouse это корректно имплементировано через <code>addMonths</code> , то есть правило 2 уже соблюдается автоматически:</p><pre><code>SELECT addMonths(toDate('2024-01-31'), 1)\n-- 2024-02-29</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><h2>Правило 3 — если выбраны два последних дня месяца, то вернуть период до конца месяца</h2><p>Это самое нетривиальное правило DAX и СУБД зачастую не имеют аналогичного функционала. В частности, в ClickHouse этого нет, поэтому для демонстрации соответствующей логики SQL был реализован, который в общих чертах показыавет особенности логики Time Intelligence.</p><p>Если выбраны два последних дня месяца, то включается <a href=\"https://www.sqlbi.com/articles/differences-between-dateadd-and-parallelperiod-in-dax\">Time Intelligence логика</a>, обеспечивающая корректное количество дней во всех месяцах:</p><blockquote><p>Remember that when it comes to the DAX time intelligence functions, saying that an entire month is selected means that all the values in the&nbsp;<em>Date</em>&nbsp;table for that month are visible in the filter context. This algorithm is required to return the 31 days in January in case February (which has only 28 or 29 days) is selected.</p></blockquote><p>Пусть выбраны даты:</p><pre><code>29 апреля\n30 апреля</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p><code>DATEADD</code> со смещением на один месяц назад возвращет:</p><pre><code>29 марта\n30 марта\n31 марта - день добавился автоматически</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Рассмотрим схематичное решение-прототип на ClickHouse с ограничениями (диапазон дат для смещения непрерывный и в рамках одного месяца)&nbsp;—&nbsp;лишь для иллюстрации объема логики SQL, которая нужна для имплементации <code>DATEADD</code> из DAX.</p><p>Шаг1&nbsp;— проверить, что выбраны два последних дня месяца:</p><pre><code>WITH last_two_check AS\n(\n    SELECT count() AS cnt\n    FROM selected_dates\n    WHERE date &gt;= addDays(toLastDayOfMonth(date), -1)\n)\nSELECT cnt FROM last_two_check</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Шаг 2 — границы выбранного диапазона:</p><pre><code>WITH bounds AS\n(\n    SELECT\n        min(date) AS min_d,\n        max(date) AS max_d\n    FROM selected_dates\n)</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Шаг 3 — смещённый диапазон:</p><pre><code>WITH bounds AS\n(\n    SELECT\n        min(date) AS min_d,\n        max(date) AS max_d\n    FROM selected_dates\n)\n\nSELECT\n    addMonths(min_d, 1) AS new_start,\n    toLastDayOfMonth(addMonths(max_d, 1)) AS new_end\nFROM bounds\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Полный DAX-эквивалент <code>DATEADD</code> в ClickHouse с описанными ограничениями:</p><pre><code>-- Ограничения:\n-- начало и конец выбранного периода в одном месяце\n-- нет промежутков в таблице дат\n\nWITH\n-- смещение в месяцах\n    -1 AS shift,\n\n    selected AS\n        (\n            SELECT arrayJoin([\n                toDate('2024-04-29'),\n                toDate('2024-04-30')\n                ]) AS date\n        ),\n\n-- проверка на два последний дня месяца\n    last_two_check AS\n        (\n            SELECT count() AS cnt\n            FROM selected\n            WHERE date &gt;= addDays(toLastDayOfMonth(date), -1)\n        ),\n\n    bounds AS\n        (\n            SELECT\n                min(date) AS min_d,\n                max(date) AS max_d\n            FROM selected\n        ),\n\n-- смещенный период дат\n    range_shift AS\n        (\n            SELECT\n                addMonths(min_d, shift) AS new_start,\n                toLastDayOfMonth(addMonths(max_d, shift)) AS new_end\n            FROM bounds\n        ),\n\n    calendar AS\n        (\n            SELECT toDate('2000-01-01') + number AS date\n            FROM numbers(36500)\n        )\n\n-- режим DAX \"расширить до конца месяца\"\nSELECT c.date\nFROM calendar c\n         CROSS JOIN range_shift r\n         CROSS JOIN last_two_check l\nWHERE c.date BETWEEN r.new_start AND r.new_end\n  AND l.cnt = 2\n\nUNION ALL\n\n-- обычный режим DAX\nSELECT addMonths(date, shift)\nFROM selected\n         CROSS JOIN last_two_check l\nWHERE l.cnt != 2\n\nORDER BY date;</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Результат выполнения запроса:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/b95/fc6/cc9/b95fc6cc9919871d2985e1115aa5aa9e.png\"></figure><p>Как было описано, в этой имплементации есть ограничения&nbsp;— непрерывный период в рамках одного месяца и непрерывная таблица дат <code>date</code>.</p><p>Важно отметить, что для корректного количества дней в месяце и для корректного применения <code>DATEADD</code> важно использовать функцию как фильтр в <code>CALCULATE</code>, поскольку другие подходы могут отключить логику Time Intelligence и приведут к некорретному количеству дней в месяцах.</p><p>Так, при использовании <code>CALCULATE</code> и <code>DATEADD</code> — все корректно, но при использовании конструкций с <code>CALCULATE</code> и <code>FILTER</code> происхоит «выкалывание дат» и логика Time Intelligence отключается, что видно на примере этого DAX:</p><pre><code>EVALUATE\nSUMMARIZECOLUMNS (\n    'Date'[Calendar Year Month],\n    \"DATEADD в FILTER\",\n        CALCULATE (\n            DISTINCTCOUNT ( 'Date'[Date] ),\n            FILTER (\n                ALL ( 'Date' ),\n                'Date'[Date] &gt;= MINX ( 'Date', DATEADD ( 'Date'[Date], -1, MONTH ) )\n                    &amp;&amp; 'Date'[Date] &lt;= MAXX ( 'Date', DATEADD ( 'Date'[Date], -1, MONTH ) )\n            )\n        ),\n    \"DATEADD как фильтр CALCULATE\",\n        CALCULATE (\n            DISTINCTCOUNT ( 'Date'[Date] ),\n            DATEADD ( 'Date'[Date], -1, MONTH )\n        ),\n    \"Обычная сумма за текущий месяц\", DISTINCTCOUNT ( 'Date'[Date] )\n)</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>В результаты выполнения запроса видно, что <code>DATEADD</code> в <code>FILTER</code>  \"выкалывает\" даты и берет минимальное количество дней в текущем и предыдущем месяце, а <code>DATEADD</code> в <code>CALCULATE</code> реализует ожидаемую TIme Intelligence логику с актуальным количеством дней в каждом месяце.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/2ed/3e7/e6b/2ed3e7e6ba757d2c9b51c572c7a3250a.png\"></figure><h2>Примеры DAX для DATEADD на модели Contoso</h2><p>Рассмотрим примеры на Contoso из <a href=\"https://dax.do/diagram\">dax.do</a>. Во всех примерах используется таблица <code>'Date'</code> из Contoso.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/db9/998/6d9/db99986d9fbb2066a104b5a0ed44def4.png\"></figure><h2>Правило 1</h2><h3>DATEADD возвращает только даты, существующие в таблице дат</h3><p>Проверим, что <code>DATEADD</code> не создаёт новые даты, а работает только с теми, что есть в календаре.</p><h3>Пример 1 — демонстрация возврата только существующих дат</h3><p>Выберем один месяц и посмотрим, какие даты вернёт <code>DATEADD</code>.</p><pre><code>EVALUATE\nVAR CurrentMonth =\n    FILTER ( 'Date', 'Date'[Calendar Year] = \"CY 2008\" &amp;&amp; 'Date'[Month Number] = 3 )\nRETURN\n    SELECTCOLUMNS (\n        ADDCOLUMNS (\n            CurrentMonth,\n            \"Shifted Date\", CALCULATE ( MAX ( 'Date'[Date] ), DATEADD ( 'Date'[Date], -1, MONTH ) )\n        ),\n        'Date'[Date],\n        [Shifted Date]\n    )\nORDER BY 'Date'[Date]</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/c8c/d93/ab0/c8cd93ab01ca5e3812af0d2843148a00.png\"></figure><p>Видно, что каждая дата марта сопоставляется только с реально существующей датой февраля.</p><h3>Пример 2 — проверка количества дней</h3><pre><code>EVALUATE\nSUMMARIZECOLUMNS (\n    'Date'[Calendar Year Month],\n    \"Days Current\",\n        DISTINCTCOUNT ( 'Date'[Date] ),\n    \"Days Previous Month\",\n        CALCULATE (\n            DISTINCTCOUNT ( 'Date'[Date] ),\n            DATEADD ( 'Date'[Date], -1, MONTH )\n        )\n)\nORDER BY 'Date'[Calendar Year Month]</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Здесь можно увидеть, что количество дней всегда совпадает с фактическим количеством дат в календарной таблице.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/cd3/eab/59e/cd3eab59e924a8361172b948644b692d.png\"></figure><h2>Правило 2</h2><h3>Если дата отсутствует в целевом месяце — возвращается последний день месяца</h3><p>Contoso отлично показывает этот эффект на переходах между месяцами с разной длиной.</p><h3>Пример 3 — переход 31-го дня месяца в дату конца месяца</h3><pre><code>EVALUATE\nSELECTCOLUMNS (\n    FILTER (\n        ADDCOLUMNS (\n            FILTER ( 'Date', DAY ( 'Date'[Date] ) &gt;= 28 ),\n            \"Previous Month Date\", CALCULATE ( MAX ( 'Date'[Date] ), DATEADD ( 'Date'[Date], -1, MONTH ) )\n        ),\n        MONTH ( 'Date'[Date] ) = 3 &amp;&amp; 'Date'[Calendar Year] = \"CY 2008\"\n    ),\n    'Date'[Date],\n    [Previous Month Date]\n)\nORDER BY 'Date'[Date]</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Получаем результат (2008 — високосный год):</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/d9e/2da/c10/d9e2dac1008feea7b4dd786c254a89bc.png\"></figure><h3>Пример 4 — сравнение с ручным смещением</h3><pre><code>EVALUATE\nSELECTCOLUMNS (\n    ADDCOLUMNS (\n        FILTER ( 'Date', MONTH ( 'Date'[Date] ) = 3 &amp;&amp; DAY ( 'Date'[Date] ) &gt;= 29 ),\n        \"Manual Shift\", EDATE ( 'Date'[Date], -1 ),\n        \"DATEADD Shift\", CALCULATE ( MAX ( 'Date'[Date] ), DATEADD ( 'Date'[Date], -1, MONTH ) )\n    ),\n    'Date'[Date],\n    [Manual Shift],\n    [DATEADD Shift]\n)</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Можно показать, что <code>DATEADD</code> повторяет поведение <code>EDATE</code>, т.к. всего одна дата</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/099/9ad/89f/0999ad89ff296ac13e510d1a356d9868.png\"></figure><h2>Правило 3</h2><h3>Если выбраны два последних дня месяца — DATEADD расширяет диапазон до конца месяца</h3><p>Это самое интересное правило, которое может вызывать трудности у аналитиков и  разработчиков.</p><h3>Пример 5 — сравнение 1 последнего дня vs 2 последних дней</h3><pre><code>EVALUATE\nVAR OneDay =\n    FILTER (\n        'Date',\n        'Date'[Date] = DATE ( 2008, 3, 31 )\n    )\n\nVAR TwoDays =\n    FILTER (\n        'Date',\n        'Date'[Date] IN { DATE ( 2008, 3, 30 ), DATE ( 2008, 3, 31 ) }\n    )\n\nRETURN\nUNION (\n    SELECTCOLUMNS (\n        OneDay,\n        \"Date\", 'Date'[Date],\n        \"Scenario\", \"One Day\",\n        \"Previous Month Date\",\n            CALCULATE (\n                SELECTEDVALUE ( 'Date'[Date] ),\n                DATEADD ( 'Date'[Date], -1, MONTH )\n            )\n    ),\n    SELECTCOLUMNS (\n        TwoDays,\n        \"Date\", 'Date'[Date],\n        \"Scenario\", \"Two Days\",\n        \"Previous Month Date\",\n            CALCULATE (\n                SELECTEDVALUE ( 'Date'[Date] ),\n                DATEADD ( 'Date'[Date], -1, MONTH )\n            )\n    )\n)\nORDER BY [Scenario], [Date]</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Этот пример иллюстрирует включение Time Intelligence логики.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/5d9/414/277/5d94142778c4fe9a2aa5d240ed81b295.png\"></figure><h2>Демонстрация: DATEADD всегда возвращает таблицу</h2><h3>Пример 6</h3><pre><code>EVALUATE\n{ COUNTROWS ( DATEADD ( VALUES ( 'Date'[Date] ), -1, MONTH ) ) }</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Этот пример хорошо объясняет, почему нельзя сравнивать <code>DATEADD</code> с одиночным значением.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/d5b/db5/37a/d5bdb537a3dad200ee362173c592045a.png\"></figure><h2>Контрастный пример — некорректное использование</h2><h3>Пример 7 — пустой результат</h3><pre><code>EVALUATE\nCALCULATETABLE (\n    VALUES ( 'Date'[Date] ),\n    FILTER (\n        ALL ( 'Date' ),\n        'Date'[Date] = DATEADD ( 'Date'[Date], -1, MONTH )\n    )\n)</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Этот пример хорошо показывает классическую ошибку, этот DAX запрос не возвращает ни одной строки.</p><h2>Edge-кейсы DATEADD в DAX</h2><p>Ниже приведены запросы на примере схемы Contoso в <a href=\"https://dax.do\">dax.do</a>, в которых поведение <code>DATEADD</code> может быть интуитивно непонятным.</p><h2>Edge-кейс №1</h2><h3>Выбор одной даты — Time Intelligence не включается</h3><p>Это фундаментальное, но редко явно проговариваемое правило.</p><pre><code>EVALUATE\nVAR SingleDate =\n    FILTER (\n        'Date',\n        'Date'[Date] = DATE ( 2008, 3, 31 )\n    )\n\nRETURN\nCALCULATETABLE (\n    VALUES ( 'Date'[Date] ),\n    DATEADD (\n        CALCULATETABLE ( VALUES ( 'Date'[Date] ), SingleDate ),\n        -1,\n        MONTH\n    )\n)</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Возвращаемый результат:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/8a6/3ca/87a/8a63ca87ac860e00361681d9a477cf36.png\"></figure><p>Если выбрана одна дата, <code>DATEADD</code> ведёт себя как обычное смещение даты и расширение диапазона не применяется. Если добавить ещё одну дату — логика уже меняется.</p><h2>Edge-кейс №2</h2><h3>Две даты включают логику периодов</h3><pre><code>EVALUATE\nVAR TwoDates =\n    FILTER (\n        'Date',\n        'Date'[Date] IN {\n            DATE ( 2008, 3, 30 ),\n            DATE ( 2008, 3, 31 )\n        }\n    )\n\nRETURN\nSELECTCOLUMNS (\n    TwoDates,\n    \"Date\", 'Date'[Date],\n    \"Previous Month Date\",\n        CALCULATE (\n            SELECTEDVALUE ( 'Date'[Date] ),\n            DATEADD ( 'Date'[Date], -1, MONTH )\n        )\n)\nORDER BY [Date]</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>В результате получаем:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/10e/3d2/c2b/10e3d2c2be3777d51d58854e73305f35.png\"></figure><p>Разработчик может интуитивно ожидать увидеть две даты:</p><pre><code>28.02\n29.02</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Но DAX воспринимает выбор как конец месяца и возвращает хвост месяца.</p><h2>Edge-кейс №3</h2><h3>Пропуски в календаре ломают Time Intelligence</h3><p>Рассмотрим выбранный диапазон дат с выколотыми датами.</p><pre><code>EVALUATE\nVAR CustomCalendar =\n    FILTER (\n        'Date',\n        NOT ( DAY ( 'Date'[Date] ) IN { 10, 11, 12 } )\n            &amp;&amp; 'Date'[Calendar Year] = \"CY 2008\"\n            &amp;&amp; 'Date'[Month Number] = 3\n    )\n\nRETURN\nROW (\n    \"Rows\",\n    CALCULATE (\n        COUNTROWS ( 'Date' ),\n        CustomCalendar,\n        DATEADD ( 'Date'[Date], -1, MONTH )\n    )\n)</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>В результате запроса количество дат становится меньше ожидаемого, с учетом того, что в високосном 2008 году в февраля 29 дней.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/9dd/87d/64c/9dd87d64ca6fefc70f2123ea4d913280.png\"></figure><p>Если календарная таблица не содержит все даты — <code>DATEADD</code> начинает вести себя нестабильно. Это может быть частым источним багов.</p><h2>Edge-кейс №4</h2><h3>Високосные годы</h3><p>Рассмотрим пример для февраля високосного 2008 года:</p><pre><code>EVALUATE\nSELECTCOLUMNS (\n    FILTER (\n        ADDCOLUMNS (\n            FILTER ( 'Date', MONTH ( 'Date'[Date] ) = 3 ),\n            \"Previous Month\", CALCULATE ( MAX ( 'Date'[Date] ), DATEADD ( 'Date'[Date], -1, MONTH ) )\n        ),\n        DAY ( 'Date'[Date] ) &gt;= 28 &amp;&amp; 'Date'[Calendar Year] = \"CY 2008\"\n    ),\n    'Date'[Date],\n    [Previous Month]\n)\nORDER BY 'Date'[Date]\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>В результаты получим такой маппинг, т.к. <code>DATEADD</code> использует последний день месяца:</p><pre><code>30 марта → 29 февраля\n31 марта → 29 февраля</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/73c/8b5/26a/73c8b526acbb012e2cfc2c52d4e64e43.png\"></figure><h2>Edge-кейс №5</h2><h3>Переход через границу года</h3>Пример<pre><code>EVALUATE\nVAR January =\n    FILTER (\n        'Date',\n        'Date'[Calendar Year] = \"CY 2008\"\n            &amp;&amp; 'Date'[Month Number] = 1\n    )\n\nRETURN\nSUMMARIZECOLUMNS (\n    January,\n    \"Previous Period\",\n        CALCULATE (\n            MIN ( 'Date'[Date] ),\n            DATEADD ( 'Date'[Date], -1, MONTH )\n        )\n)</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p><code>DATEADD</code> корректно переходит в декабрь предыдущего года:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/00f/977/ea2/00f977ea289669d311e2bd872f3d24ca.png\"></figure><p>Но если календарь обрезан — вернётся пустой результат.</p><h2>Edge-кейс №6</h2><h3>Несмежные диапазоны дат</h3><p>Рассмотрим поведение для несмежного диапазона дат:</p><pre><code>EVALUATE\nVAR RandomDays =\n    FILTER (\n        'Date',\n        'Date'[Date] IN {\n            DATE ( 2008, 3, 5 ),\n            DATE ( 2008, 3, 25 )\n        }\n    )\n\nRETURN\nCALCULATETABLE (\n    VALUES ( 'Date'[Date] ),\n    RandomDays,\n    DATEADD ( 'Date'[Date], -1, MONTH )\n)\nORDER BY 'Date'[Date]</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Будут возвращены две отдельные даты:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/fa8/bd0/d16/fa8bd0d16ec402e0b020311fdee7b088.png\"></figure><p><code>DATEADD</code> не пытается расширять несмежные диапазоны.</p><h2>Edge-кейс №7</h2><h3>Использование DATEADD вне CALCULATE</h3><p>Рассмотрим использование <code>DATEADD</code> в <code>EVALUATE</code>:</p><pre><code>EVALUATE\nDATEADD ( VALUES ( 'Date'[Date] ), -1, MONTH )</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p><code>DATEADD</code> возвращает таблицу, <code>DATEADD</code> становится фильтром только внутри <code>CALCULATE</code>:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/f6e/368/9dc/f6e3689dc46a2f1f9264cf85d868c7eb.png\"></figure><h2>Edge-кейс №8</h2><h3>DATEADD vs EDATE</h3><p>Сравним поведение <code>DATEADD</code> и <code>EDATE</code>:</p><pre><code>EVALUATE\nSELECTCOLUMNS (\n    ADDCOLUMNS (\n        FILTER ( 'Date', DAY ( 'Date'[Date] ) = 31 ),\n        \"EDATE\", EDATE ( 'Date'[Date], -1 ),\n        \"DATEADD\", CALCULATE ( MAX ( 'Date'[Date] ), DATEADD ( 'Date'[Date], -1, MONTH ) )\n    ),\n    [EDATE],\n    [DATEADD]\n)\nORDER BY [EDATE]</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Вижно, что <code>DATEADD</code> работает в рамках таблицы-календаря:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/8d6/e67/55a/8d6e6755a146657701dd02571fd1248d.png\"></figure><h2>Edge-кейс №9</h2><h3>Последний день месяца и фильтр по рабочим дням</h3><p>Использование фильтра может отключить логику Time Intelligence по периодам:</p><pre><code>EVALUATE\nVAR Mondays =\n    FILTER (\n        'Date',\n        'Date'[Day of Week] = \"Monday\"\n            &amp;&amp; 'Date'[Calendar Year] = \"CY 2008\"\n            &amp;&amp; 'Date'[Month Number] = 3\n    )\n\nRETURN\nROW (\n    \"Result\",\n    CALCULATE (\n        COUNTROWS ( 'Date' ),\n        Mondays,\n        DATEADD ( 'Date'[Date], -1, MONTH )\n    )\n)</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Из-за фильтра <code>DATEADD</code> перестаёт воспринимать период как месяц:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/dfe/56d/86f/dfe56d86ffb69e6932567f2007d86960.png\"></figure><h3>Edge-кейс №10</h3><h3>Потеря дат из-за контекста DATEADD</h3><p>Если в контексте группировки нет даты 'Date'[Date], то это может привести к некорректной работе <code>DATEADD</code> и «выколотым» датам:</p><pre><code>EVALUATE\nADDCOLUMNS (\n    FILTER (\n        'Date',\n        'Date'[Date] &gt;= DATE ( 2008, 1, 25 )\n            &amp;&amp; 'Date'[Date] &lt;= DATE ( 2008, 3, 5 )\n    ),\n    \"Prev Month Date\",\n        CALCULATE (\n            MAX ( 'Date'[Date] ),\n            DATEADD ( 'Date'[Date], -1, MONTH )\n        )\n)</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>В результате в этом запросе месяц январь неполный:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/473/247/3a4/4732473a4110a4bb1499fb360db63173.png\"></figure><h2>Выводы</h2><p>Если кратко резюмировать, то помимо трех перечисленных правил, поведение <code>DATEADD</code> также зависит от:</p><ul><li><p>непрерывности диапазона</p></li><li><p>количества выбранных дат</p></li><li><p>положения внутри месяца</p></li><li><p>полноты календаря</p></li><li><p>контекста <code>CALCULATE</code></p></li></ul><p>Надеюсь, приведенные примеры могут быть полезны, успешных дашдордов! :)</p>"
     }
   ]
 }
