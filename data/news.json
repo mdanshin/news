@@ -1,6 +1,327 @@
 {
-  "generatedAt": "2026-03-23T22:23:22.905Z",
+  "generatedAt": "2026-03-23T22:57:50.656Z",
   "items": [
+    {
+      "id": "lenta:https://lenta.ru/news/2026/03/24/v-ssha-zayavili-o-nevozmozhnosti-smeny-vlasti-v-irane/:2026-03-23T22:55:19.000Z:В США заявили о невозможности смены влас",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "В США заявили о невозможности смены власти в Иране",
+      "url": "https://lenta.ru/news/2026/03/24/v-ssha-zayavili-o-nevozmozhnosti-smeny-vlasti-v-irane/",
+      "publishedAt": "2026-03-23T22:55:19.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/03/24/01/20260324015518836/pic_d2d52c224d9037555e1e506d1a34c481.jpg",
+      "excerpt": "Фото: Maksim Konstantinov / Global Look PressАдминистрация президента США Дональда Трампа считает маловероятным смену власти в Иране, а также уничтожение ядерной программы и ракетного арсенала Исламской Республики. Об этом заявило издание T",
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/03/24/v-ssha-zayavili-o-nevozmozhnosti-smeny-vlasti-v-irane/\"><img src=\"https://icdn.lenta.ru/images/2026/03/24/01/20260324015518836/owl_detail_240_fb4f9bab09bfef9b703e588c377d8a34.jpg\"></a><figcaption><p>Фото: Maksim Konstantinov / Global Look Press</p></figcaption></figure><p><a href=\"https://lenta.ru/tags/organizations/administratsiya-ssha/\">Администрация президента США</a> <a href=\"https://lenta.ru/tags/persons/tramp-donald/\">Дональда Трампа</a> считает маловероятным смену власти в <a href=\"https://lenta.ru/tags/geo/iran/\">Иране</a>, а также уничтожение ядерной программы и ракетного арсенала Исламской Республики. Об этом заявило издание <a href=\"https://www.washingtonpost.com/\">The Washington Post</a> (WP).</p><p>По информации издания, в связи с этим Трамп ищет способ объявить о своей победе. Также американский лидер рассматривает вариант захвата Ормузского пролива для последующих ударов по Ирану без рисков для мировой экономики.</p><p>Ранее Трамп в Мемфисе <a href=\"https://lenta.ru/news/2026/03/23/tramp-zayavil-o-gotovnosti-irana-k-zaklyucheniyu-sdelki/\">заявил</a> о якобы готовности Ирана к заключению сделки. До того <a href=\"https://lenta.ru/news/2026/03/23/tramp-yakoby-naznachil-datu-okonchaniya-voyny-s-iranom-radi-nagrady/\">стало известно</a>, что <a href=\"https://lenta.ru/tags/geo/ssha/\">США</a> назначили 9 апреля датой окончания войны с Ираном к моменту визита Трампа в <a href=\"https://lenta.ru/tags/geo/izrail/\">Израиль</a>.<br></p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 765,
+        "approxBlocks": 7
+      }
+    },
+    {
+      "id": "habr:https://habr.com/ru/articles/1014030/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1014030:2026-03-23T22:49:41.000Z:Когда CUPED не хватает: где помогает VWE",
+      "sourceId": "habr",
+      "sourceName": "Хабр",
+      "title": "Когда CUPED не хватает: где помогает VWE",
+      "url": "https://habr.com/ru/articles/1014030/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1014030",
+      "publishedAt": "2026-03-23T22:49:41.000Z",
+      "categoryIds": [
+        "tech"
+      ],
+      "image": "https://habrastorage.org/getpro/habr/upload_files/fba/68a/33f/fba68a33fea62641b430f29a66930c37.png",
+      "excerpt": "Когда A/B-тест не показывает эффект, это не всегда значит, что эффекта нет. Иногда он просто теряется в шуме метрики.В таких случаях обычно делают одно из трёх: увеличивают трафик, продлевают эксперимент или признают, что продуктовый эффект слишком слабый. Но есть и четвёртый путь — уменьшить дисперсию оценки. Для этого часто используют CUPED. Реже — VWE. И ещё реже обсуждают, что эти методы борются с разными источниками шума. Код, графики и все результаты симуляции — в открытом репозитории.Ниже разобраны две простые идеи: Читать далее",
+      "contentHtml": "<p>Когда A/B-тест не показывает эффект, это не всегда значит, что эффекта нет. Иногда он просто теряется в шуме метрики.</p><p>В таких случаях обычно делают одно из трёх: увеличивают трафик, продлевают эксперимент или признают, что продуктовый эффект слишком слабый. Но есть и четвёртый путь — уменьшить дисперсию оценки. Для этого часто используют CUPED. Реже — VWE. И ещё реже обсуждают, что эти<strong> методы борются с разными источниками шума</strong>.</p><p> Код, графики и все результаты симуляции — в открытом <a href=\"https://github.com/mariakasimceva0305-ux/cuped-vwe-experiments/blob/main/article_draft.md\">репозитории</a>.</p><p>Ниже разобраны две простые идеи:</p><ol><li><p><strong>CUPED</strong> даёт заметный выигрыш, когда есть доэкспериментальная ковариата, действительно связанная с метрикой в тесте.</p></li><li><p><strong>VWE</strong> становится уместен, когда проблема не только в уровне метрики, но и в том, что часть пользователей сильно более шумная, чем остальные.</p></li></ol><p>Здесь не предлагается новый метод и не утверждается, что синтетика заменяет прод. Цель скромнее: воспроизводимый учебный эксперимент, который помогает не смешивать разные источники дисперсии. Числа в тексте согласованы с <code>figures/correlation_study.csv</code> и <code>figures/power_user_study.csv</code> при конфигурации по умолчанию в коде (<code>n_units=4000</code>, <code>n_sims=300</code>, <code>seed=42</code>, истинный эффект <code>0</code>).</p><h3>Почему вообще CUPED снижает дисперсию</h3><p>Идея CUPED из работы Microsoft сводится к следующему: если есть pre-period метрика <code>X</code>, связанная с экспериментальной метрикой <code>Y</code>, можно вычесть из <code>Y</code> ту часть, которую объясняет <code>X</code>.</p><p>В простом виде:</p><p><code>Y_cuped = Y - θ (X - E[X])</code>, где <code>θ = cov(Y, X) / var(X)</code>.</p><p>Интуиция важнее формулы: если часть будущего вклада пользователя в метрику предсказуема из прошлого, её не обязательно считать неструктурированным шумом — её можно вычесть и оставить более ровный остаток.</p><p>Ключевой вывод: <strong>выигрыш CUPED определяется не самим фактом наличия исторической фичи, а корреляцией с целевой метрикой</strong>.</p><h3>Где CUPED переоценивают</h3><p>CUPED часто воспринимают как почти универсальную variance-reduction поправку, но на практике выигрыш сильно зависит от данных.</p><p>Типичные переоценки:</p><ul><li><p>ковариата слабо связана с outcome;</p></li><li><p>историческая метрика измерена после триггера или смешаны pre- и post-treatment сигнал;</p></li><li><p>ожидают, что CUPED «вылечит» ситуацию, где основной шум — экстремальная гетерогенность дисперсии по юнитам.</p></li></ul><p>В первых двух случаях выигрыш мал. В третьем CUPED может помочь частично, но источник шума другой — и отдельно имеет смысл смотреть на веса по надёжности юнита.</p><h3>Симуляция 1. Что даёт корреляция</h3><p>В первой симуляции задаётся pre-period метрика <code>X</code> и экспериментальная <code>Y</code> с контролируемой корреляцией. На 300 независимых прогонах сравнивается стандартное отклонение оценки эффекта для разницы средних и для CUPED (сетка целевых ρ: 0, 0.2, …, 0.95).</p><p>Главный график:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/fba/68a/33f/fba68a33fea62641b430f29a66930c37.png\" alt=\"Где CUPED помогает\"><figcaption>Где CUPED помогает</figcaption></figure><p>По таблице <code>correlation_study.csv</code> в этом прогоне:</p><ul><li><p>при ρ≈0 доля снижения дисперсии относительно plain diff близка к нулю (порядка 0,2%);</p></li><li><p>при ρ≈0.6 — около 40%;</p></li><li><p>при ρ≈0.95 — около 90%.</p></li></ul><p>То есть <strong>CUPED убирает не «любой шум», а в основном ту часть, которую тянет коррелированная pre-ковариата</strong>.</p><p>Вторая иллюстрация — те же оценки через стандартное отклонение:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/e41/552/b19/e41552b19934bba6256f05460df36a18.png\"></figure><h3>Но что если проблема не только в корреляции?</h3><p>Во второй симуляции рассматривается смесь из 88% относительно стабильных пользователей и 12% более шумных (power users). В коде у последних стандартное отклонение внутриюнитного шума в пять раз выше, чем у остальных (<code>power_sd=5</code>, <code>stable_sd=1</code> в <code>simulate_power_user_dataset</code>), плюс общий разброс уровня baseline.</p><p>Даже при хорошей pre-ковариате часть шума остаётся: нестабильные юниты непропорционально раздувают дисперсию оценки.</p><p>Здесь появляется <strong>VWE</strong> — оценка с весами, обратными оценённой дисперсии юнита. В публикациях Meta/Facebook такие веса строят из pre-experiment данных; здесь — из повторных pre-наблюдений, см. <code>estimate_unit_variances</code> в коде.</p><h3>Симуляция 2. Когда одной CUPED мало</h3><p>Моделируются стабильные и «шумные» пользователи, повторные pre-наблюдения для оценки дисперсии по юниту, затем сравниваются четыре варианта: plain diff, CUPED, VWE, CUPED+VWE.</p><p>RMSE оценки эффекта (истинный эффект нулевой), тот же прогон:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/295/47c/4e1/29547c4e1f3e95294d9643518cd7f1f4.png\"></figure><p>Стандартные отклонения оценок:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/5af/78e/109/5af78e109c91e6e18c8e4a1c8d3e7e66.png\"></figure><p>По <code>power_user_study.csv</code> (округление до трёх знаков):</p><p>Метод</p><p>RMSE</p><p>SD оценки</p><p>Plain diff</p><p>0,073</p><p>0,073</p><p>CUPED</p><p>0,064</p><p>0,064</p><p>VWE</p><p>0,061</p><p>0,061</p><p>CUPED + VWE</p><p>0,042</p><p>0,042</p><p>В <strong>этом сценарии</strong> комбинация CUPED и VWE даёт наименьшую разбросность и RMSE: методы бьют по разным компонентам шума. Переносить этот вывод на любой продуктовый эксперимент без дополнительной проверки данных нельзя.</p><p>У взвешенных схем средняя эффективная выборка по весам в этом прогоне около <strong>2550</strong> при номинальных 4000 юнитах — цена перераспределения веса в сторону более стабильных юнитов.</p><h3>Что из этого брать в работу</h3>Когда в первую очередь смотреть на CUPED<ul><li><p>есть качественная pre-ковариата, измеренная до treatment;</p></li><li><p>заметная связь с outcome;</p></li><li><p>основной шум — межпользовательская систематика уровня, а не доминирование нескольких крайне нестабильных юнитов.</p></li></ul>Когда имеет смысл думать про VWE<ul><li><p>есть повторные наблюдения или иной способ оценить дисперсию на уровне юнита;</p></li><li><p>видно, что небольшая доля пользователей раздувает дисперсию оценки;</p></li><li><p>CUPED уже даёт выигрыш, но чувствительности всё ещё не хватает — и важно проверить, не уходит ли шум в «тяжёлых» юнитах.</p></li></ul><h3>Ограничения эксперимента</h3><ol><li><p><strong>Синтетика — не прод.</strong> Это объясняющий эксперимент, а не claim про универсальный uplift в любой компании.</p></li><li><p><strong>VWE здесь упрощён:</strong> воспроизводится интуиция и порядок величин, а не полная production-реализация из статьи.</p></li><li><p><strong>Смотрим на дисперсию и RMSE оценки</strong>, а не на полный бизнес-процесс: на практике добавляются устойчивость к смещению, стоимость внедрения, мониторинг весов.</p></li><li><p><strong>Комбинация CUPED+VWE не означает универсального преимущества</strong> — всё зависит от структуры данных и качества оценки дисперсий.</p></li></ol><h3>Вывод</h3><p>CUPED и VWE удобно держать в голове не как «две фичи на выбор», а как ответы на разные причины шума:</p><ul><li><p><strong>CUPED</strong> уменьшает объяснимую через pre-ковариату вариативность;</p></li><li><p><strong>VWE</strong> ослабляет влияние нестабильных юнитов, когда они портят чувствительность.</p></li></ul><p>При выборе инструмента важнее не название метода, а структура шума в конкретной метрике и то, подтверждается ли она данными.</p><h3>Источники</h3><ol><li><p>Deng et al. <em>Improving the Sensitivity of Online Controlled Experiments by Utilizing Pre-Experiment Data</em>.</p></li><li><p>Liou et al. <em>Variance-Weighted Estimators to Improve Sensitivity in Online Experiments</em>.</p></li><li><p>Meta Research blog: <em>Increasing the sensitivity of A/B tests by utilizing the variance estimates of experimental units</em>.</p></li></ol>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 8185,
+        "approxBlocks": 108
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26861141:2026-03-23T22:47:29.000Z:Несколько полевых командиров шиитского о",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Несколько полевых командиров шиитского ополчения убиты при авиаударе на западе Ирака - ТВ",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/26861141",
+      "publishedAt": "2026-03-23T22:47:29.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/proisshestviya/26861149:2026-03-23T22:45:46.000Z:Частичное обрушение произошло в доме в С",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Частичное обрушение произошло в доме в Севастополе, где произошел взрыв",
+      "url": "https://tass.ru/proisshestviya/26861149",
+      "publishedAt": "2026-03-23T22:45:46.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/03/24/gubernator-sevastopolya-rasskazal-o-pogibshih-pri-moschnom-vzryve-v-mnogoetazhke/:2026-03-23T22:44:00.000Z:Губернатор Севастополя рассказал о погиб",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Губернатор Севастополя рассказал о погибших при мощном взрыве в многоэтажке",
+      "url": "https://lenta.ru/news/2026/03/24/gubernator-sevastopolya-rasskazal-o-pogibshih-pri-moschnom-vzryve-v-mnogoetazhke/",
+      "publishedAt": "2026-03-23T22:44:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/03/24/01/20260324015023196/pic_32a3a4ad941ded682b73210d437c8f7c.jpg",
+      "excerpt": "Кадр видео: Telegram-канал «Mash на волне»Губернатор Севастополя Михаил Развожаев в своем официальном Telegram-канале рассказал подробности о взрыве в доме № 14 по улице Корчагина. На данный момент известно двух погибших и четверых пострада",
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/03/24/gubernator-sevastopolya-rasskazal-o-pogibshih-pri-moschnom-vzryve-v-mnogoetazhke/\"><img src=\"https://icdn.lenta.ru/images/2026/03/24/01/20260324015023196/owl_detail_240_ec31e3518ad85d834c8e9e17243fb96c.jpg\"></a><figcaption><p>Кадр видео: Telegram-канал «Mash на волне»</p></figcaption></figure><p>Губернатор <a href=\"https://lenta.ru/tags/geo/sevastopol/\">Севастополя</a> <a href=\"https://lenta.ru/tags/persons/razvozhaev-mihail/\">Михаил Развожаев</a> в своем официальном <a href=\"https://t.me/razvozhaev/18987\">Telegram</a>-канале рассказал подробности о взрыве в доме № 14 по улице Корчагина. На данный момент известно двух погибших и четверых пострадавших.</p><p>Из-за взрыва в многоэтажке частично обрушились стены в одной из квартир на первом этаже, а также часть внутренних перекрытий и конструкций с первого по третий этаж.</p><p>По словам Развожаева, от взрывной волны также пострадал и дом № 20, где загорелись квартиры в двух подъездах. Спасатели локализовали пожар и приступили к проливке конструкций.</p><p>Все жители двух домов эвакуированы, для них организован пункт временного размещения в школе рядом.</p><p>«Тех, чьи квартиры не пригодны для жилья, разместят в пансионате», — добавил Развожаев.</p><p>На месте происшествия работают 89 человек и 23 единицы техники, от <a href=\"https://lenta.ru/tags/organizations/mchs-rossii/\">МЧС России</a> 51 специалист и 10 автомобилей, а также директор Департамента общественной безопасности для координации на месте работы всех оперативных служб.</p><p>Прокуратура Севастополя <a href=\"https://t.me/sevproc/11221\">контролирует</a> установление обстоятельств взрыва.</p><p>Ранее <a href=\"https://lenta.ru/news/2026/03/24/opublikovano-video-s-mesta-vzryva-v-rossiyskoy-mnogoetazhke/\">появились</a> кадры с места взрыва.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 1182,
+        "approxBlocks": 12
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26861119:2026-03-23T22:42:44.000Z:WSJ: Иран добивается права взимать плату",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "WSJ: Иран добивается права взимать плату за проход судов через Ормузский пролив",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/26861119",
+      "publishedAt": "2026-03-23T22:42:44.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/proisshestviya/26861127:2026-03-23T22:42:08.000Z:Жителей двух домов в Севастополе эвакуир",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Жителей двух домов в Севастополе эвакуировали в ПВР после взрыва",
+      "url": "https://tass.ru/proisshestviya/26861127",
+      "publishedAt": "2026-03-23T22:42:08.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "",
+      "contentHtml": ""
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/russia/1079615:2026-03-23T22:42:00.000Z:Два человека погибли при взрыве в жилом ",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Два человека погибли при взрыве в жилом доме в Севастополе",
+      "url": "https://www.interfax.ru/russia/1079615",
+      "publishedAt": "2026-03-23T22:42:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "В результате взрыва в жилом доме в Севастополе погибли два человека, еще четверо получили ранения, сообщил губернатор города Михаил Развожаев.\"На данный момент, к сожалению, обнаружены двое погибших.",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/obschestvo/26861109:2026-03-23T22:41:51.000Z:В ГД призвали установить минимальную зар",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "В ГД призвали установить минимальную зарплату учителей в 140 тыс. рублей",
+      "url": "https://tass.ru/obschestvo/26861109",
+      "publishedAt": "2026-03-23T22:41:51.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Лидер партии \"Справедливая Россия\" Сергей Миронов отметил, что учителя должны получать зарплату в два раза выше средней",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/proisshestviya/26861095:2026-03-23T22:39:28.000Z:Обвинение отозвало апелляцию на приговор",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Обвинение отозвало апелляцию на приговор авторам скетч-шоу о депутате Наливкине",
+      "url": "https://tass.ru/proisshestviya/26861095",
+      "publishedAt": "2026-03-23T22:39:28.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/proisshestviya/26861099:2026-03-23T22:38:46.000Z:С экс-замминистра обороны Тимура Иванова",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "С экс-замминистра обороны Тимура Иванова взыскивают более 4 млрд рублей",
+      "url": "https://tass.ru/proisshestviya/26861099",
+      "publishedAt": "2026-03-23T22:38:46.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260324/8906191.jpg",
+      "excerpt": "Фигуранта осудили за растрату и вывод около 3,9 млрд рублей из банка \"Интеркоммерц\"",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/03/24/kim-chen-yn-ofitsialno-ob-yavil-vrazhdebnoe-dlya-severnoy-korei-gosudarstvo/:2026-03-23T22:35:00.000Z:Ким Чен Ын официально объявил враждебное",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Ким Чен Ын официально объявил враждебное для Северной Кореи государство",
+      "url": "https://lenta.ru/news/2026/03/24/kim-chen-yn-ofitsialno-ob-yavil-vrazhdebnoe-dlya-severnoy-korei-gosudarstvo/",
+      "publishedAt": "2026-03-23T22:35:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/03/24/01/20260324013548515/pic_f29c68707960bbf3141ac86d6d3c8371.jpg",
+      "excerpt": "Фото: Kremlin Pool / Global Look PressЛидер Корейской Народно-Демократической Республики (КНДР) Ким Чен Ын во время программной речи на первой сессии Верховного народного собрания КНДР 15-го созыва назвал страну, которая официально признает",
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/03/24/kim-chen-yn-ofitsialno-ob-yavil-vrazhdebnoe-dlya-severnoy-korei-gosudarstvo/\"><img src=\"https://icdn.lenta.ru/images/2026/03/24/01/20260324013548515/owl_detail_240_1aa8d5dbd27e43c3865f3671a117f40f.jpg\"></a><figcaption><p>Фото: Kremlin Pool / Global Look Press</p></figcaption></figure><p>Лидер Корейской Народно-Демократической Республики (КНДР) <a href=\"https://lenta.ru/tags/persons/kim-chen/\">Ким Чен Ын</a> во время программной речи на первой сессии Верховного народного собрания КНДР 15-го созыва назвал страну, которая официально признается враждебной. <a href=\"http://www.kcna.kp/ru\">Передает</a> Центральное телеграфное агентство <a href=\"https://lenta.ru/tags/geo/koreya/\">Кореи</a> (ЦТАК).</p><p>«В особенности мы будем рассматривать Южную Корею как наиболее враждебное государство, полностью отвергать и игнорировать ее самыми ясными словами и действиями», — заявил Ким Чен Ын.</p><p>Во время сессии Ким Чен Ын также <a href=\"https://lenta.ru/news/2026/03/24/kim-chen-yn-nazval-printsipialno-vazhnyy-dlya-severnoy-korei-vopros/\">отметил</a>, что его страна никогда не будет отказываться от ядерного оружия. КНДР наоборот будет только укреплять статус ядерного государства «как абсолютно необратимый».</p><p>22 марта Ким Чен Ын был переизбран на пост Председателя Государственных дел КНДР. Во время пятнадцатого созыва было торжественно объявлено об этом решении по «единодушной воле и чаянию всего корейского народа».</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 979,
+        "approxBlocks": 8
+      }
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/world/1079612:2026-03-23T22:35:00.000Z:CENTCOM сообщил, что США поразили уже бо",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "CENTCOM сообщил, что США поразили уже более 9 тыс. целей в Иране",
+      "url": "https://www.interfax.ru/world/1079612",
+      "publishedAt": "2026-03-23T22:35:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Американские войска уничтожили более 9 тыс. целей с начала военной операции против Ирана, сообщило в понедельник Центральное командование ВС США на Ближнем Востоке (CENTCOM).",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/03/24/stalo-izvestno-o-massovyh-zhalobah-ukrainok-iz-za-ttsk/:2026-03-23T22:33:07.000Z:Стало известно о массовых жалобах украин",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Стало известно о массовых жалобах украинок из-за ТЦК",
+      "url": "https://lenta.ru/news/2026/03/24/stalo-izvestno-o-massovyh-zhalobah-ukrainok-iz-za-ttsk/",
+      "publishedAt": "2026-03-23T22:33:07.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/03/24/01/20260324013309423/pic_090a41d67b0301b454ac0426ac4b966f.jpg",
+      "excerpt": "Все больше украиное жалуются на то, что ТЦК (военкоматы) объявляют их в розыск как уклоняющихся от мобилизации. При этом они не имеют военного или медицинского образования, утверждает украинское издание «Страна.ua».На днях журналисты писали",
+      "contentHtml": "<p>Все больше украиное жалуются на то, что ТЦК (военкоматы) объявляют их в розыск как уклоняющихся от мобилизации. При этом они не имеют военного или медицинского образования, <a href=\"https://t.me/stranaua/230316\">утверждает</a> украинское издание «Страна.ua».</p><p>На днях журналисты писали, что военкоматы на <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украине</a> безосновательно объявили в розыск шесть женщин без военного или медицинского образования.</p><p>«В соцсетях появились новые сообщения женщин, которых ТЦК объявил в розыск как подлежащих мобилизации, хотя они не имеют медицинского образования», — сказано в статье.</p><p>Издание также прилагает сообщение в соцсетях от украинки. Она рассказала, что уже больше года является «военнообязанной не по своему желанию». По е словам, она не становилась добровольно на учет и не имеет ни медицинского образования, ни военной кафедры. Про объявление себя в розыск узнала случайно.</p><p>Ранее <a href=\"https://lenta.ru/news/2026/03/22/na-ukraine-muzhchinu-mobilizovali-vo-vremya-minuty-molchaniya/\">сообщалось</a>, что в <a href=\"https://lenta.ru/tags/geo/vinnitsa/\">Виннице</a> сотрудники территориального центра комплектования мобилизовали мужчину во время минуты молчания. Мужчина в минуту молчания остановил автомобиль, и тогда военкомы достали его и начали заталкивать в свой автомобиль.</p><p>До этого в <a href=\"https://lenta.ru/tags/geo/odessa/\">Одессе</a> сотрудники ТЦК <a href=\"https://lenta.ru/news/2026/03/22/v-ukrainskom-gorode-sotrudniki-ttsk-mobilizovali-zheniha-po-puti-na-svadbu/\">мобилизовали</a> мужчину, который ехал на собственную свадьбу.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 1160,
+        "approxBlocks": 6
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/proisshestviya/26861079:2026-03-23T22:33:02.000Z:В Севастополе из-за взрыва в жилом доме ",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "В Севастополе из-за взрыва в жилом доме погибли два человека",
+      "url": "https://tass.ru/proisshestviya/26861079",
+      "publishedAt": "2026-03-23T22:33:02.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260324/8906187.jpg",
+      "excerpt": "Еще четверо пострадали",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/obschestvo/26861069:2026-03-23T22:32:56.000Z:Врач Хатшуков назвал нехватку сна одной ",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Врач Хатшуков назвал нехватку сна одной из причин возникновения у детей ожирения",
+      "url": "https://tass.ru/obschestvo/26861069",
+      "publishedAt": "2026-03-23T22:32:56.000Z",
+      "categoryIds": [
+        "ru",
+        "health"
+      ],
+      "image": "",
+      "excerpt": "При недосыпе нарушается баланс гормонов насыщения и голода, сообщил ассистент кафедры пропедевтики детских болезней ИМД Пироговского университета",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/proisshestviya/26861073:2026-03-23T22:32:16.000Z:В Севастополе прокуратура начала проверк",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "В Севастополе прокуратура начала проверку после взрыва в многоэтажном доме",
+      "url": "https://tass.ru/proisshestviya/26861073",
+      "publishedAt": "2026-03-23T22:32:16.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Из-за ЧП пострадали четыре человека",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/03/24/ksir-zayavil-ob-udare-po-dimone-i-bazam-ssha/:2026-03-23T22:29:16.000Z:КСИР заявил об ударе по Димоне и базам С",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "КСИР заявил об ударе по Димоне и базам США",
+      "url": "https://lenta.ru/news/2026/03/24/ksir-zayavil-ob-udare-po-dimone-i-bazam-ssha/",
+      "publishedAt": "2026-03-23T22:29:16.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/03/24/01/20260324012919988/pic_a627b8ca968cf34d7400c40b4ea5ff3f.jpg",
+      "excerpt": "Фото: Majid Asgaripour / ReutersКорпус стражей исламской революции (КСИР) заявил об ударе по Димоне, рядом с которым расположен ядерный объект Израиля, израильскому городу Эйлат и военным базам США в регионе. Заявление КСИР передало издание",
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/03/24/ksir-zayavil-ob-udare-po-dimone-i-bazam-ssha/\"><img src=\"https://icdn.lenta.ru/images/2026/03/24/01/20260324012919988/owl_detail_240_f6c828b372ec6beb90748a66c24f0768.jpg\"></a><figcaption><p>Фото: Majid Asgaripour / Reuters</p></figcaption></figure><p>Корпус стражей исламской революции (КСИР) заявил об ударе по Димоне, рядом с которым расположен ядерный объект <a href=\"https://lenta.ru/tags/geo/izrail/\">Израиля</a>, израильскому <a href=\"https://lenta.ru/tags/geo/eylat/\">городу Эйлат</a> и военным базам <a href=\"https://lenta.ru/tags/geo/ssha/\">США</a> в регионе. Заявление КСИР передало издание Sabereen news в своем <a href=\"https://t.me/SabrenNewss/194217\">Telegram</a>-канале.</p><p>«Волна 78 была направлена против позиций в Эйлате, Димоне и на севере Тель-Авива, а также против некоторых американских баз в регионе», — говорится в заявлении.</p><p>Ранее же президент США <a href=\"https://lenta.ru/tags/persons/tramp-donald/\">Дональд Трамп</a> в Мемфисе <a href=\"https://lenta.ru/news/2026/03/23/tramp-zayavil-o-gotovnosti-irana-k-zaklyucheniyu-sdelki/\">заявил</a> о якобы готовности <a href=\"https://lenta.ru/tags/geo/iran/\">Ирана</a> к заключению сделки.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 602,
+        "approxBlocks": 7
+      }
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/03/24/kim-chen-yn-nazval-printsipialno-vazhnyy-dlya-severnoy-korei-vopros/:2026-03-23T22:23:25.000Z:Ким Чен Ын назвал принципиально важный д",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Ким Чен Ын назвал принципиально важный для Северной Кореи вопрос",
+      "url": "https://lenta.ru/news/2026/03/24/kim-chen-yn-nazval-printsipialno-vazhnyy-dlya-severnoy-korei-vopros/",
+      "publishedAt": "2026-03-23T22:23:25.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/03/24/01/20260324012416540/pic_3f575d8a77153a5d5c5d28dcb1352573.jpg",
+      "excerpt": "Ким Чен Ын. Фото: KCNA / ReutersЛидер Северной Кореи Ким Чен Ын во время программной речи на первой сессии Верховного народного собрания КНДР 15-го созыва заявил, что его страна никогда не откажется от статуса ядерной державы. Об этом инфор",
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/03/24/kim-chen-yn-nazval-printsipialno-vazhnyy-dlya-severnoy-korei-vopros/\"><img alt=\"Ким Чен Ын\" src=\"https://icdn.lenta.ru/images/2026/03/24/01/20260324012416540/owl_detail_240_61d9ccdaa3444f1d042f15340b55e82b.jpg\"></a><figcaption><p>Ким Чен Ын. Фото: KCNA / Reuters</p></figcaption></figure><p>Лидер Северной Кореи <a href=\"https://lenta.ru/tags/persons/kim-chen/\">Ким Чен Ын</a> во время программной речи на первой сессии Верховного народного собрания КНДР 15-го созыва заявил, что его страна никогда не откажется от статуса ядерной державы. Об этом <a href=\"http://www.kcna.kp/ru\">информирует</a> Центральное телеграфное агентство <a href=\"https://lenta.ru/tags/geo/koreya/\">Кореи</a> (ЦТАК).</p><p>«Правительство республики будет и впредь неуклонно укреплять статус ядерного государства как абсолютно необратимый и в наступательном порядке разворачивать борьбу против противостоящих нам сил», — отмтеил он.</p><p>По словам политика, власти КНДР намерены это делать, «чтобы сокрушить все их антиреспубликанские провокационные действия».</p><p>Ранее <a href=\"https://lenta.ru/news/2026/03/20/kim-chen-yn-s-docheryu-prokatilsya-na-tanke/\">сообщалось</a>, что Ким Чен Ын вместе со своей дочерью Ким Чжу Э прокатился на новейшем основном танке во время посещения военных учений. 19 марта северокорейский лидер посетил учебную базу корпуса столичной обороны Корейской народной армии.</p><p>До этого Ким Чен Ын <a href=\"https://lenta.ru/news/2026/03/20/kim-chen-yn-raskryl-boevye-vozmozhnosti-koreyskoy-armaty/\">раскрыл</a> боевые возможности нового северокорейского танка.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 1008,
+        "approxBlocks": 9
+      }
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/03/24/neftyanoe-mestorozhdenie-v-sirii-atakovali/:2026-03-23T22:23:11.000Z:Нефтяное месторождение в Сирии атаковали",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Нефтяное месторождение в Сирии атаковали",
+      "url": "https://lenta.ru/news/2026/03/24/neftyanoe-mestorozhdenie-v-sirii-atakovali/",
+      "publishedAt": "2026-03-23T22:23:11.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/03/24/01/20260324012013882/pic_abbda18748c24719c0592753f41f18f4.jpg",
+      "excerpt": "Фото: Rodi Said / ReutersРадикальные группировки Ирака заявили об атаке на нефтяное месторождение Румейлан в Сирии. Об этом сообщил телеканал Al Hadath.По его информации, радикальные иракские группировки взяли на себя ответственность за нап",
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/03/24/neftyanoe-mestorozhdenie-v-sirii-atakovali/\"><img src=\"https://icdn.lenta.ru/images/2026/03/24/01/20260324012013882/owl_detail_240_fd788579d76a11199de33de5d3cb34a5.jpg\"></a><figcaption><p>Фото: Rodi Said / Reuters</p></figcaption></figure><p>Радикальные группировки <a href=\"https://lenta.ru/tags/geo/irak/\">Ирака</a> заявили об атаке на нефтяное месторождение Румейлан в <a href=\"https://lenta.ru/tags/geo/siriya/\">Сирии</a>. Об этом сообщил <a href=\"https://www.alhadath.net/\">телеканал</a> Al Hadath.</p><p>По его информации, радикальные иракские группировки взяли на себя ответственность за нападение на месторождение Румейлан в Хасеке.</p><p>Месторождение расположено на северо-востоке Сирии и считается одним из ключевых энергетических активов страны, входя вместе с месторождением Эс-Сувейдия в состав главного нефтегазового резервуара Сирии.</p><p>Ранее компании Ирака <a href=\"https://lenta.ru/news/2026/03/16/na-krupneyshih-mestorozhdeniyah-iraka-priostanovili-dobychu-nefti/\">приостановили</a> добычу нефти на крупнейших месторождениях, расположенных в южной части страны. Кроме того, власти приняли решение сократить добычу на месторождениях в центральной части государства для снабжения местных электростанций.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 787,
+        "approxBlocks": 8
+      }
+    },
     {
       "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26861053:2026-03-23T22:20:50.000Z:Армия Израиля заявила о перехвате ракет ",
       "sourceId": "tass",
@@ -14,6 +335,25 @@
       "image": "",
       "excerpt": "",
       "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/03/24/raskryty-podrobnosti-o-posledstviyah-vzryva-v-rossiyskom-zhilom-dome/:2026-03-23T22:20:00.000Z:Раскрыты подробности о последствиях взры",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Раскрыты подробности о последствиях взрыва в российском жилом доме",
+      "url": "https://lenta.ru/news/2026/03/24/raskryty-podrobnosti-o-posledstviyah-vzryva-v-rossiyskom-zhilom-dome/",
+      "publishedAt": "2026-03-23T22:20:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/03/24/01/20260324012906062/pic_9a03de0eee3f41641af4f45a42ab87a0.jpg",
+      "excerpt": "Фото: Константин Михальчевский / РИА НовостиМинимум 15 квартир повреждены из-за взрыва в пятиэтажном жилом доме Севастополя. Об этом сообщает Telegram-канал Mash.Отмечается, что полностью выгорели восемь балконов. Взрывом были снесены стены",
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/03/24/raskryty-podrobnosti-o-posledstviyah-vzryva-v-rossiyskom-zhilom-dome/\"><img src=\"https://icdn.lenta.ru/images/2026/03/24/01/20260324012906062/owl_detail_240_6a2398d221c6f6efb54d6d44e9be44c8.jpg\"></a><figcaption><p>Фото: Константин Михальчевский / РИА Новости</p></figcaption></figure><p>Минимум 15 квартир повреждены из-за взрыва в пятиэтажном жилом доме <a href=\"https://lenta.ru/tags/geo/sevastopol/\">Севастополя</a>. Об этом сообщает <a href=\"https://t.me/mash/72866\">Telegram</a>-канал Mash.</p><p>Отмечается, что полностью выгорели восемь балконов. Взрывом были снесены стены в нескольких жилищах. По предварительным данным. эпицентр взрыва был на верхних этажах. На месте продолжают разбирать завалы.</p><p>Ранее <a href=\"https://lenta.ru/news/2026/03/24/v-rossiyskom-gorode-geroe-progremel-moschnyy-vzryv-v-mnogoetazhnom-dome/\">сообщалось</a>, что взрыв произошел на улице Корчагина. В результате происшествия пострадали четыре человека, сообщил губернатор города <a href=\"https://lenta.ru/tags/persons/razvozhaev-mihail/\">Михаил Развожаев</a>. По словам очевидцев. сильный пожар начался минимум в четырех квартирах.</p><p>В январе взрыв <a href=\"https://lenta.ru/news/2026/01/06/v-rossiyskoy-mnogoetazhke-proizoshel-vzryv/\">прогремел</a> во многоэтажке в <a href=\"https://lenta.ru/tags/geo/tver/\">Твери</a>. Одного человека спасти не удалось — он жил в квартире, которая стала эпицентром взрыва.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 817,
+        "approxBlocks": 8
+      }
     },
     {
       "id": "interfax:https://www.interfax.ru/russia/1079610:2026-03-23T22:17:00.000Z:Госдума рассмотрит проект закона о праве",
@@ -30,17 +370,17 @@
       "contentHtml": ""
     },
     {
-      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26861047:2026-03-23T22:12:42.000Z:КСИР заявил об ракетном ударе по Димоне,",
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26861047:2026-03-23T22:12:42.000Z:КСИР заявил о ракетном ударе по Димоне, ",
       "sourceId": "tass",
       "sourceName": "ТАСС",
-      "title": "КСИР заявил об ракетном ударе по Димоне, Эйлату и военным базам США в регионе",
+      "title": "КСИР заявил о ракетном ударе по Димоне, Эйлату и военным базам США в регионе",
       "url": "https://tass.ru/mezhdunarodnaya-panorama/26861047",
       "publishedAt": "2026-03-23T22:12:42.000Z",
       "categoryIds": [
         "world"
       ],
       "image": "",
-      "excerpt": "",
+      "excerpt": "Какие именно базы пострадали от ракет, не сообщается",
       "contentHtml": ""
     },
     {
@@ -55,12 +395,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/03/24/01/20260324011517651/pic_c303105933eddb359bad2e460580c34b.jpg",
       "excerpt": "В сети появилось видео с места взрыва в многоэтажном доме в Севастополе. Запись опубликовал Telegram-канал «Mash на волне».На кадрах видно, как из окон жилого здания валит дым. Также на записи заметно возгорание в одной из квартир.Ранее соо",
-      "contentHtml": "<p>В сети появилось видео с места взрыва в многоэтажном доме в <a href=\"https://lenta.ru/tags/geo/sevastopol/\">Севастополе</a>. Запись опубликовал <a href=\"https://t.me/mash_na_volne/10057\">Telegram</a>-канал «Mash на волне».</p><p>На кадрах видно, как из окон жилого здания валит дым. Также на записи заметно возгорание в одной из квартир.</p><p>Ранее <a href=\"https://lenta.ru/news/2026/03/24/v-rossiyskom-gorode-geroe-progremel-moschnyy-vzryv-v-mnogoetazhnom-dome/\">сообщалось</a>, что взрыв произошел на улице Корчагина. В результате происшествия пострадали четыре человека, сообщил губернатор города <a href=\"https://lenta.ru/tags/persons/razvozhaev-mihail/\">Михаил Развожаев</a>. По словам очевидцев. сильный пожар начался минимум в четырех квартирах.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 458,
-        "approxBlocks": 3
-      }
+      "contentHtml": "<p>В сети появилось видео с места взрыва в многоэтажном доме в <a href=\"https://lenta.ru/tags/geo/sevastopol/\">Севастополе</a>. Запись опубликовал <a href=\"https://t.me/mash_na_volne/10057\">Telegram</a>-канал «Mash на волне».</p><p>На кадрах видно, как из окон жилого здания валит дым. Также на записи заметно возгорание в одной из квартир.</p><p>Ранее <a href=\"https://lenta.ru/news/2026/03/24/v-rossiyskom-gorode-geroe-progremel-moschnyy-vzryv-v-mnogoetazhnom-dome/\">сообщалось</a>, что взрыв произошел на улице Корчагина. В результате происшествия пострадали четыре человека, сообщил губернатор города <a href=\"https://lenta.ru/tags/persons/razvozhaev-mihail/\">Михаил Развожаев</a>. По словам очевидцев. сильный пожар начался минимум в четырех квартирах.</p>"
     },
     {
       "id": "tass:https://tass.ru/proisshestviya/26861035:2026-03-23T22:08:34.000Z:В Липецкой области объявили угрозу атаки",
@@ -116,12 +451,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/03/23/11/20260323111350380/pic_bfcd8761ed9fe78055ca54c3041a3e00.jpg",
       "excerpt": "Художница Алисия Фрамис, вышедшая замуж за голограмму мужчины, созданную с помощью искусственного интеллекта, раскрыла подробности интимной жизни. Ее историю рассказало издание El Pais.Как отметила Фрамис, секс с голограммой сильно отличает",
-      "contentHtml": "<p>Художница Алисия Фрамис, вышедшая замуж за голограмму мужчины, созданную с помощью искусственного интеллекта, раскрыла подробности интимной жизни. Ее историю <a href=\"https://www.elpais.com.uy/vida-actual/tecnologia/mujer-que-se-caso-con-un-holograma-cuenta-las-ventajas-y-desafios-de-su-vida-con-una-ia-el-sexo-es-perfecto\">рассказало</a> издание El Pais.</p><p>Как отметила Фрамис, секс с голограммой сильно отличается от интимной близости с реальным человеком. При этом она подчеркнула, что считает головной мозг партнера самым сексуальным органом.</p><p>По словам художницы, она нашла способы испытывать сексуальное удовольствие даже в таком браке: она занимается с супругом-голограммой не физическим, а психическим сексом. При этом Фрамис призналась, что не хватает человеческого тепла, прикосновений и нежности. Однако с развитием технологий в скором времени и эту проблему удастся решить, убеждена она.</p><p>Ранее сексолог Софи Роос <a href=\"https://lenta.ru/news/2026/03/18/devstvennikam-starshe-30-let-rasskazali-o-glavnyh-pravilah-seksa/\">рассказала</a> девственникам старше 30 лет о главных правилах секса. Она призвала во время поцелуев и ласк не вести себя так, будто у человека имеется огромный опыт.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 910,
-        "approxBlocks": 4
-      }
+      "contentHtml": "<p>Художница Алисия Фрамис, вышедшая замуж за голограмму мужчины, созданную с помощью искусственного интеллекта, раскрыла подробности интимной жизни. Ее историю <a href=\"https://www.elpais.com.uy/vida-actual/tecnologia/mujer-que-se-caso-con-un-holograma-cuenta-las-ventajas-y-desafios-de-su-vida-con-una-ia-el-sexo-es-perfecto\">рассказало</a> издание El Pais.</p><p>Как отметила Фрамис, секс с голограммой сильно отличается от интимной близости с реальным человеком. При этом она подчеркнула, что считает головной мозг партнера самым сексуальным органом.</p><p>По словам художницы, она нашла способы испытывать сексуальное удовольствие даже в таком браке: она занимается с супругом-голограммой не физическим, а психическим сексом. При этом Фрамис призналась, что не хватает человеческого тепла, прикосновений и нежности. Однако с развитием технологий в скором времени и эту проблему удастся решить, убеждена она.</p><p>Ранее сексолог Софи Роос <a href=\"https://lenta.ru/news/2026/03/18/devstvennikam-starshe-30-let-rasskazali-o-glavnyh-pravilah-seksa/\">рассказала</a> девственникам старше 30 лет о главных правилах секса. Она призвала во время поцелуев и ласк не вести себя так, будто у человека имеется огромный опыт.</p>"
     },
     {
       "id": "lenta:https://lenta.ru/news/2026/03/24/byvshaya-zvezda-disney-v-otkrovennom-vide-snyalas-dlya-zhurnala/:2026-03-23T22:01:07.000Z:Бывшая звезда Disney в откровенном виде ",
@@ -135,12 +465,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/03/23/17/20260323170653943/pic_da8d2d16f922dbb25608974b621c414c.jpg",
       "excerpt": "Фото: @petros_koy / @FlauntMagazineПопулярная американская актриса и певица Дав Кэмерон в откровенном виде снялась для журнала Flaunt Magazine. Публикация появилась на ее странице в Instagram (принадлежит компании Meta, признанной экстремис",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/03/24/byvshaya-zvezda-disney-v-otkrovennom-vide-snyalas-dlya-zhurnala/\"><img src=\"https://icdn.lenta.ru/images/2026/03/23/17/20260323170653943/owl_detail_240_98d042a646f4f771293dd6b87a79af66.jpg\"></a><figcaption><p>Фото: @petros_koy / @FlauntMagazine</p></figcaption></figure><p>Популярная американская актриса и певица Дав Кэмерон в откровенном виде снялась для журнала Flaunt Magazine. Публикация появилась на ее странице в Instagram (<i>принадлежит компании Meta, признанной экстремистской организацией и запрещенной в <a href=\"https://lenta.ru/tags/geo/rf/\">РФ</a></i>).</p><p>Бывшая звезда <a href=\"https://lenta.ru/tags/organizations/walt-disney/\">Disney</a> и невеста фронтмена итальянской рок-группы Måneskin <a href=\"https://lenta.ru/tags/persons/damiano-david/\">Дамиано Давида</a> на одном из кадров предстала топлес спиной к камере. Также она позировала в надетых на голое тело и расстегнутых куртке и блузке и примерила микроюбку с обнажающим тело плащом.</p><p>Автором кадров стал греческий фотограф Петрос Куиурис, также известный как Петрос Кой.</p><p>Дав Кэмерон наиболее известна благодаря ролям Лив и Мэдди в телесериале канала Disney «Лив и Мэдди», а также серии фильмов «Наследники», где она сыграла главные роли.</p><p>В апреле 2025 года Дамиано Давид <a href=\"https://lenta.ru/news/2025/04/04/26-letniy-solist-m-neskin-snyalsya-toples-dlya-gq/\">снялся</a> в откровенном образе для итальянской версии журнала GQ.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 960,
-        "approxBlocks": 9
-      }
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/03/24/byvshaya-zvezda-disney-v-otkrovennom-vide-snyalas-dlya-zhurnala/\"><img src=\"https://icdn.lenta.ru/images/2026/03/23/17/20260323170653943/owl_detail_240_98d042a646f4f771293dd6b87a79af66.jpg\"></a><figcaption><p>Фото: @petros_koy / @FlauntMagazine</p></figcaption></figure><p>Популярная американская актриса и певица Дав Кэмерон в откровенном виде снялась для журнала Flaunt Magazine. Публикация появилась на ее странице в Instagram (<i>принадлежит компании Meta, признанной экстремистской организацией и запрещенной в <a href=\"https://lenta.ru/tags/geo/rf/\">РФ</a></i>).</p><p>Бывшая звезда <a href=\"https://lenta.ru/tags/organizations/walt-disney/\">Disney</a> и невеста фронтмена итальянской рок-группы Måneskin <a href=\"https://lenta.ru/tags/persons/damiano-david/\">Дамиано Давида</a> на одном из кадров предстала топлес спиной к камере. Также она позировала в надетых на голое тело и расстегнутых куртке и блузке и примерила микроюбку с обнажающим тело плащом.</p><p>Автором кадров стал греческий фотограф Петрос Куиурис, также известный как Петрос Кой.</p><p>Дав Кэмерон наиболее известна благодаря ролям Лив и Мэдди в телесериале канала Disney «Лив и Мэдди», а также серии фильмов «Наследники», где она сыграла главные роли.</p><p>В апреле 2025 года Дамиано Давид <a href=\"https://lenta.ru/news/2025/04/04/26-letniy-solist-m-neskin-snyalsya-toples-dlya-gq/\">снялся</a> в откровенном образе для итальянской версии журнала GQ.</p>"
     },
     {
       "id": "tass:https://tass.ru/armiya-i-opk/26861003:2026-03-23T22:00:47.000Z:Марочко: армия РФ выдавливает ВСУ из Чер",
@@ -180,7 +505,7 @@
       "categoryIds": [
         "ru"
       ],
-      "image": "",
+      "image": "https://www.interfax.ru/ftproot/textphotos/2026/03/24/Ae700.jpg",
       "excerpt": "Аэропорт Внуково вновь принимает и отправляет рейсы, сообщили в Росавиации.\"Сняты ограничения на прием и выпуск воздушных судов\", - говорится в сообщении ведомства, опубликованном в мессенджере Max.",
       "contentHtml": ""
     },
@@ -196,12 +521,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/03/24/00/20260324004822230/pic_daf3cf5e75996ea9490868d40377277d.jpg",
       "excerpt": "Фото: Ken Cedeno / ReutersВ крупнейших городах Ирана состоялись многотысячные манифестации, участники которых призвали к продолжению военного противостояния с Соединенными Штатами и Израилем. Об этом сообщает Telegram-канал «Политика Страны",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/03/24/zhiteli-irana-vyshli-na-miting-za-prodolzhenie-voyny-s-ssha/\"><img src=\"https://icdn.lenta.ru/images/2026/03/24/00/20260324004822230/owl_detail_240_22d17db3a24301bc54c845891fe93029.jpg\"></a><figcaption><p>Фото: Ken Cedeno / Reuters</p></figcaption></figure><p>В крупнейших городах Ирана состоялись многотысячные манифестации, участники которых призвали к продолжению военного противостояния с Соединенными Штатами и <a href=\"https://lenta.ru/tags/geo/izrail/\">Израилем</a>. Об этом сообщает <a href=\"https://t.me/stranaua/230343\">Telegram</a>-канал «Политика Страны».</p><p>Акции проходят при широкой поддержке армии и Корпуса стражей исламской революции (КСИР).</p><p>Как сообщают очевидцы, улицы заполнены людьми, скандирующими лозунги: «Мы — нация Хусейна, мы не принимаем компромиссов». Хусейн — внук пророка Мухаммеда, погибший в битве при Кербеле и считающийся одной из наиболее почитаемых фигур в шиизме.</p><p>Ранее президент <a href=\"https://lenta.ru/tags/geo/ssha/\">США</a> <a href=\"https://lenta.ru/tags/persons/tramp-donald/\">Дональд Трамп</a> в Мемфисе <a href=\"https://lenta.ru/news/2026/03/23/tramp-zayavil-o-gotovnosti-irana-k-zaklyucheniyu-sdelki/\">заявил</a> о якобы готовности <a href=\"https://lenta.ru/tags/geo/iran/\">Ирана</a> к заключению сделки.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 720,
-        "approxBlocks": 8
-      }
+      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/03/24/zhiteli-irana-vyshli-na-miting-za-prodolzhenie-voyny-s-ssha/\"><img src=\"https://icdn.lenta.ru/images/2026/03/24/00/20260324004822230/owl_detail_240_22d17db3a24301bc54c845891fe93029.jpg\"></a><figcaption><p>Фото: Ken Cedeno / Reuters</p></figcaption></figure><p>В крупнейших городах Ирана состоялись многотысячные манифестации, участники которых призвали к продолжению военного противостояния с Соединенными Штатами и <a href=\"https://lenta.ru/tags/geo/izrail/\">Израилем</a>. Об этом сообщает <a href=\"https://t.me/stranaua/230343\">Telegram</a>-канал «Политика Страны».</p><p>Акции проходят при широкой поддержке армии и Корпуса стражей исламской революции (КСИР).</p><p>Как сообщают очевидцы, улицы заполнены людьми, скандирующими лозунги: «Мы — нация Хусейна, мы не принимаем компромиссов». Хусейн — внук пророка Мухаммеда, погибший в битве при Кербеле и считающийся одной из наиболее почитаемых фигур в шиизме.</p><p>Ранее президент <a href=\"https://lenta.ru/tags/geo/ssha/\">США</a> <a href=\"https://lenta.ru/tags/persons/tramp-donald/\">Дональд Трамп</a> в Мемфисе <a href=\"https://lenta.ru/news/2026/03/23/tramp-zayavil-o-gotovnosti-irana-k-zaklyucheniyu-sdelki/\">заявил</a> о якобы готовности <a href=\"https://lenta.ru/tags/geo/iran/\">Ирана</a> к заключению сделки.</p>"
     },
     {
       "id": "tass:https://tass.ru/sport/26860999:2026-03-23T21:52:56.000Z:Мажич считает, что у VAR всегда будут кр",
@@ -849,17 +1169,17 @@
       "contentHtml": ""
     },
     {
-      "id": "tass:https://tass.ru/obschestvo/26860723:2026-03-23T21:04:59.000Z:Международный экологический форум собере",
+      "id": "tass:https://tass.ru/obschestvo/26860723:2026-03-23T21:04:59.000Z:В Петербурге пройдет международный эколо",
       "sourceId": "tass",
       "sourceName": "ТАСС",
-      "title": "Международный экологический форум соберет в Петербурге более 6 тыс. специалистов",
+      "title": "В Петербурге пройдет международный экологический форум",
       "url": "https://tass.ru/obschestvo/26860723",
       "publishedAt": "2026-03-23T21:04:59.000Z",
       "categoryIds": [
         "ru"
       ],
       "image": "",
-      "excerpt": "",
+      "excerpt": "В мероприятии примут участие более 6 тыс. специалистов",
       "contentHtml": ""
     },
     {
@@ -14161,6 +14481,20 @@
       "contentHtml": ""
     },
     {
+      "id": "kommersant:https://www.kommersant.ru/doc/8532848:2026-03-23T11:50:24.000Z:Правительство не поддержало законопроект",
+      "sourceId": "kommersant",
+      "sourceName": "Коммерсантъ",
+      "title": "Правительство не поддержало законопроект КПРФ о снижении судебных пошлин",
+      "url": "https://www.kommersant.ru/doc/8532848",
+      "publishedAt": "2026-03-23T11:50:24.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://im2.kommersant.ru/Issues.photo2/NEWS/2026/03/23/KMO_162551_00005_1_t219_161947.jpg",
+      "excerpt": "Правительственная комиссия по законопроектной деятельности не поддержала инициативу о снижении судебных пошлин, с которой выступили депутаты Госдумы от КПРФ. В своем решении кабмин сослался на «позитивные результаты», которые принесло увеличение сборов в сентябре 2024 года.",
+      "contentHtml": ""
+    },
+    {
       "id": "lenta:https://lenta.ru/news/2026/03/23/nazvan-prostoy-sposob-snizit-uroven-plohogo-holesterina/:2026-03-23T11:50:10.000Z:Назван простой способ снизить уровень пл",
       "sourceId": "lenta",
       "sourceName": "Lenta.ru",
@@ -20917,317 +21251,6 @@
       ],
       "image": "",
       "excerpt": "Обстрелы беспилотников повредили частные жилые дома в Таврийске, Гладковке",
-      "contentHtml": ""
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/business/1079447:2026-03-23T08:51:00.000Z:Эксперты оценили рост коммерческих закуп",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "Эксперты оценили рост коммерческих закупок в РФ в 2025 году в 10,5% до 30,3 трлн руб.",
-      "url": "https://www.interfax.ru/business/1079447",
-      "publishedAt": "2026-03-23T08:51:00.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "Объем коммерческих закупок в России в 2025 году вырос на 10,5% до 30,3 трлн рублей с 27,4 трлн рублей годом ранее.",
-      "contentHtml": ""
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/world/1079448:2026-03-23T08:50:00.000Z:Лукашенко разрешил литовским грузовикам ",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "Лукашенко разрешил литовским грузовикам выехать из Белоруссии",
-      "url": "https://www.interfax.ru/world/1079448",
-      "publishedAt": "2026-03-23T08:50:00.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "https://www.interfax.ru/ftproot/textphotos/2026/03/23/gr700.jpg",
-      "excerpt": "Президент Белоруссии Александр Лукашенко разрешил литовским грузовикам, застрявшим в республике после закрытия Литвой границы в октябре, выехать после оплаты услуг по их хранению на спецстоянках, сообщила пресс-служба белорусского правительства.\"Глава государства, рассмотрев обращение литовских и польских перевозчиков, принял решение о возможности выезда грузовых транспортных средств с литовской регистрацией\", - говорится в сообщении.\"Такие транспортные средства с ноября 2025 года находятся на территории Беларуси по причине недружественных действий литовской стороны по закрытию пунктов пропуска на белорусско-литовской границе.",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/26852541:2026-03-23T08:48:47.000Z:Генпрокуратура считает, что мировое согл",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Генпрокуратура считает, что мировое соглашение с Галицким не предусмотрено законом",
-      "url": "https://tass.ru/proisshestviya/26852541",
-      "publishedAt": "2026-03-23T08:48:47.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260323/8903289.jpg",
-      "excerpt": "У бизнесмена требуют изъять в доход государства имущество на сумму более 8 млрд рублей как у участника экстремистского объединения, поддерживающего ВСУ",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/ekonomika/26852525:2026-03-23T08:48:32.000Z:Руденко: процесс формирования независимо",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Руденко: процесс формирования независимого расчетного механизма в БРИКС идет",
-      "url": "https://tass.ru/ekonomika/26852525",
-      "publishedAt": "2026-03-23T08:48:32.000Z",
-      "categoryIds": [
-        "world",
-        "business"
-      ],
-      "image": "",
-      "excerpt": "Замглавы МИД РФ отметил, что не знает, когда будут реализованы все эти задумки и в каком виде все это произойдет",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/kultura/26852481:2026-03-23T08:48:26.000Z:В Санкт-Петербурге пройдет концерт \"Русс",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В Санкт-Петербурге пройдет концерт \"Русской фортепианной школы\"",
-      "url": "https://tass.ru/kultura/26852481",
-      "publishedAt": "2026-03-23T08:48:26.000Z",
-      "categoryIds": [
-        "culture",
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Мероприятие состоится 19 апреля",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/26852537:2026-03-23T08:48:14.000Z:На Николоямской улице в Москве восстанов",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "На Николоямской улице в Москве восстановили движение транспорта",
-      "url": "https://tass.ru/obschestvo/26852537",
-      "publishedAt": "2026-03-23T08:48:14.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Оно было затруднено из-за пожара в доме",
-      "contentHtml": ""
-    },
-    {
-      "id": "habr:https://habr.com/ru/companies/onlinepatent/articles/1013578/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1013578:2026-03-23T08:47:50.000Z:Groupon: как появился скидочный маркетпл",
-      "sourceId": "habr",
-      "sourceName": "Хабр",
-      "title": "Groupon: как появился скидочный маркетплейс и почему он еще жив",
-      "url": "https://habr.com/ru/companies/onlinepatent/articles/1013578/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1013578",
-      "publishedAt": "2026-03-23T08:47:50.000Z",
-      "categoryIds": [
-        "tech"
-      ],
-      "image": "https://habrastorage.org/getpro/habr/upload_files/0eb/221/607/0eb2216076d71a24272e5f4d2433eedd.png",
-      "excerpt": "В конце 2000‑х Groupon стал символом эпохи «купонного безумия»: сервис обещал ресторанам и салонам красоты поток новых клиентов, а пользователям — большие скидки почти на все. Через несколько лет оказалось, что взрывной рост построен на хрупкой модели. Компания была вынуждена заново изобретать себя как более зрелый маркетплейс услуг и впечатлений на локальных рынках. Вспоминаем историю бурного взлета и последующего выживания Groupon. Читать далее",
-      "contentHtml": "<figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/220/da3/064/220da30647317fda1a4d1897dcfb75cd.png\"></figure><p>В конце 2000‑х Groupon стал символом эпохи «купонного безумия»: сервис обещал ресторанам и салонам красоты поток новых клиентов, а пользователям — большие скидки почти на все. Через несколько лет оказалось, что взрывной рост построен на хрупкой модели. Компания была вынуждена заново изобретать себя как более зрелый маркетплейс услуг и впечатлений на локальных рынках. Вспоминаем историю бурного взлета и последующего выживания Groupon.</p><h3>Как появился Groupon и чему обязан популярностью</h3><p>Идея Groupon <a href=\"https://portersfiveforce.com/blogs/brief-history/groupon\">выросла</a> из другого проекта его основателя, Эндрю Мейсона — платформы The Point. Это была попытка создать инструмент коллективных действий. Пользователи объединялись вокруг целей, которые «включались» только при достижении определенного числа участников.</p><p>Потом эту логику перенесли на скидки от бизнеса: акция срабатывает, только если продукт или услугу покупает достаточное количество людей. Так появилась концепция «group coupon», от которой произошло название Groupon.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/7b2/039/0a6/7b20390a68f3436e59738f6bd2b66150.png\" alt=\"Оригинальный дизайн сайта компании в 2010 году. Источник: https://www.groupon.com/&nbsp;\"><figcaption>Оригинальный дизайн сайта компании в 2010 году. <em>Источник: </em><a href=\"https://www.groupon.com/\"><em>https://www.groupon.com/</em></a><em>&nbsp;</em></figcaption></figure><p>Первые кампании в Чикаго запускались в минималистичном формате: сайт на WordPress, ручные рассылки и локальные предложения вроде двух пицц по цене одной. Схема оказалась вирусной: пользователи охотно делились ссылками с друзьями, чтобы «дособирать» нужное количество покупателей и активировать заветную сделку.&nbsp;</p><p>Рост поддержало несколько факторов:</p><ol><li><p>Последствия финансового кризиса 2008 года и высокий спрос на экономию;</p></li><li><p>Быстрое распространение через социальные сети и email‑рассылки;</p></li><li><p>Простота механики для пользователей и локальных бизнесов.</p></li></ol><p>В 2009–2010 годах Groupon вышел в десятки городов США, а затем начал международную экспансию, собирая крупные раунды венчурного финансирования.</p><h3>Взлет, перегрев и проблемы модели&nbsp;</h3><p>Через несколько лет после старта Groupon уже считали «новым лицом электронной коммерции» и примером молниеносного масштабирования. Компания агрессивно выходила на новые рынки, часто покупая локальные копии и конкурентов, чтобы закрепиться в новых странах.</p><p>В 2011 году Groupon провел IPO, на котором <a href=\"https://matrixbcg.com/blogs/brief-history/groupon\">привлек </a>$700 млн, позиционируя себя как лидера рынка коллективных скидок и локальных сделок. Ожидания были высокими: инвесторы рассчитывали на масштабируемую модель, которую можно было бы развернуть по всему миру, опираясь на сетевой эффект пользователей и продавцов.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/2fe/d38/7a2/2fed387a2cc21cf9dc008c08e11a86f1.png\" alt=\"Акции компании сильно росли в начале, но гораздо сильнее падали после. Сейчас они стоят на 97% дешевле, чем на пике. Источник: https://ru.tradingview.com/\"><figcaption><em>Акции компании сильно росли в начале, но гораздо сильнее падали после. Сейчас они стоят на 97% дешевле, чем на пике. Источник: </em><a href=\"https://ru.tradingview.com/\"><em>https://ru.tradingview.com/</em></a></figcaption></figure><p>Однако уже вскоре выявились системные проблемы. Многие локальные бизнесы жаловались, что купонные акции не приводят к постоянным клиентам, а просто создают разовые всплески нагрузки с низкой прибыльностью. Репутационные риски усиливались историями о перегруженных ресторанах, сорванных акциях и разочарованных клиентах.</p><p>Внутри компании это привело к перестройке стратегии и изменениям в управлении.&nbsp;</p><h3>Что представляет собой Groupon сегодня</h3><p>За последние годы Groupon последовательно уходил от образа массового сервиса «скидка на все» к более сфокусированному маркетплейсу. Компания сократила географию присутствия, концентрируясь на Северной Америке и ключевых европейских рынках, где можно поддерживать достаточный масштаб и маржу.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/61d/c64/216/61dc64216675dc1ded2d7e6512892633.png\" alt=\"Так «маркетплейс скидок» выглядит в наше время. Источник: https://www.groupon.com/&nbsp;\"><figcaption><em>Так «маркетплейс скидок» выглядит в наше время. Источник: </em><a href=\"https://www.groupon.com/\"><em>https://www.groupon.com/</em></a><em>&nbsp;</em></figcaption></figure><p>Текущая модель строится вокруг нескольких принципов:</p><ol><li><p>Упор на локальные услуги и впечатления (рестораны, развлечения, здоровье, туризм), которые дают более устойчивую выручку и меньше «перегорают» после разовых акций;</p></li><li><p>Работа с более «сильными» партнерами, для которых Groupon — один из ключевых каналов привлечения клиентов, но не единичный эксперимент;</p></li><li><p>Оптимизация портфеля категорий: отказ от части товарных направлений в пользу более маржинальных и предсказуемых.</p></li></ol><p><a href=\"https://www.marketscreener.com/news/groupon-q4-2025-earnings-commentary-ce7e5fdfdc8df726\">Отдельный</a> стратегический вектор — возможности ИИ‑экосистем. Groupon рассматривает себя как выгодного партнера для ИИ‑агентов и голосовых ассистентов. Им нужны структурированные локальные предложения с понятными условиями и ценами. Сервис может получить дополнительный трафик, если встроится в сценарии поиска через ИИ, а не только через традиционный веб-писк и мобильные приложения.</p><p>Сейчас в основе модели Groupon маркетплейс, который сводит местных продавцов (мерчантов) и пользователей. Первые размещают предложения с ограниченными по времени и/или количеству условиями, а пользователи покупают ваучеры или бронируют услуги через платформу. Фактически Groupon пытается закрепиться в нише «каталога выгодных предложений».&nbsp;</p><h3>Интеллектуальная собственность Groupon</h3><p>В 2016 году IBM подала иск к Groupon по поводу использования ряда патентов из электронной коммерции. Разбирательство шло не один год, и в итоге Groupon <a href=\"https://legal-patent.com/international-intellectual-property/ibm-wins-83-million-licensing-battle-groupon/\">пришлось заплатить</a> $83 млн.&nbsp;</p>Товарные знаки<p>Главный актив компании в области товарных знаков — бренд и товарный знак GROUPON, который зарегистрирован в нескольких странах. Помимо основного бренда, компания регистрировала и суббренды.&nbsp;</p><p>Например, знак <a href=\"https://trademarks.justia.com/854/09/groupon-85409592.html\">GROUPON GOODS</a> использовался для обозначения товарных предложений и соответствующих услуг по электронной коммерции. В разные периоды на рынке присутствовали и другие вариации бренда, связанные с конкретными категориями или программами.</p><p>Работая с мерчантами (компаниями), компания получает ограниченную лицензию на использование их товарных знаков и логотипов.</p>Патенты<p>В свое время Groupon инвестировал в разработку и патентование технологических решений, связанных с поиском, распределением и управлением офферами, а также с платежами и погашением купонов. Из примеров направлений:&nbsp;</p><p><strong>Поиск и навигация по сделкам </strong>— патент <a href=\"https://patents.google.com/patent/US10395276B1\">US10395276B1</a> описывает систему, которая переводит запрос пользователя из одной таксономии в другую, подбирая релевантные предложения, даже если точного совпадения нет. Такая архитектура позволяет выдавать альтернативы и работать с разными классификациями товаров и услуг.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/f85/148/703/f851487030a4d63d23caa18bbddf817f.png\" alt=\"Иллюстрация из патента  патент US10395276B1\"><figcaption>Иллюстрация из патента  патент <a href=\"https://patents.google.com/patent/US10395276B1\">US10395276B1</a></figcaption></figure><p><strong>Распределение офферов и управление инвентарем</strong>. Например, патент <a href=\"https://patents.google.com/patent/US10115129B1\">US10115129B1</a>. Он и другие охватывает алгоритмы назначения сделок пользователям, включая распределение пользователей между экспериментальными группами и динамическое изменение показов.&nbsp;</p><p><strong>Жизненный цикл промо‑программ.</strong> Тут патенты (например, <a href=\"https://patents.google.com/patent/US10535076B1\">US10535076B1</a>) описывают управление параметрами акций на разных стадиях: запуск, масштабирование, корректировка условий и завершение. Технология позволяет изменять доступность предложений и их условия в зависимости от результатов и поведения пользователей.</p><p><strong>Платежи и погашение купонов</strong>. Патенты в этой области (например, <a href=\"https://patents.google.com/patent/US10922707B2\">US10922707B2</a>) посвящены привязке купонов к платежным средствам и автоматическому распознаванию права на скидку при оплате. Это позволяет пользователю не предъявлять бумажный или цифровой ваучер, а получать скидку автоматически, что повышает удобство и снижает трение.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/854/648/859/854648859801d8e90191bf3270bc3ac3.png\" alt=\"Иллюстрация из патента  US10922707B2\"><figcaption>Иллюстрация из патента  <a href=\"https://patents.google.com/patent/US10922707B2\">US10922707B2</a></figcaption></figure><p>При этом часть патентов перестали действовать, а большая часть актуальных передана ByteDance — китайскому владельцу ряда рекомендательных платформ.&nbsp;</p><h3>Что осталось от Groupon и почему он еще жив</h3><p>От хайпового образа начала 2010‑х у Groupon остался узнаваемый бренд и базовая идея связывать потребителя с местным бизнесом через выгодные предложения. Но способ реализации этой идеи заметно изменился — вместо гонки за количеством купонов и городов компания делает ставку на прибыльность, качество офферов и технологический уровень платформы. Поможет ли такая стратегия — покажет время.&nbsp;</p><p>Groupon — пример того, как массовый потребительский стартап, построенный на моде и дешевых деньгах, после болезненного отрезвления превращается в более приземленную и относительно устойчивую компанию.</p>О сервисе Онлайн Патент:<p>Онлайн Патент&nbsp;— цифровая система №&nbsp;1&nbsp;в&nbsp;рейтинге Роспатента. С 2013&nbsp;года мы создаем уникальные LegalTech‑решения для&nbsp;защиты и управления интеллектуальной собственностью. Зарегистрируйтесь в&nbsp;<a href=\"https://my.onlinepatent.ru/client/registration?context=Claim&amp;type=TradeMark&amp;utm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_source=habr&amp;utm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_medium=smm&amp;utm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_campaign=habr%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_smm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_postpodval260323\">сервисе</a>&nbsp;Онлайн‑Патент и получите доступ к&nbsp;следующим услугам:  </p><ul><li><p>Онлайн‑регистрация программ, патентов на&nbsp;изобретение, товарных знаков, промышленного дизайна;</p></li><li><p><a href=\"https://onlinepatent.ru/uslugi/reestr/?utm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_source=habr&amp;utm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_medium=smm&amp;utm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_campaign=habr%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_smm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_postpodval2512%5C260323\">Подача заявки на&nbsp;внесение в&nbsp;реестр отечественного ПО</a>;</p></li><li><p><a href=\"https://onlinepatent.ru/software/?utm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_source=habr&amp;utm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_medium=smm&amp;utm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_campaign=habr%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_smm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_postpodval260323\">Поиск по&nbsp;программам</a>;</p></li><li><p><a href=\"https://onlinepatent.ru/uslugi/registraciya-programmy-dlya-evm/?utm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_source=habr&amp;utm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_medium=smm&amp;utm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_campaign=habr%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_smm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_postpodval260323\">Регистрация программы в&nbsp;Роспатенте</a>;</p></li><li><p><a href=\"https://onlinepatent.ru/uslugi/registraciya-tovarnogo-znaka/?utm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_source=habr&amp;utm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_medium=smm&amp;utm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_campaign=habr%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_smm%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C%5C_postpodval260323\">Регистрация товарных знаков</a>;</p></li><li><p>Опции ускоренного оформления услуг;</p></li><li><p>Бесплатный поиск по&nbsp;базам патентов, программ, товарных знаков;</p></li><li><p>Мониторинги новых заявок по&nbsp;критериям;</p></li><li><p>Онлайн‑поддержку специалистов.</p></li></ul>"
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/03/23/v-rossii-otreagirovali-na-plan-deystviy-nato-na-blizhnem-vostoke/:2026-03-23T08:47:41.000Z:В России отреагировали на план действий ",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "В России отреагировали на план действий НАТО на Ближнем Востоке",
-      "url": "https://lenta.ru/news/2026/03/23/v-rossii-otreagirovali-na-plan-deystviy-nato-na-blizhnem-vostoke/",
-      "publishedAt": "2026-03-23T08:47:41.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/03/23/11/20260323114511370/pic_558812d93c2b8bc7dc1ce75f427fb864.jpg",
-      "excerpt": "Фото: U.S. Navy / Handout via ReutersЕвропейский Союз (ЕС) проявил интерес к разблокировке Ормузского пролива на Ближнем Востоке по ряду причин, в том числе из-за собственной выгоды. Об этом в Telegram заявил сенатор Алексей Пушков, коммент",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/03/23/v-rossii-otreagirovali-na-plan-deystviy-nato-na-blizhnem-vostoke/\"><img src=\"https://icdn.lenta.ru/images/2026/03/23/11/20260323114511370/owl_detail_240_7d3d093c75a03451d2c1e23d6522b071.jpg\"></a><figcaption><p>Фото: U.S. Navy / Handout via Reuters</p></figcaption></figure><p><a href=\"https://lenta.ru/tags/organizations/es/\">Европейский Союз</a> (ЕС) проявил интерес к разблокировке Ормузского пролива на Ближнем Востоке по ряду причин, в том числе из-за собственной выгоды. Об этом в <a href=\"https://t.me/alexey_pushkov/15072\">Telegram</a> заявил сенатор <a href=\"https://lenta.ru/tags/persons/pushkov-aleksey/\">Алексей Пушков</a>, комментируя план действий <a href=\"https://lenta.ru/tags/organizations/nato/\">НАТО</a> на Ближнем Востоке.</p><p>Первой причиной разработки плана действий по разблокировке пролива Пушков назвал то, что перекрытие этой важнейшей нефтегазовой артерии, в первую очередь, ударит по экономике Европы.</p><p>Второй причиной он назвал взаимоотношение лидеров стран ЕС с президентом <a href=\"https://lenta.ru/tags/geo/ssha/\">США</a> <a href=\"https://lenta.ru/tags/persons/tramp-donald/\">Дональдом Трампом</a>. «Зная, насколько эта война важна для Трампа и насколько он недоволен позицией союзников, европейцы не хотят полностью выводить его из себя», — пояснил Пушков.</p><p>Третьей причиной некоторого сдвига в позициях Европы российский политик назвал опасение, что из-за их позиции по конфликту в <a href=\"https://lenta.ru/tags/geo/iran/\">Иране</a> Трамп станет еще в меньшей степени поддерживать <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украину</a>. «Зеленский сейчас — клиент прежде всего Евросоюза, а не США, и евролидеры опасаются, что, погруженный в войну с Ираном, Трамп может полностью отвернуться от него», — заключил он.</p><p>Ранее генеральный секретарь Североатлантического альянса <a href=\"https://lenta.ru/tags/persons/ryutte-mark/\">Марк Рютте</a> <a href=\"https://lenta.ru/news/2026/03/22/stalo-izvestno-o-plane-deystviy-nato-na-blizhnem-vostoke/\">заявил</a>, что страны НАТО начали разрабатывать план действий по разблокировке Ормузского пролива. В рабочую группу вошли 22 государства.</p>"
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/03/23/rossiyanka-izbila-syna-na-glazah-u-ego-sverstnikov/:2026-03-23T08:47:00.000Z:Россиянка избила сына на глазах у его св",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Россиянка избила сына на глазах у его сверстников",
-      "url": "https://lenta.ru/news/2026/03/23/rossiyanka-izbila-syna-na-glazah-u-ego-sverstnikov/",
-      "publishedAt": "2026-03-23T08:47:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/03/23/11/20260323113827193/pic_1e407a6f812d7ed6c0cb17b438cc9fc1.jpg",
-      "excerpt": "Фото: KieferPix / Shutterstock / FotodomМать из поселка Большой Исток в Свердловской области избила сына на глазах у его сверстников. О действиях россиянки стало известно порталу E1.ru.Свидетели отметили, что женщина нанесла несколько ударо",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/03/23/rossiyanka-izbila-syna-na-glazah-u-ego-sverstnikov/\"><img src=\"https://icdn.lenta.ru/images/2026/03/23/11/20260323113827193/owl_detail_240_29e88863f615eb2d404991fbfa3efd4a.jpg\"></a><figcaption><p>Фото: KieferPix / Shutterstock / Fotodom</p></figcaption></figure><p>Мать из поселка Большой Исток в Свердловской области избила сына на глазах у его сверстников. О действиях россиянки <a href=\"https://www.e1.ru/text/incidents/2026/03/23/76325884/\">стало известно</a> порталу E1.ru.</p><p>Свидетели отметили, что женщина нанесла несколько ударов кулаком мальчику, который пытался вырваться. Жительница Урала не останавливалась даже, когда ребенок упал на землю. Предположительно, несовершеннолетний сбежал из дома.</p><p>Очевидцы утверждают, что напавшая на собственного сына мать имеет проблемы с алкоголем. В полиции произошедшее пока не комментировали.</p><p>До этого <a href=\"https://lenta.ru/news/2026/03/02/rossiyanka-izbila-syna-autista-na-glazah-u-vsego-dvora-i-popala-na-video/\">стало известно</a>, что в селе Михайловка в <a href=\"https://lenta.ru/tags/geo/bashkiriya/\">Башкирии</a> мать избила сына на глазах у прохожих. Родительница шесть раз швырнула несовершеннолетнего в сугроб. По факту случившегося в российском регионе была организована проверка.</p>"
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/03/23/v-ssha-vystupili-protiv-resheniya-trampa-atakovat-energoob-ekty-irana/:2026-03-23T08:46:40.000Z:В США выступили против решения Трампа ат",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "В США выступили против решения Трампа атаковать энергообъекты Ирана",
-      "url": "https://lenta.ru/news/2026/03/23/v-ssha-vystupili-protiv-resheniya-trampa-atakovat-energoob-ekty-irana/",
-      "publishedAt": "2026-03-23T08:46:40.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/03/23/11/20260323114802082/pic_824bba4192edad4e644d4ec8b0fd85a0.jpg",
-      "excerpt": "Фото: Kylie Cooper / ReutersПрезидент США Дональд Трамп совершит военное преступление, если США нанесут удары по энергетическим объектам Ирана. Об этом заявил сенатор-демократ от штата Массачусетс Эд Марки в социальной сети X.По его словам,",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/03/23/v-ssha-vystupili-protiv-resheniya-trampa-atakovat-energoob-ekty-irana/\"><img src=\"https://icdn.lenta.ru/images/2026/03/23/11/20260323114802082/owl_detail_240_f04bde12fa6315e012d7c27d5af6ca82.jpg\"></a><figcaption><p>Фото: Kylie Cooper / Reuters</p></figcaption></figure><p>Президент <a href=\"https://lenta.ru/tags/geo/ssha/\">США</a> <a href=\"https://lenta.ru/tags/persons/tramp-donald/\">Дональд Трамп</a> совершит военное преступление, если США нанесут удары по энергетическим объектам <a href=\"https://lenta.ru/tags/geo/iran/\">Ирана</a>. Об этом <a href=\"https://x.com/SenMarkey/status/2035721081089138717\">заявил</a> сенатор-демократ от штата Массачусетс <a href=\"https://lenta.ru/tags/persons/marki-ed/\">Эд Марки</a> в социальной сети X.</p><p>По его словам, у американского лидера отсутствуют решения ситуации в Ормузском проливе, поэтому он грозит атаковать гражданские электростанции Ирана.</p><p>«Это нападение на мирное население. Это будет военным преступлением. Нужно положить этому конец», — написал американский политик.</p><p>Ранее член финской партии «Альянс свободы» Армандо Мема <a href=\"https://lenta.ru/news/2026/03/23/obvinyayuschaya-rossiyu-v-agressii-nato-okazalas-nastupatelnym-alyansom/\">заявил</a>, что государства <a href=\"https://lenta.ru/tags/organizations/nato/\">НАТО</a>, которые неоднократно обвиняли Россию в агрессии, сами стали наступательным альянсом. По мнению политика, Североатлантический альянс постоянно называет Россию «плохим актором», а в настоящее время блок открыто оправдывает военную операцию США и <a href=\"https://lenta.ru/tags/geo/izrail/\">Израиля</a> на Ближнем Востоке.</p>"
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/26852519:2026-03-23T08:46:06.000Z:ТАСС: пожар в центре Москвы начался из-з",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "ТАСС: пожар в центре Москвы начался из-за курения",
-      "url": "https://tass.ru/proisshestviya/26852519",
-      "publishedAt": "2026-03-23T08:46:06.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260323/8903277.jpg",
-      "excerpt": "Предварительно, возгорание началось в квартире циркового артиста Евгения Чернова",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/03/23/temnokozhiy-ispolnitel-roli-severusa-sneypa-pozhalovalsya-na-ugrozy-raspravoy/:2026-03-23T08:46:00.000Z:Темнокожий исполнитель роли Северуса Сне",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Темнокожий исполнитель роли Северуса Снейпа пожаловался на угрозы расправой",
-      "url": "https://lenta.ru/news/2026/03/23/temnokozhiy-ispolnitel-roli-severusa-sneypa-pozhalovalsya-na-ugrozy-raspravoy/",
-      "publishedAt": "2026-03-23T08:46:00.000Z",
-      "categoryIds": [
-        "culture"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/03/23/10/20260323100511969/pic_076403592fb546c2643fc2b87471ab6f.jpg",
-      "excerpt": "Фото: Vianney Le Caer / Invision / APАктер Паапа Эссьеду, получивший роль профессора Северуса Снейпа в новом сериале о Гарри Поттере, пожаловался на угрозы в соцсетях. Об этом он рассказал в интервью The Times.Эссьеду сообщил, что столкнулс",
-      "contentHtml": "<figure><a href=\"https://lenta.ru/comments/news/2026/03/23/temnokozhiy-ispolnitel-roli-severusa-sneypa-pozhalovalsya-na-ugrozy-raspravoy/\"><img src=\"https://icdn.lenta.ru/images/2026/03/23/10/20260323100511969/owl_detail_240_ea77cf11d0dd98aafe01be922949896e.jpg\"></a><figcaption><p>Фото: Vianney Le Caer / Invision / AP</p></figcaption></figure><p>Актер Паапа Эссьеду, получивший роль профессора Северуса Снейпа в новом сериале о <a href=\"https://lenta.ru/tags/persons/potter-garri/\">Гарри Поттере</a>, пожаловался на угрозы в соцсетях. Об этом он <a href=\"https://www.thetimes.com/culture/tv-radio/article/paapa-essiedu-harry-potter-snape-interview-3hqkzzmlk\">рассказал</a> в интервью The Times.</p><p>Эссьеду сообщил, что столкнулся с волной критики и требованиями покинуть проект. Некоторые пользователи угрожали ему убийством в случае, если он не откажется от роли Снейпа. Артист признался, что подобные сообщения повлияли на его эмоциональное состояние, однако лишь добавили ему уверенности.</p><p>«Абьюз придает мне силы. Я хочу сделать этого персонажа своим, потому что помню, что чувствовал в детстве. Я представлял себя в Хогвартсе летающим на метле», — заявил Эссьеду. По словам актера, его мотивирует мысль о том, что похожие на него дети почувствуют свою причастность ко вселенной Гарри Поттера.</p><p>О том, что Эссьеду <a href=\"https://lenta.ru/news/2025/03/07/temnokozhiy-akter-sygraet-odnu-iz-glavnyh-roley-v-novom-garri-pottere/\">сыграет</a> Северуса Снейпа, стало известно в марте 2025 года. Роли других преподавателей исполнят <a href=\"https://lenta.ru/tags/persons/litgou-dzhon/\">Джон Литгоу</a> (Альбус Дамблдор), <a href=\"https://lenta.ru/tags/persons/maktir-dzhanet/\">Джанет Мактир</a> (Минерва Макгонагалл), Ник Фрост (Рубеус Хагрид), Люк Тэллон (профессор Квиррелл).</p>"
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/26851957:2026-03-23T08:45:10.000Z:Мисс БРИКС: Россию старались не показыва",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Мисс БРИКС: Россию старались не показывать в эфире на \"Мисс Вселенная\"",
-      "url": "https://tass.ru/obschestvo/26851957",
-      "publishedAt": "2026-03-23T08:45:10.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Валентина Алексеева отметила, что заметила определенные ограничения в освещении своего участия",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26852429:2026-03-23T08:44:54.000Z:WP: контроль над Ормузским проливом може",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "WP: контроль над Ормузским проливом может стать конечной фазой операции США",
-      "url": "https://tass.ru/mezhdunarodnaya-panorama/26852429",
-      "publishedAt": "2026-03-23T08:44:54.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "",
-      "excerpt": "Открытие движения по проливу теперь стало, возможно, первоочередной задачей в военной кампании",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/03/23/s-zhivuschey-v-evrope-byvshey-veduschey-vestey-zahoteli-vzyskat-sotni-tysyach-rubley/:2026-03-23T08:44:29.000Z:С живущей в Европе бывшей ведущей «Весте",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "С живущей в Европе бывшей ведущей «Вестей» захотели взыскать сотни тысяч рублей",
-      "url": "https://lenta.ru/news/2026/03/23/s-zhivuschey-v-evrope-byvshey-veduschey-vestey-zahoteli-vzyskat-sotni-tysyach-rubley/",
-      "publishedAt": "2026-03-23T08:44:29.000Z",
-      "categoryIds": [
-        "culture"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/03/23/10/20260323104058622/pic_3eeb99395891075f376c38169fdd9a89.jpg",
-      "excerpt": "С бывшей ведущей программы «Вести» на канале «Россия 1» Фариды Курбангалеевой (признана Минюстом РФ иноагентом; внесена в список террористов и экстремистов Росфинмониторинга), живущей в Европе, захотели взыскать сотни тысяч рублей из-за нео",
-      "contentHtml": "<p>С бывшей ведущей программы «Вести» на канале «Россия 1» <a href=\"https://lenta.ru/tags/persons/kurbangaleeva-farida/\">Фариды Курбангалеевой</a> <i>(признана <a href=\"https://lenta.ru/tags/organizations/minyust-rossii/\">Минюстом РФ</a> иноагентом; внесена в список террористов и экстремистов <a href=\"https://lenta.ru/tags/organizations/rosfinmonitoring/\">Росфинмониторинга</a>)</i>, живущей в Европе, захотели взыскать сотни тысяч рублей из-за неоплаченных штрафов. Об этом <a href=\"https://fssp.gov.ru/iss/ip\">свидетельствуют</a> данные в базе <a href=\"https://lenta.ru/tags/organizations/fssp-rossii/\">Федеральной службы судебных приставов</a> (ФССП) России.</p><p>Согласно данным базы, в отношении Курбангалеевой возбудили пять исполнительных производств. Уточнялось, что их завели в <a href=\"https://lenta.ru/tags/geo/kazan/\">Казани</a> в период с февраля 2025 по январь 2026 года. Так, Курбангалеева не погасила задолженность по штрафам, назначенным за административные правонарушения.</p><p>О каких именно противоправных действиях идет речь, не сообщается. Всего с ведущей могут взыскать 208 тысяч рублей.</p><p>Ранее <a href=\"https://lenta.ru/news/2025/07/18/zhivuschaya-v-chehii-byvshaya-veduschaya-vestey-poluchila-srok-v-rossii/\">сообщалось</a>, что ведущую заочно приговорили к восьми годам лишения свободы. Курбангалееву признали виновной в публичном оправдании и пропаганде терроризма, а также в распространении фейков о Вооруженных силах (ВС) России.</p>"
-    },
-    {
-      "id": "tass:https://tass.ru/ekonomika/26852465:2026-03-23T08:44:04.000Z:Руденко: многие страны задумываются о на",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Руденко: многие страны задумываются о наращивании закупок нефти у России",
-      "url": "https://tass.ru/ekonomika/26852465",
-      "publishedAt": "2026-03-23T08:44:04.000Z",
-      "categoryIds": [
-        "world",
-        "business"
-      ],
-      "image": "",
-      "excerpt": "Заместитель министра иностранных дел РФ отметил, что Индия активно рассматривает возможности на этом направлении",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/politika/26852415:2026-03-23T08:43:50.000Z:В новую подборку СПЧ о преступлениях Кие",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В новую подборку СПЧ о преступлениях Киева вошли казни пленных и дело Бутягина",
-      "url": "https://tass.ru/politika/26852415",
-      "publishedAt": "2026-03-23T08:43:50.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "",
-      "excerpt": "Отмечено, что делу российского ученого, которого в декабре задержали в Польше за проведение \"незаконных археологических раскопок в Крыму\", уделено особое внимание",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/26852443:2026-03-23T08:43:39.000Z:Мисс БРИКС объяснила, почему люди сомнев",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Мисс БРИКС объяснила, почему люди сомневаются в честности конкурсов красоты",
-      "url": "https://tass.ru/obschestvo/26852443",
-      "publishedAt": "2026-03-23T08:43:39.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260323/8903273.jpg",
-      "excerpt": "Валентина Алексеева подчеркнула, что причина подобных сомнений кроется не в реальном положении дел, а в восприятии окружающих",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/26852389:2026-03-23T08:43:36.000Z:Мадрид осудил разрушение Израилем мостов",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Мадрид осудил разрушение Израилем мостов и домов в Ливане",
-      "url": "https://tass.ru/mezhdunarodnaya-panorama/26852389",
-      "publishedAt": "2026-03-23T08:43:36.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "",
-      "excerpt": "В министерстве иностранных дел королевства отметили, что настаивают на уважении территориальной целостности и суверенитета республики",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/26852453:2026-03-23T08:43:28.000Z:В Подмосковье вынесли приговор сообщника",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В Подмосковье вынесли приговор сообщникам за систематическое избиение ребенка",
-      "url": "https://tass.ru/proisshestviya/26852453",
-      "publishedAt": "2026-03-23T08:43:28.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Фигуранты получили сроки от 7 до 14 лет",
-      "contentHtml": ""
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/business/1079446:2026-03-23T08:43:00.000Z:\"Россети\" готовят сетевой проект для эне",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "\"Россети\" готовят сетевой проект для энергодефицитного Юга на 120 млрд рублей",
-      "url": "https://www.interfax.ru/business/1079446",
-      "publishedAt": "2026-03-23T08:43:00.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "Стоимость проекта ПАО \"Россети\" для энергодефицитного Юга России может превысить 120 млрд рублей, сообщил журналистам глава компании Андрей Рюмин.\"Для ликвидации проблемы дефицита мощности в энергосистеме Юга \"Россети\" также прорабатывают строительство энергокольца 500 кВ в Сочинском районе Краснодарского края.",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/info/26851479:2026-03-23T08:42:47.000Z:Великолепная пятерка. Лучшие российские ",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Великолепная пятерка. Лучшие российские бомбардиры в НХЛ",
-      "url": "https://tass.ru/info/26851479",
-      "publishedAt": "2026-03-23T08:42:47.000Z",
-      "categoryIds": [
-        "sports"
-      ],
-      "image": "",
-      "excerpt": "Двое из них еще продолжают играть",
       "contentHtml": ""
     }
   ]
