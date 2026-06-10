@@ -17,6 +17,77 @@ const TIMEOUT_MS = 25_000;
 const HISTORY_MAX_DAYS = 7;
 const HISTORY_MAX_ITEMS = 1500;
 
+const REDACTED_SECRET = "[REDACTED_SECRET]";
+const REDACTED_PRIVATE_KEY = "[REDACTED_PRIVATE_KEY]";
+
+const SECRET_REDACTIONS = [
+  {
+    pattern: /-----BEGIN [^-]{0,80}PRIVATE KEY-----[\s\S]*?-----END [^-]{0,80}PRIVATE KEY-----/g,
+    replacement: REDACTED_PRIVATE_KEY
+  },
+  {
+    pattern: /-----BEGIN (?:RSA |DSA |EC |OPENSSH |PGP )?PRIVATE KEY-----/g,
+    replacement: REDACTED_PRIVATE_KEY
+  },
+  {
+    pattern: /-----END (?:RSA |DSA |EC |OPENSSH |PGP )?PRIVATE KEY-----/g,
+    replacement: REDACTED_PRIVATE_KEY
+  },
+  {
+    pattern: /\b(?:AKIA|ASIA)[0-9A-Z]{16}\b/g,
+    replacement: REDACTED_SECRET
+  },
+  {
+    pattern: /\bghp_[A-Za-z0-9_]{20,}\b/g,
+    replacement: REDACTED_SECRET
+  },
+  {
+    pattern: /\bgithub_pat_[A-Za-z0-9_]+\b/g,
+    replacement: REDACTED_SECRET
+  },
+  {
+    pattern: /\bglpat-[A-Za-z0-9_-]{20,}\b/g,
+    replacement: REDACTED_SECRET
+  },
+  {
+    pattern: /\bnpm_[A-Za-z0-9]{36}\b/g,
+    replacement: REDACTED_SECRET
+  },
+  {
+    pattern: /\bsk-(?:proj|svcacct)-[A-Za-z0-9_-]{20,}\b/g,
+    replacement: REDACTED_SECRET
+  },
+  {
+    pattern: /\bsk-[A-Za-z0-9]{32,}\b/g,
+    replacement: REDACTED_SECRET
+  },
+  {
+    pattern: /\bxox[baprs]-[A-Za-z0-9-]+\b/g,
+    replacement: REDACTED_SECRET
+  },
+  {
+    pattern: /\bAIza[0-9A-Za-z_-]{35}\b/g,
+    replacement: REDACTED_SECRET
+  },
+  {
+    pattern: /\b[0-9]{6,10}:[A-Za-z0-9_-]{35,}\b/g,
+    replacement: REDACTED_SECRET
+  },
+  {
+    pattern: /\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b/g,
+    replacement: REDACTED_SECRET
+  },
+  {
+    pattern: /\b(?:sk_live|rk_live|pk_live)_[A-Za-z0-9]{20,}\b/g,
+    replacement: REDACTED_SECRET
+  }
+];
+
+const URL_CREDENTIAL_PATTERN = /(https?:\/\/[^/\s:@"'<>]+:)(?!\[REDACTED_)([^@\s"'<>]+)(@)/gi;
+const AUTH_HEADER_PATTERN = /(\bAuthorization\s*[:=]\s*["']?(?:Bearer|Basic)\s+)(?!\[REDACTED_)[A-Za-z0-9._~+/=-]{8,}/gi;
+const SENSITIVE_QUERY_PATTERN = /([?&](?:access_token|refresh_token|token|api_key|apikey|key|signature|x-amz-signature|x-amz-credential|awsaccesskeyid)=)(?!\[REDACTED_)[^&#\s"'<>]{8,}/gi;
+const SENSITIVE_ASSIGNMENT_PATTERN = /(\b(?:password|passwd|pwd|secret|token|api[_-]?key|client[_-]?secret|access[_-]?token|refresh[_-]?token|jwt[_-]?secret|private[_-]?key)\b\s*[:=]\s*["'`]?)(?!\[REDACTED_)([^"'`\s<>&;,\\]{8,})/gi;
+
 const CATEGORY_DEFS = {
   world: { name: "Мир" },
   ru: { name: "Россия" },
@@ -268,6 +339,35 @@ function escapeHtml(s) {
     .replaceAll("'", "&#039;");
 }
 
+function redactSensitiveContent(value) {
+  if (typeof value !== "string" || value.length === 0) return value || "";
+
+  let out = value;
+  for (const { pattern, replacement } of SECRET_REDACTIONS) {
+    out = out.replace(pattern, replacement);
+  }
+
+  out = out
+    .replace(URL_CREDENTIAL_PATTERN, `$1${REDACTED_SECRET}$3`)
+    .replace(AUTH_HEADER_PATTERN, `$1${REDACTED_SECRET}`)
+    .replace(SENSITIVE_QUERY_PATTERN, `$1${REDACTED_SECRET}`)
+    .replace(SENSITIVE_ASSIGNMENT_PATTERN, `$1${REDACTED_SECRET}`);
+
+  return out;
+}
+
+function redactItemSensitiveContent(item) {
+  return {
+    ...item,
+    id: redactSensitiveContent(item.id),
+    title: redactSensitiveContent(item.title),
+    url: redactSensitiveContent(item.url),
+    image: redactSensitiveContent(item.image),
+    excerpt: redactSensitiveContent(item.excerpt),
+    contentHtml: redactSensitiveContent(item.contentHtml)
+  };
+}
+
 async function withPool(tasks, limit) {
   const out = [];
   let i = 0;
@@ -464,7 +564,7 @@ async function main() {
 
   const out = {
     generatedAt: new Date().toISOString(),
-    items
+    items: items.map(redactItemSensitiveContent)
   };
 
   await fs.writeFile(OUT_PATH, JSON.stringify(out, null, 2) + "\n", "utf8");

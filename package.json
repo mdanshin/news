@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "node dev-server.js",
     "dev:live": "node scripts/dev-live.mjs",
-    "build:data": "node scripts/build-data.mjs"
+    "build:data": "node scripts/build-data.mjs",
+    "check:data-secrets": "node scripts/check-data-secrets.mjs"
   },
   "dependencies": {
     "@mozilla/readability": "^0.5.0",
