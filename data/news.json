@@ -1,6 +1,349 @@
 {
-  "generatedAt": "2026-08-07T20:30:38.092Z",
+  "generatedAt": "2026-08-07T21:12:06.559Z",
   "items": [
+    {
+      "id": "habr:https://habr.com/ru/articles/1068094/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1068094:2026-08-07T21:07:30.000Z:Стандарты разработки 1С под рукой у ИИ-п",
+      "sourceId": "habr",
+      "sourceName": "Хабр",
+      "title": "Стандарты разработки 1С под рукой у ИИ-помощника: сайт v8std.ru и бесплатный MCP-сервер",
+      "url": "https://habr.com/ru/articles/1068094/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1068094",
+      "publishedAt": "2026-08-07T21:07:30.000Z",
+      "categoryIds": [
+        "tech"
+      ],
+      "image": "https://habrastorage.org/getpro/habr/upload_files/fc6/62b/bc5/fc662bbc59e821b9d7844b17c276f474.png",
+      "excerpt": "Стандарты разработки 1С — вещь полезная, но неудобная в повседневной работе.Их много: больше трёхсот отдельных стандартов. Они лежат на ИТС. Формулировки написаны так, что читать их приятно один раз, а искать в них конкретное правило под конкретную строку кода — мучительно.Дальше становится хуже. Вы прогнали конфигурацию через АПК и получили список кодов вроде acc:1245. Или BSL Language Server подсветил AssignAliasFieldsInQuery. Или EDT с плагином v8-code-style выдал common-module-name-client-server. И вот у вас есть код предупреждения, а нужен пункт стандарта, который объясняет, почему так делать нельзя, — потому что без этого объяснения правка превращается в «замолчи, линтер».А теперь добавьте сюда ИИ-помощника. Cursor, Claude Code, Codex, Copilot — кто чем пользуется. Он бодро пишет код на BSL и так же бодро ссылается на «стандарт 512», которого не существует, или пересказывает правило по памяти в редакции трёхлетней давности. Помощник не виноват: у него просто нет источника.Об этом и статья — про два бесплатных инструмента, которые закрывают обе дырки. Читать далее",
+      "contentHtml": "<h3>Проблема, с которой сталкивается почти каждый</h3><p>Стандарты разработки 1С — вещь полезная, но неудобная в повседневной работе.</p><p>Их много: больше трёхсот отдельных стандартов. Они лежат на ИТС. Формулировки написаны так, что читать их приятно один раз, а искать в них конкретное правило под конкретную строку кода — мучительно.</p><p>Дальше становится хуже. Вы прогнали конфигурацию через АПК и получили список кодов вроде&nbsp;<code>acc:1245</code>. Или BSL Language Server подсветил&nbsp;<code>AssignAliasFieldsInQuery</code>. Или EDT с плагином v8-code-style выдал&nbsp;<code>common-module-name-client-server</code>. И вот у вас есть код предупреждения, а нужен пункт стандарта, который объясняет, почему так делать нельзя, — потому что без этого объяснения правка превращается в «замолчи, линтер».</p><p>А теперь добавьте сюда ИИ-помощника. Cursor, Claude Code, Codex, Copilot — кто чем пользуется. Он бодро пишет код на BSL и так же бодро ссылается на «стандарт 512», которого не существует, или пересказывает правило по памяти в редакции трёхлетней давности. Помощник не виноват: у него просто нет источника.</p><p>Об этом и статья — про два бесплатных инструмента, которые закрывают обе дырки.&nbsp;</p><h3>Что такое v8std.ru</h3><p><a href=\"https://infostart.ru/redirect.php?url=aHR0cHM6Ly92OHN0ZC5ydS8=\">v8std.ru</a>&nbsp;— открытый сайт со стандартами разработки 1С, адаптированными для чтения и, главное, для поиска.</p><p>Что там лежит сейчас:</p><ul><li><p><strong>318 стандартов</strong>&nbsp;— тексты переработаны так, чтобы правило читалось за минуту, а не за десять;</p></li><li><p><strong>691 диагностика АПК</strong>&nbsp;— Автоматической проверки конфигурации, той самой, через которую проходят на «1С:Совместимо»;</p></li><li><p><strong>186 диагностик BSL Language Server</strong>;</p></li><li><p><strong>172 проверки EDT v8-code-style</strong>;</p></li><li><p><strong>34 автозамены</strong>&nbsp;— правила обработки «Автоформатирование кода и локализация» с ИТС, разложенные по 15 стандартам;</p></li><li><p>разделы про паттерны проектирования (GoF, GRASP, SOLID) и особенности встроенного языка.</p></li></ul><p>Но главная ценность не в объёме, а в&nbsp;<strong>связях</strong>. Каждая диагностика привязана не просто к стандарту, а к&nbsp;<strong>конкретному пункту стандарта</strong>.</p><p>Откройте&nbsp;<a href=\"https://infostart.ru/redirect.php?url=aHR0cHM6Ly92OHN0ZC5ydS9zdGQvNDM3Lw==\">#std437</a>&nbsp;«Оформление текстов запросов». Пункт 1 про заглавные ключевые слова помечен чипом&nbsp;<code>acc:254</code>&nbsp;— это диагностика АПК, которая его проверяет, — и чипом&nbsp;<code>autoformat</code>, потому что это правило умеет чинить автоформатирование. Пункт 2 про псевдонимы полей помечен&nbsp;<code>bslls:AssignAliasFieldsInQuery</code>.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/fc6/62b/bc5/fc662bbc59e821b9d7844b17c276f474.png\"></figure><p>Работает и в обратную сторону: с любой страницы диагностики есть переход к пункту стандарта, который объясняет причину. Это ровно тот маршрут, которого не хватает, когда разбираешь отчёт линтера.</p><p>Поиск на сайте понимает четыре формата запроса:</p><p>Что ищем</p><p>Как пишем</p><p>Стандарт</p><p><code>#std437</code>,&nbsp;<code>std 437</code>,&nbsp;<code>стандарт 437</code></p><p>Диагностику BSLLS &nbsp;&nbsp;</p><p><code>bslls:AssignAliasFieldsInQuery</code>&nbsp;или просто&nbsp;<code>AssignAliasFieldsInQuery</code></p><p>Диагностику АПК</p><p><code>acc:1245</code>,&nbsp;<code>апк 1245</code>,&nbsp;<code>ACC 1245</code></p><p>Тему по-русски</p><p><code>транзакции</code>,&nbsp;<code>общие модули</code>,&nbsp;<code>права</code></p><p>Плюс мелочи, которые экономят нервы: раскладка клавиатуры распознаётся (набрали&nbsp;<code>nhfypfrwbb</code>&nbsp;— найдутся транзакции), опечатки в кодах диагностик прощаются.</p><p>Исходные стандарты остаются на&nbsp;<a href=\"https://infostart.ru/redirect.php?url=aHR0cHM6Ly9pdHMuMWMucnUvZGIvdjhzdGQ=\">ИТС</a>&nbsp;— v8std не заменяет первоисточник, а делает его пригодным для ежедневной работы.&nbsp;</p><h3>Теперь про MCP</h3><p>MCP (Model Context Protocol) — это стандартный способ дать ИИ-помощнику доступ к внешнему источнику данных. Помощник узнаёт, что у него появились новые методы, и сам решает, когда их вызвать.</p><p>Если вы не работали с такими штуками, представьте это так: у ИИ появился справочник, в который он может заглянуть сам, без вашей просьбы. Вы спрашиваете по-русски — он в фоне лезет в v8std и отвечает&nbsp;<strong>со ссылкой на реальный стандарт</strong>, а не по памяти.</p><p>Публичный сервер живёт по адресу:</p><pre><code>https://ai.v8std.ru/mcp</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Без ключа, без регистрации, без лимитов по подписке.</p>Что именно умеет сервер<p>Пять методов, все — только на чтение.</p><p><code><strong>v8std_search</strong></code>&nbsp;— поиск по стандартам, диагностикам и материалам сайта. Понимает обычную фразу («локализация интерфейсных текстов»), номер стандарта (<code>std437</code>) и код диагностики (<code>acc:1245</code>).</p><p><code><strong>v8std_get_page</strong></code>&nbsp;— полный текст найденной страницы в чистом Markdown. Вызывается, когда помощнику мало сниппета из поиска и нужно прочитать сам стандарт.</p><p><code><strong>v8std_get_related</strong></code>&nbsp;— связанные страницы. От стандарта — к диагностикам анализаторов, от диагностики — к пункту стандарта.</p><p><code><strong>v8std_explain_snippet</strong></code>&nbsp;— подбор стандартов по короткому фрагменту кода 1С. Помощник отдаёт кусок BSL или SDBL, получает список применимых правил и вероятных диагностик. Метод срабатывает на характерные конструкции:&nbsp;<code>ВЫБРАТЬ РАЗРЕШЕННЫЕ</code>,&nbsp;<code>ОткрытьФормуМодально</code>,&nbsp;<code>Предупреждение</code>,&nbsp;<code>Вопрос</code>.</p><p><code><strong>v8std_explain_diagnostics</strong></code>&nbsp;— разбор списка кодов после проверки проекта. Скармливаете отчёт АПК, BSLLS или EDT — получаете сгруппированные описания с привязкой к пунктам стандартов.</p><p>Отдельно подчеркну, чего сервер&nbsp;<strong>не делает</strong>: он не запускает анализаторы, не лезет в вашу конфигурацию и не меняет код. Это справочник, а не линтер.</p><h3>Как это выглядит в работе</h3><p>Типовой диалог с подключённым MCP:</p><blockquote><p><strong>Вы:</strong>&nbsp;Почему нельзя использовать модальные окна?</p></blockquote><p>Помощник вызывает&nbsp;<code>v8std_search</code>&nbsp;с запросом «модальные окна», находит&nbsp;<code>bslls:UsingModalWindows</code>&nbsp;и&nbsp;<code>#std703</code>, затем через&nbsp;<code>v8std_get_page</code>&nbsp;читает полный текст. В ответе — объяснение про веб-клиент и список запрещённых методов глобального контекста, со ссылкой на источник.</p><p>Или так:</p><blockquote><p><strong>Вы:</strong>&nbsp;Вот кусок кода из формы, какие стандарты он нарушает?</p></blockquote><p>Помощник отправляет фрагмент в&nbsp;<code>v8std_explain_snippet</code>, получает список правил и разбирает код по пунктам — не «мне кажется, тут нехорошо», а «пункт 2 стандарта 437, полю не присвоен псевдоним».</p><p>Или так — мой любимый сценарий:</p><blockquote><p><strong>Вы:</strong>&nbsp;Разбери отчёт АПК, вот коды: 1245, 254, 1407, 68.</p></blockquote><p><code>v8std_explain_diagnostics</code>&nbsp;возвращает описания и связанные пункты стандартов. Помощник группирует их по темам и объясняет, какие правки действительно нужны, а какие — вопрос вкуса.</p><h3>Кто и зачем этим пользуется</h3><p>По ролям это выглядит примерно так.</p><p><strong>Разработчик</strong>&nbsp;— спрашивает правило в момент написания кода, не переключаясь в браузер и не разлогиниваясь из контекста задачи.</p><p><strong>Ревьюер и тимлид</strong>&nbsp;— прогоняет диф через помощника с MCP и получает замечания со ссылками на пункты стандартов. Спор «мне так не нравится» превращается в «вот пункт, вот диагностика, которая это ловит». Заметно снижает температуру обсуждения.</p><p><strong>Тот, кто готовит конфигурацию к «1С:Совместимо»</strong>&nbsp;— берёт отчёт АПК на несколько сотен строк и разбирает его пачками через&nbsp;<code>v8std_explain_diagnostics</code>, а не по одному коду в поиске ИТС.</p><p><strong>Новичок в команде</strong>&nbsp;— задаёт вопросы своими словами, без знания номеров стандартов и кодов диагностик, и получает ответы с маршрутом к первоисточнику.</p><p><strong>Сам ИИ-помощник</strong>&nbsp;— перестаёт выдумывать стандарты. Это, пожалуй, главный эффект: не «помощник стал умнее», а «помощник перестал врать с уверенным лицом».</p><p>Подключиться может любой клиент с поддержкой MCP по Streamable HTTP: Claude Code, Cursor, Codex, Kiro, Antigravity, плагины для JetBrains и VS Code.</p><h3>Подключение</h3><p>Для&nbsp;<strong>Claude Code</strong>&nbsp;— одна команда:</p><pre><code class=\"bash\">claude mcp add --transport http v8std https://ai.v8std.ru/mcp</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Для&nbsp;<strong>Codex</strong>:</p><pre><code class=\"bash\">codex mcp add v8std --url https://ai.v8std.ru/mcp</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Для&nbsp;<strong>Cursor</strong>&nbsp;— файл&nbsp;<code>.cursor/mcp.json</code>&nbsp;в проекте или&nbsp;<code>~/.cursor/mcp.json</code>&nbsp;для всех проектов:</p><pre><code class=\"json\">{\n\n  \"mcpServers\": {\n\n    \"v8std\": {\n\n      \"url\": \"https://ai.v8std.ru/mcp\"\n\n    }\n\n  }\n\n}</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Для&nbsp;<strong>Kiro</strong>&nbsp;— тот же JSON в&nbsp;<code>.kiro/settings/mcp.json</code>. Для&nbsp;<strong>Antigravity</strong>&nbsp;— в&nbsp;<code>mcp_config.json</code>, только поле называется&nbsp;<code>serverUrl</code>.</p><p>Инструкции по всем клиентам собраны на странице&nbsp;<a href=\"https://infostart.ru/redirect.php?url=aHR0cHM6Ly92OHN0ZC5ydS9tY3Av\">v8std.ru/mcp</a>.</p><h3>Про закрытый код: поднимаем MCP локально</h3><p>Публичный сервис видит текст запросов, которые отправляет ваш помощник. Отправлять туда фрагменты закрытого проекта, коммерческие данные и внутренние наработки — плохая идея.</p><p>Для таких случаев MCP поднимается локально одной командой:</p><pre><code class=\"bash\">docker compose -f docker-compose/docker-compose.yml up -d v8std-mcp</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Дальше сервер доступен на&nbsp;<a href=\"http://127.0.0.1:8765/mcp\"><code>http://127.0.0.1:8765/mcp</code></a>, читает локальный индекс из репозитория и работает полностью автономно — без интернета. Подключается точно так же, только адрес другой.</p><p>Это же решение подходит, если вы работаете в закрытом контуре или хотите проверить изменения сайта до публикации.</p><h3>Всё это бесплатно. По-настоящему</h3><p>Обычно в этом месте начинается «бесплатно, но». Здесь — нет.</p><ul><li><p><strong>Сайт</strong>&nbsp;открыт, без регистрации и подписки.</p></li><li><p><strong>Публичный MCP</strong>&nbsp;работает без ключа, токена и лимитов.</p></li><li><p><strong>Контент</strong>&nbsp;опубликован под&nbsp;<a href=\"https://infostart.ru/redirect.php?url=aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL3B1YmxpY2RvbWFpbi96ZXJvLzEuMC9kZWVkLnJ1\">CC0</a>&nbsp;— это общественное достояние. Берите тексты, встраивайте в свои инструменты, публикуйте у себя, используйте коммерчески. Разрешения не нужны.</p></li><li><p><strong>Исходники</strong>&nbsp;целиком лежат на GitHub:&nbsp;<a href=\"https://infostart.ru/redirect.php?url=aHR0cHM6Ly9naXRodWIuY29tL3plZWdpbi92OHN0ZA==\">github.com/zeegin/v8std</a>. И сайт, и MCP-сервер.</p></li><li><p><strong>Локальный запуск</strong>&nbsp;— тот же код, тот же индекс, никакой урезанной версии.</p></li></ul><p>Отдельно для тех, кто строит свои инструменты: сайт публикует машиночитаемые артефакты.</p><p>Файл</p><p>Что внутри</p><p><a href=\"https://infostart.ru/redirect.php?url=aHR0cHM6Ly92OHN0ZC5ydS9sbG1zLnR4dA==\">/llms.txt</a></p><p>Компактная карта сайта для LLM</p><p><a href=\"https://infostart.ru/redirect.php?url=aHR0cHM6Ly92OHN0ZC5ydS9sbG1zLWZ1bGwudHh0\">/llms-full.txt</a></p><p>Полный корпус в чистом Markdown</p><p><a href=\"https://infostart.ru/redirect.php?url=aHR0cHM6Ly92OHN0ZC5ydS9haS9wYWdlcy5qc29ubA==\">/ai/pages.jsonl</a>&nbsp; &nbsp;</p><p>JSONL-индекс страниц, алиасов и связей</p><p>Плюс у любой публичной страницы есть Markdown-версия по исходному пути: HTML&nbsp;<a href=\"https://v8std.ru/std/437/\"><code>https://v8std.ru/std/437/</code></a>&nbsp;→ Markdown&nbsp;<a href=\"https://v8std.ru/std/437.md\"><code>https://v8std.ru/std/437.md</code></a>. Удобно, если хочется затащить корпус в свой RAG или собрать собственный набор правил для код-ревью.&nbsp;</p><h3>Что дальше</h3><p>Если хочется подтягивать стандарты понемногу, а не залпом: в&nbsp;<a href=\"https://infostart.ru/redirect.php?url=aHR0cHM6Ly90Lm1lL3Y4c3Rk\">Telegram-канале @v8std</a>&nbsp;по понедельникам, средам и пятницам выходит один стандарт с короткой выжимкой. Три раза в неделю встраивается в рабочий ритм и не бросается через неделю.</p><p>Если нашли ошибку в тексте или хотите улучшить формулировку — на каждой странице есть иконка редактирования, ведущая прямо в GitHub. Pull Request принимаются, issues читаются.</p><p><strong>Короткая версия для тех, кто листал по диагонали:</strong></p><ol><li><p><a href=\"https://infostart.ru/redirect.php?url=aHR0cHM6Ly92OHN0ZC5ydS8=\">v8std.ru</a>&nbsp;— стандарты 1С со связями «диагностика ↔ пункт стандарта» и нормальным поиском.</p></li><li><p><a href=\"https://ai.v8std.ru/mcp\"><code>https://ai.v8std.ru/mcp</code></a>&nbsp;— MCP-сервер, после подключения ИИ-помощник отвечает по стандартам со ссылками, а не по памяти.</p></li><li><p>Одна команда для Claude Code:&nbsp;<code>claude mcp add --transport http v8std </code><a href=\"https://ai.v8std.ru/mcp\"><code>https://ai.v8std.ru/mcp</code></a></p></li><li><p>Для закрытого кода — локальный MCP через Docker.</p></li><li><p>Всё бесплатно, контент под CC0, исходники на GitHub.</p></li></ol>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 10918,
+        "approxBlocks": 129
+      }
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/08/8-avgusta-kakoy-prazdnik-otmechayut-v-rossii-i-mire/:2026-08-07T21:05:03.000Z:8 августа: какой праздник отмечают в Рос",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "8 августа: какой праздник отмечают в России и мире",
+      "url": "https://lenta.ru/news/2026/08/08/8-avgusta-kakoy-prazdnik-otmechayut-v-rossii-i-mire/",
+      "publishedAt": "2026-08-07T21:05:03.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/04/08/20260804085144251/pic_8e78f70d408e0eeee653972220cb43ac.jpg",
+      "excerpt": "8 августа в мире отмечают Международный день кошек и День счастливых людей. Православные верующие чтут память священномучеников Ермолая, Ермиппа и Ермократа Никомидийских, а также преподобного Моисея Угрина. Подробнее о торжествах, приметах и знаменитых именинниках этого дня — в материале «Ленты.ру».",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/07/ispaniya-vvedet-otvetnye-ogranicheniya-dlya-turistov-iz-italii/:2026-08-07T21:04:00.000Z:Испания введет ответные ограничения для ",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Испания введет ответные ограничения для туристов из Италии",
+      "url": "https://lenta.ru/news/2026/08/07/ispaniya-vvedet-otvetnye-ogranicheniya-dlya-turistov-iz-italii/",
+      "publishedAt": "2026-08-07T21:04:00.000Z",
+      "categoryIds": [
+        "culture"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/08/00/20260808000626038/pic_d3f40baa3a2c43dbf50b33306dfe5d8d.jpg",
+      "excerpt": "Испания введет ответные ограничения для туристов из ИталииEuropa Press: Испания введет ответные ограничения для туристов из Италии до 7 сентябряФото: Алехандро Мартинез Велез / РИА НовостиПравительство Испании приняло решение усилить погран",
+      "contentHtml": "<h2>Испания введет ответные ограничения для туристов из Италии</h2><p>Europa Press: Испания введет ответные ограничения для туристов из Италии до 7 сентября</p><figure><a href=\"https://lenta.ru/comments/news/2026/08/07/ispaniya-vvedet-otvetnye-ogranicheniya-dlya-turistov-iz-italii/\"><img src=\"https://icdn.lenta.ru/images/2026/08/08/00/20260808000626038/owl_detail_240_d7797d5187fbe1c50e3557f625e083d1.jpg\"></a><figcaption><p>Фото: Алехандро Мартинез Велез / РИА Новости</p></figcaption></figure><p>Правительство <a href=\"https://lenta.ru/tags/geo/ispaniya/\">Испании</a> приняло решение усилить пограничный контроль в портах и аэропортах для пассажиров, прибывающих из <a href=\"https://lenta.ru/tags/geo/italiya/\">Италии</a>. Как сообщает агентство Europa Press со ссылкой на источники в испанском кабинете министров, меры вступят в силу с полуночи 8 августа и будут действовать до 7 сентября.</p><p>Проверки будут касаться личности и гражданства путешественников — для граждан стран <a href=\"https://lenta.ru/tags/organizations/es/\">Евросоюза</a> потребуется предъявить паспорт, а для граждан третьих стран — визу или вид на жительство. Контроль будет выборочным, однако его сроки могут быть пересмотрены в зависимости от развития обстоятельств.</p><p>Власти пояснили, что подобные меры носят временный характер и вводятся в ответ на текущую ситуацию. В случае изменения условий действие контроля может быть продлено или отменено досрочно.</p><p>31 июля Италия в одностороннем порядке <a href=\"https://lenta.ru/news/2026/07/31/italiya/\">приостановила</a> действие Шенгенского соглашения с Испанией из-за массового потока мигрантов из <a href=\"https://lenta.ru/tags/geo/marokko/\">Марокко</a>.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 1190,
+        "approxBlocks": 10
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/obschestvo/27993627:2026-08-07T21:03:34.000Z:В ГД предложили смягчить требования к то",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "В ГД предложили смягчить требования к тонировке передних боковых стекол машин",
+      "url": "https://tass.ru/obschestvo/27993627",
+      "publishedAt": "2026-08-07T21:03:34.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Водителям хотят разрешить использовать тонировку при условии, что светопропускание этих стекол будет составлять не менее 50% от действующего норматива, говорится в законопроекте",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/obschestvo/27993621:2026-08-07T21:03:04.000Z:В Москве закроют движение по части улиц ",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "В Москве закроют движение по части улиц и набережных 8-9 августа",
+      "url": "https://tass.ru/obschestvo/27993621",
+      "publishedAt": "2026-08-07T21:03:04.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Ограничения движение транспорта связаны с проведением соревнований по триатлону",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/armiya-i-opk/27993625:2026-08-07T21:03:03.000Z:Сержант Баурин гранатой уничтожил трех б",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Сержант Баурин гранатой уничтожил трех боевиков ВСУ",
+      "url": "https://tass.ru/armiya-i-opk/27993625",
+      "publishedAt": "2026-08-07T21:03:03.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Благодаря действиям военного удалось захватить опорный пункт противника без потерь",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/ekonomika/27993623:2026-08-07T21:01:38.000Z:Временные ограничения ввели в аэропорту ",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Временные ограничения ввели в аэропорту Тамбова",
+      "url": "https://tass.ru/ekonomika/27993623",
+      "publishedAt": "2026-08-07T21:01:38.000Z",
+      "categoryIds": [
+        "business"
+      ],
+      "image": "",
+      "excerpt": "",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/armiya-i-opk/27991479:2026-08-07T21:00:01.000Z:Военная операция на Украине. Онлайн",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Военная операция на Украине. Онлайн",
+      "url": "https://tass.ru/armiya-i-opk/27991479",
+      "publishedAt": "2026-08-07T21:00:01.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260807/9281643.jpg",
+      "excerpt": "",
+      "contentHtml": ""
+    },
+    {
+      "id": "kommersant:https://www.kommersant.ru/doc/8875139:2026-08-07T21:00:01.000Z:Водителям оставляют права на рамки // ВС",
+      "sourceId": "kommersant",
+      "sourceName": "Коммерсантъ",
+      "title": "Водителям оставляют права на рамки // ВС и ГИБДД против наказания за магнитное крепление номеров",
+      "url": "https://www.kommersant.ru/doc/8875139",
+      "publishedAt": "2026-08-07T21:00:01.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://im2.kommersant.ru/Issues.photo2/DAILY/2026/143/KMO_147142_01613_1_t219_210752.jpg",
+      "excerpt": "Нельзя лишать прав водителей, использующих магнитные крепления автомобильного номера,— соответствующее разъяснение Верховный суд (ВС) направит нижестоящим судебным инстанциям. Некоторые региональные суды и прокуратуры считают, что факт наличия такого крепления можно трактовать как применение устройства, позволяющего скрыть номер. В ВС тем не менее считают, что санкции можно применять только при наличии доказательств, что магнит использовался для ухода от штрафов за нарушения под камерами. Однако такие рамки могут применяться для быстрого снятия номеров и в других целях — в некоторых случаях это необходимо во время езды по бездорожью или для рекламных съемок, объясняет эксперт.",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/27993611:2026-08-07T20:56:58.000Z:Telegraph: лидер Reform UK подал в суд н",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Telegraph: лидер Reform UK подал в суд на агентство по борьбе с преступностью",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/27993611",
+      "publishedAt": "2026-08-07T20:56:58.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Найджел Фараж и его заместитель Ричард Тайс требуют выплатить им более £25 тыс.",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/27993617:2026-08-07T20:54:18.000Z:Почти половина найденных летом останков ",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Почти половина найденных летом останков жертв Волынской резни принадлежит детям",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/27993617",
+      "publishedAt": "2026-08-07T20:54:18.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Всего были эксгумированы останки 55 человек",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/proisshestviya/27993607:2026-08-07T20:52:41.000Z:На Кипре арестовали подозреваемого в пок",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "На Кипре арестовали подозреваемого в покушении на убийство монаха",
+      "url": "https://tass.ru/proisshestviya/27993607",
+      "publishedAt": "2026-08-07T20:52:41.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Как утверждает газета Phileleftheros, он напал с канцелярским ножом на делегацию монастырского церковного комитета",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/27993613:2026-08-07T20:52:03.000Z:Экс-глава МИД Украины спрогнозировал рос",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Экс-глава МИД Украины спрогнозировал рост числа нападений на украинцев в Польше",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/27993613",
+      "publishedAt": "2026-08-07T20:52:03.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "По словам Дмитрия Кулебы, нынешний всплеск негативного отношения еще не является пиком",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/27993609:2026-08-07T20:44:22.000Z:Трамп объявил об инвестициях в размере $",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Трамп объявил об инвестициях в размере $3 млрд в горнодобывающей отрасли",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/27993609",
+      "publishedAt": "2026-08-07T20:44:22.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "По словам американского президента, $1,4 будут выделены по линии Пентагона на строительство завода в штате Вашингтон с целью производства используемых в аккумуляторах материалов",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/07/ssha-ob-yavili-o-skoroy-sdelke-s-iranom/:2026-08-07T20:44:00.000Z:США объявили о скорой сделке с Ираном",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "США объявили о скорой сделке с Ираном",
+      "url": "https://lenta.ru/news/2026/08/07/ssha-ob-yavili-o-skoroy-sdelke-s-iranom/",
+      "publishedAt": "2026-08-07T20:44:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/07/23/20260807234739180/pic_9c53f8ab9bb292f79af56b38d3d6b368.jpg",
+      "excerpt": "США объявили о скорой сделке с ИраномБессент: США могут заключить мирное соглашение с Ираном 7 или 8 августаФото: Francis Chung / Pool via CNP / Globallookpress.comСША могут подписать мирное соглашение с Ираном в ближайшие дни. Об этом заяв",
+      "contentHtml": "<h2>США объявили о скорой сделке с Ираном</h2><p>Бессент: США могут заключить мирное соглашение с Ираном 7 или 8 августа</p><figure><a href=\"https://lenta.ru/comments/news/2026/08/07/ssha-ob-yavili-o-skoroy-sdelke-s-iranom/\"><img src=\"https://icdn.lenta.ru/images/2026/08/07/23/20260807234739180/owl_detail_240_ead691d1122a66b959e87089dd27bbc9.jpg\"></a><figcaption><p>Фото: Francis Chung / Pool via CNP / Globallookpress.com</p></figcaption></figure><p><a href=\"https://lenta.ru/tags/geo/ssha/\">США</a> могут подписать мирное соглашение с <a href=\"https://lenta.ru/tags/geo/iran/\">Ираном</a> в ближайшие дни. Об этом <a href=\"https://www.youtube.com/watch?v=P7eK_gguJzg\">заявил</a> американский министр финансов Скотт Бессент в интервью телеканалу 12News.</p><p>Он уточнил, что стороны могут заключить сделку о прекращении огня 7 или 8 августа сроком на 30 или 60 дней. По словам министра, США продолжают оказывать давление на Иран в военной и экономических сферах.</p><p>«Мы держим их за горло, у них инфляция 150-180 процентов, они не могут платить войскам», — сказал он.</p><p>Ранее президент США <a href=\"https://lenta.ru/tags/persons/tramp-donald/\">Дональд Трамп</a> <a href=\"https://lenta.ru/news/2026/08/05/tramp-prigrozil-o-nevidannoy-so-vremen-vtoroy-mirovoy-voyny-atake/\">заявил</a>, что США готовы нанести невиданный со времен Второй мировой войны удар по Ирану, если Ормузский пролив будет закрыт.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 889,
+        "approxBlocks": 10
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/27993605:2026-08-07T20:43:12.000Z:Акция-реквием по павшим защитникам Южной",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Акция-реквием по павшим защитникам Южной Осетии собрала более 4 тыс. человек",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/27993605",
+      "publishedAt": "2026-08-07T20:43:12.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260807/9284393.jpg",
+      "excerpt": "В мероприятии поучаствовала делегация России",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/07/kuleba-predrek-usilenie-napadeniy-na-ukraintsev-v-odnoy-strane/:2026-08-07T20:42:50.000Z:Кулеба предрек усиление нападений на укр",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Кулеба предрек усиление нападений на украинцев в одной стране",
+      "url": "https://lenta.ru/news/2026/08/07/kuleba-predrek-usilenie-napadeniy-na-ukraintsev-v-odnoy-strane/",
+      "publishedAt": "2026-08-07T20:42:50.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/07/23/20260807234316248/pic_2afc42a177e7271abf24e9662430d44b.jpg",
+      "excerpt": "Кулеба предрек усиление нападений на украинцев в одной странеКулеба предрек усиление нападений на украинцев в ПольшеФото: Nadja Wohlleben / ReutersБывший глава Министерства иностранных дел (МИД) Украины Дмитрий Кулеба предрек усиление напад",
+      "contentHtml": "<h2>Кулеба предрек усиление нападений на украинцев в одной стране</h2><p>Кулеба предрек усиление нападений на украинцев в Польше</p><figure><a href=\"https://lenta.ru/comments/news/2026/08/07/kuleba-predrek-usilenie-napadeniy-na-ukraintsev-v-odnoy-strane/\"><img src=\"https://icdn.lenta.ru/images/2026/08/07/23/20260807234316248/owl_detail_240_bea4b45e0783823ce70b061527129936.jpg\"></a><figcaption><p>Фото: Nadja Wohlleben / Reuters</p></figcaption></figure><p>Бывший глава Министерства иностранных дел (МИД) <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украины</a> <a href=\"https://lenta.ru/tags/persons/kuleba-dmitriy/\">Дмитрий Кулеба</a> предрек усиление нападений на украинцев в <a href=\"https://lenta.ru/tags/geo/polsha/\">Польше</a>. Он <a href=\"https://www.youtube.com/@SergiyPeichev\">высказался</a> об этом в интервью журналисту Сергею Пейчеву.</p><p>«Это даже не пик», — заявил Кулеба.</p><p>Ранее замглавы польского МВД Чеслав Мрочек заявил, что количество преступлений против украинцев <a href=\"https://lenta.ru/news/2026/08/03/ukraintsy-stali-v-neskolko-raz-chasche-stanovitsya-zhertvami-prestupleniy-v-polshe/\">выросло</a> в Польше на треть за 2025 год. Мрочек также отметил, что за первое полугодие 2026 года снизилось количество преступлений, совершаемых иностранцами.</p><p>До этого польский политолог Марек Мишкевич <a href=\"https://lenta.ru/news/2026/08/03/politolog-zayavil-o-nezhelanii-vlastey-polshi-zaschischat-ukraintsev/\">выразил</a> мнение, что польские власти не будут особенно рьяно защищать украинцев от нападений радикалов. <br></p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 820,
+        "approxBlocks": 10
+      }
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/07/karpin-raskryl-imya-syna/:2026-08-07T20:34:36.000Z:Карпин раскрыл имя сына",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Карпин раскрыл имя сына",
+      "url": "https://lenta.ru/news/2026/08/07/karpin-raskryl-imya-syna/",
+      "publishedAt": "2026-08-07T20:34:36.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/07/21/20260807214752292/pic_12e4c28495697029c1fa4999dad729bd.jpg",
+      "excerpt": "СегодняМонреаль — парный разрядГермания — Вторая Бундеслига|1-й турАнглия — Кубок лиги|1-й раундБельгия — Лига Жюпиле|1-й турПортугалия — Примейра|1-й турКарпин раскрыл имя сынаГлавный тренер сборной России Валерий Карпин назвал сына Даниэл",
+      "contentHtml": "<ul><li><a href=\"https://lenta.ru/sport/2026/08/07/tennis-karen-hachanov-rossiya-matteo-arnaldi-italiya/\"><p><img src=\"https://img.championat.com/tennis/player/17237173892102196400.jpg\"></p><p>Сегодня</p><p><img src=\"https://img.championat.com/tennis/player/1693837181368518712.jpg\"></p></a><p>Монреаль — парный разряд</p></li><li><a href=\"https://lenta.ru/sport/2026/08/07/football-bohum-gerta/\"></a><p>Германия — Вторая Бундеслига|1-й тур</p></li><li><a href=\"https://lenta.ru/sport/2026/08/07/football-vulverhempton-port-veyl/\"></a><p>Англия — Кубок лиги|1-й раунд</p></li><li><a href=\"https://lenta.ru/sport/2026/08/07/football-bryugge-kortreyk/\"></a><p>Бельгия — Лига Жюпиле|1-й тур</p></li><li><a href=\"https://lenta.ru/sport/2026/08/07/football-eshtoril-famalikan/\"></a><p>Португалия — Примейра|1-й тур</p></li></ul><h2>Карпин раскрыл имя сына</h2><p>Главный тренер сборной России Валерий Карпин назвал сына Даниэлем</p><figure><a href=\"https://lenta.ru/comments/news/2026/08/07/karpin-raskryl-imya-syna/\"><img src=\"https://icdn.lenta.ru/images/2026/08/07/21/20260807214752292/owl_detail_240_fd62d50d9d5000cb59af7d0e9a72b751.jpg\"></a><figcaption><p>Фото: Александр Мелехов / ТАСС</p></figcaption></figure><p>Главный тренер <a href=\"https://lenta.ru/tags/organizations/sbornaya-rossii/\">сборной России</a> <a href=\"https://lenta.ru/tags/persons/karpin-valeriy/\">Валерий Карпин</a> вместе с женой Дарьей раскрыл имя сына. Об этом Карпина сообщила в своем <a href=\"https://t.me/DashaKarpina/849\">Telegram</a>-канале.</p><p>Супруга специалиста опубликовала видео, на котором имя мальчика было написано на торте. Его зовут Даниэль. Карпина написала, обращаясь к сыну: «Мы узнали, как тебя зовут, только после нашей первой встречи».</p><p>Даниэль <a href=\"https://lenta.ru/news/2026/08/06/glavnyy-trener-sbornoy-rossii-po-futbolu-snova-stal-ottsom/\">родился</a> 6 августа. Он стал шестым ребёнком 57-летнего Валерия Карпина и его первым сыном. Ранее у тренера родились пять дочерей: Вероника (от отношений с Владой Беловой), Мария и Валерия (от первой жены Светланы), а также Дарья и Александра (от нынешней супруги Дарьи).</p><p>Ранее Карпина <a href=\"https://lenta.ru/news/2024/09/13/zhena-karpina-otsenila-mnenie-ob-otnosheniyah-s-futbolistami-radi-deneg/\">оценила</a> мнение о том, что отношения с футболистами заводят ради денег. Супруга тренера заявила, что большинство семей современных футболистов образовалось, когда игроки только начинали карьеру и не имели больших зарплат.</p><!--noindex--><!--/noindex-->",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 1337,
+        "approxBlocks": 25
+      }
+    },
+    {
+      "id": "habr:https://habr.com/ru/articles/1068092/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1068092:2026-08-07T20:31:37.000Z:Подмания: правило вычисления UID хоста д",
+      "sourceId": "habr",
+      "sourceName": "Хабр",
+      "title": "Подмания: правило вычисления UID хоста для пользователя в контейнере",
+      "url": "https://habr.com/ru/articles/1068092/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1068092",
+      "publishedAt": "2026-08-07T20:31:37.000Z",
+      "categoryIds": [
+        "tech"
+      ],
+      "image": "",
+      "excerpt": "Привет, Хабр!Давеча я приметил в Интернете, что коллеги отображают UID/GID своих сервисов в rootless podman контейнерах, начиная с круглого числа, например --uidmap=0:1000000:65536 для первого, --uidmap=0:2000000:65536 для другого, --uidmap=0:3000000:65536 для третьего и т.д. В общем-то, в этом нет ничего предосудительного, ведь задача таким образом решается без пересечения пространства имён. Но и причина, по которой так делают, тоже понятна - перестраховаться. Давайте разберёмся, как отображать UID-в-UID в rootless podman: Читать далее",
+      "contentHtml": "<h3>Особенность отображения UID/GID пользователя в rootless podman контейнере на пространство имён хоста</h3><p>Привет, Хабр!</p><p>Давеча я приметил в Интернете, что коллеги отображают UID/GID своих сервисов в rootless podman контейнерах, начиная с круглого числа, например <code>--uidmap=0:1000000:65536</code> для первого, <code>--uidmap=0:2000000:65536</code> для другого, <code>--uidmap=0:3000000:65536</code> для третьего и т.д. В общем-то, в этом нет ничего предосудительного, ведь задача таким образом решается без пересечения пространства имён. Но и причина, по которой так делают, тоже понятна - перестраховаться. Давайте разберёмся, как отображать UID-в-UID в rootless podman:</p><p>Пусть по условию задачи сервис в контейнере не запустится, если смонтированная в него хостовая структура папок принадлежит не тем хостовым UID/GID, на которые отображаются контейнерные UID/GID. Для примера возьмём сервис DNS прокси unbound из <a href=\"https://github.com/wjatscheslaw1986/unbound-rootless-podman/tree/main\">этого</a> проекта.</p><p>В данном образе процесс unbound внутри контейнера принадлежит UID 9898. Допустим, файлы <code>/etc/subuid</code> и <code>/etc/subgid</code> предоставляют нашему пользователю 512 блоков по 65536 идентификаторов:</p><pre><code>myuser:100000:65536\nmyuser:165536:33488896\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Это равносильно такой записи:</p><pre><code>myuser:100000:33554432\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Но мы разбиваем на 2 диапазона для того, чтобы далее увидеть, заступаем мы на следующий диапазон при запуске контейнера или нет.</p><p>Для одного и того же имени пользователя (myuser) podman использует все доступные диапазоны, как один.</p><blockquote><p><strong>Структура файлов </strong><code><strong>/etc/sub{u,g}id</strong></code> такова: <code>имя:индекс:количество</code>. Индекс есть первый элемент из количества (запрошенных идентификаторов). Смешать диапазоны, к счастью, не получится - newuidmap выдаст <strong>invalid internal status</strong> при запуске контейнера. Оставлять бреши в промежутках можно, так как podman их всё равно сольёт в один. Podman кеширует эти значения, но обновить кеш после изменения в этих файлах можно командой <code>podman system migrate</code>.</p></blockquote><p>Допустим, вы создали в домашней папке структуру папок для нашего примера:</p><pre><code>mkdir -p unbound3/{etc,log,dns} &amp;&amp; cp /usr/share/dns/* unbound3/dns &amp;&amp; cp podmaniac/unbound/docker_files/* unbound3/etc\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p><strong>Вопрос:</strong> какому хостовому UID/GID должны принадлежать файлы и папки (за исключением <code>root.hints</code>, который обязательно принадлежит хостовому <code>0:0</code>), чтобы наш контейнер запустился?</p><p>Допустим, мы создаём и запускаем контейнер такой командой (проброс портов опущен для краткости):</p><pre><code> podman run \\\n --rm -it \\\n --cap-drop=ALL \\\n --cap-add=NET_BIND_SERVICE \\\n --cap-add=SETUID \\\n --cap-add=SETGID \\\n --security-opt=no-new-privileges \\\n --log-driver=journald \\\n --name=unbound3 \\\n -v $HOME/unbound3/etc:/usr/local/etc/unbound:rw \\\n -v $HOME/unbound3/dns:/opt/unbound/dns:rw \\\n -v $HOME/unbound3/log:/opt/unbound/log:rw \\\n --tmpfs /tmp:rw,noexec,nosuid,size=64m \\\n --tmpfs /run:rw,noexec,nosuid,size=16m \\\n --tmpfs /var/run,rw,noexec,nosuid,size=16m \\\n localhost/unbound3\n\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Это пространство имён по умолчанию. В нём root контейнера (uid 0) отображается на идентификатор хостового пользователя системы (у меня это 1000). Остальные же, начиная с uid 1, отображаются на все доступные идентификаторы в <code>/etc/sub{u,g}id</code> из всех диапазонов и становятся доступными пространству имён данного контейнера.</p><p>Посмотрим актуальное отображение командой:</p><pre><code>$ cat /proc/$(podman inspect -f '{{.State.Pid}}' unbound3)/uid_map\n         0       1000          1\n         1     100000      65536\n     65537     165536   33488896\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Видим 3 отображения:</p><ul><li><p>начиная с root (0) контейнера включительно, отображаем на хостовые, начиная с 1000 включительно последовательно 1 штуку</p></li><li><p>начиная с uid 1 контейнера включительно, отображаем на хостовые, начиная с 100000 включительно последовательно 65536 штук</p></li><li><p>начиная с uid 65537 контейнера включительно, отображаем на хостовые, начиная с 165536 включительно последовательно 33488896 штук</p></li></ul><p>То есть пользователь в контейнере с UID 1 это пользователь с UID 100000 на хосте, UID 2 контейнера это UID 100001 хоста, UID 9898 контейнера это 109897 хоста. Поэтому <strong>ответ:</strong> файлы и папки должны принадлежать пользователю с UID 109897.</p><blockquote><p>По умолчанию в контейнер отображаются все подчинённые (т.е. указанные в <code>/etc/sub{u,g}id</code> для данного пользователя) идентификаторы. Вы можете запустить несколько таких контейнеров, изменяя название контейнера (<code>--name=unbound4</code>,<code>--name=unbound5</code>, т.д.) и, если нужно, хостовые порты (<code>-p 20053:53/tcp</code>, <code>-p 30053:53/tcp</code>, т.д.), и для всех этих контейнеров хостовые UID/GID будут одинаковыми, т.е. пространство подчинённых имён по умолчанию одно на всех.</p></blockquote><p>Допустим, теперь мы хотим выделять контейнеру лишь ограниченное количество идентификаторов в количестве 65536 штук. Для этого к вышеуказанной команде <code>podman run</code> добавьте аргументы:</p><pre><code>    --uidmap=0:0:65536 \\\n    --gidmap=0:0:65536 \\\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><blockquote><p>структура значения данных аргументов <code>индекс_в_контейнере:индекс_промежуточный:количество</code>. UID это индекс. С данными аргументами вывод команды <code>podman inspect unbound3 | jq '.[0].HostConfig.IDMappings'</code> больше не <code>null</code>, и отображение больше не прямое, а через промежуточные идентификаторы. По индексу 0 промежуточных идентификаторов всегда находится хостовый UID пользователя <code>myuser</code> (т.е. 1000). Т.е. промежуточный UID всегда <strong>лежит вне диапазона</strong>, который вы задаёте аргументами uidmap/gidmap, а именно: <strong>на один индекс младше</strong>. Если в файлах <code>/etc/sub{u,g}id</code> для пользователя <code>myuser</code> мы начинаем с 100000, как в нашем случае, то это означает отображение хостового UID 100000 на промежуточный UID 1, и далее уже по порядку.</p></blockquote><p>Отображение:</p><pre><code>$ cat /proc/$(podman inspect -f '{{.State.Pid}}' unbound3)/uid_map\n         0       1000          1\n         1     100000      65535\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Как видим, UID 1 это UID 100000 на хосте, UID 2 это UID 100001, UID 9898 это UID 109897 хоста. Поэтому <strong>ответ:</strong> аналогично 109897.</p><p>Допустим, мы хотим избежать использования промежуточного UID 0. Для этого поменяем значения аргументов:</p><pre><code>    --uidmap=0:1:65536 \\\n    --gidmap=0:1:65536 \\\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>И это даст нам самое красивое отображение:</p><pre><code>$ cat /proc/$(podman inspect -f '{{.State.Pid}}' unbound3)/uid_map\n         0     100000      65536\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Мы не используем промежуточный UID 0. Теперь пользователь с UID 0 в контейнере это пользователь с UID 100000 на хосте, UID 1 контейнера это UID 100001 хоста, UID 9898 контейнера это 109898 хоста. Поэтому <strong>ответ:</strong> файлы и папки, кроме <code>root.hints</code>, должны принадлежать пользователю с UID 109898. Самое приятное здесь то, что мы не заступаем на диапазон из 65536 идентификаторов следующего контейнера.</p><p>Убедимся в этом, идя от противного: запустите первый контейнер с аргументами:</p><pre><code>    --uidmap=0:2:65536 \\\n    --gidmap=0:2:65536 \\\n    --name=unbound3\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>а второй с аргументами:</p><pre><code>    --uidmap=0:65537:65536 \\\n    --gidmap=0:65537:65536 \\\n    --name=unbound4 \\\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><blockquote><p>Порты между контейнерами, если они всё же пробрасываются, должны различаться.</p></blockquote><p>Сравните их отображения:</p><pre><code>$ cat /proc/$(podman inspect -f '{{.State.Pid}}' unbound3)/uid_map\n         0     100001      65535\n     65535     165536          1\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>и</p><pre><code>$ cat /proc/$(podman inspect -f '{{.State.Pid}}' unbound4)/uid_map\n         0     165536      65536\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Как видите, пользователь с UID 65535 в первом контейнере является рутом (0) во втором контейнере в рамках пространства имён хоста.</p><p>В завершение рассмотрим ещё один способ: аргумент <code>--userns=keep-id:uid=9898,gid=9898</code> вместо аргументов <code>uidmap</code> и <code>gidmap</code>. С данным аргументом podman смещает взаимное отображение промежуточных и хостовых UID от 0 до заданного (9898) включительно влево, и тогда выпавшее значение хостового UID по индексу 0 промежуточного (а мы помним, что это UID хостового пользователя 1000) становится на место промежуточного с UID 9898. То есть диапазон в <code>/etc/sub{u,g}id</code> разрывается надвое заданным UID, а заданный UID отображается на UID вашего пользователя в системе. Поэтому в данном случае  <strong>ответ:</strong> папки должны принадлежать хостовому пользователю, который выполняет команду <code>podman run</code>, т.е. 1000.</p><p>Вот так выглядит отображение в данном последнем случае:</p><pre><code>$ cat /proc/$(podman inspect -f '{{.State.Pid}}' unbound3)/uid_map\n         0     100000       9898\n      9898       1000          1\n      9899     109898      55638\n     65537     165536   33554432\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Как видите, он отображает все доступные в <code>/etc/sub{u,g}id</code> идентификаторы в контейнер, что делает невозможным избежать пересечения пространства имён между контейнерами.</p><p>На этом рассмотрение особенностей вычисления хостовых UID, соответствующих контейнерным, в rootless podman версии 4.3.1, закончен.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 9970,
+        "approxBlocks": 72
+      }
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/russia/1108162:2026-08-07T20:31:00.000Z:Электроснабжение 30 тыс. жителей Смоленс",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Электроснабжение 30 тыс. жителей Смоленской области восстановлено после урагана",
+      "url": "https://www.interfax.ru/russia/1108162",
+      "publishedAt": "2026-08-07T20:31:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Ликвидация последствий непогоды продолжается в Смоленской области, 3 тыс. потребителей остаются без света, сообщила пресс-служба правительства региона в пятницу.",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/07/v-ssha-vystupili-s-neobychnym-prognozom-po-novym-sanktsiyam-protiv-rossii/:2026-08-07T20:30:00.000Z:В США выступили с необычным прогнозом о ",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "В США выступили с необычным прогнозом о новых санкциях против России",
+      "url": "https://lenta.ru/news/2026/08/07/v-ssha-vystupili-s-neobychnym-prognozom-po-novym-sanktsiyam-protiv-rossii/",
+      "publishedAt": "2026-08-07T20:30:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/07/23/20260807232845527/pic_60d4b68f8039aaa58cf5b59476e442d7.jpg",
+      "excerpt": "В США выступили с необычным прогнозом о новых санкциях против РоссииЖурналист Десидерио: Принятие новых санкций США против России маловероятноФото: Kent Nishimura / ReutersШансы на то, что новый законопроект США о санкциях против России буд",
+      "contentHtml": "<h2>В США выступили с необычным прогнозом о новых санкциях против России</h2><p>Журналист Десидерио: Принятие новых санкций США против России маловероятно</p><figure><a href=\"https://lenta.ru/comments/news/2026/08/07/v-ssha-vystupili-s-neobychnym-prognozom-po-novym-sanktsiyam-protiv-rossii/\"><img src=\"https://icdn.lenta.ru/images/2026/08/07/23/20260807232845527/owl_detail_240_461b551fda404cda33180a065562b445.jpg\"></a><figcaption><p>Фото: Kent Nishimura / Reuters</p></figcaption></figure><p>Шансы на то, что новый законопроект <a href=\"https://lenta.ru/tags/geo/ssha/\">США</a> о санкциях против России будет принят, маловероятны. С необычным прогнозом выступил журналист портала Punchbowl News Эндрю Десидерио на своей странице в соцсети <a href=\"https://x.com/AndrewDesiderio/status/2085786369306055142\">Х</a>.</p><p>«Сегодня [законопроект] был принят Сенатом 86 голосами. Принятие Палатой представителей сомнительно», — написал он.</p><p>Журналист подчеркнул, что никогда не видел, чтобы сенатор упорно боролся за принятие закона, а затем «почти сразу же возвращал его на круги своя», имея ввиду покойного <a href=\"https://lenta.ru/tags/persons/grem-lindsi/\">Линдси Грэма</a> <i>(внесен в перечень террористов и экстремистов <a href=\"https://lenta.ru/tags/organizations/rosfinmonitoring/\">Росфинмониторинга</a>)</i> и его законопроект о санкциях против <a href=\"https://lenta.ru/tags/geo/rf/\">РФ</a>.</p><p>Ранее <a href=\"https://lenta.ru/tags/organizations/senat-ssha/\">Сенат США</a> <a href=\"https://lenta.news/news/2026/08/07/senat-ssha-odobril-zakonoproekt-ob-uzhestochenii-sanktsiy-protiv-rossii/\">одобрил</a> законопроект об ужесточении санкций против России и <a href=\"https://lenta.ru/tags/geo/iran/\">Ирана</a>. «Сенат принял важный законопроект о санкциях, названный в честь покойного сенатора Грэма, сыгравшего ключевую роль в кропотливых переговорах по этому законопроекту», — утверждается в сообщении.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 1112,
+        "approxBlocks": 10
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/27993601:2026-08-07T20:28:26.000Z:\"Украинская правда\": военных полка ВСУ \"",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "\"Украинская правда\": военных полка ВСУ \"Скала\" переводят в другие подразделения",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/27993601",
+      "publishedAt": "2026-08-07T20:28:26.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Пока это коснулось небольшого числа солдат, сообщило издание",
+      "contentHtml": ""
+    },
     {
       "id": "lenta:https://lenta.ru/news/2026/08/07/byvshiy-prezident-finlyandii-vystupil-s-predlozheniem-v-otnoshenii-rossii/:2026-08-07T20:22:29.000Z:Бывший президент Финляндии выступил с пр",
       "sourceId": "lenta",
@@ -13,18 +356,13 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/07/23/20260807232358818/pic_338b784fddf4de2b0d5342ae5674b7c4.jpg",
       "excerpt": "Бывший президент Финляндии выступил с предложением в отношении РоссииЭкс-президент Финляндии Ниинисте: Европе следует вступить в диалог с РоссиейФото: Victor Lisitsyn, Виктор Лисицын / Global Look PressЭкс-президент Финляндии Саули Ниинисте",
-      "contentHtml": "<h2>Бывший президент Финляндии выступил с предложением в отношении России</h2><p>Экс-президент Финляндии Ниинисте: Европе следует вступить в диалог с Россией</p><figure><a href=\"https://lenta.ru/comments/news/2026/08/07/byvshiy-prezident-finlyandii-vystupil-s-predlozheniem-v-otnoshenii-rossii/\"><img src=\"https://icdn.lenta.ru/images/2026/08/07/23/20260807232358818/owl_detail_240_d4704672ffc7815e0d448e96e1a71061.jpg\"></a><figcaption><p>Фото: Victor Lisitsyn, Виктор Лисицын / Global Look Press</p></figcaption></figure><p>Экс-президент <a href=\"https://lenta.ru/tags/geo/finlyandiya/\">Финляндии</a> Саули Ниинисте заявил, что Европе следует вступить в диалог с Россией. С таким предложением политик выступил в интервью <a href=\"http://spiegel.de/\">Der Spiegel</a>.</p><p>«Для этого есть две веские причины. Первая: так называемая архитектура безопасности в Европе», — отметил он.</p><p>Политик считает, что вторая причина для диалога с <a href=\"https://lenta.ru/tags/geo/moskva/\">Москвой</a> связана с тем, что будет после окончания конфликта на <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украине</a>. Через Европу будет проходить враждебная граница, утверждает Ниинисте.</p><p>Ранее бывший глава МИД ФРГ <a href=\"https://lenta.ru/tags/persons/gabriel-zigmar/\">Зигмар Габриэль</a> <a href=\"https://lenta.news/news/2026/07/18/v-frg-prizvali-evropu-k-dialogu-s-rossiey/\">заявил</a>, что после заявления президента России <a href=\"https://lenta.ru/tags/persons/putin-vladimir/\">Владимира Путина</a> о готовности к переговорам, Европа обязана возобновить диалог с Москвой. Российский лидер предложил бывшего канцлера ФРГ <a href=\"https://lenta.ru/tags/persons/shreder-gerhard/\">Герхарда Шредера</a> в качестве переговорщика для диалога Москвы и Европы.</p><p>Кроме того, глава МИД <a href=\"https://lenta.ru/tags/geo/belgiya/\">Бельгии</a> Максим Прево<a href=\"https://lenta.news/news/2026/07/08/na-zapade-prizvali-k-dialogu-s-rossiey-po-ukraine/\"> заявил</a>, что момент для начала переговоров <a href=\"https://lenta.ru/tags/organizations/es/\">Европейского союза</a> (ЕС) с Россией по вопросу урегулирования конфликта на Украине настал.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 1240,
-        "approxBlocks": 11
-      }
+      "contentHtml": "<h2>Бывший президент Финляндии выступил с предложением в отношении России</h2><p>Экс-президент Финляндии Ниинисте: Европе следует вступить в диалог с Россией</p><figure><a href=\"https://lenta.ru/comments/news/2026/08/07/byvshiy-prezident-finlyandii-vystupil-s-predlozheniem-v-otnoshenii-rossii/\"><img src=\"https://icdn.lenta.ru/images/2026/08/07/23/20260807232358818/owl_detail_240_d4704672ffc7815e0d448e96e1a71061.jpg\"></a><figcaption><p>Фото: Victor Lisitsyn, Виктор Лисицын / Global Look Press</p></figcaption></figure><p>Экс-президент <a href=\"https://lenta.ru/tags/geo/finlyandiya/\">Финляндии</a> Саули Ниинисте заявил, что Европе следует вступить в диалог с Россией. С таким предложением политик выступил в интервью <a href=\"http://spiegel.de/\">Der Spiegel</a>.</p><p>«Для этого есть две веские причины. Первая: так называемая архитектура безопасности в Европе», — отметил он.</p><p>Политик считает, что вторая причина для диалога с <a href=\"https://lenta.ru/tags/geo/moskva/\">Москвой</a> связана с тем, что будет после окончания конфликта на <a href=\"https://lenta.ru/tags/geo/ukraina/\">Украине</a>. Через Европу будет проходить враждебная граница, утверждает Ниинисте.</p><p>Ранее бывший глава МИД ФРГ <a href=\"https://lenta.ru/tags/persons/gabriel-zigmar/\">Зигмар Габриэль</a> <a href=\"https://lenta.news/news/2026/07/18/v-frg-prizvali-evropu-k-dialogu-s-rossiey/\">заявил</a>, что после заявления президента России <a href=\"https://lenta.ru/tags/persons/putin-vladimir/\">Владимира Путина</a> о готовности к переговорам, Европа обязана возобновить диалог с Москвой. Российский лидер предложил бывшего канцлера ФРГ <a href=\"https://lenta.ru/tags/persons/shreder-gerhard/\">Герхарда Шредера</a> в качестве переговорщика для диалога Москвы и Европы.</p><p>Кроме того, глава МИД <a href=\"https://lenta.ru/tags/geo/belgiya/\">Бельгии</a> Максим Прево<a href=\"https://lenta.news/news/2026/07/08/na-zapade-prizvali-k-dialogu-s-rossiey-po-ukraine/\"> заявил</a>, что момент для начала переговоров <a href=\"https://lenta.ru/tags/organizations/es/\">Европейского союза</a> (ЕС) с Россией по вопросу урегулирования конфликта на Украине настал.</p>"
     },
     {
-      "id": "tass:https://tass.ru/sport/27993597:2026-08-07T20:20:47.000Z:В Федерации альпинизма России назвали тр",
+      "id": "tass:https://tass.ru/sport/27993597:2026-08-07T20:20:47.000Z:В Федерации альпинизма России отреагиров",
       "sourceId": "tass",
       "sourceName": "ТАСС",
-      "title": "В Федерации альпинизма России назвали трагедией гибель россиянки в Альпах",
+      "title": "В Федерации альпинизма России отреагировали на гибель россиянки во Франции",
       "url": "https://tass.ru/sport/27993597",
       "publishedAt": "2026-08-07T20:20:47.000Z",
       "categoryIds": [
@@ -79,12 +417,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/07/23/20260807230436061/pic_8268d5907d869e680db05b0730cb5210.jpg",
       "excerpt": "Трамп отпросился у Госдепа из-за необходимости вести войнуТрамп призвал Госдеп отпустить его пораньше из-за необходимости вести войнуФото: Evelyn Hockstein / ReutersПрезидент Соединенных Штатов Дональд Трамп во время круглого стола в Госдеп",
-      "contentHtml": "<h2>Трамп отпросился у Госдепа из-за необходимости вести войну</h2><p>Трамп призвал Госдеп отпустить его пораньше из-за необходимости вести войну</p><figure><a href=\"https://lenta.ru/comments/news/2026/08/07/tramp-otprosilsya-u-gosdepa-iz-za-neobhodimosti-vesti-voynu/\"><img src=\"https://icdn.lenta.ru/images/2026/08/07/23/20260807230436061/owl_detail_240_4e16961f57f39171c38d688375da528a.jpg\"></a><figcaption><p>Фото: Evelyn Hockstein / Reuters</p></figcaption></figure><p>Президент Соединенных Штатов Дональд Трамп во время круглого стола в Госдепе попросил отпустить его пораньше. Политик сослался на необходимость «вести войну», но не стал приводить подробностей, пишет <a href=\"http://ria.ru/\">РИА Новости</a>.</p><p>«Если бы вы могли поторопиться, я был бы благодарен, потому что нам нужно вести войну. Вот, это мой предлог, чтобы уйти отсюда немного раньше», — отметил он.</p><p>Ранее Дональд Трамп <a href=\"https://lenta.news/news/2026/08/07/tramp-dopustil-skoroe-zavershenie-operatsii-protiv-irana/\">допустил</a>, что военная операция Соединенных Штатов против Ирана завершится в скором времени. Американский президент сообщил, что ждет снижения цен на нефть, когда закончится война в Иране.</p><p>В то же время Трамп <a href=\"https://lenta.news/news/2026/08/05/tramp-prigrozil-o-nevidannoy-so-vremen-vtoroy-mirovoy-voyny-atake/\">заявлял</a>, что США готовы нанести невиданный со времен Второй мировой войны удар по Ирану, если Ормузский пролив будет закрыт.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 949,
-        "approxBlocks": 10
-      }
+      "contentHtml": "<h2>Трамп отпросился у Госдепа из-за необходимости вести войну</h2><p>Трамп призвал Госдеп отпустить его пораньше из-за необходимости вести войну</p><figure><a href=\"https://lenta.ru/comments/news/2026/08/07/tramp-otprosilsya-u-gosdepa-iz-za-neobhodimosti-vesti-voynu/\"><img src=\"https://icdn.lenta.ru/images/2026/08/07/23/20260807230436061/owl_detail_240_4e16961f57f39171c38d688375da528a.jpg\"></a><figcaption><p>Фото: Evelyn Hockstein / Reuters</p></figcaption></figure><p>Президент Соединенных Штатов Дональд Трамп во время круглого стола в Госдепе попросил отпустить его пораньше. Политик сослался на необходимость «вести войну», но не стал приводить подробностей, пишет <a href=\"http://ria.ru/\">РИА Новости</a>.</p><p>«Если бы вы могли поторопиться, я был бы благодарен, потому что нам нужно вести войну. Вот, это мой предлог, чтобы уйти отсюда немного раньше», — отметил он.</p><p>Ранее Дональд Трамп <a href=\"https://lenta.news/news/2026/08/07/tramp-dopustil-skoroe-zavershenie-operatsii-protiv-irana/\">допустил</a>, что военная операция Соединенных Штатов против Ирана завершится в скором времени. Американский президент сообщил, что ждет снижения цен на нефть, когда закончится война в Иране.</p><p>В то же время Трамп <a href=\"https://lenta.news/news/2026/08/05/tramp-prigrozil-o-nevidannoy-so-vremen-vtoroy-mirovoy-voyny-atake/\">заявлял</a>, что США готовы нанести невиданный со времен Второй мировой войны удар по Ирану, если Ормузский пролив будет закрыт.</p>"
     },
     {
       "id": "tass:https://tass.ru/proisshestviya/27993595:2026-08-07T20:05:38.000Z:В Воронеже и Таловском районе объявили у",
@@ -112,12 +445,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/07/22/20260807225910286/pic_49d192d246a2fa61016c69116aa5f1af.jpg",
       "excerpt": "Лукашенко объяснил введение безвиза для граждан ЕСЛукашенко: Режим безвиза для граждан ЕС приносит Белоруссии дополнительные доходыФото: Roman Naumov / Globallookpress.comБезвизовый режим для жителей соседних стран Европейского союза (ЕС) п",
-      "contentHtml": "<h2>Лукашенко объяснил введение безвиза для граждан ЕС</h2><p>Лукашенко: Режим безвиза для граждан ЕС приносит Белоруссии дополнительные доходы</p><figure><a href=\"https://lenta.ru/comments/news/2026/08/07/lukashenko-ob-yasnil-vvedenie-bezviza-dlya-grazhdan-es/\"><img src=\"https://icdn.lenta.ru/images/2026/08/07/22/20260807225910286/owl_detail_240_342bd1b1dab36e69a0cebf90a7e59a86.jpg\"></a><figcaption><p>Фото: Roman Naumov / Globallookpress.com</p></figcaption></figure><p>Безвизовый режим для жителей соседних стран Европейского союза (ЕС) приносит Белоруссии дополнительные доходы. Об этом <a href=\"https://president.gov.by/ru/events/rabocaa-poezdka-v-vilejskij-rajon-minskoj-oblasti\">заявил</a> президент республики Александр Лукашенко.</p><p>Он объяснил, что Минск получает валютную выручку за счет продажи товаров туристам. «Я почему границы открываю с европейцами? Не только потому, что мы любим поляков, литовцев и латышей. Мы к ним хорошо относимся — это не чужие нам люди. Они к нам приезжают, покупают, что надо», — сказал Лукашенко.</p><p>Он подчеркнул, что благодаря тому, что туристы вывозят приобретенные товары, белорусским предприятиям не приходится самостоятельно поставлять продукцию в соседние страны.</p><p>В декабре Белоруссия на год <a href=\"https://lenta.ru/news/2025/12/10/belorussiya-prodlila-bezvizovyy-v-ezd-dlya-evropeytsev-na-god/\">продлила</a> безвизовый въезд в страну для граждан 38 европейских стран. Режим будет действовать до конца 2026-го.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 1023,
-        "approxBlocks": 10
-      }
+      "contentHtml": "<h2>Лукашенко объяснил введение безвиза для граждан ЕС</h2><p>Лукашенко: Режим безвиза для граждан ЕС приносит Белоруссии дополнительные доходы</p><figure><a href=\"https://lenta.ru/comments/news/2026/08/07/lukashenko-ob-yasnil-vvedenie-bezviza-dlya-grazhdan-es/\"><img src=\"https://icdn.lenta.ru/images/2026/08/07/22/20260807225910286/owl_detail_240_342bd1b1dab36e69a0cebf90a7e59a86.jpg\"></a><figcaption><p>Фото: Roman Naumov / Globallookpress.com</p></figcaption></figure><p>Безвизовый режим для жителей соседних стран Европейского союза (ЕС) приносит Белоруссии дополнительные доходы. Об этом <a href=\"https://president.gov.by/ru/events/rabocaa-poezdka-v-vilejskij-rajon-minskoj-oblasti\">заявил</a> президент республики Александр Лукашенко.</p><p>Он объяснил, что Минск получает валютную выручку за счет продажи товаров туристам. «Я почему границы открываю с европейцами? Не только потому, что мы любим поляков, литовцев и латышей. Мы к ним хорошо относимся — это не чужие нам люди. Они к нам приезжают, покупают, что надо», — сказал Лукашенко.</p><p>Он подчеркнул, что благодаря тому, что туристы вывозят приобретенные товары, белорусским предприятиям не приходится самостоятельно поставлять продукцию в соседние страны.</p><p>В декабре Белоруссия на год <a href=\"https://lenta.ru/news/2025/12/10/belorussiya-prodlila-bezvizovyy-v-ezd-dlya-evropeytsev-na-god/\">продлила</a> безвизовый въезд в страну для граждан 38 европейских стран. Режим будет действовать до конца 2026-го.</p>"
     },
     {
       "id": "lenta:https://lenta.ru/news/2026/08/07/trampu-zapretili-stroit-balnyy-zal-na-meste-vostochnogo-kryla-belogo-doma/:2026-08-07T19:59:00.000Z:Трампу запретили строить бальный зал",
@@ -131,12 +459,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/07/23/20260807230058246/pic_b86dbd0b762a1b625abd4c8a9b6b6bd0.jpg",
       "excerpt": "Трампу запретили строить бальный залТрампу запретили строить бальный зал на месте Восточного крыла Белого домаДональд Трамп. Фото: Elizabeth Frantz / ReutersФедеральный апелляционный суд США вынес решение, блокирующее проект президента Дона",
-      "contentHtml": "<h2>Трампу запретили строить бальный зал</h2><p>Трампу запретили строить бальный зал на месте Восточного крыла Белого дома</p><figure><a href=\"https://lenta.ru/comments/news/2026/08/07/trampu-zapretili-stroit-balnyy-zal-na-meste-vostochnogo-kryla-belogo-doma/\"><img alt=\"Дональд Трамп\" src=\"https://icdn.lenta.ru/images/2026/08/07/23/20260807230058246/owl_detail_240_1741e29fe0008ab80f286f8381878c46.jpg\"></a><figcaption><p>Дональд Трамп. Фото: Elizabeth Frantz / Reuters</p></figcaption></figure><p>Федеральный апелляционный суд <a href=\"https://lenta.ru/tags/geo/ssha/\">США</a> вынес решение, блокирующее проект президента <a href=\"https://lenta.ru/tags/persons/tramp-donald/\">Дональда Трампа</a> по строительству бального зала стоимостью 400 миллионов долларов. Речь идет о сооружении на месте снесенного Восточного крыла Белого дома, сообщило агентство <a href=\"http://www.reuters.com/\">Reuters</a>.</p><p>Судья постановил, что подобные решения относятся к компетенции Конгресса, а не исполнительной власти. В заявлении суда подчеркивается, что вопрос о строительстве столь масштабного объекта не должен решаться единолично главой государства, поскольку Конгресс не наделял президента неограниченными полномочиями по перестройке резиденции.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 846,
-        "approxBlocks": 8
-      }
+      "contentHtml": "<h2>Трампу запретили строить бальный зал</h2><p>Трампу запретили строить бальный зал на месте Восточного крыла Белого дома</p><figure><a href=\"https://lenta.ru/comments/news/2026/08/07/trampu-zapretili-stroit-balnyy-zal-na-meste-vostochnogo-kryla-belogo-doma/\"><img alt=\"Дональд Трамп\" src=\"https://icdn.lenta.ru/images/2026/08/07/23/20260807230058246/owl_detail_240_1741e29fe0008ab80f286f8381878c46.jpg\"></a><figcaption><p>Дональд Трамп. Фото: Elizabeth Frantz / Reuters</p></figcaption></figure><p>Федеральный апелляционный суд <a href=\"https://lenta.ru/tags/geo/ssha/\">США</a> вынес решение, блокирующее проект президента <a href=\"https://lenta.ru/tags/persons/tramp-donald/\">Дональда Трампа</a> по строительству бального зала стоимостью 400 миллионов долларов. Речь идет о сооружении на месте снесенного Восточного крыла Белого дома, сообщило агентство <a href=\"http://www.reuters.com/\">Reuters</a>.</p><p>Судья постановил, что подобные решения относятся к компетенции Конгресса, а не исполнительной власти. В заявлении суда подчеркивается, что вопрос о строительстве столь масштабного объекта не должен решаться единолично главой государства, поскольку Конгресс не наделял президента неограниченными полномочиями по перестройке резиденции.</p>"
     },
     {
       "id": "tass:https://tass.ru/sport/27993589:2026-08-07T19:58:50.000Z:От восхищения до разочарования. Хорватия",
@@ -235,12 +558,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/07/22/20260807224134019/pic_ad8303c448e2dc0d426de891bacfaac7.jpg",
       "excerpt": "Новые британские бронемашины сломались после испытанийTelegraph: Новые британские бронемашины Ajax сломались после испытанийФото: Toby Melville / ReutersНовые британские бронемашины Ajax, на которые было потрачено восемь миллиардов долларов",
-      "contentHtml": "<h2>Новые британские бронемашины сломались после испытаний</h2><p>Telegraph: Новые британские бронемашины Ajax сломались после испытаний</p><figure><a href=\"https://lenta.ru/comments/news/2026/08/07/novye-britanskie-bronemashiny-slomalis-posle-ispytaniy/\"><img src=\"https://icdn.lenta.ru/images/2026/08/07/22/20260807224134019/owl_detail_240_318150a0d4984d08f375748be41d8415.jpg\"></a><figcaption><p>Фото: Toby Melville / Reuters</p></figcaption></figure><p>Новые британские бронемашины Ajax, на которые было потрачено восемь миллиардов долларов, сломались после испытаний. Об этом со ссылкой на источники сообщает <a href=\"https://www.telegraph.co.uk/news/2026/08/07/armys-troubled-ajax-vehicles-break-down-storage/\">The Telegraph</a>.</p><p>Бронемашины были приняты на вооружение в ноябре 2025 года, однако тогда их испытания были приостановлены, так как машины вызвали у военных проблемы со здоровьем из-за сильного шума и вибраций. В апреле 2026 года их тестирование возобновилось, однако, по словам источника, машины «постоянно ломались».</p><p>«Проблемные бронемашины армии Ajax \"сломались\". Несколько разведывательных транспортеров перестали работать, проведя несколько месяцев в военном депо, собирая пыль», — указано в статье. Отмечается, что сроки новых испытаний пока не определены.</p><p>Ранее издание The Telegraph <a href=\"https://lenta.news/news/2026/07/23/britaniyu-prizvali-zanyatsya-usileniem-svoego-flota/\">сообщило</a>, что британский патрульный корабль HMS Tyne не сравнится с российским фрегатом «Неустрашимый». В публикации отмечается, что Британии следовало бы иметь настоящий военный корабль, вооружение которого было бы лучше «Неустрашимого». «К сожалению, у нас таких нет», — добавил автор.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 1240,
-        "approxBlocks": 10
-      }
+      "contentHtml": "<h2>Новые британские бронемашины сломались после испытаний</h2><p>Telegraph: Новые британские бронемашины Ajax сломались после испытаний</p><figure><a href=\"https://lenta.ru/comments/news/2026/08/07/novye-britanskie-bronemashiny-slomalis-posle-ispytaniy/\"><img src=\"https://icdn.lenta.ru/images/2026/08/07/22/20260807224134019/owl_detail_240_318150a0d4984d08f375748be41d8415.jpg\"></a><figcaption><p>Фото: Toby Melville / Reuters</p></figcaption></figure><p>Новые британские бронемашины Ajax, на которые было потрачено восемь миллиардов долларов, сломались после испытаний. Об этом со ссылкой на источники сообщает <a href=\"https://www.telegraph.co.uk/news/2026/08/07/armys-troubled-ajax-vehicles-break-down-storage/\">The Telegraph</a>.</p><p>Бронемашины были приняты на вооружение в ноябре 2025 года, однако тогда их испытания были приостановлены, так как машины вызвали у военных проблемы со здоровьем из-за сильного шума и вибраций. В апреле 2026 года их тестирование возобновилось, однако, по словам источника, машины «постоянно ломались».</p><p>«Проблемные бронемашины армии Ajax \"сломались\". Несколько разведывательных транспортеров перестали работать, проведя несколько месяцев в военном депо, собирая пыль», — указано в статье. Отмечается, что сроки новых испытаний пока не определены.</p><p>Ранее издание The Telegraph <a href=\"https://lenta.news/news/2026/07/23/britaniyu-prizvali-zanyatsya-usileniem-svoego-flota/\">сообщило</a>, что британский патрульный корабль HMS Tyne не сравнится с российским фрегатом «Неустрашимый». В публикации отмечается, что Британии следовало бы иметь настоящий военный корабль, вооружение которого было бы лучше «Неустрашимого». «К сожалению, у нас таких нет», — добавил автор.</p>"
     },
     {
       "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/27993579:2026-08-07T19:41:42.000Z:El País: в Испании введут контроль на гр",
@@ -20899,314 +21217,6 @@
       ],
       "image": "",
       "excerpt": "С 2019 года футболист выступает за \"Манчестер Сити\"",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/27991129:2026-08-07T04:18:55.000Z:Khaosod: устроивший стрельбу в школе в Т",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Khaosod: устроивший стрельбу в школе в Таиланде покончил с собой",
-      "url": "https://tass.ru/proisshestviya/27991129",
-      "publishedAt": "2026-08-07T04:18:55.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Жертвами трагедии стали двое учителей",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/ekonomika/27991081:2026-08-07T04:16:24.000Z:Директор Hyperpc назвал новые ключевые у",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Директор Hyperpc назвал новые ключевые условия производства ПК",
-      "url": "https://tass.ru/ekonomika/27991081",
-      "publishedAt": "2026-08-07T04:16:24.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "Ими стали планирование склада и альтернативных поставщиков, сообщил Иван Фурдилов",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/07/smolov-rasskazal-o-nezabitom-penalti-v-chetvertfinale-chm-2018/:2026-08-07T04:15:22.000Z:Смолов рассказал о незабитом пенальти в ",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Смолов рассказал о незабитом пенальти в четвертьфинале ЧМ-2018",
-      "url": "https://lenta.ru/news/2026/08/07/smolov-rasskazal-o-nezabitom-penalti-v-chetvertfinale-chm-2018/",
-      "publishedAt": "2026-08-07T04:15:22.000Z",
-      "categoryIds": [
-        "sports"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/07/00/20260807005014674/pic_a32c78118820c4f4cdacecc9c6c29f84.jpg",
-      "excerpt": "Лига Европы|3-й квалификационный раунд. 1-й матчЛига Европы|3-й квалификационный раунд. 1-й матчЛига Европы|3-й квалификационный раунд. 2-й матчЛига Европы|3-й квалификационный раунд. 1-й матчБывший футболист Смолов объяснил незабитый пенал",
-      "contentHtml": "<ul><li><a href=\"https://lenta.ru/sport/2026/08/06/football-benfika-harts/\"></a><p>Лига Европы|3-й квалификационный раунд. 1-й матч</p></li><li><a href=\"https://lenta.ru/sport/2026/08/06/football-paok-anderleht/\"></a><p>Лига Европы|3-й квалификационный раунд. 1-й матч</p></li><li><a href=\"https://lenta.ru/sport/2026/08/06/football-pafos-red-bull-zaltsburg/\"></a><p>Лига Европы|3-й квалификационный раунд. 2-й матч</p></li><li><a href=\"https://lenta.ru/sport/2026/08/06/football-gradets-kralove-beshiktash/\"></a><p>Лига Европы|3-й квалификационный раунд. 1-й матч</p></li></ul><p>Бывший футболист Смолов объяснил незабитый пенальти на ЧМ-2018 трясущимися коленками</p><figure><a href=\"https://lenta.ru/comments/news/2026/08/07/smolov-rasskazal-o-nezabitom-penalti-v-chetvertfinale-chm-2018/\"><img src=\"https://icdn.lenta.ru/images/2026/08/07/00/20260807005014674/owl_detail_240_dcd11891250db8d5fd86c810d11d8835.jpg\"></a><figcaption><p>Фото: Илья Питалев / РИА Новости</p></figcaption></figure><p>Бывший футболист <a href=\"https://lenta.ru/tags/persons/smolov-fedor/\">Федор Смолов</a> рассказал о незабитом пенальти в четвертьфинале ЧМ-2018 с <a href=\"https://lenta.ru/tags/geo/horvatiya/\">Хорватией</a>. Его слова приводит канал <a href=\"https://vksport.vkvideo.ru/video-225676567_456239423\">Smol Talk</a>.</p><p>«Когда трясутся коленки и я не понимаю, что делать, принимается самое плохое решение. Я сам себя спрашиваю: почему я не мог пробить на силу? Нет ответа. Больше критиковали за само исполнение. Если бы не дрожали коленки, я бы пробил нормально. Я так забивал», — сказал Смолов.</p><p>Также бывший игрок <a href=\"https://lenta.ru/tags/organizations/sbornaya-rossii/\">сборной России</a> рассказал, как этот эпизод повлиял на его дальнейшую карьеру. «Эта ситуация сделала меня хуже как спортсмена. Это была отправная точка, там, где я понял, что уже вряд ли уеду в хорошую европейскую команду, хотя у меня  до этого момента были переговоры с классными клубами. Сложный период, депрессия была», — заявил Смолов.</p><p>Ранее стало известно, что Смолов <a href=\"https://lenta.news/news/2026/08/06/byvshiy-futbolist-sbornoy-rossii-reshil-izbavitsya-ot-elitnogo-zhilya-v-moskve/\">выставил</a> на продажу элитную квартиру в московском жилом комплексе «Воробьевы горы». Он рассчитывает получить за объект 150 миллионов рублей</p><!--noindex--><!--/noindex-->"
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/07/britni-spirs-vylozhila-video-v-prozrachnom-naryade-posle-publichnogo-obnazheniya/:2026-08-07T04:15:17.000Z:Бритни Спирс выложила видео в прозрачном",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Бритни Спирс выложила видео в прозрачном наряде после публичного обнажения",
-      "url": "https://lenta.ru/news/2026/08/07/britni-spirs-vylozhila-video-v-prozrachnom-naryade-posle-publichnogo-obnazheniya/",
-      "publishedAt": "2026-08-07T04:15:17.000Z",
-      "categoryIds": [
-        "culture"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/06/17/20260806172509075/pic_7b091e6989faddbb3fe53c8f80c6c780.jpg",
-      "excerpt": "Бритни Спирс выложила видео в прозрачном наряде после публичного обнаженияПевица Бритни Спирс выложила видео в откровенном наряде после обнажения на конной прогулкеКадр: @britneyspearsАмериканская певица Бритни Спирс выложила видео в откров",
-      "contentHtml": "<h2>Бритни Спирс выложила видео в прозрачном наряде после публичного обнажения</h2><p>Певица Бритни Спирс выложила видео в откровенном наряде после обнажения на конной прогулке</p><figure><a href=\"https://lenta.ru/comments/news/2026/08/07/britni-spirs-vylozhila-video-v-prozrachnom-naryade-posle-publichnogo-obnazheniya/\"><img src=\"https://icdn.lenta.ru/images/2026/08/06/17/20260806172509075/owl_detail_240_341beb6f1b9cd705e834c7555483ae7a.jpg\"></a><figcaption><p>Кадр: @britneyspears</p></figcaption></figure><p>Американская певица <a href=\"https://lenta.ru/tags/persons/spirs-britni/\">Бритни Спирс</a> выложила видео в откровенном наряде после публичного обнажения на конной прогулке. Публикация появилась на ее странице в Instagram <i>(принадлежит компании Meta, признанной экстремистской организацией и запрещенной в <a href=\"https://lenta.ru/tags/geo/rf/\">РФ</a>)</i>.</p><p>44-летняя знаменитость запечатлела себя в зеркале на камеру. Она позировала перед объективом в черных сапогах и розовом боди с цветочными аппликациями, сквозь прозрачную ткань которого было видно ее обнаженное тело. При этом Спирс прикрыла промежность эмодзи в виде бриллианта.</p><p>Ролик поп-исполнительницы набрал один миллион просмотров, более 43 тысяч лайков и 750 репостов.</p><p>Ранее <a href=\"https://lenta.ru/news/2026/08/03/namerennoe-obnazhenie-britni-spirs-na-kameru-raskritikovali-v-seti/\">сообщалось</a>, что Бритни Спирс подверглась критике в сети из-за намеренного обнажения на камеру. Тогда певица опубликовала видео с конной прогулки, в котором специально показала на камеру обнаженную грудь. Общественность возмутилась ее поступком. <br></p>"
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/russia/1107990:2026-08-07T04:15:00.000Z:Более 20 БПЛА уничтожено за ночь в Росто",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "Более 20 БПЛА уничтожено за ночь в Ростовской области",
-      "url": "https://www.interfax.ru/russia/1107990",
-      "publishedAt": "2026-08-07T04:15:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "В Ростовской области минувшей ночью уничтожено более двух десятков беспилотников, сообщает губернатор Юрий Слюсарь в пятницу утром в Max.\"Минувшей ночью в ходе отражения воздушной атаки на Ростовскую область БПЛА уничтожены более двух десятков в Чертковском, Тарасовском и Матвеево-Курганском районах\", - говорится в сообщении.",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/ekonomika/27991125:2026-08-07T04:14:54.000Z:Индекс Мосбиржи на открытии утренней тор",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Индекс Мосбиржи на открытии утренней торговой сессии рос на 0,51%",
-      "url": "https://tass.ru/ekonomika/27991125",
-      "publishedAt": "2026-08-07T04:14:54.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "К 07:10 мск показатель находился на отметке 2 298,94 пункта",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/27991113:2026-08-07T04:14:42.000Z:В Новосибирске подростки ограбили магази",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В Новосибирске подростки ограбили магазин",
-      "url": "https://tass.ru/proisshestviya/27991113",
-      "publishedAt": "2026-08-07T04:14:42.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Один из них устроил стрельбу",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/27991117:2026-08-07T04:14:39.000Z:Суд обязал кандидата в Конгресс США с Ук",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Суд обязал кандидата в Конгресс США с Украины проверить психическое состояние",
-      "url": "https://tass.ru/obschestvo/27991117",
-      "publishedAt": "2026-08-07T04:14:39.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "При таких условиях судья согласилась снизить сумму залога по делу Кирилла Басина в два раза",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/27991119:2026-08-07T04:14:30.000Z:В трех районах Ростовской области сбили ",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В трех районах Ростовской области сбили более 20 БПЛА",
-      "url": "https://tass.ru/proisshestviya/27991119",
-      "publishedAt": "2026-08-07T04:14:30.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Информации о пострадавших нет",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/27991123:2026-08-07T04:14:21.000Z:В Курганской области объявили беспилотну",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В Курганской области объявили беспилотную опасность",
-      "url": "https://tass.ru/proisshestviya/27991123",
-      "publishedAt": "2026-08-07T04:14:21.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Жителей призвали сохранять спокойствие",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/27991073:2026-08-07T04:14:15.000Z:Верховный суд признал лишение прав незак",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Верховный суд признал лишение прав незаконным при неизвестной личности водителя",
-      "url": "https://tass.ru/obschestvo/27991073",
-      "publishedAt": "2026-08-07T04:14:15.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Речь идет о случаях, когда личность установлена со слов фигуранта и не подтверждена документально",
-      "contentHtml": ""
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/business/1107989:2026-08-07T04:14:00.000Z:Рынок акций РФ открылся в утреннюю сесси",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "Рынок акций РФ открылся в утреннюю сессию ростом индекса IMOEX2 на 0,5%",
-      "url": "https://www.interfax.ru/business/1107989",
-      "publishedAt": "2026-08-07T04:14:00.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "Рынок акций РФ на старте торгов утренней сессии на Мосбирже в пятницу вернулся к росту на фоне дорожающей нефти (октябрьский фьючерс на Brent поднялся к $83,4 за баррель) и надежд на возобновление переговоров по украинскому урегулированию после заявлений президента США Дональда Трампа о прогрессе в этом вопросе.",
-      "contentHtml": ""
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/russia/1107988:2026-08-07T04:13:00.000Z:Беспилотная опасность объявлена в Курган",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "Беспилотная опасность объявлена в Курганской области",
-      "url": "https://www.interfax.ru/russia/1107988",
-      "publishedAt": "2026-08-07T04:13:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Этот режим действует в трех регионах Урала",
-      "contentHtml": "\n\t\t\t\n\t\t\t\n\t\t\t<p><a href=\"https://www.interfax.ru/\"></a>\n\t\t\t\t\n\t\t\t\t\tCopyright © 1991—2026 Interfax. Все права защищены. Сетевое издание \"Интерфакс.ру\".&nbsp;Свидетельство о регистрации СМИ ЭЛ № ФС 77 - 84928 выдано Федеральной службой по надзору в сфере связи, информационных технологий и массовых коммуникаций (Роскомнадзор) 21.03.2023. Вся информация, размещенная на данном веб-сайте, предназначена только для персонального пользования и не подлежит дальнейшему воспроизведению и/или распространению в какой-либо форме, иначе как с письменного разрешения Интерфакса.<br>\n\t\t\t\t\tСайт Interfax.ru (далее – сайт) использует файлы cookie. Продолжая работу с сайтом, Вы соглашаетесь на сбор и последующую <!--noindex--><a href=\"https://www.interfax.ru/cookie\">обработку файлов cookie</a>.<!--/noindex--></p><p>\n\t\t\t\t\t\n\t\t\t\t\tАдрес: Россия, 127006, Москва, 1-я Тверская-Ямская улица, дом 2, стр.1, тел.: <a href=\"tel:+74992509840\">+7 (499) 250-98-40</a>, факс: <a href=\"tel:+74992509727\">+7 (499) 250-97-27</a></p>\n\t\t\t<p></p>\n\t\t\t\n\t\t\t\n\t\t\t\t\t<p>Информация о компаниях, товарах и людях</p>\n\t\t\t\t\t\n\t\t\t\t\n\t\t\t\n\t\t"
-    },
-    {
-      "id": "tass:https://tass.ru/nauka/27991115:2026-08-07T04:12:10.000Z:Найден способ сушить древесные отходы с ",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Найден способ сушить древесные отходы с минимальными затратами",
-      "url": "https://tass.ru/nauka/27991115",
-      "publishedAt": "2026-08-07T04:12:10.000Z",
-      "categoryIds": [
-        "science"
-      ],
-      "image": "",
-      "excerpt": "Разработанная математическая модель с точностью до 5% рассчитывает все процессы в сушильной камере, сообщили в Томском политехническом университете",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/sport/27991107:2026-08-07T04:11:41.000Z:Эксперт: последние решения ФКСР поспособ",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Эксперт: последние решения ФКСР поспособствуют честной конкуренции",
-      "url": "https://tass.ru/sport/27991107",
-      "publishedAt": "2026-08-07T04:11:41.000Z",
-      "categoryIds": [
-        "sports"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260807/9281285.jpg",
-      "excerpt": "Федерация конного спорта России ограничила участие в работе судейских коллегий и наблюдательных советов судей главных и старших тренеров национальной и региональных сборных, а также уточнила критерии статуса \"спортсмен-любитель\"",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/27991105:2026-08-07T04:10:08.000Z:\"Дзен\" назвал самые интересные для росси",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "\"Дзен\" назвал самые интересные для россиян маяки",
-      "url": "https://tass.ru/obschestvo/27991105",
-      "publishedAt": "2026-08-07T04:10:08.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260807/9281309.jpg",
-      "excerpt": "В их число вошли Белый в ЯНАО, Русский в Мурманской области и Токаревского во Владивостоке",
-      "contentHtml": ""
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/world/1107987:2026-08-07T04:10:00.000Z:Трамп приказал расследовать утечки инфор",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "Трамп приказал расследовать утечки информации об истощении запасов оружия",
-      "url": "https://www.interfax.ru/world/1107987",
-      "publishedAt": "2026-08-07T04:10:00.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "",
-      "excerpt": "Президент США Дональд Трамп распорядился провести расследования в связи с распространением в СМИ информации об истощении запасов боеприпасов Пентагона, сообщает The Wall Street Journal со ссылкой на осведомленные источники в американской администрации.",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/27991079:2026-08-07T04:09:15.000Z:В Донецке задержали стрелявшего по машин",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В Донецке задержали стрелявшего по машинам скорой помощи местного жителя",
-      "url": "https://tass.ru/proisshestviya/27991079",
-      "publishedAt": "2026-08-07T04:09:15.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "ЧП произошло в Петровском районе города",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/27991083:2026-08-07T04:08:39.000Z:Медики рассказали о состоянии пострадавш",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Медики рассказали о состоянии пострадавших в массовом ДТП в центре Омска",
-      "url": "https://tass.ru/obschestvo/27991083",
-      "publishedAt": "2026-08-07T04:08:39.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Два человека остаются в реанимации, еще шестеро находятся в удовлетворительном состоянии",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/ekonomika/27991103:2026-08-07T04:08:08.000Z:В аэропорту Уфы сняли ограничения",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В аэропорту Уфы сняли ограничения",
-      "url": "https://tass.ru/ekonomika/27991103",
-      "publishedAt": "2026-08-07T04:08:08.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "Их вводили для обеспечения безопасности полетов",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/27991091:2026-08-07T04:07:55.000Z:В Японии ответят на план присвоить остро",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В Японии ответят на план присвоить островам Южных Курил имена Зорге и Рубленко",
-      "url": "https://tass.ru/mezhdunarodnaya-panorama/27991091",
-      "publishedAt": "2026-08-07T04:07:55.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "",
-      "excerpt": "Японский кабмин сначала уточнит все детали, отметил генеральный секретарь правительства Минору Кихара",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/armiya-i-opk/27991093:2026-08-07T04:05:59.000Z:ВС РФ уничтожили за сутки 148 пунктов уп",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "ВС РФ уничтожили за сутки 148 пунктов управления БПЛА ВСУ",
-      "url": "https://tass.ru/armiya-i-opk/27991093",
-      "publishedAt": "2026-08-07T04:05:59.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "",
-      "excerpt": "Российские военнослужащие также ликвидировали станции спутниковой связи Starlink, роботехнические комплексы и полевые склада боеприпасов противника",
       "contentHtml": ""
     }
   ]
