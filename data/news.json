@@ -1,27 +1,535 @@
 {
-  "generatedAt": "2026-08-15T09:16:58.196Z",
+  "generatedAt": "2026-08-15T09:47:42.822Z",
   "items": [
     {
-      "id": "tass:https://tass.ru/armiya-i-opk/28015227:2026-08-15T09:14:49.000Z:Освобождение Рыбальского позволило расши",
+      "id": "habr:https://habr.com/ru/articles/1070754/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070754:2026-08-15T09:43:31.000Z:Структура современного WordPress-сайта. ",
+      "sourceId": "habr",
+      "sourceName": "Хабр",
+      "title": "Структура современного WordPress-сайта. Composer, Docker, Bedrock",
+      "url": "https://habr.com/ru/articles/1070754/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070754",
+      "publishedAt": "2026-08-15T09:43:31.000Z",
+      "categoryIds": [
+        "tech"
+      ],
+      "image": "https://habrastorage.org/getpro/habr/upload_files/da8/fb0/c2a/da8fb0c2ac77d0cda92543dd44c6b4fb.jpg",
+      "excerpt": "Прошло уже 10 лет с публикации моей предыдущей статьи на тему организации проекта на WordPress для удобной работы. Старый текст до сих пор кто-то добавляет в закладки и ставит звезды на Github, хотя многие вещи, актуальные на тот момент, устарели, а задачи поменялись. Если раньше я работал над большим количеством корпоративных сайтов, по принципу «сделал и забыл», то сейчас у меня в работе несколько долгоживущих новостных ресурсов с посещаемостью доходящей до миллиона хостов в сутки. Эти проекты требуют постоянного участия разработчика, и есть большая ответственность перед заказчиком за поломки. Читать далее",
+      "contentHtml": "<p>Прошло уже 10 лет с публикации моей <a href=\"https://habr.com/ru/articles/309214/\">предыдущей статьи на тему организации проекта на WordPress для удобной работы</a>. Старый текст до сих пор кто-то добавляет в закладки и ставит звезды на <a href=\"https://github.com/IvanZhuck/kosher_wp_seeder\">Github</a>, хотя многие вещи, актуальные на тот момент, устарели, а задачи поменялись. Если раньше я работал над большим количеством корпоративных сайтов, по принципу «сделал и забыл», то сейчас у меня в работе несколько долгоживущих новостных ресурсов с посещаемостью доходящей до миллиона хостов в сутки. Эти проекты требуют постоянного участия разработчика, и есть большая ответственность перед заказчиком за поломки.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/02e/c00/6ff/02ec006ffd1a749d4c1ddae8a158a71e.jpg\" alt=\"Коллаж Gemini и Photoshop\"><figcaption>Коллаж Gemini и Photoshop</figcaption></figure><h3>Какая вообще проблема</h3><p><a href=\"https://www.reddit.com/r/Journalism/comments/1hlxfcr/is_it_just_me_or_is_wordpress_driving_journalists/\">WordPress очень популярен в журналистской среде</a>, изначально он предназначен для публикации текстов. Фактически это стандарт индустрии, и множество сайтов СМИ: журналов, газет и интернет-медиа сделаны на нем. С другой стороны, WordPress исторически позиционирует себя как простой движок для быстрой сборки сайтов мышкой с крайне низким порогом входа для разработчика, что на самом деле ошибочно. От сюда мы можем увидеть как в 2026 году кто-то пытается делать серьезный проект устанавливая плагины через админку прямо на боевом сервере и редактируя файлы по FTP. Такой подход приводит к катастрофе в 100% случаев, когда сайт начинает расти.</p><p>В этой статье я расскажу, как улучшить свой опыт работы с WordPress, прикрутив к нему современные инструменты, поделюсь личным опытом и наработками, которые я собираю в репозитории: <a href=\"https://github.com/IvanZhuck/wordpress-sandbox\">https://github.com/IvanZhuck/wordpress-sandbox</a></p><h3>WordPress и git</h3><p>Я видел множество WordPress-проектов, где система контроля версий вообще не использовалась, но надо признать, что в последние годы это встречается реже. Однако большинство разработчиков продолжают хранить в git вообще все: и свой и сторонний код. Это приводит к тому, что репозиторий быстро разрастается, поскольку обновления и плагинов и самого движка выходят с завидной регулярностью.&nbsp;</p><p>Из коробки WordPress никак не дает понять, как правильно хранить его в репозитории. Но если внимательно прочитать документацию, то там крайне криво описано как можно <a href=\"https://developer.wordpress.org/advanced-administration/server/wordpress-in-directory/\">отделить ядро WordPress от всего остального</a>.&nbsp;</p><p>Об этом я писал в предыдущей статье. На базе одной этой функции построен проект <a href=\"https://roots.io/bedrock/\">Bedrock от компании roots</a>. Он демонстрирует как можно установить ядро WordPress как composer-зависимость, что дает возможность не тащить ядро, сторонние плагины и темы оформления в свой репозиторий, а управлять этим всем через <code>composer.json</code>, как в любом популярном php-фреймворке. На базе Bedrock строится вся дальнейшая работа.</p><h3>WordPress Sandbox</h3><p>Свою сборку на базе Bedrock я назвал Sandbox (песочница) т.к. она предназначена для работы на локальной машине разработчика, а не на боевом сервере. Сборка использует Docker-конфигурацию для разработки. На продакшене я обычно запускаю сервер либо на голом железе, либо с использованием LXC/LXD-контейнеров. Если вы захотите использовать Docker образ из этой сборки на боевом сервере, то она потребует доработки, хоть и не значительной.</p><p>Прежде всего развернем и запустим сборку, затем я расскажу о том как работает каждая ее часть.</p><p>Приступим.</p><p><strong>0.</strong> На вашем компьютере должен быть установлен Docker и доступна команда <code>make</code>. Если вы работаете на Windows, то вам потребуется WSL для работы в локальном Linux-окружении.</p><p><strong>1.</strong> Клонируйте репозиторий:</p><p><code>git clone git@github.com:IvanZhuck/wordpress-sandbox.git</code></p><p><strong>2.</strong> Перейдите в директорию проекта:</p><p><code>cd wordpress-sandbox</code></p><p><strong>3.</strong> Копируйте файл конфигурации:</p><p><code>cp .env.example .env</code></p><p>В файле <code>.env</code> вам потребуется задать настройки вашего приложения. Особое внимание стоит уделить параметрам<code>LOCAL_UID</code> и <code>LOCAL_USER</code>, там нужно указать id и имя пользователя на хост-машине, чтобы пользователь внутри контейнера был создан с такими же id и имененм. Это нужно для того, чтобы файлы монтируемые внутрь Docker контейнера принадлежали одному и тому же пользователю и в контейнере и на хост-машине. Остальные настройки стоит задать по вашему желанию.</p><p><strong>4.</strong> Соберите проект:</p><p><code>make build </code></p><p>Эта команда запустит билд <code>docker compose</code>, он скачает недостающие образы контейнеров, а также соберет образ приложения из <code>docker/php/Dockerfile</code> </p><p><strong>5.</strong> Сгенерируйте самоподписанный TLS-сертификат и ключ к нему:</p><p><code>make generate-ssl-keys</code></p><p>Без этого шага не запустится Nginx внутри контейнера.</p><p><strong>6.</strong> Установите зависимости Composer:</p><p><code>make composer-install</code></p><p>Если все прошло успешно, то ваш новый WordPress-сайт станет доступен по адресу  <a href=\"https://localhost:44301/\">https://localhost:44301/</a>. Порт можно заменить в файле <code>.env</code> через параметр <code>LOCAL_DEV_PORT_HTTPS</code>.</p><p>Если же сайт недоступен, то дебаг стоит начать с просмотра <code>docker ps</code> на предмет корректного запуска всех контейнеров.</p><h3>Структура файлов проекта</h3><p>Рассмотрим основные директории и файлы.</p><p><code>config/</code> &nbsp;-  состоит из файла <code>application.php</code>, куда попадают все настройки приложения. А директория <code>environments</code> содержит файлы конфигурации под текущую настройку среды выполнения. Изменить которую можно в <code>.env</code> параметром <code>WP_ENV</code>.</p><p><code>docker/</code> &nbsp;- настройки контейнеров.</p><p><code>web/</code> - директория приложения, в нее смотрит веб-сервер, там находится точка входа в приложение <code>index.php</code>.</p><p><code>web/wp</code> - сюда попадет ядро WordPress после установки, оно не хранится в git</p><p><code>web/app</code> - в эту директорию устанавливаются плагины и темы, прочие директории приложения, например <code>uploads</code>, хранятся тоже в этой директории. Сюда попадает все, что не ядро WordPress, но что должно исполняться и быть доступным внутри приложения.</p><p><code>local-plugins/</code> и <code>local-themes/</code> - директории локальных тем и плагинов WordPress. В эту директорию помещают плагины и темы, которые должны попасть в репозиторий проекта, но исполняться они будут из <code>web/app/plugins</code> и <code>web/app/themes</code>, туда Composer поместит символьные ссылки на них.</p><p><code>Makefile</code> - содержит все доступные команды make.</p><p><code>composer.json</code> - конфигурация Composer, о ней ниже.</p><p><code>docker-compose.ym</code>, <code>docker-compose.dev.yml</code>, <code>docker-compose.override.yml.example</code> - конфигурация для Docker Compose, о ней также ниже.</p><p><code>phpcs.xml</code> - файл-конфигурации PHP Code Sniffer. Команда <code>make phpcs</code> запускает статический анализатор вашего кода, а <code>make phpcbf</code> сразу вносит исправления, если это возможно. WordPress имеет <a href=\"https://developer.wordpress.org/coding-standards/wordpress-coding-standards/php/\">свои стандарты кодирования</a>, стоит придерживаться их, если вы разрабатываете плагины и темы для размещения где-либо публично. Внутри же своих проектов я придерживаюсь стандарта <a href=\"https://www.php-fig.org/psr/psr-12/\">PSR12</a>, так как мне и другим программистам, с которыми я сотрудничаю, он привычнее. </p><p><code>wp-cli-update-languages.sh</code> - скрипт установки файлов локализации WordPress. Языковые файлы скачиваются с помощью команды <code>make wp-update-translations</code>. Задать языки можно в файле <code>.env</code> в параметре <code>WP_LANGUAGE</code>. Если сайт использует сразу несколько языков, то их стоит указать через запятую.</p><p><code>wp-cli.yml</code> - конфигурация для WP-CLI, в ней мы сообщаем скрипту, что он имеет дело с нестандартной структурой проекта:</p><pre><code class=\"yaml\">path: web/wp\nserver:\n &nbsp; docroot: web</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><h3>Composer</h3><p>Composer настраивается через файл <code>composer.json</code> и работает точно так же как и в любом другом PHP-фреймворке. За исключением нескольких отличий:</p><p><strong>1.</strong> Плагины и темы загружаются с <a href=\"https://wpackagist.org/\">https://wpackagist.org/</a>. Имена таких пакетов начинаются с <code>wpackagist-plugin/...</code> и <code>wpackagist-theme/...</code>. После загрузки они попадают в <code>web/app/plugins</code> и <code>web/app/themes</code> соответственно. Содержимое этих директорий игнорируется git.</p><p><strong>2.</strong> Плагины из <code>local-plugins/</code> устанавливаются также как обычные зависимости, если они имеют собственный <code>composer.json</code>.</p><pre><code class=\"json\">...\n  \"repositories\": [  \n    {\n      \"type\": \"path\",\n      \"url\": \"local-plugins/*\"\n    }\n  ],\n  \"require\": {\n     \"local-plugins/my-plugin\": \"1.0\"\n  }\n...</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>С темами работает аналогично.</p><p><strong>3.</strong> Если вам нужно установить сторонний плагин, который невозможно установить из wpackagist и его поставщик не дает возможности установки через composer или хотя бы загрузке по постоянной ссылке (это часто бывает с платными плагинами, например Polylang Pro), то следует поместить его в директорию <code>local-plugins/</code> как есть, а в <code>composer.json</code> проекта добавить следующее:</p><pre><code class=\"json\">...\n  \"repositories\": [\n    {\n      \"type\": \"package\",\n      \"package\": {\n        \"name\": \"polylang/polylang-pro\",\n        \"version\": \"3.7.8\",\n        \"type\": \"wordpress-plugin\",\n        \"dist\": {\n          \"type\": \"path\",\n          \"url\": \"local-plugins/polylang-pro\"\n        }\n      }\n    }\n  ],\n  \"require\": {\n    \"polylang/polylang-pro\": \"*\"\n  }\n...</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Да, плагин полностью будет храниться в вашем репозитории, можно считать это костылем, но это единственный относительно безболезненный способ вписать подобный плагин в эту концепцию.</p><h3>Docker</h3><p>WordPress Sandbox использует готовые контейнеры для: Mariadb, Redis, Nginx и контейнер приложения, который мы собираем на месте. В зависимости от функционала сайта к этому списку я чаще всего добавляю ClickHouse и Manticore, но они нужны не всегда, поэтому в стандартном исполнении их нет. Конфигурация контейнеров находится в файле <code>docker-compose.yml</code>. Кроме того в корне проекта присутствует еще два файла конфигурации <code>docker-compose.dev.yml</code> и <code>docker-compose.override.yml</code>. Предполагается, что в эти файлы выносятся настройки для разработчика. </p><p>Над проектом может работать несколько программистов, поэтому <code>docker-compose.dev.yml</code> общий для всех, а <code>docker-compose.override.yml </code>индивидуален для каждого разработчика и в репозиторий не попадает. Команды <code>make build</code> и <code>make up</code> подхватывают только <code>docker-compose.dev.yml</code>, а команды <code>make build-override</code> и <code>make up-override</code> оба файла. </p><p>Самый популярный сценарий использования: у одного разработчика компьютер на Windows, ему не надо делать дополнительных действий, чтобы ловить события Xdebug из контейнера. А у другого разработчика Linux, и чтобы у него работал Xdebug, ему нужно связать host.docker.internal с IP-адресом на хост-машине. Чтобы этого добиться, достаточно создать у себя локальный файл <code>docker-compose.override.yml</code> с содержимым:</p><pre><code class=\"yaml\">services:\n  app:\n    extra_hosts:\n      - host.docker.internal:host-gateway</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>и запустить контейнер командой <code>make up-override</code>, добавив <code>host-gateway</code> в <code>/ect/hosts</code> на хост-машине. Таким образом в репозиторий не попадет лишних личных файлов, и у всех все будет работать.</p><p>Dockerfile контейнера приложения находится в <code>docker/php</code>. Файл основан на образе php:8.4-fpm. Помимо самого интерпретатора PHP в этот контейнер устанавливаются все необходимые для работы расширения, Xdebug, Сomposer и Node.js вместе c pnpm. </p><p>Если для вашего проекта требуется другая версия php, просто измените ее в Dockerfile перед выполнением <code>make build</code>. Добавлять/удалять библиотеки и другой софт, который нужен внутри приложения, также следует в этом файле.</p><p>Остальная структура директории <code>docker/</code> должна быть интуитивно понятна. В поддиректориях лежат соответствующие названию директории файлы настроек. Стоит обратить внимание на <code>docker/nginx/default.conf.template</code> - это файл конфигурации виртуального хоста Nginx, скорее всего вам придется вносить в него изменения под ваш проект. Изменения применяются как обычно после рестарта контейнера.</p><h3>Тема оформления</h3><p>В <a href=\"https://github.com/IvanZhuck/wordpress-sandbox\">«песочнице»</a> присутствует заготовка темы WordPress, точнее заготовка ее фронта. Исходный код находится в директории <code>local-themes/izwp/src</code>, а собранная тема находится в <code>local-themes/izwp/wp-theme</code>. Именно эта директория потом линкуется в <code>web/app/themes</code>. Таким образом исходники темы находятся за пределами области видимости веб-сервера и никак не могут быть скачаны через браузер. </p><p>В своих темах оформления я придерживаюсь минимального использования готового JS, в основном пишу небольшие классы, которые выполняют отдельные функции. С приходом блоков в редактор WordPress скрипты атомизировались и подключаются вместе с блоками, сама же тема оформления содержит мало JS, в основном служебные скрипты вроде ленивой загрузки изображений. </p><p>Для сборки использую Webpack. Стили собираю отдельно с помощью команды sass в секции scripts файла <code>package.json</code>. </p><p>Для того чтобы все было красиво, использую линтеры для скриптов и стилей: Eslint и Stylelint.</p><p>10 лет назад я использовал npm, потом перешел на Yarn, так как он был быстрее. Теперь же в качестве менеджера зависимостей фронтенд части я пользуюсь pnpm. Он замечателен тем, что скачивает все зависимости в свою директорию в корне проекта, а от туда создает символьные ссылки в нужные места. Так одна и та же библиотека скачивается только один раз, даже если присутствует в нескольких <code>package.json</code> внутри одного проекта.</p><p>От куда внутри одного сайта на WordPress несколько <code>package.json</code>? Новая философия WordPress опирается на блочный редактор. <a href=\"https://developer.wordpress.org/block-editor/getting-started/tutorial/\">Документация по разработке блоков</a> рассматривает каждый отдельный блок, как отдельное приложение, со своими зависимостями и сборщиком. </p><p>Раньше я собирал все блоки одним экземпляром Webpack и хранил зависимости внутри одного <code>package.json</code>. Это хорошо работало до тех пор, пока сайты не состаривались. Собранные блоки по-прежнему работают, но добавление новых требует свежих версий библиотек, а старые на них ругаются, надо их постоянно рефакторить. Это не всегда удобно, и не всегда на это есть время. Поэтому я пришел к тому, что один блок - один сборщик, у него свои зависимости и линтеры. Он полностью изолирован от всего остального. Так я могу оперативно перекидывать блоки между разными сайтами вообще не обращая внимание на совместимость фронтенд-библиотек. Ничего не ломается и не тратит мое время.</p><h3>Вместо заключения</h3><p>WordPress коварен своей простотой. Много разработчиков сломало о него ни одну мышь, которой по идее нужно собирать сайт, но как только требования к проекту усложняются, она летит в стену, так как ничего не получается. Разрабатывая сайты для СМИ я также сломал не мало мышей, но в итоге накопил большое количество опыта, которым хочу делиться. </p><p>Могу сказать точно, что подход описанный в этой статье и заготовка <a href=\"https://github.com/IvanZhuck/wordpress-sandbox\">WordPress Sandbox</a> помогают  направить новый проект в нужное русло и избежать сложностей в его развитии вследующих случаях:</p><ul><li><p>Если проект разрабатывается более чем одним разработчиком. </p></li><li><p>Если в проект постоянно вносятся изменения. </p></li><li><p>Если период жизни проекта хочется растянуть и не ограничивать 1-2 годами от полной переделки до полной переделки.</p></li><li><p>Если все это происходит одновременно.</p></li></ul><p>Спасибо, что прочитали!</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 13939,
+        "approxBlocks": 90
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/obschestvo/28015263:2026-08-15T09:43:17.000Z:Резервный борт прилетел за пассажирами э",
       "sourceId": "tass",
       "sourceName": "ТАСС",
-      "title": "Освобождение Рыбальского позволило расширить зону контроля северо-западнее Нового Поля",
+      "title": "Резервный борт прилетел за пассажирами экстренно севшего в Красноярске самолета",
+      "url": "https://tass.ru/obschestvo/28015263",
+      "publishedAt": "2026-08-15T09:43:17.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Пассажиров готовят к вылету",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/pszh-kupil-u-barselony-futbolista-sbornoy-ispanii/:2026-08-15T09:43:14.000Z:ПСЖ купил у «Барселоны» футболиста сборн",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "ПСЖ купил у «Барселоны» футболиста сборной Испании",
+      "url": "https://lenta.ru/news/2026/08/15/pszh-kupil-u-barselony-futbolista-sbornoy-ispanii/",
+      "publishedAt": "2026-08-15T09:43:14.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/12/20260815123640725/pic_8c9454ad08ede7aa68dd0c28bfa35330.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/evropeyskaya-strana-stala-otkazyvat-vo-vremennoy-zaschite-sovershennoletnim-grazhdanam-ukrainy/:2026-08-15T09:40:52.000Z:Европейская страна стала отказывать во в",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Европейская страна стала отказывать во временной защите совершеннолетним гражданам Украины",
+      "url": "https://lenta.ru/news/2026/08/15/evropeyskaya-strana-stala-otkazyvat-vo-vremennoy-zaschite-sovershennoletnim-grazhdanam-ukrainy/",
+      "publishedAt": "2026-08-15T09:40:52.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/12/20260815124252580/pic_5623f80a87ea57b4a0ee476e2e7d869c.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/obschestvo/28015259:2026-08-15T09:38:13.000Z:Лукашенко призвал белорусов гордиться, ч",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Лукашенко призвал белорусов гордиться, что они впитали традиции разных народов",
+      "url": "https://tass.ru/obschestvo/28015259",
+      "publishedAt": "2026-08-15T09:38:13.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20250116/8009941.jpg",
+      "excerpt": "Президент Белоруссии также рассказал, что часто бывает на Полесье и пришел к выводу, что в этих краях зарождались основные черты белорусского характера",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/sport/28015265:2026-08-15T09:36:28.000Z:Синхронистки РФ стали третьими в произво",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Синхронистки РФ стали третьими в произвольной программе дуэтов на юниорском ЧМ",
+      "url": "https://tass.ru/sport/28015265",
+      "publishedAt": "2026-08-15T09:36:28.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302071.jpg",
+      "excerpt": "Россиянок опередили испанки и китаянки",
+      "contentHtml": ""
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/world/1109509:2026-08-15T09:36:00.000Z:Лукашенко заявил, что белорусы не хотят ",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Лукашенко заявил, что белорусы не хотят воевать",
+      "url": "https://www.interfax.ru/world/1109509",
+      "publishedAt": "2026-08-15T09:36:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Белорусская власть будет делать все для сохранения мира, заявил президент республики Александр Лукашенко.\"Мы будем делать все для того, чтобы был мир.",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/proisshestviya/28015255:2026-08-15T09:34:10.000Z:В Запорожской области из-за атак ВСУ за ",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "В Запорожской области из-за атак ВСУ за сутки пострадали семь человек",
+      "url": "https://tass.ru/proisshestviya/28015255",
+      "publishedAt": "2026-08-15T09:34:10.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "По словам губернатора региона Евгения Балицкого, наибольшую активность дронов противника фиксировали над Васильевским, Пологовским, Михайловским, Токмакским, Черниговским, Каменско-Днепровским муниципальными округами и городами Мелитополь и Энергодар",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/politika/28015257:2026-08-15T09:33:58.000Z:Ульянов: намерения Трампа сделать Ормузс",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Ульянов: намерения Трампа сделать Ормузский пролив частью США напоминают шутку",
+      "url": "https://tass.ru/politika/28015257",
+      "publishedAt": "2026-08-15T09:33:58.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Американский президент ранее заявил об этом во время выступления в полицейской академии в округе Нассо",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/pozner-reshil-izbavitsya-ot-kvartiry-v-tsentre-moskvy/:2026-08-15T09:33:00.000Z:Познер решил избавиться от квартиры в це",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Познер решил избавиться от квартиры в центре Москвы",
+      "url": "https://lenta.ru/news/2026/08/15/pozner-reshil-izbavitsya-ot-kvartiry-v-tsentre-moskvy/",
+      "publishedAt": "2026-08-15T09:33:00.000Z",
+      "categoryIds": [
+        "business"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/12/20260815122624562/pic_eaee270a939b4e04cf8347c2c31536fa.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/russia/1109508:2026-08-15T09:33:00.000Z:Минобороны заявило об улучшении положени",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Минобороны заявило об улучшении положения российских войск в зоне СВО",
+      "url": "https://www.interfax.ru/russia/1109508",
+      "publishedAt": "2026-08-15T09:33:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Группировка войск \"Центр\" продвигается в глубину обороны ВСУ, группировки \"Север\", \"Запад\", \"Южная\" и \"Днепр\" за сутки улучшили положение в зоне спецоперации, заявили в Минобороны России в субботу.\"Подразделения группировки войск \"Запад\" заняли более выгодные рубежи и позиции\", - говорится в сообщении.",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/ukr-harbors/:2026-08-15T09:32:00.000Z:Экс-премьер Украины заявил о сорванных п",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Экс-премьер Украины заявил о сорванных поставках ВСУ",
+      "url": "https://lenta.ru/news/2026/08/15/ukr-harbors/",
+      "publishedAt": "2026-08-15T09:32:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/12/20260815122845740/pic_9d6898c4508b0c8ec4c0b0be5aa30a1a.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/russia/1109507:2026-08-15T09:31:00.000Z:Взятие Рыбальского позволило РФ расширит",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Взятие Рыбальского позволило РФ расширить зону контроля и продолжить продвижение в Запорожье",
+      "url": "https://www.interfax.ru/russia/1109507",
+      "publishedAt": "2026-08-15T09:31:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Взятие под контроль группировкой \"Восток\" села Рыбальское позволило расширить зону контроля северо-западнее Нового Поля и продолжить продвижение в Запорожской области, заявили в Минобороны России в субботу.\"Освобождение Рыбальского позволило подразделениям группировки \"Восток\" расширить зону контроля северо-западнее Нового Поля и продолжить продвижение в зоне проведения СВО в Запорожской области\", - говорится в сообщении.",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/poyavilis-podrobnosti-o-sostoyanii-postradavshego-pri-atake-vsu-pod-moskvoy-rebenka/:2026-08-15T09:27:00.000Z:Появились подробности о состоянии постра",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Появились подробности о состоянии пострадавшего при атаке ВСУ под Москвой ребенка",
+      "url": "https://lenta.ru/news/2026/08/15/poyavilis-podrobnosti-o-sostoyanii-postradavshego-pri-atake-vsu-pod-moskvoy-rebenka/",
+      "publishedAt": "2026-08-15T09:27:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/12/20260815122519198/pic_104a350062f3ab7a8219ce1cdea4138e.jpeg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/russia/1109506:2026-08-15T09:25:00.000Z:Военные нанесли удары по логистическим ц",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Военные нанесли удары по логистическим центрам, объектам ТЭК и транспорта Украины",
+      "url": "https://www.interfax.ru/russia/1109506",
+      "publishedAt": "2026-08-15T09:25:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Министерство обороны РФ сообщило, что в течение суток нанесены удары по используемым ВСУ объектам топливно-энергетической и транспортной инфраструктуры Украины, логистическим центрам, цехам сборки дронов и безэкипажных катеров.\"Оперативно-тактической авиацией, ударными беспилотными летательными аппаратами, ракетными войсками и артиллерией группировок войск Вооруженных сил Российской Федерации нанесено поражение логистическим центрам, объектам топливно-энергетической и транспортной инфраструктуры Украины, используемым ВСУ, цехам сборки беспилотных летательных аппаратов большой дальности и безэкипажных катеров\", - заявили в министерстве в субботу.",
+      "contentHtml": ""
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/russia/1109505:2026-08-15T09:24:00.000Z:В Сочи назвали ситуацию с топливом напря",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "В Сочи назвали ситуацию с топливом напряженной, но контролируемой",
+      "url": "https://www.interfax.ru/russia/1109505",
+      "publishedAt": "2026-08-15T09:24:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Власти Сочи контролируют ситуацию с обеспечением бензина и дизельного топлива, ряд АЗС отпускают топливо только юрлицам, сообщил мэр Сочи Андрей Прошунин в своем канале в Max в субботу.\"В ходе объезда автозаправочных станций города посетил нефтебазу \"Роснефти\".",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/sport/28015251:2026-08-15T09:23:22.000Z:Маринкин с трудом сдержал слезы после пе",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Маринкин с трудом сдержал слезы после первого гола за \"Динамо\"",
+      "url": "https://tass.ru/sport/28015251",
+      "publishedAt": "2026-08-15T09:23:22.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302067.jpg",
+      "excerpt": "18-летний футболист впервые отличился за команду в матче третьего тура РПЛ против махачкалинского \"Динамо\"",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/28015249:2026-08-15T09:22:50.000Z:\"Страна\": в Бельгии отказывают во времен",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "\"Страна\": в Бельгии отказывают во временной защите совершеннолетним украинцам",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/28015249",
+      "publishedAt": "2026-08-15T09:22:50.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "По данным издания, у новоприбывших требуют установить приложении для военнообязанных \"Резерв+\" и продемонстрировать данные",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/na-ukraine-nazvali-vozmozhnye-posledstviya-mobilizatsii-zhenschin/:2026-08-15T09:21:00.000Z:На Украине назвали возможные последствия",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "На Украине назвали возможные последствия мобилизации женщин",
+      "url": "https://lenta.ru/news/2026/08/15/na-ukraine-nazvali-vozmozhnye-posledstviya-mobilizatsii-zhenschin/",
+      "publishedAt": "2026-08-15T09:21:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/12/20260815122412443/pic_5d6480e62a0fdacaf12f3dae739b5701.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/sport/28015243:2026-08-15T09:20:54.000Z:Призер Олимпиады Колесников заявил о нег",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Призер Олимпиады Колесников заявил о неготовности конкурировать на ЧЕ",
+      "url": "https://tass.ru/sport/28015243",
+      "publishedAt": "2026-08-15T09:20:54.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302063.jpg",
+      "excerpt": "Спортсмен отметил, что будет разбираться в причинах происходящего",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/proisshestviya/28015237:2026-08-15T09:20:18.000Z:В Челябинской области в ДТП пострадали д",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "В Челябинской области в ДТП пострадали два человека",
+      "url": "https://tass.ru/proisshestviya/28015237",
+      "publishedAt": "2026-08-15T09:20:18.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Одного из них госпитализировали",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/sport/28015219:2026-08-15T09:19:39.000Z:Пловчиха Ефимова в отпуске намерена посе",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Пловчиха Ефимова в отпуске намерена посетить матч \"Спартака\"",
+      "url": "https://tass.ru/sport/28015219",
+      "publishedAt": "2026-08-15T09:19:39.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302051.jpg",
+      "excerpt": "Спортсменка является болельщицей красно-белых",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/fm-iran/:2026-08-15T09:19:00.000Z:В МИД Ирана процитировали Достоевского",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "В МИД Ирана процитировали Достоевского",
+      "url": "https://lenta.ru/news/2026/08/15/fm-iran/",
+      "publishedAt": "2026-08-15T09:19:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/12/20260815122200528/pic_f601300718b8d959a1b479faebacfb4e.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/obschestvo/28015187:2026-08-15T09:18:20.000Z:В Подмосковье напомнили о правилах прода",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "В Подмосковье напомнили о правилах продажи бахчевых культур на развалах",
+      "url": "https://tass.ru/obschestvo/28015187",
+      "publishedAt": "2026-08-15T09:18:20.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Председатель комитета Мособлдумы по аграрной политике и потребительскому рынку Сергей Керселян напомнил, что продажа может проводиться только в согласованных местными администрациями точками работы объектов нестационарной торговли",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/futbolist-zenita-pereshel-v-krylya-sovetov/:2026-08-15T09:18:00.000Z:Футболист «Зенита» перешел в «Крылья Сов",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Футболист «Зенита» перешел в «Крылья Советов»",
+      "url": "https://lenta.ru/news/2026/08/15/futbolist-zenita-pereshel-v-krylya-sovetov/",
+      "publishedAt": "2026-08-15T09:18:00.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/12/20260815121527722/pic_08166be346beb7e3b3003b5e6c3a8444.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/russia/1109504:2026-08-15T09:18:00.000Z:Минобороны РФ заявило, что за сутки сбит",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Минобороны РФ заявило, что за сутки сбиты свыше 1,3 тыс. беспилотников ВСУ",
+      "url": "https://www.interfax.ru/russia/1109504",
+      "publishedAt": "2026-08-15T09:18:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Российские военные в течение суток сбили 1 328 украинских беспилотников самолетного типа, сообщило в субботу министерство обороны РФ.",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/v-minoborony-soobschili-o-17-vypuschennyh-vsu-v-storonu-rossii-raket-flamingo/:2026-08-15T09:17:00.000Z:В Минобороны сообщили о 17 выпущенных ВС",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "В Минобороны сообщили о 17 выпущенных ВСУ в сторону России ракет «Фламинго»",
+      "url": "https://lenta.ru/news/2026/08/15/v-minoborony-soobschili-o-17-vypuschennyh-vsu-v-storonu-rossii-raket-flamingo/",
+      "publishedAt": "2026-08-15T09:17:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/12/20260815121959421/pic_7e0d556deebfb5c2f9cffc8d83778dbe.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/sport/28015233:2026-08-15T09:16:42.000Z:Пловец Колесников поставил себе двойку з",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Пловец Колесников поставил себе двойку за чемпионат Европы в Париже",
+      "url": "https://tass.ru/sport/28015233",
+      "publishedAt": "2026-08-15T09:16:42.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302035.jpg",
+      "excerpt": "Спортсмен стал вторым на дистанции 50 м на спине, а также не вышел в полуфинал на 100 м на спине",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/namerenie-trampa-nazvat-ormuzskiy-proliv-amerikanskim-oharakterizovali-odnim-slovom/:2026-08-15T09:16:00.000Z:Намерение Трампа назвать Ормузский проли",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Намерение Трампа назвать Ормузский пролив американским охарактеризовали одним словом",
+      "url": "https://lenta.ru/news/2026/08/15/namerenie-trampa-nazvat-ormuzskiy-proliv-amerikanskim-oharakterizovali-odnim-slovom/",
+      "publishedAt": "2026-08-15T09:16:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/12/20260815120353404/pic_f0a18745080b9bd1ad4c77f2587275c4.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/sport/28015217:2026-08-15T09:15:55.000Z:Пловчиха Ефимова ставит цель отобраться ",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Пловчиха Ефимова ставит цель отобраться на Олимпиаду в Лос-Анджелесе",
+      "url": "https://tass.ru/sport/28015217",
+      "publishedAt": "2026-08-15T09:15:55.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302039.jpg",
+      "excerpt": "По словам спортсменки, это будет почти домашняя Олимпиада для нее",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/armiya-i-opk/28015227:2026-08-15T09:14:49.000Z:МО РФ: взятие Рыбальского позволило \"Вос",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "МО РФ: взятие Рыбальского позволило \"Востоку\" продолжить продвижение",
       "url": "https://tass.ru/armiya-i-opk/28015227",
       "publishedAt": "2026-08-15T09:14:49.000Z",
       "categoryIds": [
         "world"
       ],
       "image": "",
-      "excerpt": "",
+      "excerpt": "В ходе боев ВС РФ уничтожили 7 боевых бронированных машин, 10 автомобилей, 13 наземных роботизированных комплексов и более 20 тяжелых гексакоптеров типа R-18, сообщили в Минобороны",
       "contentHtml": ""
     },
     {
-      "id": "lenta:https://lenta.ru/news/2026/08/15/v-germanii-prokommentirovali-slova-putina-ob-otvete-na-popytki-zahvata-rossiyskih-sudov/:2026-08-15T09:13:51.000Z:В Германии прокомментировали слова Путин",
+      "id": "lenta:https://lenta.ru/news/2026/08/15/rossiyskie-voennye-zanyali-novyy-naselennyy-punkt-v-zone-svo/:2026-08-15T09:14:00.000Z:Российские военные заняли новый населенн",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Российские военные заняли новый населенный пункт в зоне СВО",
+      "url": "https://lenta.ru/news/2026/08/15/rossiyskie-voennye-zanyali-novyy-naselennyy-punkt-v-zone-svo/",
+      "publishedAt": "2026-08-15T09:14:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/12/20260815121833155/pic_81380d277f3eba8e37ff1cb498766969.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/russia/1109503:2026-08-15T09:14:00.000Z:Военные РФ взяли под контроль населенный",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Военные РФ взяли под контроль населенный пункт Рыбальское в Запорожской области",
+      "url": "https://www.interfax.ru/russia/1109503",
+      "publishedAt": "2026-08-15T09:14:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Группировка войск \"Восток\" взяла под контроль село Рыбальское в Запорожской области, заявили в Минобороны России в субботу.\"В результате решительных действий подразделений группировки войск \"Восток\" освобожден населенный пункт Рыбальское Запорожской области\", - говорится в сообщении.",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/v-germanii-prokommentirovali-slova-putina-ob-otvete-na-popytki-zahvata-rossiyskih-sudov/:2026-08-15T09:13:00.000Z:В Германии прокомментировали слова Путин",
       "sourceId": "lenta",
       "sourceName": "Lenta.ru",
       "title": "В Германии прокомментировали слова Путина об ответе на попытки захвата российских судов",
       "url": "https://lenta.ru/news/2026/08/15/v-germanii-prokommentirovali-slova-putina-ob-otvete-na-popytki-zahvata-rossiyskih-sudov/",
-      "publishedAt": "2026-08-15T09:13:51.000Z",
+      "publishedAt": "2026-08-15T09:13:00.000Z",
       "categoryIds": [
         "world"
       ],
@@ -49,6 +557,20 @@
       "contentHtml": ""
     },
     {
+      "id": "interfax:https://www.interfax.ru/world/1109502:2026-08-15T09:12:00.000Z:На границе Марокко и испанского города С",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "На границе Марокко и испанского города Сеута пресечена попытка прорыва нелегалов",
+      "url": "https://www.interfax.ru/world/1109502",
+      "publishedAt": "2026-08-15T09:12:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://www.interfax.ru/ftproot/textphotos/2026/08/15/seu1200.jpg",
+      "excerpt": "Марокканские силы безопасности в субботу пресекли попытку сотен мигрантов, в основном выходцев из стран Африки к югу от Сахары, незаконно пересечь границу с испанским городом Сеута.",
+      "contentHtml": ""
+    },
+    {
       "id": "tass:https://tass.ru/armiya-i-opk/28015209:2026-08-15T09:10:24.000Z:Потери ВСУ за сутки составили порядка 1 ",
       "sourceId": "tass",
       "sourceName": "ТАСС",
@@ -59,7 +581,7 @@
         "world"
       ],
       "image": "",
-      "excerpt": "",
+      "excerpt": "В частности, подразделения группировки войск \"Центр\" уничтожили более 355 военнослужащих ВСУ",
       "contentHtml": ""
     },
     {
@@ -74,12 +596,7 @@
       ],
       "image": "https://habrastorage.org/getpro/habr/upload_files/156/5e9/ffa/1565e9ffac759452bc50f9471cee7e17.png",
       "excerpt": "Я разозлился на то, что Lens стал платным, и написал свой платный Kubernetes-клиент: закрытый репозиторий, биллинг, версии до 1.7.12. Потом схлопнул историю в один коммит, выкинул платёжный код и выложил всё под MIT. Ирония дошла до меня чуть позже, чем следовало.Под катом — как правило «не утверждать того, чего не можешь подтвердить» превращается в конкретные баги: под в Running с мёртвым контейнером внутри, Service с исправным селектором и нулём трафика, истёкший токен GKE, который выглядит как пустой кластер. Почему запрет на refetchInterval в линтере сэкономил 77% запросов к API-серверу. Как я трижды поймал одну и ту же гонку с Tauri-событиями. Как пришёл друг и переписал три четверти фронтенда, а я посчитал git blame, чтобы понять, что от меня осталось. И что я узнал, когда скачал собственный релиз, а macOS сообщила, что он повреждён. Читать далее",
-      "contentHtml": "<h3>С чего всё началось, и почему мне до сих пор немного неловко</h3><p>Я устал от Lens. Не от какой-то одной его черты — просто от накопившегося раздражения, помноженного на то, что в какой-то момент за него начали просить деньги.</p><p>Дальше был обычный круг по альтернативам. k9s прекрасен, но это TUI: он живёт в терминале и разговаривает горячими клавишами, а мне хотелось окно, куда можно ткнуть мышью и показать коллеге через демонстрацию экрана. Headlamp — ближайший по духу и честно бесплатный, но на тот момент он показался мне слишком молодым и слишком «про расширения»: базовые вещи приходилось достраивать плагинами. Octant к тому времени уже был архивирован. Остальное — либо веб-морды, которые надо где-то поднимать и куда-то пускать, либо <code>kubectl</code> с алиасами, что в общем-то и есть исходная точка.</p><p>Ни один из них не врал мне меньше, чем Lens. А это, как выяснилось позже, и было настоящей претензией — просто я тогда ещё не умел её сформулировать.</p><p>А теперь честная часть, ради которой стоит дочитать абзац. Разозлившись на платный клиент, я сел писать <strong>свой платный клиент</strong>. Закрытый репозиторий, код лицензирования, приём платежей, версии от 1.0.0 до 1.7.12 — двадцать пять тегов, которые видел только я.</p><p>В апреле я это закрыл. Схлопнул историю в один коммит, выпилил весь платёжный код, снёс все двадцать пять тегов и выложил под MIT. Не потому, что прозрел — просто пользователей было ноль, а поддерживать биллинг ради нуля пользователей глупо. Ирония дошла до меня чуть позже, чем следовало бы.</p><p>С тех пор вышло семь релизов, а на середине пути ко мне присоединился друг — и переписал столько, что об этом стоит рассказать отдельно.</p><h3>Правило, из которого выросло всё остальное</h3><p>Формулировка простая: <strong>приложение не должно утверждать того, чего не может подтвердить.</strong></p><p>Звучит как лозунг, но из него следуют совершенно конкретные баги — те, которые есть почти во всех клиентах, включая тот, что был у нас самих.</p><p><strong>Под </strong><code><strong>Running</strong></code><strong> может лежать мёртвый контейнер.</strong> <code>.status.phase</code> у пода — это <code>Running</code>, даже когда контейнер внутри крутится в CrashLoopBackOff. Клиент честно показывает поле — и честно врёт. Лечится тем, что статус надо не читать, а выводить: <code>kubectl</code> делает это в функции <code>printPod</code>, и мы её портировали в <code>resources/types/pod_display.rs</code>, вместе с подсчётом readiness ровно так, как считает <code>kubectl get pod</code> (сайдкары там считаются не так, как кажется).</p><figure><img src=\"https://habrastorage.org/r/w1560/webt/46/6d/3f/466d3fb1f192cf1db2ed1c24d2c08b67.png\" alt=\"Под init-demo: статус Init:CrashLoopBackOff, «0 of 1 ready», четыре контейнера как упорядоченная последовательность\"><figcaption>Под init-demo: статус Init:CrashLoopBackOff, «0 of 1 ready», четыре контейнера как упорядоченная последовательность</figcaption></figure><p><em>Тот же под в списке — </em><code><em>Init:CrashLoopBackOff</em></code><em>, а не </em><code><em>Running</em></code><em>. Init-контейнеры доезжают до фронта последовательностью, а не множеством: видно, что </em><code><em>migrate</em></code><em> — второй из четырёх.</em></p><p><strong>Service с исправным селектором может не отдавать трафик.</strong> Здоровые поды, живой селектор, зелёная строчка в списке — и ноль запросов, потому что в <code>targetPort</code> опечатка в имени порта. Пока readiness выводится логикой, это невидимо. Стоит начать читать EndpointSlices — то, что кластер реально публикует, — и расхождение вылезает само.</p><figure><img src=\"https://habrastorage.org/r/w1560/webt/0c/9c/93/0c9c9381101b7bc1d37ce4dcd93fd97b.png\" alt=\"Цепочка Traefik: entry point → rule → middleware → service → published, где published горит красным «0 published, running, none ready»\"><figcaption>Цепочка Traefik: entry point → rule → middleware → service → published, где published горит красным «0 published, running, none ready»</figcaption></figure><p><em>Цепочка не просто рисуется, а называет место обрыва. Внизу — та самая фраза: «which is why every list page in the app draws this as healthy».</em></p><p><strong>Истёкший токен выглядит как пустой кластер.</strong> Это мой любимый и самый неприятный. Токены GKE живут около часа, никто их здесь не продлевает, а список, вернувшийся с 401, рисовал своё <strong>пустое состояние</strong>. То есть приложение с уверенным видом сообщало: подов у вас нет. Ни одного. На всех экранах сразу.</p><p>Это худший вид отказа. Ошибка выглядит как ошибка, а вот исправно работающий интерфейс, показывающий неправду, не выглядит никак. Теперь 401 — отдельная ошибка, а не отсутствующий результат: список читает ошибку своего запроса, и отказавшая сессия заменяет страницу экраном, который называет кластер, цитирует API-сервер и предлагает войти заново.</p><h3>Логи открываются там, где ответ</h3><p>Забегу вперёд: это уже не моя работа, а того самого друга, про которого ниже. Но пользуюсь я этим чаще всего остального, так что пусть стоит здесь, рядом с правилом, из которого оно выросло.</p><p>Если под застрял в <code>Init:CrashLoopBackOff</code>, открывать логи «текущего контейнера» бессмысленно: текущий — это тот, который ещё не стартовал, и он не написал ни строки.</p><p>Поэтому вьюер сам выбирает упавший init-контейнер, сам переключается на <strong>прошлый</strong> запуск и говорит, что сделал именно это.</p><figure><img src=\"https://habrastorage.org/r/w1560/webt/6c/71/5c/6c715cf801450afbe3d61d6b8351b6f4.png\" alt=\"Логи init-demo: открыто на контейнере migrate, на прошлом запуске, в логе «ERROR: relation orders does not exist»\"><figcaption>Логи init-demo: открыто на контейнере migrate, на прошлом запуске, в логе «ERROR: relation orders does not exist»</figcaption></figure><p><em>«Opened on </em><code><em>migrate</em></code><em> alone — the pod is stuck in init, so nothing after it has written a line. These are the lines of the run that failed, not of the current one.» Четыре строки лога, и в них ответ: миграция упала на несуществующей таблице.</em></p><p>Разница между «показать логи» и «показать те логи, ради которых ты сюда пришёл» — примерно четыре клика и одно переключение контекста. Каждый раз.</p><h3>Поллинг, который стоил 895 запросов в минуту</h3><p>Первая версия жила на <code>refetchInterval</code> — 45 руками написанных интервалов по всему фронту. Из них ровно два проверяли, смотрит ли кто-нибудь на экран, которому они принадлежат.</p><p>Простаивающее приложение давало <strong>895 запросов в минуту</strong> к API-серверу. Сейчас — 205, минус 77%.</p><p>Чинилось в два приёма. Сначала списки переехали с поллинга на <code>kube::runtime::watcher</code> — 16 страниц, все через один <code>WatchManager</code>. Потом появился хук <code>useLiveQuery</code>, который принимает <strong>не число, а «скорость»</strong>: <code>refresh: \"resourceList\"</code>. Интервал он выводит сам — из того, видна ли поверхность, в фокусе ли окно, перестал ли меняться ответ и жив ли watch.</p><p>И главное — правило линтера, которое запрещает писать <code>refetchInterval</code> где-либо, кроме самого хука:</p><pre><code>selector: \"Property[key.name=/^refetchInterval(InBackground)?$/], ...\",\nmessage: \"Do not set refetchInterval. Use useLiveQuery({ refresh: '&lt;rate&gt;' }) — ...\",\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Мысль тут не в экономии запросов, а в том, что число, написанное руками, не умеет ничего из перечисленного и <strong>не научится потом</strong>. Запрет на число — это способ сделать так, чтобы правильное поведение наследовалось само, а не держалось на памяти того, кто пишет следующий экран.</p><p>Заодно всплыло, что бэкенд слал по одному Tauri-событию на строку лога, и болтливый под в сотню строк в секунду ронял UI в заметный джанк. Появился флаш раз в 50 мс:</p><pre><code class=\"rust\">/// Flush interval. 50ms keeps perceived latency low (~one frame at\n/// 60fps) while collapsing a chatty pod into a handful of events.\nconst FLUSH_INTERVAL: Duration = Duration::from_millis(50);\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Запомните эту константу, она ещё выстрелит.</p><h3>Гонка, которую я ловил трижды</h3><p>Отдельная история, стоившая мне больше всего времени. У Tauri-событий <strong>нет реплея</strong>. Если бэкенд начал слать байты раньше, чем фронт успел зарезолвить <code>listen()</code>, эти байты просто исчезают.</p><p>Первый раз я поймал это на интерактивной аутентификации: модалка OIDC рендерилась пустой, потому что первый промпт улетал в пустоту. Второй раз — на логах. Третий — на watch-событиях.</p><p>Лечение одинаковое во всех трёх местах: бэкенд не начинает работу сразу, а блокируется на <code>oneshot::Receiver</code>, и фронт отпускает его отдельной командой <code>*_subscribed</code> — но только после того, как <strong>все</strong> <code>listen()</code> зарезолвились. Плюс страховочный таймаут на 60 секунд, если фронт не отзовётся.</p><p>Из той же серии — RAII-гарды на каждый долгоживущий спавн. Раньше запись в мапе состояния удалялась в конце функции, и любая паника оставляла зомби. Теперь <code>Drop</code> срабатывает на любом выходе, включая раскрутку паники.</p><p>Ещё одна оттуда же: пайпы вместо PTY. Инструменты вроде <code>kubelogin</code> зовут <code>getpass</code>/<code>term.ReadPassword</code>, а те проверяют <code>isatty(stdin)</code> и через пайп промпт не печатают <strong>вообще</strong>. Никакой ошибки — просто тишина. Пришлось переписать exec-адаптер на <code>portable-pty</code> с настоящей парой PTY. Тест на это гоняет <code>sh -c 'tty'</code> и проверяет, что в выводе <code>/dev/ttys…</code>, а не <code>not a tty</code>.</p><h3>Потом пришёл друг и переписал половину</h3><p>Где-то здесь в проект пришёл <a href=\"https://github.com/belliel\">belliel</a> — и дальнейшее лучше показать цифрами, потому что словами звучит неправдоподобно.</p><p>Один pull request: <strong>231 коммит, +105 522 / −27 946</strong>. Все гейты зелёные на каждом из 231. Второй, через два дня, — ещё +9991.</p><p>Что он принёс: платформу интеграций (cert-manager, Traefik, ingress-nginx, Istio, Argo CD, Flux, Prometheus, Loki, k3s, minikube, Karpenter и CRD трёх облаков), карту маршрутизации, цепочку трафика, которая <strong>называет место обрыва</strong>, дизайн-систему на role-токенах с линт-гвардами против дрейфа, поиск по кластеру, мультинеймспейсный скоуп и то самое правило про «не утверждать» — оно его.</p><p>Интеграция стоит одной папки и одной строки, а линт-правило держит шов: снаружи <code>src/integrations/</code> никто не имеет права назвать вендора по имени — только спросить фасет. Появилось это правило не из любви к архитектуре, а потому что cert-manager однажды приехал в проект дважды, в двух местах, — и ничто не отказало второму.</p><figure><img src=\"https://habrastorage.org/r/w1560/webt/d2/56/ae/d256ae1ff50079774f404f1bb94f918f.png\" alt=\"Страница cert-manager: «6 of 6 broken», у каждого сертификата never issued и «does not exist yet — nothing can serve TLS from it»\"><figcaption>Страница cert-manager: «6 of 6 broken», у каждого сертификата never issued и «does not exist yet — nothing can serve TLS from it»</figcaption></figure><p><em>Страница цепочки выдачи. У каждого сертификата — не «ошибка», а конкретный объект, на котором всё встало, и предложение, объясняющее почему.</em></p><p>Дальше — про разделение труда, потому что оно вышло чётким, и я его посчитал через <code>git blame</code> по текущему дереву.</p><p><strong>Бэкенд — 22 553 строки мои против 14 743 его.</strong> По подсистемам:</p><p>Подсистема</p><p>Я</p><p>Друг</p><p><code>auth/</code> — EKS/GKE/AKS/OIDC, PTY-адаптер</p><p><strong>2750</strong></p><p>36</p><p><code>terminal/</code></p><p><strong>1359</strong></p><p>237</p><p><code>metrics/</code></p><p><strong>283</strong></p><p>2</p><p><code>logs/</code></p><p><strong>840</strong></p><p>635</p><p><code>state/</code> — события, RAII-гарды</p><p><strong>706</strong></p><p>505</p><p><code>watch/</code></p><p><strong>537</strong></p><p>245</p><p><code>resources/</code></p><p>2526</p><p><strong>4188</strong></p><p><code>integrations/</code></p><p>0</p><p><strong>2079</strong></p><p><code>search/</code></p><p>0</p><p><strong>1361</strong></p><p><strong>Фронтенд — наоборот: 93 653 строки его против моих 28 029.</strong></p><p>Получилось так: я собрал машину, он собрал то, что видит пользователь. Аутентификация, терминал, watch, логи, метрики, состояние, мост событий — моё. Интеграции, маршрутизация, поиск, вывод правдивых статусов и три четверти интерфейса — его.</p><p>А теперь та константа, про которую я просил запомнить. Главный перф-выигрыш его последнего релиза звучит так: всплеск на 1000 объектов — это <strong>5 событий и один рендер вместо 1000 и 1000</strong>. Достигнут он тем, что watch-события поехали через тот самый пятидесятимиллисекундный флаш из лог-стримера. Он не стал писать свой батчер — переиспользовал мой.</p><p>Мне это нравится больше, чем любая цифра в таблице выше. Хорошая инфраструктура — это когда следующий человек делает свою фичу быстрее, чем если бы писал с нуля, и даже не обязан спрашивать разрешения.</p><p>Ещё одна деталь про его подход, которую стоит украсть. В последнем PR есть раздел «нашлось во втором проходе»: он перечитывает собственную ветку <strong>враждебно</strong>, специально ища, что сломал. Так нашлись две худшие вещи в ветке — <code>table-fixed</code> резолвит <code>width:100%</code> как max(100%, сумма ширин), из-за чего список подов оказался на 378 px шире окна с уехавшими за экран кнопками; и слияние обзора рисовало каждую кластерную проблему по разу на каждый выбранный неймспейс. Обе починены до мержа.</p><h3>Первый же релиз показал, что год сборок был не подписан</h3><p>Дальше — история про то, как я выкатил релиз, скачал собственный dmg и получил от macOS:</p><blockquote><p><strong>«Rubick» is damaged and can’t be opened. You should move it to the Trash.</strong></p></blockquote><p>Файл был целый. Просто все сборки — начиная с самой первой публичной — несли только ad-hoc-подпись, которую ставит линкер:</p><pre><code>Signature=adhoc\nTeamIdentifier=not set\nSealed Resources=none\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Тонкость, которую стоит знать заранее: на <strong>неподписанное</strong> приложение macOS ругается привычным «не удалось проверить разработчика» и даёт открыть через контекстное меню. А на <strong>ad-hoc-подписанное с карантином</strong> — говорит «damaged» и предлагает только корзину. Это одно и то же по сути, но выглядит как испорченная закачка, и пользователь её просто удалит.</p><p>Дальше начались открытия:</p><p><strong>Developer ID нельзя выпустить через API.</strong> App Store Connect API умеет всё — кроме этого. На оба типа сертификата приходит <code>Permission denied: This operation can only be performed by the Account Holder</code>. Только браузер, только руками.</p><p><strong>Нотаризация залипает.</strong> Не падает — именно висит. Из четырёх заявок за два дня две ушли в <code>Accepted</code> за минуты, а две остались в <code>In Progress</code>; одна из них висела пятнадцать часов при том, что статус-страница Apple рапортовала «инцидентов нет». Джоба на GitHub, которая её ждала, упёрлась в дефолтный шестичасовой потолок и умерла, сожгнув шесть часов раннера впустую.</p><p>Лечится не умом, а <code>timeout-minutes: 90</code> — чтобы зависание становилось быстрым и понятным отказом.</p><p>Что до самой сборки — Apple к ней претензий не имела вообще:</p><pre><code class=\"json\">\"status\": \"Accepted\",\n\"statusSummary\": \"Ready for distribution\",\n\"issues\": null\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Отдельно советую проверять результат не глазами, а воспроизведением: я вешаю на скачанную копию атрибут карантина ровно так, как это делает браузер, и спрашиваю Gatekeeper.</p><pre><code class=\"bash\">xattr -w com.apple.quarantine \"0081;$(printf %x $(date +%s));Safari;\" Rubick.app\nspctl -a -vvv Rubick.app\n# → accepted, source=Notarized Developer ID\nxcrun stapler validate Rubick.app\n# → The validate action worked!\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Степлер тут не формальность: без пристёпленного тикета на машине без интернета Gatekeeper всё равно ругнётся, потому что спросить Apple ему будет негде.</p><p>И последнее, что я оттуда вынес. Идентификатор бандла <code>com.k8s-gui.app</code> мы <strong>не</strong> трогали, хотя продукт по дороге переименовался в Rubick. Сменишь его — и каждая установленная копия отвалится от апдейтера, а рядом встанет вторая. Имя в меню поменять можно, идентификатор — нет.</p><h3>Что мы намеренно не сделали</h3><p>Раздел, который в проектах обычно опускают, а зря.</p><p><strong>Оценку стоимости.</strong> Committed use, sustained use, спот, договорные цены — всё это делает число неверным чаще, чем верным. А неправильное число про деньги отравляет доверие ко всем остальным числам на экране.</p><p><strong>Граф топологии всего кластера.</strong> Маршрутизация — это цепочка в фиксированном порядке, а не произвольный граф. Force-directed клубок выглядит как инсайт и не отвечает ни на один вопрос.</p><p><strong>Редактирование маршрутов и перевыпуск сертификатов.</strong> Читать их хорошо — это одна фича, писать — совсем другая, с другим радиусом поражения. Лимит ACME — пять неудач в час, и кнопка, которая их сжигает, кладёт кластер в худший из моментов.</p><p><strong>Облачный третий тир</strong> — потолки пулов, здоровье балансировщиков. Для этого нужен живой GKE/EKS/AKS, чтобы сверяться. Писать вслепую — значит показывать поля, которых мы ни разу не видели в ответе API.</p><h3>Что в итоге</h3><figure><img src=\"https://habrastorage.org/r/w1560/webt/cd/9a/8c/cd9a8c9f3d92677c5e321fa4089c7c23.png\" alt=\"Обзор кластера: «Needs attention 8 · worst first», scheduler headroom, warning events\"><figcaption>Обзор кластера: «Needs attention 8 · worst first», scheduler headroom, warning events</figcaption></figure><p><em>Стартовый экран отсортирован по тому, насколько всё плохо, а не по алфавиту. Внизу — события с причинами, а не со словом «Warning».</em></p><p>38 810 строк Rust и 121 807 TypeScript. 344 теста в cargo и 1577 в vitest. Семь релизов с 24 апреля, последний — 4.0.0.</p><p>Приложение бесплатное, без аккаунта и телеметрии. Собирается под macOS (обе архитектуры), Windows и Linux.</p><p><strong>Про лицензию — решение свежее, буквально этих дней.</strong> Всё по 3.1.0 включительно выходило под MIT и остаётся под MIT навсегда: этот грант не отзывается. Начиная с 4.0.0 — GPLv3.</p><p>Причина, надеюсь, из статьи уже читается. Lens смог стать тем, что меня разозлило, ровно потому, что был разрешительно лицензирован: открытая база, проприетарный слой сверху, деньги. Оставлять ту же дверь открытой в проекте, который вырос из этого раздражения, оказалось глупо.</p><p>Форкать и продавать по-прежнему можно — только с исходниками. А запуск приложения распространением не является, так что поставить его себе, хоть на все машины в компании, не обязывает вообще ни к чему.</p><p>Код: <a href=\"https://github.com/Dudude-bit/rubick\">https://github.com/Dudude-bit/rubick</a> Скачать: <a href=\"https://github.com/Dudude-bit/rubick/releases/latest\">https://github.com/Dudude-bit/rubick/releases/latest</a></p><p>Если у вас есть кластер и десять минут — поставьте и скажите, где оно врёт. Это единственный баг-репорт, который мы считаем срочным.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 15947,
-        "approxBlocks": 133
-      }
+      "contentHtml": "<h3>С чего всё началось, и почему мне до сих пор немного неловко</h3><p>Я устал от Lens. Не от какой-то одной его черты — просто от накопившегося раздражения, помноженного на то, что в какой-то момент за него начали просить деньги.</p><p>Дальше был обычный круг по альтернативам. k9s прекрасен, но это TUI: он живёт в терминале и разговаривает горячими клавишами, а мне хотелось окно, куда можно ткнуть мышью и показать коллеге через демонстрацию экрана. Headlamp — ближайший по духу и честно бесплатный, но на тот момент он показался мне слишком молодым и слишком «про расширения»: базовые вещи приходилось достраивать плагинами. Octant к тому времени уже был архивирован. Остальное — либо веб-морды, которые надо где-то поднимать и куда-то пускать, либо <code>kubectl</code> с алиасами, что в общем-то и есть исходная точка.</p><p>Ни один из них не врал мне меньше, чем Lens. А это, как выяснилось позже, и было настоящей претензией — просто я тогда ещё не умел её сформулировать.</p><p>А теперь честная часть, ради которой стоит дочитать абзац. Разозлившись на платный клиент, я сел писать <strong>свой платный клиент</strong>. Закрытый репозиторий, код лицензирования, приём платежей, версии от 1.0.0 до 1.7.12 — двадцать пять тегов, которые видел только я.</p><p>В апреле я это закрыл. Схлопнул историю в один коммит, выпилил весь платёжный код, снёс все двадцать пять тегов и выложил под MIT. Не потому, что прозрел — просто пользователей было ноль, а поддерживать биллинг ради нуля пользователей глупо. Ирония дошла до меня чуть позже, чем следовало бы.</p><p>С тех пор вышло семь релизов, а на середине пути ко мне присоединился друг — и переписал столько, что об этом стоит рассказать отдельно.</p><h3>Правило, из которого выросло всё остальное</h3><p>Формулировка простая: <strong>приложение не должно утверждать того, чего не может подтвердить.</strong></p><p>Звучит как лозунг, но из него следуют совершенно конкретные баги — те, которые есть почти во всех клиентах, включая тот, что был у нас самих.</p><p><strong>Под </strong><code><strong>Running</strong></code><strong> может лежать мёртвый контейнер.</strong> <code>.status.phase</code> у пода — это <code>Running</code>, даже когда контейнер внутри крутится в CrashLoopBackOff. Клиент честно показывает поле — и честно врёт. Лечится тем, что статус надо не читать, а выводить: <code>kubectl</code> делает это в функции <code>printPod</code>, и мы её портировали в <code>resources/types/pod_display.rs</code>, вместе с подсчётом readiness ровно так, как считает <code>kubectl get pod</code> (сайдкары там считаются не так, как кажется).</p><figure><img src=\"https://habrastorage.org/r/w1560/webt/46/6d/3f/466d3fb1f192cf1db2ed1c24d2c08b67.png\" alt=\"Под init-demo: статус Init:CrashLoopBackOff, «0 of 1 ready», четыре контейнера как упорядоченная последовательность\"><figcaption>Под init-demo: статус Init:CrashLoopBackOff, «0 of 1 ready», четыре контейнера как упорядоченная последовательность</figcaption></figure><p><em>Тот же под в списке — </em><code><em>Init:CrashLoopBackOff</em></code><em>, а не </em><code><em>Running</em></code><em>. Init-контейнеры доезжают до фронта последовательностью, а не множеством: видно, что </em><code><em>migrate</em></code><em> — второй из четырёх.</em></p><p><strong>Service с исправным селектором может не отдавать трафик.</strong> Здоровые поды, живой селектор, зелёная строчка в списке — и ноль запросов, потому что в <code>targetPort</code> опечатка в имени порта. Пока readiness выводится логикой, это невидимо. Стоит начать читать EndpointSlices — то, что кластер реально публикует, — и расхождение вылезает само.</p><figure><img src=\"https://habrastorage.org/r/w1560/webt/0c/9c/93/0c9c9381101b7bc1d37ce4dcd93fd97b.png\" alt=\"Цепочка Traefik: entry point → rule → middleware → service → published, где published горит красным «0 published, running, none ready»\"><figcaption>Цепочка Traefik: entry point → rule → middleware → service → published, где published горит красным «0 published, running, none ready»</figcaption></figure><p><em>Цепочка не просто рисуется, а называет место обрыва. Внизу — та самая фраза: «which is why every list page in the app draws this as healthy».</em></p><p><strong>Истёкший токен выглядит как пустой кластер.</strong> Это мой любимый и самый неприятный. Токены GKE живут около часа, никто их здесь не продлевает, а список, вернувшийся с 401, рисовал своё <strong>пустое состояние</strong>. То есть приложение с уверенным видом сообщало: подов у вас нет. Ни одного. На всех экранах сразу.</p><p>Это худший вид отказа. Ошибка выглядит как ошибка, а вот исправно работающий интерфейс, показывающий неправду, не выглядит никак. Теперь 401 — отдельная ошибка, а не отсутствующий результат: список читает ошибку своего запроса, и отказавшая сессия заменяет страницу экраном, который называет кластер, цитирует API-сервер и предлагает войти заново.</p><h3>Логи открываются там, где ответ</h3><p>Забегу вперёд: это уже не моя работа, а того самого друга, про которого ниже. Но пользуюсь я этим чаще всего остального, так что пусть стоит здесь, рядом с правилом, из которого оно выросло.</p><p>Если под застрял в <code>Init:CrashLoopBackOff</code>, открывать логи «текущего контейнера» бессмысленно: текущий — это тот, который ещё не стартовал, и он не написал ни строки.</p><p>Поэтому вьюер сам выбирает упавший init-контейнер, сам переключается на <strong>прошлый</strong> запуск и говорит, что сделал именно это.</p><figure><img src=\"https://habrastorage.org/r/w1560/webt/6c/71/5c/6c715cf801450afbe3d61d6b8351b6f4.png\" alt=\"Логи init-demo: открыто на контейнере migrate, на прошлом запуске, в логе «ERROR: relation orders does not exist»\"><figcaption>Логи init-demo: открыто на контейнере migrate, на прошлом запуске, в логе «ERROR: relation orders does not exist»</figcaption></figure><p><em>«Opened on </em><code><em>migrate</em></code><em> alone — the pod is stuck in init, so nothing after it has written a line. These are the lines of the run that failed, not of the current one.» Четыре строки лога, и в них ответ: миграция упала на несуществующей таблице.</em></p><p>Разница между «показать логи» и «показать те логи, ради которых ты сюда пришёл» — примерно четыре клика и одно переключение контекста. Каждый раз.</p><h3>Поллинг, который стоил 895 запросов в минуту</h3><p>Первая версия жила на <code>refetchInterval</code> — 45 руками написанных интервалов по всему фронту. Из них ровно два проверяли, смотрит ли кто-нибудь на экран, которому они принадлежат.</p><p>Простаивающее приложение давало <strong>895 запросов в минуту</strong> к API-серверу. Сейчас — 205, минус 77%.</p><p>Чинилось в два приёма. Сначала списки переехали с поллинга на <code>kube::runtime::watcher</code> — 16 страниц, все через один <code>WatchManager</code>. Потом появился хук <code>useLiveQuery</code>, который принимает <strong>не число, а «скорость»</strong>: <code>refresh: \"resourceList\"</code>. Интервал он выводит сам — из того, видна ли поверхность, в фокусе ли окно, перестал ли меняться ответ и жив ли watch.</p><p>И главное — правило линтера, которое запрещает писать <code>refetchInterval</code> где-либо, кроме самого хука:</p><pre><code>selector: \"Property[key.name=/^refetchInterval(InBackground)?$/], ...\",\nmessage: \"Do not set refetchInterval. Use useLiveQuery({ refresh: '&lt;rate&gt;' }) — ...\",\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Мысль тут не в экономии запросов, а в том, что число, написанное руками, не умеет ничего из перечисленного и <strong>не научится потом</strong>. Запрет на число — это способ сделать так, чтобы правильное поведение наследовалось само, а не держалось на памяти того, кто пишет следующий экран.</p><p>Заодно всплыло, что бэкенд слал по одному Tauri-событию на строку лога, и болтливый под в сотню строк в секунду ронял UI в заметный джанк. Появился флаш раз в 50 мс:</p><pre><code class=\"rust\">/// Flush interval. 50ms keeps perceived latency low (~one frame at\n/// 60fps) while collapsing a chatty pod into a handful of events.\nconst FLUSH_INTERVAL: Duration = Duration::from_millis(50);\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Запомните эту константу, она ещё выстрелит.</p><h3>Гонка, которую я ловил трижды</h3><p>Отдельная история, стоившая мне больше всего времени. У Tauri-событий <strong>нет реплея</strong>. Если бэкенд начал слать байты раньше, чем фронт успел зарезолвить <code>listen()</code>, эти байты просто исчезают.</p><p>Первый раз я поймал это на интерактивной аутентификации: модалка OIDC рендерилась пустой, потому что первый промпт улетал в пустоту. Второй раз — на логах. Третий — на watch-событиях.</p><p>Лечение одинаковое во всех трёх местах: бэкенд не начинает работу сразу, а блокируется на <code>oneshot::Receiver</code>, и фронт отпускает его отдельной командой <code>*_subscribed</code> — но только после того, как <strong>все</strong> <code>listen()</code> зарезолвились. Плюс страховочный таймаут на 60 секунд, если фронт не отзовётся.</p><p>Из той же серии — RAII-гарды на каждый долгоживущий спавн. Раньше запись в мапе состояния удалялась в конце функции, и любая паника оставляла зомби. Теперь <code>Drop</code> срабатывает на любом выходе, включая раскрутку паники.</p><p>Ещё одна оттуда же: пайпы вместо PTY. Инструменты вроде <code>kubelogin</code> зовут <code>getpass</code>/<code>term.ReadPassword</code>, а те проверяют <code>isatty(stdin)</code> и через пайп промпт не печатают <strong>вообще</strong>. Никакой ошибки — просто тишина. Пришлось переписать exec-адаптер на <code>portable-pty</code> с настоящей парой PTY. Тест на это гоняет <code>sh -c 'tty'</code> и проверяет, что в выводе <code>/dev/ttys…</code>, а не <code>not a tty</code>.</p><h3>Потом пришёл друг и переписал половину</h3><p>Где-то здесь в проект пришёл <a href=\"https://github.com/belliel\">belliel</a> — и дальнейшее лучше показать цифрами, потому что словами звучит неправдоподобно.</p><p>Один pull request: <strong>231 коммит, +105 522 / −27 946</strong>. Все гейты зелёные на каждом из 231. Второй, через два дня, — ещё +9991.</p><p>Что он принёс: платформу интеграций (cert-manager, Traefik, ingress-nginx, Istio, Argo CD, Flux, Prometheus, Loki, k3s, minikube, Karpenter и CRD трёх облаков), карту маршрутизации, цепочку трафика, которая <strong>называет место обрыва</strong>, дизайн-систему на role-токенах с линт-гвардами против дрейфа, поиск по кластеру, мультинеймспейсный скоуп и то самое правило про «не утверждать» — оно его.</p><p>Интеграция стоит одной папки и одной строки, а линт-правило держит шов: снаружи <code>src/integrations/</code> никто не имеет права назвать вендора по имени — только спросить фасет. Появилось это правило не из любви к архитектуре, а потому что cert-manager однажды приехал в проект дважды, в двух местах, — и ничто не отказало второму.</p><figure><img src=\"https://habrastorage.org/r/w1560/webt/d2/56/ae/d256ae1ff50079774f404f1bb94f918f.png\" alt=\"Страница cert-manager: «6 of 6 broken», у каждого сертификата never issued и «does not exist yet — nothing can serve TLS from it»\"><figcaption>Страница cert-manager: «6 of 6 broken», у каждого сертификата never issued и «does not exist yet — nothing can serve TLS from it»</figcaption></figure><p><em>Страница цепочки выдачи. У каждого сертификата — не «ошибка», а конкретный объект, на котором всё встало, и предложение, объясняющее почему.</em></p><p>Дальше — про разделение труда, потому что оно вышло чётким, и я его посчитал через <code>git blame</code> по текущему дереву.</p><p><strong>Бэкенд — 22 553 строки мои против 14 743 его.</strong> По подсистемам:</p><p>Подсистема</p><p>Я</p><p>Друг</p><p><code>auth/</code> — EKS/GKE/AKS/OIDC, PTY-адаптер</p><p><strong>2750</strong></p><p>36</p><p><code>terminal/</code></p><p><strong>1359</strong></p><p>237</p><p><code>metrics/</code></p><p><strong>283</strong></p><p>2</p><p><code>logs/</code></p><p><strong>840</strong></p><p>635</p><p><code>state/</code> — события, RAII-гарды</p><p><strong>706</strong></p><p>505</p><p><code>watch/</code></p><p><strong>537</strong></p><p>245</p><p><code>resources/</code></p><p>2526</p><p><strong>4188</strong></p><p><code>integrations/</code></p><p>0</p><p><strong>2079</strong></p><p><code>search/</code></p><p>0</p><p><strong>1361</strong></p><p><strong>Фронтенд — наоборот: 93 653 строки его против моих 28 029.</strong></p><p>Получилось так: я собрал машину, он собрал то, что видит пользователь. Аутентификация, терминал, watch, логи, метрики, состояние, мост событий — моё. Интеграции, маршрутизация, поиск, вывод правдивых статусов и три четверти интерфейса — его.</p><p>А теперь та константа, про которую я просил запомнить. Главный перф-выигрыш его последнего релиза звучит так: всплеск на 1000 объектов — это <strong>5 событий и один рендер вместо 1000 и 1000</strong>. Достигнут он тем, что watch-события поехали через тот самый пятидесятимиллисекундный флаш из лог-стримера. Он не стал писать свой батчер — переиспользовал мой.</p><p>Мне это нравится больше, чем любая цифра в таблице выше. Хорошая инфраструктура — это когда следующий человек делает свою фичу быстрее, чем если бы писал с нуля, и даже не обязан спрашивать разрешения.</p><p>Ещё одна деталь про его подход, которую стоит украсть. В последнем PR есть раздел «нашлось во втором проходе»: он перечитывает собственную ветку <strong>враждебно</strong>, специально ища, что сломал. Так нашлись две худшие вещи в ветке — <code>table-fixed</code> резолвит <code>width:100%</code> как max(100%, сумма ширин), из-за чего список подов оказался на 378 px шире окна с уехавшими за экран кнопками; и слияние обзора рисовало каждую кластерную проблему по разу на каждый выбранный неймспейс. Обе починены до мержа.</p><h3>Первый же релиз показал, что год сборок был не подписан</h3><p>Дальше — история про то, как я выкатил релиз, скачал собственный dmg и получил от macOS:</p><blockquote><p><strong>«Rubick» is damaged and can’t be opened. You should move it to the Trash.</strong></p></blockquote><p>Файл был целый. Просто все сборки — начиная с самой первой публичной — несли только ad-hoc-подпись, которую ставит линкер:</p><pre><code>Signature=adhoc\nTeamIdentifier=not set\nSealed Resources=none\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Тонкость, которую стоит знать заранее: на <strong>неподписанное</strong> приложение macOS ругается привычным «не удалось проверить разработчика» и даёт открыть через контекстное меню. А на <strong>ad-hoc-подписанное с карантином</strong> — говорит «damaged» и предлагает только корзину. Это одно и то же по сути, но выглядит как испорченная закачка, и пользователь её просто удалит.</p><p>Дальше начались открытия:</p><p><strong>Developer ID нельзя выпустить через API.</strong> App Store Connect API умеет всё — кроме этого. На оба типа сертификата приходит <code>Permission denied: This operation can only be performed by the Account Holder</code>. Только браузер, только руками.</p><p><strong>Нотаризация залипает.</strong> Не падает — именно висит. Из четырёх заявок за два дня две ушли в <code>Accepted</code> за минуты, а две остались в <code>In Progress</code>; одна из них висела пятнадцать часов при том, что статус-страница Apple рапортовала «инцидентов нет». Джоба на GitHub, которая её ждала, упёрлась в дефолтный шестичасовой потолок и умерла, сожгнув шесть часов раннера впустую.</p><p>Лечится не умом, а <code>timeout-minutes: 90</code> — чтобы зависание становилось быстрым и понятным отказом.</p><p>Что до самой сборки — Apple к ней претензий не имела вообще:</p><pre><code class=\"json\">\"status\": \"Accepted\",\n\"statusSummary\": \"Ready for distribution\",\n\"issues\": null\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Отдельно советую проверять результат не глазами, а воспроизведением: я вешаю на скачанную копию атрибут карантина ровно так, как это делает браузер, и спрашиваю Gatekeeper.</p><pre><code class=\"bash\">xattr -w com.apple.quarantine \"0081;$(printf %x $(date +%s));Safari;\" Rubick.app\nspctl -a -vvv Rubick.app\n# → accepted, source=Notarized Developer ID\nxcrun stapler validate Rubick.app\n# → The validate action worked!\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Степлер тут не формальность: без пристёпленного тикета на машине без интернета Gatekeeper всё равно ругнётся, потому что спросить Apple ему будет негде.</p><p>И последнее, что я оттуда вынес. Идентификатор бандла <code>com.k8s-gui.app</code> мы <strong>не</strong> трогали, хотя продукт по дороге переименовался в Rubick. Сменишь его — и каждая установленная копия отвалится от апдейтера, а рядом встанет вторая. Имя в меню поменять можно, идентификатор — нет.</p><h3>Что мы намеренно не сделали</h3><p>Раздел, который в проектах обычно опускают, а зря.</p><p><strong>Оценку стоимости.</strong> Committed use, sustained use, спот, договорные цены — всё это делает число неверным чаще, чем верным. А неправильное число про деньги отравляет доверие ко всем остальным числам на экране.</p><p><strong>Граф топологии всего кластера.</strong> Маршрутизация — это цепочка в фиксированном порядке, а не произвольный граф. Force-directed клубок выглядит как инсайт и не отвечает ни на один вопрос.</p><p><strong>Редактирование маршрутов и перевыпуск сертификатов.</strong> Читать их хорошо — это одна фича, писать — совсем другая, с другим радиусом поражения. Лимит ACME — пять неудач в час, и кнопка, которая их сжигает, кладёт кластер в худший из моментов.</p><p><strong>Облачный третий тир</strong> — потолки пулов, здоровье балансировщиков. Для этого нужен живой GKE/EKS/AKS, чтобы сверяться. Писать вслепую — значит показывать поля, которых мы ни разу не видели в ответе API.</p><h3>Что в итоге</h3><figure><img src=\"https://habrastorage.org/r/w1560/webt/cd/9a/8c/cd9a8c9f3d92677c5e321fa4089c7c23.png\" alt=\"Обзор кластера: «Needs attention 8 · worst first», scheduler headroom, warning events\"><figcaption>Обзор кластера: «Needs attention 8 · worst first», scheduler headroom, warning events</figcaption></figure><p><em>Стартовый экран отсортирован по тому, насколько всё плохо, а не по алфавиту. Внизу — события с причинами, а не со словом «Warning».</em></p><p>38 810 строк Rust и 121 807 TypeScript. 344 теста в cargo и 1577 в vitest. Семь релизов с 24 апреля, последний — 4.0.0.</p><p>Приложение бесплатное, без аккаунта и телеметрии. Собирается под macOS (обе архитектуры), Windows и Linux.</p><p><strong>Про лицензию — решение свежее, буквально этих дней.</strong> Всё по 3.1.0 включительно выходило под MIT и остаётся под MIT навсегда: этот грант не отзывается. Начиная с 4.0.0 — GPLv3.</p><p>Причина, надеюсь, из статьи уже читается. Lens смог стать тем, что меня разозлило, ровно потому, что был разрешительно лицензирован: открытая база, проприетарный слой сверху, деньги. Оставлять ту же дверь открытой в проекте, который вырос из этого раздражения, оказалось глупо.</p><p>Форкать и продавать по-прежнему можно — только с исходниками. А запуск приложения распространением не является, так что поставить его себе, хоть на все машины в компании, не обязывает вообще ни к чему.</p><p>Код: <a href=\"https://github.com/Dudude-bit/rubick\">https://github.com/Dudude-bit/rubick</a> Скачать: <a href=\"https://github.com/Dudude-bit/rubick/releases/latest\">https://github.com/Dudude-bit/rubick/releases/latest</a></p><p>Если у вас есть кластер и десять минут — поставьте и скажите, где оно врёт. Это единственный баг-репорт, который мы считаем срочным.</p>"
     },
     {
       "id": "tass:https://tass.ru/armiya-i-opk/28015205:2026-08-15T09:08:26.000Z:Средства ПВО сбили 17 ракет \"Фламинго\" и",
@@ -92,7 +609,7 @@
         "world"
       ],
       "image": "",
-      "excerpt": "",
+      "excerpt": "Кроме того, российские войска уничтожили семь управляемых авиационных бомб",
       "contentHtml": ""
     },
     {
@@ -105,8 +622,8 @@
       "categoryIds": [
         "world"
       ],
-      "image": "",
-      "excerpt": "",
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302019.jpg",
+      "excerpt": "Кроме того, российские войска также поразили транспортную инфраструктуру, цеха сборки БПЛА и безэкипажных катеров",
       "contentHtml": ""
     },
     {
@@ -124,31 +641,31 @@
       "contentHtml": ""
     },
     {
-      "id": "tass:https://tass.ru/proisshestviya/28015195:2026-08-15T09:06:39.000Z:VnExpress раскрыл детали ДТП с экскурсио",
+      "id": "tass:https://tass.ru/proisshestviya/28015195:2026-08-15T09:06:39.000Z:VTC News раскрыл детали ДТП с экскурсион",
       "sourceId": "tass",
       "sourceName": "ТАСС",
-      "title": "VnExpress раскрыл детали ДТП с экскурсионным автобусом с россиянами во Вьетнаме",
+      "title": "VTC News раскрыл детали ДТП с экскурсионным автобусом с россиянами во Вьетнаме",
       "url": "https://tass.ru/proisshestviya/28015195",
       "publishedAt": "2026-08-15T09:06:39.000Z",
       "categoryIds": [
         "ru"
       ],
       "image": "",
-      "excerpt": "По данным портала, в результате аварии на автомагистрали Фантхиет - Даузяй в провинции Ламдонг погибла 28-летняя девушка",
+      "excerpt": "По данным портала, в результате аварии на автомагистрали Фантхиет - Даузяй в провинции Ламдонг погибла 38-летняя женщина",
       "contentHtml": ""
     },
     {
       "id": "tass:https://tass.ru/armiya-i-opk/28015201:2026-08-15T09:05:58.000Z:ВС РФ освободили Рыбальское в Запорожско",
       "sourceId": "tass",
       "sourceName": "ТАСС",
-      "title": "ВС РФ освободили Рыбальское в Запорожской области - МО",
+      "title": "ВС РФ освободили Рыбальское в Запорожской области",
       "url": "https://tass.ru/armiya-i-opk/28015201",
       "publishedAt": "2026-08-15T09:05:58.000Z",
       "categoryIds": [
         "world"
       ],
-      "image": "",
-      "excerpt": "",
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302005.jpg",
+      "excerpt": "Населенный пункт освободили подразделения группировки войск \"Восток\"",
       "contentHtml": ""
     },
     {
@@ -159,10 +676,11 @@
       "url": "https://tass.ru/proisshestviya/28015199",
       "publishedAt": "2026-08-15T09:05:45.000Z",
       "categoryIds": [
-        "ru"
+        "ru",
+        "health"
       ],
       "image": "",
-      "excerpt": "",
+      "excerpt": "По данным газеты Jakarta Globe, на острове повреждены правительственные и жилые здания, школы, медицинские и религиозные учреждения",
       "contentHtml": ""
     },
     {
@@ -245,7 +763,7 @@
       "categoryIds": [
         "sports"
       ],
-      "image": "",
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302015.jpg",
       "excerpt": "Финли Тарлинг столкнулся с автомобилем",
       "contentHtml": ""
     },
@@ -280,12 +798,7 @@
       ],
       "image": "",
       "excerpt": "Давно хотелось поставить где-то на видном месте планшет-панель для Home Assistant — сценарии, термостат, камеры, всё в одном месте, без необходимости каждый раз доставать телефон. Готовые панели стоят как отдельный гаджет, а мысль «взять б/у планшет и допилить под себя» выглядела куда веселее.На Авито нашлось объявление на два старых планшета за копейки — продавец явно расчищал полку. План был простой: вытащить аккумулятор (устройство и так будет висеть на постоянном питании, живой батарее там нечего делать — только распухнет через пару лет) и запитать напрямую от сети.Вот что в итоге получилось — а дальше расскажу, как до этого дошёл. Читать далее",
-      "contentHtml": "<h3>Идея</h3><p>Давно хотелось поставить где-то на видном месте планшет-панель для Home Assistant — сценарии, термостат, камеры, всё в одном месте, без необходимости каждый раз доставать телефон. Готовые панели стоят как отдельный гаджет, а мысль «взять б/у планшет и допилить под себя» выглядела куда веселее.</p><p>На Авито нашлось объявление на два старых планшета за копейки — продавец явно расчищал полку. План был простой: вытащить аккумулятор (устройство и так будет висеть на постоянном питании, живой батарее там нечего делать — только распухнет через пару лет) и запитать напрямую от сети.</p><p>Вот что в итоге получилось — а дальше расскажу, как до этого дошёл.</p><figure><img src=\"https://habrastorage.org/getpro/habr/upload_files/e3f/545/267/e3f54526789bd335e13952c607689050.gif\" alt=\"планшет в работе\"><figcaption><em>планшет в работе</em></figcaption></figure><h3>Первый блин комом</h3><p>Первым в разборку пошёл планшет постарше, на Android 4. Разобрал, вытащил батарею, подключил плату к лабораторному блоку питания — сначала же надо на стенде выяснить, какое напряжение и ток планшет реально просит, прежде чем городить постоянную схему. И тут я допустил единственную настоящую ошибку: начал подстраивать напряжение на лабораторнике, не отключая от него планшет. Оказалось, что лабораторный блок при подстройке «на живую» даёт короткие всплески напряжения — и около 5.5В хватило, чтобы убить контроллер питания на плате.</p><p>Дело было не в том, что я перепутал напряжение - с расчётами всё было в порядке. Просто не отключил нагрузку перед тем, как крутить ручку. Мелочь, а результат один — труп.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/3e6/d05/201/3e6d05201ec8df1b077fddf214cfbe92.jpg\"></figure><h3>Второй заход — уже без экспериментов на живую</h3><p>Со вторым планшетом, Lenovo TB-X103F, решил не наступать на те же грабли: сначала на обесточенном стенде выяснил, какие напряжение и ток ему нужны, и только потом собрал постоянную схему на <strong>LM2596S</strong> — понижающем DC-DC преобразователе, который стоит копейки и с запасом закрывает задачу из 5 В блока питания получить то, что нужно для работы.</p><p>Тащить к планшету открытый провод не хотелось, поэтому я впаял в корпус разъём <strong>USB-C</strong> — не для передачи данных, просто аккуратный вход питания. И чтобы планшет не лежал на столе плашмя, а стоял как задумано, напечатал на 3D-принтере подставку под конкретную модель. Пока планшет так и стоит на столе на этой подставке — до стены руки ещё не дошли, но и на столе свою задачу он выполняет.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/ab4/f18/a36/ab4f18a36bce16fd64d34b1071f0d5b5.jpg\"></figure><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/e8c/e7b/05a/e8ce7b05a128418b07ad276dc367cd55.jpg\"></figure><h3>Проблема, о которой я не подумал заранее</h3><p>Планшет ожил, встал на подставке, крутит Home Assistant — и тут всплыли две вещи, которые я не продумал заранее.</p><p>Во-первых, у Lenovo TB-X103F физически нет датчика освещённости. Вообще. <code>dumpsys sensorservice</code> показывает один-единственный сенсор — акселерометр. Android в таких случаях даже не рисует переключатель автояркости в настройках: фреймворк просто прячет его, если сенсора нет. Штатного способа «пусть экран сам подстраивается под свет в комнате» тут не существует в принципе.</p><p>Во-вторых, экран, включённый круглые сутки — это лишняя нагрузка на понижайку, к которой я хоть и прикрутил радиатор, но всё же греется, да и просто неприятно, когда вечером светит как фонарик в глаза. А постоянно подходить и тыкать в экран, чтобы он проснулся так себе идея для штуки, которая должна работать сама по себе.</p><p>Тогда я и решил как обычно \"героически\" всё это решить.</p><h3>Главная фишка — не яркость, а движение</h3><p>Первая мысль была очевидной: раз нормального датчика света нет, а фронтальная камера есть — пусть камера её и заменит. Раз в секунду берём один маленький кадр превью и считаем среднюю яркость по Y-плоскости (luma) — вот и замена отсутствующему <code>android.sensor.light</code>.</p><p>Но по факту в приложении получилось две функции на одних и тех же кадрах, и вторая — определение движения — оказалась куда интереснее и полезнее первой. Раз кадр уже есть, почему бы не сравнить его с предыдущим и посчитать, сколько пикселей заметно изменилось? Детектор движения получаем буквально бесплатно.</p><p>Первая версия логики «есть движение - буди экран» на практике раздражала до дрожи: сидишь на диване в другом углу комнаты, чуть шевельнулся — и планшет с готовностью загорается. Один порог движения не различает «кто-то есть в комнате» и «кто-то подошёл к планшету».</p><p>Решение — считать одну и ту же разницу кадров по двум независимым порогам:</p><ul><li><p><strong>присутствие</strong> (по умолчанию 2% кадра) — не даёт погаснуть уже включённому экрану, само по себе ничего не включает;</p></li><li><p><strong>«рядом»</strong> (по умолчанию 12% кадра) — и только это состояние будит экран.</p></li></ul><p>Работает на простой физике: человек в полуметре от камеры занимает заметную часть кадра, человек на диване в другом конце комнаты — единицы процентов. Никакой сложной геометрии — просто доля изменившихся пикселей как грубая оценка расстояния. Эта штука работает настолько хорошо, что стала для меня главной фичей приложения, а автояркость оказалась просто приятным бонусом, который был рядом бесплатно.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/5a8/da5/7e1/5a8da57e18f3f878f1615103f20f564f.jpg\"></figure><h3>Пара слов про яркость и код</h3><p>Раз уж камера уже даёт кадр для движения, туда же прикрутил и подмену датчика света:</p><pre><code class=\"java\">long sum = 0;\nfor (int i = 0; i &lt; lumaSize; i++) {\n    sum += data[i] &amp; 0xFF;\n}\nint avgLuma = (int) (sum / lumaSize); // 0..255\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Сверху — экспоненциальное сглаживание и гистерезис, иначе любой человек, прошедший мимо камеры, дёргал бы яркость экрана туда-сюда.</p><p>По пути пришлось разобраться с парой вещей, без которых всё это тормозило бы или падало на слабом железе:</p><ul><li><p><strong>Camera1, не Camera2.</strong> На MT8163 в Android 6 Camera2 API работает в LEGACY-режиме — по факту это обёртка над тем же старым HAL, только с лишним слоем сложности. Camera1 (<code>android.hardware.Camera</code>), хоть и deprecated, но именно на этом железе стабильнее и проще.</p></li><li><p><strong>Минимальное разрешение превью</strong> — 160×120, этого с запасом хватает и для яркости, и для грубой детекции движения, а нагрузка на слабый CPU почти нулевая.</p></li><li><p><strong>Буферы кадра переиспользуются</strong> (<code>setPreviewCallbackWithBuffer</code>) — на 1 ГБ RAM лишние аллокации на каждый кадр сборщик мусора бы заметно тормозили.</p></li></ul><h3>Живучесть на 24/7</h3><p>Планшет работает без присмотра, значит сервис обязан переживать всё подряд: зависание камеры (watchdog перезапускает камеру, если кадров нет дольше 15 секунд), смерть HAL-процесса, перезагрузку устройства, попытки системы прибить фоновый сервис. Отдельно неприятный случай — поток камеры может застрять прямо внутри нативного вызова <code>Camera.open()</code>, и тогда даже внутренний watchdog не успевает сработать. На такой случай есть второй, более грубый уровень защиты: если состояние камеры не меняется дольше 90 секунд, весь контроллер камеры вместе со своим потоком пересоздаётся с нуля.</p><h3>Что приложение умеет</h3><ul><li><p>пробуждение экрана при приближении, с раздельными порогами присутствия и «рядом» (можно ограничить зону реакции центром кадра);</p></li><li><p>поддержка датчика приближения как дополнительного триггера, если он у устройства есть;</p></li><li><p>автояркость по камере вместо отсутствующего датчика, с настраиваемой кривой «освещённость → яркость»;</p></li><li><p>«тихие часы» с ограничением яркости и/или запретом пробуждения ночью;</p></li><li><p>интеграция с <strong>Home Assistant</strong> через REST API — планшет отдаёт освещённость, яркость, факт движения и состояние экрана как обычные сущности;</p></li><li><p>диагностика прямо в приложении: график истории, живые показания, журнал событий, экспорт в CSV — без этого пороги под конкретную комнату не подобрать;</p></li><li><p>управление снаружи через <code>adb broadcast</code>, экспорт/импорт настроек;</p></li><li><p>пара приятных мелочей для тех, у кого есть root (не обязательно для основной работы).</p></li></ul><p>Камера при этом никогда никуда не «смотрит» в смысле съёмки: кадр обрабатывается в памяти и тут же выбрасывается, сохранения или передачи изображения нет в принципе — наружу уходят только два числа в секунду.</p><h3>Home Assistant</h3><p>Включаете интеграцию, вписываете свой адрес и long-lived токен — получаете <code>sensor.screenvigil_luma</code>, <code>sensor.screenvigil_brightness</code>, <code>binary_sensor.screenvigil_motion</code>, <code>binary_sensor.screenvigil_screen</code> и <code>sensor.screenvigil_status</code>. Планшет заодно превращается в датчик освещённости и присутствия для той комнаты, где стоит.</p><p>Отдельно наступил на грабли: токен Home Assistant для записи состояний через REST API обязан принадлежать администратору — обычный пользовательский токен читает без проблем, а на запись тихо отвечает <code>401 Unauthorized</code>, и по коду ошибки это не отличить от банально неверного токена. Если у вас похожая интеграция и всё падает с 401 — проверьте именно права токена, а не только его правильность.</p><h3>Итого</h3><ul><li><p><a href=\"https://github.com/vasmarfas/ScreenVigil\"><strong>GitHub</strong></a> — исходники, инструкция по сборке, подробности по каждому порогу, apk билды.</p></li><li><p><a href=\"https://play.google.com/store/apps/details?id=com.vasmarfas.screenvigil\"><strong>Google Play</strong></a> — если хочется установить в пару тапов.</p></li><li><p>RuStore — пока без ссылки, добавлю позже, впервые проверяет дольше GP.</p></li></ul><p>Если у вас похожий планшет без датчика освещённости, или свой вариант решения той же задачи — пишите в комментариях, интересно будет сравнить.</p>",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 10105,
-        "approxBlocks": 79
-      }
+      "contentHtml": "<h3>Идея</h3><p>Давно хотелось поставить где-то на видном месте планшет-панель для Home Assistant — сценарии, термостат, камеры, всё в одном месте, без необходимости каждый раз доставать телефон. Готовые панели стоят как отдельный гаджет, а мысль «взять б/у планшет и допилить под себя» выглядела куда веселее.</p><p>На Авито нашлось объявление на два старых планшета за копейки — продавец явно расчищал полку. План был простой: вытащить аккумулятор (устройство и так будет висеть на постоянном питании, живой батарее там нечего делать — только распухнет через пару лет) и запитать напрямую от сети.</p><p>Вот что в итоге получилось — а дальше расскажу, как до этого дошёл.</p><figure><img src=\"https://habrastorage.org/getpro/habr/upload_files/e3f/545/267/e3f54526789bd335e13952c607689050.gif\" alt=\"планшет в работе\"><figcaption><em>планшет в работе</em></figcaption></figure><h3>Первый блин комом</h3><p>Первым в разборку пошёл планшет постарше, на Android 4. Разобрал, вытащил батарею, подключил плату к лабораторному блоку питания — сначала же надо на стенде выяснить, какое напряжение и ток планшет реально просит, прежде чем городить постоянную схему. И тут я допустил единственную настоящую ошибку: начал подстраивать напряжение на лабораторнике, не отключая от него планшет. Оказалось, что лабораторный блок при подстройке «на живую» даёт короткие всплески напряжения — и около 5.5В хватило, чтобы убить контроллер питания на плате.</p><p>Дело было не в том, что я перепутал напряжение - с расчётами всё было в порядке. Просто не отключил нагрузку перед тем, как крутить ручку. Мелочь, а результат один — труп.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/3e6/d05/201/3e6d05201ec8df1b077fddf214cfbe92.jpg\"></figure><h3>Второй заход — уже без экспериментов на живую</h3><p>Со вторым планшетом, Lenovo TB-X103F, решил не наступать на те же грабли: сначала на обесточенном стенде выяснил, какие напряжение и ток ему нужны, и только потом собрал постоянную схему на <strong>LM2596S</strong> — понижающем DC-DC преобразователе, который стоит копейки и с запасом закрывает задачу из 5 В блока питания получить то, что нужно для работы.</p><p>Тащить к планшету открытый провод не хотелось, поэтому я впаял в корпус разъём <strong>USB-C</strong> — не для передачи данных, просто аккуратный вход питания. И чтобы планшет не лежал на столе плашмя, а стоял как задумано, напечатал на 3D-принтере подставку под конкретную модель. Пока планшет так и стоит на столе на этой подставке — до стены руки ещё не дошли, но и на столе свою задачу он выполняет.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/ab4/f18/a36/ab4f18a36bce16fd64d34b1071f0d5b5.jpg\"></figure><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/e8c/e7b/05a/e8ce7b05a128418b07ad276dc367cd55.jpg\"></figure><h3>Проблема, о которой я не подумал заранее</h3><p>Планшет ожил, встал на подставке, крутит Home Assistant — и тут всплыли две вещи, которые я не продумал заранее.</p><p>Во-первых, у Lenovo TB-X103F физически нет датчика освещённости. Вообще. <code>dumpsys sensorservice</code> показывает один-единственный сенсор — акселерометр. Android в таких случаях даже не рисует переключатель автояркости в настройках: фреймворк просто прячет его, если сенсора нет. Штатного способа «пусть экран сам подстраивается под свет в комнате» тут не существует в принципе.</p><p>Во-вторых, экран, включённый круглые сутки — это лишняя нагрузка на понижайку, к которой я хоть и прикрутил радиатор, но всё же греется, да и просто неприятно, когда вечером светит как фонарик в глаза. А постоянно подходить и тыкать в экран, чтобы он проснулся так себе идея для штуки, которая должна работать сама по себе.</p><p>Тогда я и решил как обычно \"героически\" всё это решить.</p><h3>Главная фишка — не яркость, а движение</h3><p>Первая мысль была очевидной: раз нормального датчика света нет, а фронтальная камера есть — пусть камера её и заменит. Раз в секунду берём один маленький кадр превью и считаем среднюю яркость по Y-плоскости (luma) — вот и замена отсутствующему <code>android.sensor.light</code>.</p><p>Но по факту в приложении получилось две функции на одних и тех же кадрах, и вторая — определение движения — оказалась куда интереснее и полезнее первой. Раз кадр уже есть, почему бы не сравнить его с предыдущим и посчитать, сколько пикселей заметно изменилось? Детектор движения получаем буквально бесплатно.</p><p>Первая версия логики «есть движение - буди экран» на практике раздражала до дрожи: сидишь на диване в другом углу комнаты, чуть шевельнулся — и планшет с готовностью загорается. Один порог движения не различает «кто-то есть в комнате» и «кто-то подошёл к планшету».</p><p>Решение — считать одну и ту же разницу кадров по двум независимым порогам:</p><ul><li><p><strong>присутствие</strong> (по умолчанию 2% кадра) — не даёт погаснуть уже включённому экрану, само по себе ничего не включает;</p></li><li><p><strong>«рядом»</strong> (по умолчанию 12% кадра) — и только это состояние будит экран.</p></li></ul><p>Работает на простой физике: человек в полуметре от камеры занимает заметную часть кадра, человек на диване в другом конце комнаты — единицы процентов. Никакой сложной геометрии — просто доля изменившихся пикселей как грубая оценка расстояния. Эта штука работает настолько хорошо, что стала для меня главной фичей приложения, а автояркость оказалась просто приятным бонусом, который был рядом бесплатно.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/5a8/da5/7e1/5a8da57e18f3f878f1615103f20f564f.jpg\"></figure><h3>Пара слов про яркость и код</h3><p>Раз уж камера уже даёт кадр для движения, туда же прикрутил и подмену датчика света:</p><pre><code class=\"java\">long sum = 0;\nfor (int i = 0; i &lt; lumaSize; i++) {\n    sum += data[i] &amp; 0xFF;\n}\nint avgLuma = (int) (sum / lumaSize); // 0..255\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Сверху — экспоненциальное сглаживание и гистерезис, иначе любой человек, прошедший мимо камеры, дёргал бы яркость экрана туда-сюда.</p><p>По пути пришлось разобраться с парой вещей, без которых всё это тормозило бы или падало на слабом железе:</p><ul><li><p><strong>Camera1, не Camera2.</strong> На MT8163 в Android 6 Camera2 API работает в LEGACY-режиме — по факту это обёртка над тем же старым HAL, только с лишним слоем сложности. Camera1 (<code>android.hardware.Camera</code>), хоть и deprecated, но именно на этом железе стабильнее и проще.</p></li><li><p><strong>Минимальное разрешение превью</strong> — 160×120, этого с запасом хватает и для яркости, и для грубой детекции движения, а нагрузка на слабый CPU почти нулевая.</p></li><li><p><strong>Буферы кадра переиспользуются</strong> (<code>setPreviewCallbackWithBuffer</code>) — на 1 ГБ RAM лишние аллокации на каждый кадр сборщик мусора бы заметно тормозили.</p></li></ul><h3>Живучесть на 24/7</h3><p>Планшет работает без присмотра, значит сервис обязан переживать всё подряд: зависание камеры (watchdog перезапускает камеру, если кадров нет дольше 15 секунд), смерть HAL-процесса, перезагрузку устройства, попытки системы прибить фоновый сервис. Отдельно неприятный случай — поток камеры может застрять прямо внутри нативного вызова <code>Camera.open()</code>, и тогда даже внутренний watchdog не успевает сработать. На такой случай есть второй, более грубый уровень защиты: если состояние камеры не меняется дольше 90 секунд, весь контроллер камеры вместе со своим потоком пересоздаётся с нуля.</p><h3>Что приложение умеет</h3><ul><li><p>пробуждение экрана при приближении, с раздельными порогами присутствия и «рядом» (можно ограничить зону реакции центром кадра);</p></li><li><p>поддержка датчика приближения как дополнительного триггера, если он у устройства есть;</p></li><li><p>автояркость по камере вместо отсутствующего датчика, с настраиваемой кривой «освещённость → яркость»;</p></li><li><p>«тихие часы» с ограничением яркости и/или запретом пробуждения ночью;</p></li><li><p>интеграция с <strong>Home Assistant</strong> через REST API — планшет отдаёт освещённость, яркость, факт движения и состояние экрана как обычные сущности;</p></li><li><p>диагностика прямо в приложении: график истории, живые показания, журнал событий, экспорт в CSV — без этого пороги под конкретную комнату не подобрать;</p></li><li><p>управление снаружи через <code>adb broadcast</code>, экспорт/импорт настроек;</p></li><li><p>пара приятных мелочей для тех, у кого есть root (не обязательно для основной работы).</p></li></ul><p>Камера при этом никогда никуда не «смотрит» в смысле съёмки: кадр обрабатывается в памяти и тут же выбрасывается, сохранения или передачи изображения нет в принципе — наружу уходят только два числа в секунду.</p><h3>Home Assistant</h3><p>Включаете интеграцию, вписываете свой адрес и long-lived токен — получаете <code>sensor.screenvigil_luma</code>, <code>sensor.screenvigil_brightness</code>, <code>binary_sensor.screenvigil_motion</code>, <code>binary_sensor.screenvigil_screen</code> и <code>sensor.screenvigil_status</code>. Планшет заодно превращается в датчик освещённости и присутствия для той комнаты, где стоит.</p><p>Отдельно наступил на грабли: токен Home Assistant для записи состояний через REST API обязан принадлежать администратору — обычный пользовательский токен читает без проблем, а на запись тихо отвечает <code>401 Unauthorized</code>, и по коду ошибки это не отличить от банально неверного токена. Если у вас похожая интеграция и всё падает с 401 — проверьте именно права токена, а не только его правильность.</p><h3>Итого</h3><ul><li><p><a href=\"https://github.com/vasmarfas/ScreenVigil\"><strong>GitHub</strong></a> — исходники, инструкция по сборке, подробности по каждому порогу, apk билды.</p></li><li><p><a href=\"https://play.google.com/store/apps/details?id=com.vasmarfas.screenvigil\"><strong>Google Play</strong></a> — если хочется установить в пару тапов.</p></li><li><p>RuStore — пока без ссылки, добавлю позже, впервые проверяет дольше GP.</p></li></ul><p>Если у вас похожий планшет без датчика освещённости, или свой вариант решения той же задачи — пишите в комментариях, интересно будет сравнить.</p>"
     },
     {
       "id": "tass:https://tass.ru/sport/28015005:2026-08-15T09:00:01.000Z:Махачев идет за наследием. Гэрри может в",
@@ -420,7 +933,7 @@
         "world"
       ],
       "image": "",
-      "excerpt": "Правительство Афганистана, во главе которого стоит движение \"Талибан\", выступает за мирное сосуществование со странами мира и обращается к тем, кто выстраивает заговоры против него, с призывом прекратить делать это.\"Афганистан желает жить в атмосфере мира и спокойствия со всеми странами мира.",
+      "excerpt": "Правительство Афганистана, во главе которого стоит движение \"Талибан\", выступает за мирное сосуществование со странами мира и обращается к тем, кто выстраивает заговоры против него, с призывом прекратить делать это.",
       "contentHtml": ""
     },
     {
@@ -608,7 +1121,7 @@
       ],
       "image": "",
       "excerpt": "За две с половиной тысячи лет человечество изобрело порох, паровую машину, психоанализ, корпоративный университет и должность директора по счастью. С управлением получилось скромнее: одна и та же мысль возвращается к нам раз в несколько поколений, каждый раз в новой одежде и с таким выражением лица, будто ее только что нашли на стратегической сессии. Мысль, если снять с нее очередной бейдж, простая: центр видит карту, но не видит грязь под ногами; человек на месте видит грязь, но может не понимать общего замысла; сильная система соединяет одно знание с другим, сохраняя общую цель и передавая право решения туда, где находится реальность.Полководец, который не звонит с советамиВ «Искусстве войны» Сунь-цзы не просто советует побеждать без сражения. Он предупреждает правителя: армия терпит бедствие, когда государь, не понимающий положения войск, начинает распоряжаться их движением. Дворец видит империю, но не видит местность. Полководец видит местность — и именно поэтому должен принимать решение на месте.Знает ли правитель общую цель? Конечно. Может ли он из столицы определить, по какой тропе обойти болото? Нет. Если все-таки попробует, солдатам останется героически утонуть, исполняя правильно оформленное распоряжение.У Сунь-цзы мудрость распределена не из любви к демократии. Война просто слишком сложна, изменчива и быстра для ручного управления из одного центра. Вода принимает форму местности, армия — форму обстоятельств. Побеждает не тот, у кого подробнее инструкция, а тот, кто раньше понял ситуацию и успел измениться вместе с ней. Читать далее",
-      "contentHtml": "<p><em>За две с половиной тысячи лет человечество изобрело порох, паровую машину, психоанализ, корпоративный университет и должность директора по счастью. С управлением получилось скромнее: одна и та же мысль возвращается к нам раз в несколько поколений, каждый раз в новой одежде и с таким выражением лица, будто ее только что нашли на стратегической сессии. Мысль, если снять с нее очередной бейдж, простая: центр видит карту, но не видит грязь под ногами; человек на месте видит грязь, но может не понимать общего замысла; сильная система соединяет одно знание с другим, сохраняя общую цель и передавая право решения туда, где находится реальность.</em></p><p>Полководец, который не звонит с советами</p><p>В «Искусстве войны» Сунь-цзы не просто советует побеждать без сражения. Он предупреждает правителя: армия терпит бедствие, когда государь, не понимающий положения войск, начинает распоряжаться их движением. Дворец видит империю, но не видит местность. Полководец видит местность — и именно поэтому должен принимать решение на месте.</p><p>Знает ли правитель общую цель? Конечно. Может ли он из столицы определить, по какой тропе обойти болото? Нет. Если все-таки попробует, солдатам останется героически утонуть, исполняя правильно оформленное распоряжение.</p><p>У Сунь-цзы мудрость распределена не из любви к демократии. Война просто слишком сложна, изменчива и быстра для ручного управления из одного центра. Вода принимает форму местности, армия — форму обстоятельств. Побеждает не тот, у кого подробнее инструкция, а тот, кто раньше понял ситуацию и успел измениться вместе с ней.</p><p>Лиддел Гарт пришел к похожему выводу через мясорубку Первой мировой. Прямое давление, каким бы организованным оно ни было, собирает сопротивление в кулак. Непрямой подход работает иначе: стратег меняет положение, нарушает равновесие, ищет направление, которого противник не ожидает. Он не расписывает миру правильное движение — он создает условия, в которых локальная инициатива получает преимущество.</p><p>Это не одна школа и не доказанная цепочка заимствований. Сунь-цзы не писал методичку для Лиддел Гарта, а Лалу не прятал «Искусство войны» под ковриком для йоги. Родство здесь структурное: реальность слишком богата для централизованного разума, поэтому хорошая система распределяет способность судить.</p><h3>Как военная мудрость стала гуманистическим менеджментом</h3><p>У Лалу тот же принцип входит в офис через другую дверь. На войне право действовать на месте оправдывается изменчивостью обстановки; в корпорации XXI века этого мало, потому что современному образованному сотруднику нужно объяснить не только почему система станет эффективнее, но и почему новая система признает в нем человека. Так появляются три опоры бирюзовой организации — самоуправление, целостность и эволюционная цель, — каждая из которых переводит старую управленческую механику на язык новой аудитории.</p><p><strong>Самоуправление передает решение туда, где находится информация.</strong> Клиент уже злится, оборудование уже сломалось, конкурент уже изменил цену — а документ еще только собирается в путешествие по этажам. Лалу предлагает остановить туризм служебных записок и позволить команде действовать самой.</p><p>Целостность объясняет, кому именно доверяют решение. Не винтику, не должностной функции, не «человеческому ресурсу», который почему-то обижается, когда его называют ресурсом. Решение получает взрослый человек со страхами, интуицией, конфликтами и ответственностью. Организация разрешает ему не оставлять половину личности у проходной — и одновременно получает доступ к половине информации, которую он раньше благоразумно скрывал.</p><p>Эволюционная цель заменяет часть указаний общим замыслом. Если люди понимают, куда движется организация, им не нужен начальник с пультом дистанционного управления. Правда, голос эволюционного предназначения обычно лучше всех слышит основатель, а финансовый директор продолжает слышать кассовый разрыв, но управленческая задача от этого не исчезает: дать участникам карту и не диктовать положение каждой ноги.</p><p>Военные назвали бы это единством замысла и свободой исполнения. Бизнес-школа — децентрализацией. Лалу называет это освобождением целостного человека. Механика почти та же, но моральная биография у нее новая.</p><p>Еще несколько лет назад сравнение Лалу с военными стратегами потребовало бы длинного ритуала публичного очищения. Менеджмент говорил на языке diversity, психологической безопасности, инклюзивности и аутентичности. Стоило спросить, какую управленческую функцию выполняет гуманистическая лексика, как из соседней переговорной уже несли бланк признания в авторитаризме (я немного преувеличиваю, но именно немного).</p><p>Теперь маятник качнулся вправо. В 2025 году администрация Дональда Трампа начала демонтировать DEI-программы в федеральном управлении и менять требования к подрядчикам; в 2026 году этот курс продолжился. Meta, Amazon, Google, Walmart, Accenture и другие компании стали сокращать, отменять или переименовывать отдельные DEI-практики. Разворот зафиксирован решениями Белого дома, Reuters и Associated Press.</p><p>Но не путайте смену фрейма с возвращением истины! Правый поворот не доказал, что прежняя лексика была ложной, он лишь сделал ее критику респектабельной: <strong>вчера Лалу читали как освобождение от авторитарной иерархии, сегодня его легче прочитать как очередную упаковку старого менеджмента. Книга не изменилась ни на страницу — изменилась история, внутри которой мы открываем ее обложку,</strong> потому что фабрика смыслов не остановилась, а просто сменила фабулу.</p><h3>Зачем старой мысли новая фабула</h3><p>В <strong>«Фабрике смыслов»</strong> я рассматриваю <strong>маркетинг как борьбу за право объяснять происходящее</strong>, потому что факт сам по себе редко определяет реакцию. Посмотрите, что происходит с самым обычным управленческим решением: руководитель перестал утверждать действия команды — сотрудникам доверили власть, начальник захлебнулся в работе, компания сократила менеджеров или ответственность спустили вниз, а деньги оставили наверху? Событие молчит, и за него начинает говорить фрейм.</p><p>Фрейм Лалу сообщает, что иерархия подавляет человеческий потенциал, после чего нарратив выстраивает целый мир: организация переходит на следующую ступень развития, героем становится зрелый и целостный сотрудник, врагом — бюрократия, ставкой — смысл работы, а будущим — живая организация, способная думать всеми своими частями. Вот последняя формула здесь и является главной: не начальник думает за организацию — организация думает всеми своими частями.</p><p>Аристотель называл фабулу организацией действия, а не декоративным рассказом поверх событий. Умберто Эко писал о модельном читателе, которого предполагает и направляет сам текст. Лалу соединяет обе конструкции: предлагает человеку роль участника распределенного разума. Читатель узнает себя как зрелого профессионала, принимает решение без начальника — и превращается из модельного читателя в модельного сотрудника.</p><p>Фрейм не просто переименовывает старую механику, он делает ее морально приемлемой для новой аудитории. Военный действует самостоятельно, потому что этого требует обстановка; менеджер делегирует, потому что так быстрее; бирюзовый сотрудник действует самостоятельно, потому что свобода и целостность составляют его человеческое достоинство. Идея одна, но каждая эпоха предлагает собственную причину ей доверять.</p><h3>Децентрализация или сброс ответственности</h3><p>Красивый фрейм еще не доказывает, что идея воплощена. Иногда под вывеской самоуправления людям действительно передают решения, информацию и ресурсы. Иногда им передают только последствия, а собственник сохраняет бюджет, стратегию и право последнего слова. В таком случае организация не стала мудрее — начальник просто научился делегировать вину.</p><p>Проверка довольно проста:</p><ul><li><p>Информация находится там же, где принимается решение.</p></li><li><p>Полномочия передаются вместе с ответственностью.</p></li><li><p>Общий замысел можно обсуждать, а не только правильно понимать.</p></li><li><p>Ошибка снизу не карается за свободу, которую сверху торжественно подарили.</p></li></ul><p><strong>Если эти условия выполнены, перед нами не маскировка власти, а реальная децентрализация знания; если нет — бирюзовый цвет остаётся цветом упаковки и красивым слоганом для вашего HR. </strong>И все-таки главный вывод статьи не в разоблачении Лалу. Напротив, его заслуга в том, что он нашел для древнего принципа язык своей эпохи, объяснил людям, воспитанным на ценности автономии, почему организация должна отказаться от фантазии о всеведущем центре, и тем самым вытащил старую мысль из военной максимы и скучной главы о делегировании.</p><p>За две с половиной тысячи лет изменилось почти все: полководца сменил CEO, гонца — Slack, военный совет — стратегическая сессия. Не изменилась проблема. Центр по-прежнему видит карту и не видит грязь под ногами, люди на местах по-прежнему видят грязь и нуждаются в общей карте.</p><p>В эту же линию встраивается <strong>Brand War Room </strong>— операционный штаб бренда, но не новый отдел, не агентство внутри компании и не разовая сессия, после которой участники фотографируют стикеры и возвращаются к прежней жизни. Его задача не в том, чтобы принимать все решения за всех, а в том, чтобы регулярно сводить доктрину, сигналы рынка, контент, носителей, воронку, рекламу и продуктовый опыт; распределять роли; видеть движение восприятия; останавливать действия, которые разрушают общий замысел. Это децентрализованная мудрость, переведенная в операционную систему бренда: карта собирается в штабе, информация приходит из всей сети, а решение принимается там, где видны его последствия.</p><p>Сунь-цзы называл соединение этих знаний искусством полководца, Лиддел Гарт — стратегией непрямых действий, Лалу — самоуправлением и эволюционной целью. Сегодня одним из практических продолжений этой логики становится Brand War Room. Завтра появится новое название.</p><p>Управленческие моды проходят, потому что устаревает их язык. Децентрализованная мудрость остается, потому что реальность по-прежнему не помещается в кабинете начальника.</p>",
+      "contentHtml": "<p><em>За две с половиной тысячи лет человечество изобрело порох, паровую машину, психоанализ, корпоративный университет и должность директора по счастью. С управлением получилось скромнее: одна и та же мысль возвращается к нам раз в несколько поколений, каждый раз в новой одежде и с таким выражением лица, будто ее только что нашли на стратегической сессии. Мысль, если снять с нее очередной бейдж, простая: центр видит карту, но не видит грязь под ногами; человек на месте видит грязь, но может не понимать общего замысла; сильная система соединяет одно знание с другим, сохраняя общую цель и передавая право решения туда, где находится реальность.</em></p><p><strong>Полководец, который не звонит с советами</strong></p><p>В «Искусстве войны» Сунь-цзы не просто советует побеждать без сражения. Он предупреждает правителя: армия терпит бедствие, когда государь, не понимающий положения войск, начинает распоряжаться их движением. Дворец видит империю, но не видит местность. Полководец видит местность — и именно поэтому должен принимать решение на месте.</p><p>Знает ли правитель общую цель? Конечно. Может ли он из столицы определить, по какой тропе обойти болото? Нет. Если все-таки попробует, солдатам останется героически утонуть, исполняя правильно оформленное распоряжение.</p><p>У Сунь-цзы мудрость распределена не из любви к демократии. Война просто слишком сложна, изменчива и быстра для ручного управления из одного центра. Вода принимает форму местности, армия — форму обстоятельств. Побеждает не тот, у кого подробнее инструкция, а тот, кто раньше понял ситуацию и успел измениться вместе с ней.</p><p>Лиддел Гарт пришел к похожему выводу через мясорубку Первой мировой. Прямое давление, каким бы организованным оно ни было, собирает сопротивление в кулак. Непрямой подход работает иначе: стратег меняет положение, нарушает равновесие, ищет направление, которого противник не ожидает. Он не расписывает миру правильное движение — он создает условия, в которых локальная инициатива получает преимущество.</p><p>Это не одна школа и не доказанная цепочка заимствований. Сунь-цзы не писал методичку для Лиддел Гарта, а Лалу не прятал «Искусство войны» под ковриком для йоги. Родство здесь структурное: реальность слишком богата для централизованного разума, поэтому хорошая система распределяет способность судить.</p><h3>Как военная мудрость стала гуманистическим менеджментом</h3><p>У Лалу тот же принцип входит в офис через другую дверь. На войне право действовать на месте оправдывается изменчивостью обстановки; в корпорации XXI века этого мало, потому что современному образованному сотруднику нужно объяснить не только почему система станет эффективнее, но и почему новая система признает в нем человека. Так появляются три опоры бирюзовой организации — самоуправление, целостность и эволюционная цель, — каждая из которых переводит старую управленческую механику на язык новой аудитории.</p><p><strong>Самоуправление передает решение туда, где находится информация.</strong> Клиент уже злится, оборудование уже сломалось, конкурент уже изменил цену — а документ еще только собирается в путешествие по этажам. Лалу предлагает остановить туризм служебных записок и позволить команде действовать самой.</p><p>Целостность объясняет, кому именно доверяют решение. Не винтику, не должностной функции, не «человеческому ресурсу», который почему-то обижается, когда его называют ресурсом. Решение получает взрослый человек со страхами, интуицией, конфликтами и ответственностью. Организация разрешает ему не оставлять половину личности у проходной — и одновременно получает доступ к половине информации, которую он раньше благоразумно скрывал.</p><p>Эволюционная цель заменяет часть указаний общим замыслом. Если люди понимают, куда движется организация, им не нужен начальник с пультом дистанционного управления. Правда, голос эволюционного предназначения обычно лучше всех слышит основатель, а финансовый директор продолжает слышать кассовый разрыв, но управленческая задача от этого не исчезает: дать участникам карту и не диктовать положение каждой ноги.</p><p>Военные назвали бы это единством замысла и свободой исполнения. Бизнес-школа — децентрализацией. Лалу называет это освобождением целостного человека. Механика почти та же, но моральная биография у нее новая.</p><p>Еще несколько лет назад сравнение Лалу с военными стратегами потребовало бы длинного ритуала публичного очищения. Менеджмент говорил на языке diversity, психологической безопасности, инклюзивности и аутентичности. Стоило спросить, какую управленческую функцию выполняет гуманистическая лексика, как из соседней переговорной уже несли бланк признания в авторитаризме (я немного преувеличиваю, но именно немного).</p><p>Теперь маятник качнулся вправо. В 2025 году администрация Дональда Трампа начала демонтировать DEI-программы в федеральном управлении и менять требования к подрядчикам; в 2026 году этот курс продолжился. Meta, Amazon, Google, Walmart, Accenture и другие компании стали сокращать, отменять или переименовывать отдельные DEI-практики. Разворот зафиксирован решениями Белого дома, Reuters и Associated Press.</p><p>Но не путайте смену фрейма с возвращением истины! Правый поворот не доказал, что прежняя лексика была ложной, он лишь сделал ее критику респектабельной: <strong>вчера Лалу читали как освобождение от авторитарной иерархии, сегодня его легче прочитать как очередную упаковку старого менеджмента. Книга не изменилась ни на страницу — изменилась история, внутри которой мы открываем ее обложку,</strong> потому что фабрика смыслов не остановилась, а просто сменила фабулу.</p><h3>Зачем старой мысли новая фабула</h3><p>В <strong>«Фабрике смыслов»</strong> я рассматриваю <strong>маркетинг как борьбу за право объяснять происходящее</strong>, потому что факт сам по себе редко определяет реакцию. Посмотрите, что происходит с самым обычным управленческим решением: руководитель перестал утверждать действия команды — сотрудникам доверили власть, начальник захлебнулся в работе, компания сократила менеджеров или ответственность спустили вниз, а деньги оставили наверху? Событие молчит, и за него начинает говорить фрейм.</p><p>Фрейм Лалу сообщает, что иерархия подавляет человеческий потенциал, после чего нарратив выстраивает целый мир: организация переходит на следующую ступень развития, героем становится зрелый и целостный сотрудник, врагом — бюрократия, ставкой — смысл работы, а будущим — живая организация, способная думать всеми своими частями. Вот последняя формула здесь и является главной: не начальник думает за организацию — организация думает всеми своими частями.</p><p>Аристотель называл фабулу организацией действия, а не декоративным рассказом поверх событий. Умберто Эко писал о модельном читателе, которого предполагает и направляет сам текст. Лалу соединяет обе конструкции: предлагает человеку роль участника распределенного разума. Читатель узнает себя как зрелого профессионала, принимает решение без начальника — и превращается из модельного читателя в модельного сотрудника.</p><p>Фрейм не просто переименовывает старую механику, он делает ее морально приемлемой для новой аудитории. Военный действует самостоятельно, потому что этого требует обстановка; менеджер делегирует, потому что так быстрее; бирюзовый сотрудник действует самостоятельно, потому что свобода и целостность составляют его человеческое достоинство. Идея одна, но каждая эпоха предлагает собственную причину ей доверять.</p><h3>Децентрализация или сброс ответственности</h3><p>Красивый фрейм еще не доказывает, что идея воплощена. Иногда под вывеской самоуправления людям действительно передают решения, информацию и ресурсы. Иногда им передают только последствия, а собственник сохраняет бюджет, стратегию и право последнего слова. В таком случае организация не стала мудрее — начальник просто научился делегировать вину.</p><p>Проверка довольно проста:</p><ul><li><p>Информация находится там же, где принимается решение.</p></li><li><p>Полномочия передаются вместе с ответственностью.</p></li><li><p>Общий замысел можно обсуждать, а не только правильно понимать.</p></li><li><p>Ошибка снизу не карается за свободу, которую сверху торжественно подарили.</p></li></ul><p><strong>Если эти условия выполнены, перед нами не маскировка власти, а реальная децентрализация знания; если нет — бирюзовый цвет остаётся цветом упаковки и красивым слоганом для вашего HR. </strong>И все-таки главный вывод статьи не в разоблачении Лалу. Напротив, его заслуга в том, что он нашел для древнего принципа язык своей эпохи, объяснил людям, воспитанным на ценности автономии, почему организация должна отказаться от фантазии о всеведущем центре, и тем самым вытащил старую мысль из военной максимы и скучной главы о делегировании.</p><p>За две с половиной тысячи лет изменилось почти все: полководца сменил CEO, гонца — Slack, военный совет — стратегическая сессия. Не изменилась проблема. Центр по-прежнему видит карту и не видит грязь под ногами, люди на местах по-прежнему видят грязь и нуждаются в общей карте.</p><p>В эту же линию встраивается <strong>Brand War Room </strong>— операционный штаб бренда, но не новый отдел, не агентство внутри компании и не разовая сессия, после которой участники фотографируют стикеры и возвращаются к прежней жизни. Его задача не в том, чтобы принимать все решения за всех, а в том, чтобы регулярно сводить доктрину, сигналы рынка, контент, носителей, воронку, рекламу и продуктовый опыт; распределять роли; видеть движение восприятия; останавливать действия, которые разрушают общий замысел. Это децентрализованная мудрость, переведенная в операционную систему бренда: карта собирается в штабе, информация приходит из всей сети, а решение принимается там, где видны его последствия.</p><p>Сунь-цзы называл соединение этих знаний искусством полководца, Лиддел Гарт — стратегией непрямых действий, Лалу — самоуправлением и эволюционной целью. Сегодня одним из практических продолжений этой логики становится Brand War Room. Завтра появится новое название.</p><p>Управленческие моды проходят, потому что устаревает их язык. Децентрализованная мудрость остается, потому что реальность по-прежнему не помещается в кабинете начальника.</p>",
       "contentTruncated": false,
       "contentMeta": {
         "approxChars": 9998,
@@ -1621,7 +2134,7 @@
       "categoryIds": [
         "ru"
       ],
-      "image": "",
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302027.jpg",
       "excerpt": "Число пострадавших уточняется",
       "contentHtml": ""
     },
@@ -3937,12 +4450,7 @@
       ],
       "image": "https://icdn.lenta.ru/assets/webpack/images/lenta_og.8735b949.png",
       "excerpt": "",
-      "contentHtml": "",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 0,
-        "approxBlocks": 0
-      }
+      "contentHtml": ""
     },
     {
       "id": "tass:https://tass.ru/ekonomika/28014713:2026-08-15T04:35:28.000Z:Глава Росрыболовства назвал сложным ход ",
@@ -3984,12 +4492,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/15/07/20260815074043704/pic_712daab06af2930bc7f56398cedd6973.jpg",
       "excerpt": "",
-      "contentHtml": "",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 0,
-        "approxBlocks": 0
-      }
+      "contentHtml": ""
     },
     {
       "id": "tass:https://tass.ru/proisshestviya/28014707:2026-08-15T04:34:24.000Z:В Индонезии число жертв землетрясения до",
@@ -4073,12 +4576,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/15/08/20260815081625684/pic_fa0ea10ccbd3651671c6275ccb95629e.jpg",
       "excerpt": "",
-      "contentHtml": "",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 0,
-        "approxBlocks": 0
-      }
+      "contentHtml": ""
     },
     {
       "id": "interfax:https://www.interfax.ru/russia/1109463:2026-08-15T04:28:00.000Z:В аэропорту Калуги сняты ограничения на ",
@@ -20903,470 +21401,6 @@
       ],
       "image": "",
       "excerpt": "Заммэра отметил, что за последний год для станций \"Кропоткинская\", \"Лубянка\", \"Библиотека имени Ленина\" и \"Смоленская\" сотрудники мастерской керамики изготовили больше 465 кв. м новой облицовки",
-      "contentHtml": ""
-    },
-    {
-      "id": "habr:https://habr.com/ru/articles/1070366/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070366:2026-08-14T06:18:18.000Z:GLM-5.3: Z.ai выпустил новую модель",
-      "sourceId": "habr",
-      "sourceName": "Хабр",
-      "title": "GLM-5.3: Z.ai выпустил новую модель",
-      "url": "https://habr.com/ru/articles/1070366/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070366",
-      "publishedAt": "2026-08-14T06:18:18.000Z",
-      "categoryIds": [
-        "tech"
-      ],
-      "image": "https://habrastorage.org/getpro/habr/upload_files/e6f/6d6/f26/e6f6d6f269b85cfaa71f4eb1fea5723a.png",
-      "excerpt": "14 августа 2026 года компания Z.ai (бывшая Zhipu AI, Пекин) официально представила GLM-5.3 - новую версию своей флагманской линейки языковых моделей GLM-5. Анонс сопровождается слоганом \"Built to Code. Ready for Cyber Defense\" (\"Создана для кода. Готова к киберзащите\") и техническим блогом на z.ai/blog/glm-5.3.В статье Вы увидите разбор того, что подтверждено официально, что известно из контекста предыдущих релизов, и что пока остаётся открытым вопросом. Читать далее",
-      "contentHtml": "<p>14 августа 2026 года компания <a href=\"http://Z.ai\">Z.ai</a> (бывшая Zhipu AI, Пекин) официально представила <strong>GLM-5.3</strong> - новую версию своей флагманской линейки языковых моделей GLM-5. Анонс сопровождается слоганом <strong>\"Built to Code. Ready for Cyber Defense\"</strong> (\"Создана для кода. Готова к киберзащите\") и техническим блогом на z.ai/blog/glm-5.3.</p><p><a href=\"http://Z.ai\">Z.ai</a> впервые за всю серию GLM-5 явно позиционирует модель как инструмент не только агентной разработки, но и информационной безопасности  область, которую индустрия ИИ традиционно считает зоной повышенного риска.</p><p>Ниже разбор того, что подтверждено официально, что известно из контекста предыдущих релизов, и что пока остаётся открытым вопросом.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/ac3/f7b/a36/ac3f7ba3695f87de1ce868d66e782a7d.png\"></figure><h3>Подтверждённые факты</h3><p>Согласно официальному анонсу <a href=\"http://Z.ai\">Z.ai</a>, GLM-5.3:</p><ul><li><p><strong>Построена поверх той же базовой модели, что и GLM-5.2</strong> - 743-миллиардной MoE-архитектуры (Mixture-of-Experts), но прошла отдельный этап пост-тренинга (post-training), нацеленный на агентное программирование и кибербезопасность.</p></li><li><p>Демонстрирует <strong>\"резкое улучшение\" показателей в агентном кодинге</strong> по сравнению с GLM-5.2 - при этом, по словам компании, достигает лучших результатов <strong>при меньшем количестве выходных токенов</strong>, то есть экономичнее в эксплуатации.</p></li><li><p>Заявлена как модель, задающая <strong>\"новый стандарт среди открытых моделей\" в задачах киберзащиты</strong> - конкретных бенчмарков в анонсе <a href=\"http://Z.ai\">Z.ai</a> пока не опубликовала.</p></li><li><p><strong>Доступна прямо сейчас</strong> через подписку <strong>GLM Coding Plan</strong> и фирменную agentic-IDE <strong>ZCode</strong>.</p></li><li><p><strong>API-доступ и открытые веса будут выкладываться поэтапно</strong>, после дополнительных проверок безопасности (safety evaluations) - это заметное отличие от GLM-5.2, чьи веса под MIT-лицензией появились на Hugging Face практически сразу после релиза.</p></li><li><p>Небольшая группа партнёров уже предоставляет сервисы на основе GLM-5.3 в рамках официальной программы с собственными защитными механизмами (safeguards) и политиками использования; список партнёров и условия доступа компания обещает расширять поэтапно.</p></li></ul><p>Иными словами: продукт уже можно попробовать через подписочные каналы <a href=\"http://Z.ai\">Z.ai</a>, но \"настоящий\" открытый релиз (веса на Hugging Face и публичный API) придёт позже, отдельными волнами.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/1f3/4a7/89e/1f34a789e0716d3ac22482415d52cad1.png\"></figure><h3>Контекст: откуда взялась GLM-5.3</h3><p>Чтобы понять значение релиза, полезно вспомнить, что ему предшествовало.</p><p><strong>GLM-5.2</strong>, вышедшая 13 июня 2026 года, стала для <a href=\"http://Z.ai\">Z.ai</a> знаковым релизом: 743-миллиардная MoE-модель (около 39 млрд активных параметров) с контекстным окном в 1 миллион токенов, открытыми весами под лицензией MIT и результатами, которые впервые позволили открытой китайской модели всерьёз конкурировать с проприетарными флагманами вроде Claude Opus и GPT. На бенчмарке Terminal-Bench 2.1 GLM-5.2 набрала 81,0 балла (против 63,5 у GLM-5.1), на SWE-bench Pro - 62,1 (обойдя GPT-5.5 с его 58,6). При этом цена API держалась на уровне примерно $1,40 / $4,40 за миллион входных/выходных токенов - в разы дешевле западных аналогов.</p><p>Отдельного внимания заслуживает история с кибербезопасностью GLM-5.2. Компания Semgrep в июне 2026 года протестировала модель на собственном бенчмарке по поиску уязвимостей IDOR - и GLM-5.2 без какой-либо дополнительной обвязки (scaffolding) обошла Claude Code (39% против 32% F1-меры) при заметно более низкой стоимости на найденную уязвимость. Независимая оценочная компания Irregular провела более широкое тестирование по нескольким наступательным бенчмаркам (Atomic Tasks, CyScenarioBench, FrontierCyber) и пришла к выводу, что по общему уровню киберспособности GLM-5.2 находится в одном диапазоне с GPT-5.2, Claude Opus 4.6 и Gemini 3.1 Pro, хотя и уступает им в надёжности выполнения длинных, многоэтапных сценариев атак.</p><p>Эти независимые результаты, судя по всему, и стали одной из причин, почему <a href=\"http://Z.ai\">Z.ai</a> решила явно заявить о теме кибербезопасности в анонсе GLM-5.3, а не оставлять её \"побочным эффектом\" хорошей модели кода.</p><p>Стоит добавить и рыночный фон: с середины 2026 года открытые китайские модели заняли заметную нишу отчасти из-за экспортных ограничений США на топовые западные модели (в частности, кратковременная приостановка доступа к Claude Fable 5 и Mythos в конце июня 2026 года). <a href=\"http://Z.ai\">Z.ai</a> напрямую использовала этот момент в продвижении GLM-5.2, подчёркивая тезис «передовой интеллект должен быть доступен всем». GLM-5.3 выходит в схожей логике - как быстро развивающаяся альтернатива с открытой (пусть и поэтапной) моделью распространения.</p><h3>Что изменилось по сравнению с GLM-5.2</h3><p>На момент публикации у <a href=\"http://Z.ai\">Z.ai</a> пока нет полноценной технической карточки модели (model card) или подробного отчёта с бенчмарками для GLM-5.3 - это ожидаемо для дня релиза, особенно с учётом поэтапного открытия API и весов. Тем не менее из официального анонса можно выделить три содержательных тезиса:</p><ol><li><p><strong>Агентное программирование как основной фокус.</strong> GLM-5.3 позиционируется не как «модель для чата», а как двигатель для длинных агентных задач - многошаговой разработки, работы с большими кодовыми базами, автономного выполнения сложных инженерных сценариев. Это продолжает линию, заданную GLM-5.1 и GLM-5.2, но с явным акцентом на эффективность.</p></li><li><p><strong>Меньше токенов на тот же (или лучший) результат.</strong> Один из немногих количественных сигналов в анонсе - GLM-5.3 добивается более высоких результатов «при меньшем количестве выходных токенов». Для GLM-5.2 характерен был высокий расход токенов на «размышление» (до 43 000 токенов на сложную задачу в режиме Max) - если GLM-5.3 действительно снижает этот расход при сохранении или улучшении качества, это прямо скажется на стоимости эксплуатации для разработчиков, использующих модель через API или Coding Plan.</p></li><li><p><strong>Кибербезопасность как отдельное направление пост-тренинга.</strong> Формулировка «major leap in cybersecurity» указывает на целенаправленную донастройку модели под задачи защиты - вероятно, обнаружение уязвимостей, анализ кода на предмет угроз, поддержка команд Blue Team. Учитывая двойное назначение таких навыков (они же полезны для атакующих сценариев), неудивительно, что именно для этой категории функциональности <a href=\"http://Z.ai\">Z.ai</a> выбрала поэтапный, а не мгновенный публичный доступ.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/5e1/494/106/5e1494106be71da617c1c5701c5a8cb7.png\"></figure></li></ol><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/fef/691/c37/fef691c37b24389078d76dbdce67b10f.png\"></figure><h3>Почему поэтапный доступ - важная деталь</h3><p>GLM-5.2 стала заметным событием отчасти именно потому, что открытые веса появились на Hugging Face уже через несколько дней после подписочного релиза, под лицензией MIT — без ограничений на коммерческое использование. Для GLM-5.3 <a href=\"http://Z.ai\">Z.ai</a> выбрала другую стратегию: сначала - доступ через управляемые каналы (GLM Coding Plan, ZCode, ограниченный круг партнёров), и лишь затем, \"после тщательных проверок безопасности\" - открытый API и веса.</p><p>Формально компания не привела причин такого решения, но связка \"кибербезопасность + поэтапный релиз\" напрашивается сама собой: модель с усиленными навыками анализа уязвимостей и эксплуатации кода - это именно та категория ИИ-систем, для которой большинство лабораторий (включая западные) в 2025–2026 годах стали внедрять дополнительные проверки перед публикацией открытых весов, чтобы снизить риск злоупотребления офенсив-возможностями модели.</p><p>Для разработчиков это означает практический вывод: сейчас GLM-5.3 можно попробовать только через подписочные продукты <a href=\"http://Z.ai\">Z.ai</a> (GLM Coding Plan, ZCode) или интеграции официальных партнёров. Самостоятельный деплой через открытые веса или прямой вызов через публичный API пока недоступны - сроки их появления компания обещала сообщать отдельно.</p><h3>Что пока неизвестно</h3><p>Список открытых вопросов, на которые официальный анонс на момент публикации этой статьи не даёт ответа:</p><ul><li><p>Точные бенчмарки GLM-5.3 (SWE-bench, Terminal-Bench, GDPval, кибербезопасность) - заявлено \"лидерство\", но цифр пока нет.</p></li><li><p>Контекстное окно и лимиты по выходным токенам — унаследует ли модель 1M-токенный контекст GLM-5.2.</p></li><li><p>Итоговая лицензия открытых весов - останется ли это MIT, как у GLM-5.2, или условия ужесточатся из-за кибербезопасной составляющей.</p></li><li><p>Цена API в токенах - пока объявлен только доступ через Coding Plan.</p></li><li><p>Конкретные сроки поэтапного открытия API и весов.</p></li></ul><p>Учитывая скорость, с которой <a href=\"http://Z.ai\">Z.ai</a> в 2026 году выпускала модели серии GLM-5 (GLM-5 - февраль, 5.1 - апрель, 5.2 - июнь), реалистично ожидать, что подробный технический отчёт и независимые бенчмарки появятся в течение ближайших недель - по опыту предыдущих релизов, именно столько времени обычно требуется сообществу и партнёрам вроде Artificial Analysis, Semgrep или Irregular, чтобы опубликовать первые независимые оценки.</p><h3>Что делать прямо сейчас</h3><ul><li><p>Если вы уже пользуетесь <strong>GLM Coding Plan</strong> или <strong>ZCode</strong> то GLM-5.3 должна быть доступна вам без дополнительных действий; стоит проверить, обновилась ли модель по умолчанию в настройках агента.</p></li><li><p>Если вы рассматриваете переход с GLM-5.2 или другой модели, то пока стоит воздержаться от продакшен-миграции до публикации официальной технической карточки и независимых бенчмарков, особенно если для вас критичны контекстное окно, лицензия весов и точная стоимость токена.</p></li><li><p>Если вам интересна именно составляющая<strong> </strong>ИБ, то<strong> </strong>имеет смысл дождаться публикации конкретных результатов на профильных бенчмарках (CyberGym, аналоги IDOR-тестов Semgrep) .</p></li></ul><h3>Итог</h3><p>GLM-5.3 - логичное продолжение стратегии <a href=\"http://Z.ai\">Z.ai</a> по превращению серии GLM-5 в главного открытого конкурента западным флагманам в задачах агентного кодинга, но с новым акцентом: впервые кибербезопасность вынесена в заголовок анонса как отдельное направление, а не побочный эффект хорошей модели кода. Поэтапная стратегия открытия доступа - разумный компромисс между желанием сохранить репутацию «открытой» лаборатории и осознанием рисков, которые несёт модель с усиленными офенсив/дефенсив-навыками в области ИБ. Насколько заявления <a href=\"http://Z.ai\">Z.ai</a> подтвердятся бенчмарками и реальной практикой - станет ясно в течение ближайших недель, когда появятся технический отчёт, независимые оценки и, вероятно, открытые веса.</p>"
-    },
-    {
-      "id": "tass:https://tass.ru/ekonomika/28011583:2026-08-14T06:18:09.000Z:SpaceX вернул Польшу в европейскую зону ",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "SpaceX вернул Польшу в европейскую зону роуминга",
-      "url": "https://tass.ru/ekonomika/28011583",
-      "publishedAt": "2026-08-14T06:18:09.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "На польских клиентов не будут распространяться никакие новые ограничения, рассказал министр цифровизации республики Кшиштоф Гавковский",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/tramp-i-mask-pomirilis-po-odnoy-prichine/:2026-08-14T06:17:00.000Z:Трамп и Маск помирились по одной причине",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Трамп и Маск помирились по одной причине",
-      "url": "https://lenta.ru/news/2026/08/14/tramp-i-mask-pomirilis-po-odnoy-prichine/",
-      "publishedAt": "2026-08-14T06:17:00.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/08/20260814085358517/pic_be3ad118dd7ea6b0a1ebbe88132b8297.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/armiya-i-opk/28011563:2026-08-14T06:16:23.000Z:Поражены два морских буксира и ж/д станц",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Поражены два морских буксира и ж/д станция порта Измаил. Новые удары ВС РФ",
-      "url": "https://tass.ru/armiya-i-opk/28011563",
-      "publishedAt": "2026-08-14T06:16:23.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260814/9299977.jpg",
-      "excerpt": "Российские войска с помощью БПЛА \"Герань-4 сикер\" также поразили логистический центр в населенном пункте Бровары в Киевской области",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/v-rossii-zayavili-o-vyhode-rynka-truda-iz-peregreva/:2026-08-14T06:15:00.000Z:В России заявили о выходе рынка труда из",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "В России заявили о выходе рынка труда из перегрева",
-      "url": "https://lenta.ru/news/2026/08/14/v-rossii-zayavili-o-vyhode-rynka-truda-iz-peregreva/",
-      "publishedAt": "2026-08-14T06:15:00.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/08/20260814084948358/pic_1e06bff859b62421dfdc457d27c61a30.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/28011535:2026-08-14T06:14:51.000Z:Губернатор Приморья сообщил о создании в",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Губернатор Приморья сообщил о создании в регионе нового вуза",
-      "url": "https://tass.ru/obschestvo/28011535",
-      "publishedAt": "2026-08-14T06:14:51.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260814/9299989.jpg",
-      "excerpt": "Олег Кожемяко рассказал, что инициативу поддержали полпред президента в Дальневосточном федеральном округе Юрий Трутнев и правительство региона",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/28011519:2026-08-14T06:14:48.000Z:В Астрахани загорелся двухэтажный жилой ",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В Астрахани загорелся двухэтажный жилой дом",
-      "url": "https://tass.ru/proisshestviya/28011519",
-      "publishedAt": "2026-08-14T06:14:48.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260814/9300103.jpg",
-      "excerpt": "Площадь пожара составила 120 кв. м",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/koza/:2026-08-14T06:14:00.000Z:Телеведущий в прямом эфире попытался под",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Телеведущий в прямом эфире попытался подоить козу и рассмешил коллег",
-      "url": "https://lenta.ru/news/2026/08/14/koza/",
-      "publishedAt": "2026-08-14T06:14:00.000Z",
-      "categoryIds": [
-        "culture"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/13/12/20260813120334365/pic_9ae06a82de443f75f8f794589c1ff040.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/28011573:2026-08-14T06:13:00.000Z:Politico: Зеленский не может подобрать н",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Politico: Зеленский не может подобрать нового посла Украины в США",
-      "url": "https://tass.ru/mezhdunarodnaya-panorama/28011573",
-      "publishedAt": "2026-08-14T06:13:00.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "",
-      "excerpt": "По данным издания, планы Владимира Зеленского сорвал отказ бывшего премьер-министра Украины Юлии Свириденко",
-      "contentHtml": ""
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/russia/1109247:2026-08-14T06:13:00.000Z:Белгородские власти сообщили о 122 атака",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "Белгородские власти сообщили о 122 атаках на регион за сутки",
-      "url": "https://www.interfax.ru/russia/1109247",
-      "publishedAt": "2026-08-14T06:13:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Врио губернатора Белгородской области Александр Шуваев сообщил о 122 атаках на регион за сутки.",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/28011569:2026-08-14T06:12:45.000Z:Лантратова помогла бойцу СВО получить от",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Лантратова помогла бойцу СВО получить отпуск и курс реабилитации",
-      "url": "https://tass.ru/obschestvo/28011569",
-      "publishedAt": "2026-08-14T06:12:45.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Уполномоченный по правам человека рассказала, что военнослужащий получил осколочное ранение",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/ekonomika/28011513:2026-08-14T06:12:03.000Z:В аэропортах Краснодара и Ярославля снял",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В аэропортах Краснодара и Ярославля сняли ограничения",
-      "url": "https://tass.ru/ekonomika/28011513",
-      "publishedAt": "2026-08-14T06:12:03.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "Их вводили для обеспечения безопасности полетов",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/windows10/:2026-08-14T06:12:00.000Z:Пользователей заставили уйти с Windows 1",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Пользователей заставили уйти с Windows 10",
-      "url": "https://lenta.ru/news/2026/08/14/windows10/",
-      "publishedAt": "2026-08-14T06:12:00.000Z",
-      "categoryIds": [
-        "tech",
-        "science"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/13/17/20260813171107613/pic_ce4cee6f39136cf10d7ec694db70fd6c.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/moskvichi-perezhili-holodneyshuyu-noch/:2026-08-14T06:10:00.000Z:Москвичи пережили холоднейшую ночь",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Москвичи пережили холоднейшую ночь",
-      "url": "https://lenta.ru/news/2026/08/14/moskvichi-perezhili-holodneyshuyu-noch/",
-      "publishedAt": "2026-08-14T06:10:00.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/08/20260814085847604/pic_f7cd2ae9d5280b19dc304fcf1dc53d48.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/world/1109253:2026-08-14T06:10:00.000Z:ПХГ Европы заполнены на 59,92%, темп зак",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "ПХГ Европы заполнены на 59,92%, темп закачки ниже обычного",
-      "url": "https://www.interfax.ru/world/1109253",
-      "publishedAt": "2026-08-14T06:10:00.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "",
-      "excerpt": "Запасы газа в подземных хранилищах Европы по итогам газовых суток 12 августа выросли до 59,92%, сообщает ассоциация европейских операторов газовой инфраструктуры Gas Infrastructure Europe (GIE).",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/ekonomika/28011501:2026-08-14T06:09:33.000Z:В аэропорту Нижнего Новгорода сняли огра",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В аэропорту Нижнего Новгорода сняли ограничения",
-      "url": "https://tass.ru/ekonomika/28011501",
-      "publishedAt": "2026-08-14T06:09:33.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "Их вводили для обеспечения безопасности полетов",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/28011549:2026-08-14T06:09:27.000Z:В Испании за помощью после солнечного за",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В Испании за помощью после солнечного затмения обратились более 530 человек",
-      "url": "https://tass.ru/proisshestviya/28011549",
-      "publishedAt": "2026-08-14T06:09:27.000Z",
-      "categoryIds": [
-        "ru",
-        "health"
-      ],
-      "image": "",
-      "excerpt": "Большинство пациентов пожаловались на дискомфорт в глазах, пишет Europa Press",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/shurin-byvshego-mera-moskvy-reshil-reabilitirovat-sebya-po-novym-obstoyatelstvam/:2026-08-14T06:09:00.000Z:Шурин бывшего мэра Москвы решил реабилит",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Шурин бывшего мэра Москвы решил реабилитировать себя по новым обстоятельствам",
-      "url": "https://lenta.ru/news/2026/08/14/shurin-byvshego-mera-moskvy-reshil-reabilitirovat-sebya-po-novym-obstoyatelstvam/",
-      "publishedAt": "2026-08-14T06:09:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/09/20260814090144415/pic_32aa777937bf93b5a6b2617c7f1b46ca.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/ekonomika/28011499:2026-08-14T06:08:40.000Z:В аэропорту Калуги сняли ограничения",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В аэропорту Калуги сняли ограничения",
-      "url": "https://tass.ru/ekonomika/28011499",
-      "publishedAt": "2026-08-14T06:08:40.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "Их вводили для обеспечения безопасности полетов",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/politika/28011561:2026-08-14T06:07:41.000Z:Путин поздравил руководство Пакистана с ",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Путин поздравил руководство Пакистана с Днем независимости",
-      "url": "https://tass.ru/politika/28011561",
-      "publishedAt": "2026-08-14T06:07:41.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20250128/8033169.jpg",
-      "excerpt": "Президент России отметил плодотворное сотрудничество стран и высказался за его дальнейшее развитие",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/blogersha-opisala-pyat-gorodov-rossii-slovami-mozhno-uletet-po-tsene-bileta-na-poezd/:2026-08-14T06:07:00.000Z:Блогерша описала пять городов России сло",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Блогерша описала пять городов России словами «можно улететь по цене билета на поезд»",
-      "url": "https://lenta.ru/news/2026/08/14/blogersha-opisala-pyat-gorodov-rossii-slovami-mozhno-uletet-po-tsene-bileta-na-poezd/",
-      "publishedAt": "2026-08-14T06:07:00.000Z",
-      "categoryIds": [
-        "culture"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/13/20/20260813200529790/pic_15f313c4f56b7504efcea8f91ce3c3b7.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/vneshnost-sportsmena-na-foto-s-vozlyublennoy-vozmutila-polzovateley-seti/:2026-08-14T06:07:00.000Z:Внешность спортсмена на фото с возлюблен",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Внешность спортсмена на фото с возлюбленной возмутила пользователей сети",
-      "url": "https://lenta.ru/news/2026/08/14/vneshnost-sportsmena-na-foto-s-vozlyublennoy-vozmutila-polzovateley-seti/",
-      "publishedAt": "2026-08-14T06:07:00.000Z",
-      "categoryIds": [
-        "culture"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/13/18/20260813183847306/pic_6f6d8577dfae9f66eea86fce757fdb1c.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/russia/1109248:2026-08-14T06:07:00.000Z:Военные сообщили о нейтрализации за ночь",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "Военные сообщили о нейтрализации за ночь 553 беспилотников",
-      "url": "https://www.interfax.ru/russia/1109248",
-      "publishedAt": "2026-08-14T06:07:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Дежурные средства ПВО с 20:00 четверга по московскому времени до 8:00 пятницы перехватили и уничтожили 553 беспилотника самолетного типа, сообщило Минобороны России.",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/armiya-i-opk/28011551:2026-08-14T06:05:58.000Z:Расчеты САУ \"Пион\" уничтожили пункты вре",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Расчеты САУ \"Пион\" уничтожили пункты временной дислокации ВСУ",
-      "url": "https://tass.ru/armiya-i-opk/28011551",
-      "publishedAt": "2026-08-14T06:05:58.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "",
-      "excerpt": "ВС РФ нанесли точные удары на дальность до 30 км, сообщили в Минобороны",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/28011497:2026-08-14T06:05:57.000Z:Пострадавшему от нападения собаки в Прим",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Пострадавшему от нападения собаки в Приморье ребенку выплатят компенсацию",
-      "url": "https://tass.ru/obschestvo/28011497",
-      "publishedAt": "2026-08-14T06:05:57.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Сумма составила свыше 200 тыс. рублей",
-      "contentHtml": ""
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/world/1109252:2026-08-14T06:05:00.000Z:Пилотируемый корабль \"Союз МС-30\" отправ",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "Пилотируемый корабль \"Союз МС-30\" отправится к МКС в марте 2027 года",
-      "url": "https://www.interfax.ru/world/1109252",
-      "publishedAt": "2026-08-14T06:05:00.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "",
-      "excerpt": "Российско-американский экипаж корабля \"Союз МС-30\" отправится с Байконура к Международной космической станции (МКС) в марте следующего года, сообщили в Центре подготовки космонавтов им.",
-      "contentHtml": ""
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/russia/1109249:2026-08-14T06:05:00.000Z:Минобороны сообщило о поражении ж/д стан",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "Минобороны сообщило о поражении ж/д станции порта Измаил и двух украинских буксиров в море",
-      "url": "https://www.interfax.ru/russia/1109249",
-      "publishedAt": "2026-08-14T06:05:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Минобороны сообщило, что вечером в четверг и в течение ночи были нанесены удары по портовой инфраструктуре и морским судам Украины, задействованным в интересах ВСУ.\"В течение ночи 14 августа ударными беспилотными летательными аппаратами поражена железнодорожная станция порта Измаил, используемая для погрузки, хранения, транспортировки военных грузов и горючего для нужд ВСУ, - сказано в заявлении. - Вечером 13 августа ударными беспилотными летательными аппаратами в акватории Черного моря юго-западнее Николаева поражены два судна типа \"морской буксир\", задействованные для сопровождения в порты Украины морских сухогрузов с западным вооружением для ВСУ\".",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/ekonomika/28011533:2026-08-14T06:04:17.000Z:FT: Венесуэла намерена добиваться возвра",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "FT: Венесуэла намерена добиваться возвращения золота из Британии",
-      "url": "https://tass.ru/ekonomika/28011533",
-      "publishedAt": "2026-08-14T06:04:17.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "В британском ЦБ находится 31 тонна венесуэльского золота в слитках стоимостью около $4 млрд, пишет газета",
-      "contentHtml": ""
-    },
-    {
-      "id": "habr:https://habr.com/ru/companies/t2/articles/1066044/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1066044:2026-08-14T06:03:56.000Z:Ускоряем drop in replace Next.js в 100 р",
-      "sourceId": "habr",
-      "sourceName": "Хабр",
-      "title": "Ускоряем drop in replace Next.js в 100 раз. Часть 1",
-      "url": "https://habr.com/ru/companies/t2/articles/1066044/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1066044",
-      "publishedAt": "2026-08-14T06:03:56.000Z",
-      "categoryIds": [
-        "tech"
-      ],
-      "image": "https://habrastorage.org/getpro/habr/upload_files/523/dc9/e99/523dc9e99001fab029056cc20e0c67d1.webp",
-      "excerpt": "Как говорил классик: в 100 раз за Rust. Кажется, что название является кликбейтом. И такого быть в принципе не может. Но я запланировал цикл из трёх статей, в которых постараюсь рассказать, как достичь такого фантастического результата. Читать далее",
-      "contentHtml": "<p>Как говорил классик: в 100 раз за Rust. Кажется, что название является кликбейтом. И такого быть в принципе не может. Но я запланировал цикл из трёх статей, в которых постараюсь рассказать, как достичь такого фантастического результата.  </p>Часть 1. Архитектура и бенчмарки<p>Последние годы, если мы говорим о BFF, SSR, API routes, React Server Components или server-side fetch, мы почти автоматически думаем про JavaScript runtime. Node.js, Deno, Bun, много маркетинга, но парадигма одна: JS/TS исполняется внутри runtime, который живёт, как долгоживущий процесс, управляет памятью через GC. Часто можно слышать баталии: Node.js vs Deno vs Bun. Но почти никто не спрашивает: а обязан ли серверный фронтенд вообще быть JS runtime-приложением?</p>Node.js: удобный в плане developer experience вариант<p>Node.js стал default не случайно. Один язык на клиенте и сервере, одна команда, одна экосистема, npm, TypeScript, React SSR, Next.js, огромное количество готовых библиотек. Хороший developer experience. Deno добавил permissions-модель. Bun ускорил cold start. Но оба остаются в той же парадигме: V8 или JavaScriptCore, garbage collector, event loop, долгоживущий процесс, module graph. Но как основа для современного BFF этот слой имеет системные проблемы:</p><p><strong>Cold start.</strong> Runtime, module graph, framework initialization, JIT warmup, состояние приложения. Для долгоживущих страниц это необходимость, но вопрос стоит ли платить такую цену за короткоживущие серверные actions.</p><p><strong>Память.</strong> V8 heap, module cache, framework runtime, userland dependencies, долгоживущие объекты. Процесс, который должен быть «тонкой прослойкой», легко съедает сотни мегабайт, а если постараться, счёт пойдёт и на гигабайты.</p><p><strong>Безопасность.</strong> Весь application code живёт в одном процессе и одном trust boundary. Shared globals, monkey patching, filesystem/network/process environment доступны по умолчанию, если их специально не ограничивать.</p>Node.js выигрывает по удобству входа. Но BFF на горячем пути запроса оценивается по другим критериям: cold start, memory footprint, p99 latency, throughput. И здесь JS runtime — не всегда лучший выбор.<h3>JavaScript как язык продукта, runtime как отдельный слой</h3><p>Ключевая идея:</p><blockquote><p>JavaScript и TypeScript могут остаться языками UI, композиции и бизнес-логики. Но HTTP-layer, cache, streaming, observability, server-side fetch, memory model, sandboxing и runtime lifecycle — это <strong>отдельный слой</strong>.  </p></blockquote><h3>BFF: от тонкой прослойки к latency-sensitive runtime</h3><p>От бекендеров мне часто доводилось слышать, что BFF — это просто: принять запрос, сходить в backend-сервисы, собрать данные, привести к модели клиента, отдать JSON, HTML или RSC. В реальности в своей повседневной практике я вижу, как BFF разрастается: auth, cache, retries, timeouts, observability, feature flags, server-side fetch, SSR, streaming, RSC, middleware. Через него проходит критичный пользовательский трафик. Он влияет на latency всего продукта и на нагрузку backend-сервисов. BFF становится критичным к задержкам. И здесь ограничения JS runtime особенно заметны:   </p><p>● &nbsp; Cold start долгий — пользователь ждёт.<br>● &nbsp; Процесс ест много памяти — инфраструктура дороже.<br>● &nbsp; Event loop перегружен — растёт tail latency.<br>● &nbsp; Server-side fetch дорогой — каждый backend-запрос дороже.<br>● &nbsp; Нет сильной изоляции — shared state и глобальное окружение становятся риском.</p><h3>Что, если убрать Node.js, но оставить V8?  </h3><p>Первый архитектурный вопрос: что произойдёт, если написать свой runtime layer, но оставить V8, React и экосистему? Кажется, что задача решаемая, так как не придётся переписывать React на Rust и мы не отказываемся от RSC. Именно так работает Rari.  </p><h3>Что такое Rari</h3><p>Представьте: React Server Components, App Router, streaming SSR, 'use client' — всё как в Next.js. Только под капотом не Node.js, а Rust. HTTP-сервер на axum/tokio, V8 через deno_core, build на Vite. Один бинарник. Один порт, который не требует прокси-сервиса по типу nginx для продакшен-окружения.  </p><p>Цифры:</p><ul><li><p><strong>67.4x+ throughput</strong> против Next.js на static-сценариях (на React Summit в июне было 45x — с тех пор подросло).  </p></li><li><p><strong>Cold start в миллисекунды</strong> — V8 snapshot создаётся при build, при старте сервер десериализует готовый isolate.  </p></li><li><p><strong>GC pauses не блокируют HTTP</strong> — V8 работает на отдельном thread, связь идет через message channel.  </p></li><li><p><strong>Multi-core из коробки</strong> — JS runtime pool с несколькими V8 isolates в одном процессе, без PM2 и cluster mode.  </p></li><li><p><strong>Response cache</strong> — на cache hit V8 не просыпается, отдаются pre-compressed bytes.  </p></li></ul><p>Дальше можно было написать: «Rust быстрее, потому что Rust». Нооо... не всё так просто. На React Summit автор говорил: когда он пофиксил три вещи — app router support, true SSR, correct RSC semantics, — производительность прыгнула с 4x до 45x. То есть, оказывается, просто Rust недостаточно. С тех пор добавился response cache — и цифра перевалила за 60x.  </p>Контекст и зрелость<p>В июне 2026 года Rari представляли на <strong>React Summit</strong> в Амстердаме: доклад <em>«Building RSCs Framework on Rust: Architecture Decisions That Delivered 45x Performance»</em> вошел в основную программу. На GitHub (<a href=\"https://github.com/rari-build/rari\">rari-build/rari</a>) — активная разработка: контрибьюторы, issues, PR'ы, регулярные релизы.</p><p><strong>HTTP и orchestration — Rust.</strong> Axum + Tokio. Мультипоточная обработка запросов, tower-middleware, graceful shutdown.</p><p><strong>JavaScript execution — V8 через deno_core.</strong> Без npm-резолвинга, без CommonJS/ESM dual mode, без legacy API. Deno_core даёт чистый V8 со snapshot'ами и контролем lifecycle. Конкретно он даёт:</p><ul><li><p>JS ↔ Rust bridge (ops): типизированные sync- и async-операции. Rust-функция вызывается из JS и наоборот без ручного FFI.  </p></li><li><p>V8 snapshots: сериализация готового isolate при build, десериализация при старте за миллисекунды.  </p></li><li><p>Контроль lifecycle: создание, управление и уничтожение isolates из Rust-кода.  </p></li><li><p>Event loop integration: нативная связка с tokio. Async ops в JS прозрачно мапятся на tokio tasks.  </p></li><li><p>Module loading: кастомный загрузчик модулей. Не npm, не node_modules, не CommonJS/ESM dual mode.  </p></li><li><p>Web APIs из коробки: fetch, timers, console, streams — без легаси Node.js.  </p></li><li><p>Extensions: механизм для добавления собственных ops и API в isolate.  </p></li></ul><p><strong>Build layer — Vite.</strong> Трансформации, RSC-aware code splitting, client/server boundary analysis.  </p>Что есть сегодня<p>В большинстве кейсов Rari работает как drop-in replacement для Next.js. Если приложение использует стандартный App Router без exotic-фич, миграция сводится к замене runtime, а не к переписыванию кода.</p><p>Поддерживаемые фичи:</p><p>Поддерживаемые фичи:</p><ul><li><p>App Router: layouts, loading/error states, стандартная маршрутизация.  </p></li><li><p>Server Components / Client Components: корректная 'use client' boundary.</p></li><li><p>'use cache': серверное кэширование через directive, pluggable backends (redb и другие).  </p></li><li><p>Streaming SSR: через Suspense, progressive delivery.  </p></li><li><p>API routes и server-side fetch.  </p></li><li><p>Response cache: pre-compressed bytes (zstd/brotli/gzip), на cache hit V8 не просыпается.  </p></li><li><p>JS runtime pool: несколько V8 isolates в одном процессе, multi-core без PM2.  </p></li><li><p>HMR для разработки.  </p></li><li><p>Vite как build layer.  </p></li></ul>Three-layer architecture<p>Rari — не просто «Rust-сервер, который запускает JS». Это связка трёх слоёв:</p><p><strong>Первый слой — Rust runtime:</strong> HTTP server, routing, runtime orchestration, cache, streaming, observability.</p><p><strong>Второй слой — build layer:</strong> Vite, RSC-aware transforms, client/server boundary analysis.</p><p><strong>Третий слой — React Server Components:</strong> server components, client components, streaming SSR, RSC payload.</p><p>Справедливо. Вместо двадцатого повторения «Rust под JS» — конкретные точки контакта между слоями.</p>Как слои связаны друг с другомBuild layer → Rust runtime<p>Vite на этапе сборки делает RSC-aware transforms и client/server boundary analysis. На выходе не просто js бандл, а структурированный результат:</p><ul><li><p><strong>Client bundle:</strong>&nbsp;JS для браузера, только&nbsp;<code>'use client'</code>&nbsp;компоненты.</p></li><li><p><strong>Server bundle:</strong>&nbsp;серверные компоненты, исполняются в V8.</p></li><li><p><strong>RSC payload:</strong>&nbsp;сериализованное дерево компонентов.</p></li><li><p><strong>Route manifest:</strong>&nbsp;какие модули к какому маршруту относятся.</p></li></ul><p>Rust runtime потребляет этот manifest. Он знает, какие маршруты существуют, какие модули нужны для каждого, где проходит client/server boundary. Route dispatch происходит на стороне Rust, до того как V8 вообще проснётся.   </p>Rust runtime ↔ V8 (deno_core)<p>Связь через <strong>ops</strong> — типизированные sync- и async-операции между Rust и JS:  </p><ul><li><p><strong>Rust → JS:</strong>&nbsp;вызов рендера компонента, передача props, запуск server action</p></li><li><p><strong>JS → Rust:</strong>&nbsp;<code>fetch()</code>, обращение к response cache, чтение файлов, логирование</p></li><li><p><strong>Async ops:</strong>&nbsp;JS вызывает&nbsp;<code>await fetch(...)</code>, deno_core мапит это на tokio task, результат возвращается в JS через event loop</p></li></ul>V8 → Rust runtime (streaming)<p>При streaming SSR через Suspense:</p><ol><li><p>V8 начинает рендер, встречает&nbsp;<code>&lt;Suspense&gt;</code>&nbsp;boundary.</p></li><li><p>Отдаёт shell (первый chunk) через op обратно в Rust.</p></li><li><p>Rust оборачивает chunk в HTTP response (chunked transfer encoding) и отправляет клиенту.</p></li><li><p>V8 продолжает рендер, резолвит Suspense, отдаёт следующий chunk.</p></li><li><p>Rust стримит его в тот же HTTP response.</p></li></ol><p>Клиент получает progressive delivery. Rust стримит по мере готовности.</p>Response cache (Rust-слой, до V8)<pre><code class=\"yaml\">Request → Rust route dispatch\n  → hash(request) → cache lookup\n      hit  → pre-compressed bytes (zstd/brotli/gzip) → HTTP response\n      miss → V8 render → compress → cache write → HTTP response</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Cache lookup и отдача происходят целиком на Rust-стороне.</p>Итого: кто что делает<p>Слой</p><p>Отвечает за</p><p>Не делает</p><p><strong>Vite (build)</strong></p><p>Трансформы, boundary analysis, client/server split, manifest</p><p>Runtime, HTTP, кэш</p><p><strong>Rust runtime</strong></p><p>HTTP, routing, cache, streaming transport, observability, lifecycle</p><p>Рендер компонентов, продуктовую логику</p><p><strong>V8 (deno_core)</strong></p><p>Исполнение React, RSC render, server actions</p><p>HTTP, кэш, маршрутизацию</p><p>Взаимодействие через: ops, message channel, manifest, chunks.</p><h3>V8 без Node.js: как устроен runtime</h3><pre><code>HTTP request\n    → Rust HTTP server (axum + tokio, multi-threaded)\n        → route dispatch\n            → message channel\n                → JS thread (deno_core + V8, single-threaded)\n                    → React RSC render\n                → response\n    → HTTP response\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>В Node.js всё живёт в одном процессе и на одном event loop. HTTP-сервер, обработка запросов, таймеры, стриминг, GC — всё конкурирует за один thread. Когда V8 запускает garbage collection, event loop останавливается. Все pending-запросы ждут. Все новые соединения ждут. Те, кто смотрел Kibana на проде, могут по p99 latency увидеть периодический stop the world, и вы не можете ничего с этим сделать, потому что HTTP-слой и GC живут в одном адресном пространстве. В Rari это разделено физически.   </p>Как устроено<p><strong>Tokio runtime (Rust):</strong> multi-threaded, work-stealing scheduler. HTTP-запросы обрабатываются на пуле OS threads. Axum принимает соединения, роутит, отдаёт статику, работает с response cache — всё это на Rust-потоках, независимо от V8.  </p><p><strong>V8 isolate (deno_core):</strong> single-threaded. Живёт на выделенном thread. Исполняет React Server Components, генерирует RSC payload, выполняет server actions.  </p><p><strong>Связь:</strong> message channel (mpsc). Rust отправляет задачу в V8: «отрендери компонент X с props Y». V8 отправляет результат обратно. Данные сериализуются при передаче. Shared memory нет — это исключает data races и делает GC pause изолированным событием.  </p>Что происходит при GC pause<pre><code>GC pause в V8\n  → V8 thread останавливается\n  → tokio threads ПРОДОЛЖАЮТ работать:\n      - принимают новые соединения\n      - отдают cache hit (V8 не нужен)\n      - стримят данные, которые уже в буфере\n      - обрабатывают запросы к другим isolates (если JS runtime pool)\n  → задержку получают ТОЛЬКО запросы, которые ждали V8</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>GC pause перестаёт быть глобальным событием. Он влияет только на те запросы, которые в данный момент исполняются в V8. На cache hit, статику, TLS handshake, новые соединения пауза не влияет.  </p>Blast radius<p>Разделение на процессы/threads меняет не только latency, но и последствия сбоев:</p><p><strong>В Node.js:</strong> утечка памяти в одном модуле, бесконечный цикл в middleware, необработанное исключение — весь процесс падает. Все запросы теряются. Нужен restart, а значит cold start.</p><p><strong>В Rari:</strong> проблема в V8 (OOM, crash, зависший рендер) не роняет HTTP-сервер. Rust-процесс продолжает принимать запросы. V8 isolate можно перезапустить. Недавно в Rari произошло долгожданное событие: был влит JS runtime pool, обсуждение тут: (<a href=\"https://github.com/rari-build/rari/issues/223\">issue #223</a>). Если один isolate долго обрабатывает запрос, роутер его обходит, остальные обслуживают трафик.</p>Почему это важно именно для BFF<p>BFF обрабатывает много конкурентных запросов одновременно. Часть из них — cache hit, и V8 не нужен. Часть — dynamic render, для которого V8 нужен. Часть — server-side fetch к backend-сервисам, где V8 нужен только для сборки ответа. В Node.js GC pause от одного тяжёлого рендера бьёт по всем остальным запросам. В Rari тяжёлый рендер изолирован: он замедляет только себя. Остальной трафик идёт через Rust-слой, который не знает про GC.  </p><h3>V8 snapshot: почему скорость cold start-а важна</h3><p>Архитектура «Rust + embedded V8» бессмысленна, если при каждом старте процесса V8 заново парсит и компилирует React, RSC runtime, framework code и весь application JavaScript. Получаем тот же cold start, что и в Node.js. <strong>V8 snapshot</strong> – механизм, унаследованный от Deno (Rari использует&nbsp;<code>deno_core</code>).</p><pre><code>Build time:\n  V8 парсит и компилирует весь JS → сериализует heap → snapshot.bin\n\nRuntime (старт сервера):\n  V8 десериализует snapshot.bin → isolate готов к работе\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Весь module graph — React, RSC runtime, framework, зависимости — парсится и компилируется один раз при build. Результат: бинарный snapshot. При старте сервер просто десериализует его в память. Первое, что замечаешь после перехода на Rari — время старта. После него Next.js вызывает отторжение: медленный старт, долгий build. В Node.js каждый запуск — это resolve → load → parse → compile → execute для всего module graph заново. В Rari этот цикл происходит один раз при build.   </p><p></p><p>Node.js / Next.js</p><p>Rari</p><p>Старт процесса</p><p>Resolve + parse + compile всего module graph</p><p>Десериализация snapshot</p><p>Cold start</p><p>Секунды (зависит от размера приложения)</p><p>Миллисекунды</p><p>Зависимость от размера приложения</p><p>Чем больше зависимостей — тем дольше старт</p><p>Размер почти не влияет</p><p>Preview / serverless</p><p>Каждый инстанс платит полную цену</p><p>Каждый инстанс стартует быстро</p><p>В общем, это просто другая модель инициализации. Она возможна потому, что V8 здесь — embedded-компонент с контролируемым lifecycle, а не «весь runtime», который сам управляет своим запуском.  </p><h3>Rust is blazing — недостаточное объяснение</h3><p>Легко сказать: Rari быстрее, потому что Rust быстрее Node.js. Но Rust сам по себе не спасает от неправильной архитектуры. Можно легко навайбкодить решение и упереться в потолок.  </p><p><strong>Architecture &gt; language.</strong></p><p>Три архитектурные ошибки, которые убивают производительность даже на быстром runtime:</p>Ошибка #1: Неправильные defaults для RSC<p>В React Server Components server component — это default. Client component должен явно opt-in через '<code>use client</code>'. Если сделать наоборот, каждый компонент попадает в client bundle, даже без интерактивности. Bundle растёт с размером приложения, а не с количеством интерактивности. '<code>use client</code>' и server-by-default — это не только DX. Неинтерактивный код остаётся на сервере, а клиент получает меньше JavaScript.</p>Ошибка #2: Нет App Router — framework слепой к graph<p>Rari использует App Router как декларативное описание графа маршрутов: layout → page → loading → error → not-found. Каждый узел — конкретный файл. Framework видит дерево и знает, что для <code>/dashboard/settings</code> нужны компоненты из <code>app/dashboard/settings/</code> и родительские layouts, а всё остальное — нет. Какие преимущества дает такое решение:</p><p><strong>Code splitting.</strong>&nbsp;Если framework знает граф, он делит клиентский JS по маршрутам. Пользователь на&nbsp;<code>/home</code>&nbsp;получает только то, что нужно для&nbsp;<code>/home</code>. Без графа мы бы получили всё в один bundle. 50 маршрутов и весь JS для всех 50 страниц едет на клиент.</p><p><strong>Client/server boundary.</strong> Зная граф, framework определяет, какие <code>'use client'</code> компоненты реально нужны для конкретного маршрута. Компонент, который импортируется только в <code>/admin</code>, не попадёт в bundle для <code>/home</code>. Без графа — невозможно понять, что относится к текущему маршруту, а что нет. Всё тащится везде.  </p><p><strong>Prefetching.</strong> Граф позволяет предзагружать данные и компоненты для вероятных следующих маршрутов. Пользователь на <code>/dashboard</code> — предзагрузи<code> /dashboard/settings</code>. Без графа prefetch слепой: нечего предзагружать, потому что неизвестно, что нужно.  </p><p>Итого: runtime может быть быстрым — Rust, V8, snapshot. Но если build-слой не понимает граф, он не может правильно разделить код, отсечь лишнее и предзагрузить нужное. Build/runtime boundary остаётся медлиным. Быстрый runtime поверх неоптимизированного build'а — это быстрый сервер, который отдаёт клиенту слишком много JavaScript. Исправить это оптимизацией bundler'а нельзя. Нужно менять архитектуру: добавлять App Router, чтобы framework видел граф. Именно поэтому в Rari поддержка App Router стала вторым этапом, который поднял производительность с 4x до 10x.  </p>Ошибка #3: Incomplete SSR<p>Компоненты выполняются на сервере. HTML генерируется. Но если hydration неполная — client-side hydration overhead, JavaScript parsing delay, cascading waterfall requests. Server execution ещё не означает server-first архитектуру. Исправление — не оптимизация bundler'а, а соответствие замыслу React: серверные компоненты по умолчанию, клиентские — только по явному запросу, анализ графа зависимостей на уровне маршрутов, полноценный SSR, гидратация — только интерактивных частей.</p><h3>Бенчмарки: как я сравнивал Rari и Next.js</h3><p>Стенд в Docker Compose, нагрузка через wrk, warmup, несколько прогонов, итог — медиана. Инструментация: в Next.js — встроенный telemetry через env переменную, в Rari — ручное подключение к tracing crate через tracing-opentelemetry bridge. Весь стенд, конфиги и скрипты: <a href=\"http://github.com/jarick/rari-vs-nextjs\">github.com/jarick/rari-vs-nextjs</a>   </p><p>Три сценария:&nbsp;<strong>static/prerender</strong>,&nbsp;<strong>fetch</strong>,&nbsp;<strong>streaming через Suspense</strong>.</p><p>Почему было добавлено несколько тестов. Static — это не React render. Fetch — это overhead server-side fetch. Streaming — это runtime pipeline. Нельзя смешивать в одну фразу «Rari быстрее Next.js». Правильный вопрос: что на hot path в конкретном сценарии?  </p>Static: скорость серверного слоя<p>Оба фреймворка отдают заранее подготовленный результат. У Rari — prerendered RSC buffer из cache. У Next.js — static/prerender результат. React-рендер один и тот же, в данном случае мы сравниваем Rust/hyper против Node.js + Next.js server overhead.  </p><p><strong>Rari ~132k req/s, Next.js ~2.2k req/s, разница ~59x.</strong></p><p>Вывод: когда результат подготовлен, Rust server hot path радикально быстрее Node.js/Next.js hot path.  </p>Fetch (разница в 550 раз!): что реально происходит под капотом  <p>Когда серверный компонент в Next.js вызывает&nbsp;<code>fetch()</code>, это не один вызов. Это цепочка слоёв, каждый из которых добавляет overhead:</p><p><strong>1. Next.js patchFetch.</strong> Next.js патчит глобальный <code>fetch</code>. Перед тем, как запрос вообще уйдёт в сеть, проходит обёртка: проверка <code>revalidate, cache, tags</code>, дедупликация одинаковых запросов в рамках одного рендера, запись в cache layer. Это JavaScript-код, который исполняется в V8 до того, как начался сетевой обмен.  </p><p><strong>2. undici.</strong> Глобальный <code>fetch() </code>в Node.js реализован через undici — HTTP-клиент на JavaScript. Создание запроса, сериализация заголовков, выбор dispatcher (Pool, Client, Agent), решение: переиспользовать connection или создавать новый. Всё это — JS-объекты, аллокации, GC pressure.  </p><p><strong>3. Event loop.</strong> Запрос уходит в event loop. Node.js должен переключить фазу: timers → pending callbacks → poll → check. I/O операция регистрируется в libuv, поток ждёт на <code>epoll/kqueue</code>, ответ возвращается в poll-фазу. Каждый await — это переключение контекста внутри event loop, и оно не бесплатное.  </p><p><strong>4. Promises и microtasks.</strong> <code>fetch()</code> возвращает Promise. Каждый <code>await response.json()</code> — ещё одна микрозадача. Тело ответа читается через ReadableStream — каждый chunk порождает отдельную микрозадачу. Для ответа из 10 чанков — 10+ переключений в microtask queue.  </p><p><strong>5. V8 overhead.</strong> Всё вышеперечисленное исполняется в V8: создание объектов для запроса/ответа, временные строки для заголовков, буферы для тела. Всё это в итоге попадает в сборщик мусора. Если код не прогрет JIT'ом — интерпретация вместо компилированного кода.  </p>Итого на один fetch в Next.js<pre><code>fetch() вызов\n  → Next.js patchFetch (cache check, dedup, revalidate)\n  → undici (создание запроса, dispatcher, pool)\n  → libuv / event loop (I/O registration, poll)\n  → TCP (даже loopback — это syscall, context switch)\n  → ответ: event loop → ReadableStream → chunks → microtasks\n  → response.json() → Promise → parse → JS-объект</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Каждый слой — это аллокации, переключения, обёртки. Даже для одного запроса overhead незаметен. Для BFF, который делает 5–10 fetch'ей на запрос к разным backend-сервисам, это всё, как правило, ещё и складывается, так как запросы часто идут последовательно.  </p>Что происходит в Rari<pre><code>fetch() вызов в V8\n  → op: Rust получает задачу\n  → Rust HTTP client (hyper) поверх tokio async I/O\n  → TCP\n  → ответ читается в Rust buffer\n  → результат передаётся в V8 через op (одна сериализация)</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Нет JavaScript-обёрток на сетевом уровне. Нет undici, dispatcher, event loop переключений между фазами, ReadableStream для тела. Данные читаются напрямую в Rust-буфер и передаются в V8 один раз.  </p>Почему self-fetch это показывает особенно clearly<p>Self-fetch — запрос к самому себе, к собственному <code>data.json</code>. Данные уже в памяти сервера. Сетевая задержка минимальная (loopback). Казалось бы, overhead должен быть нулевым. Но в Next.js даже self-fetch проходит весь стек: patchFetch → undici → dispatcher → event loop → TCP loopback → ответ → ReadableStream → microtasks → parse. Все слои абстракции работают, даже когда данные уже рядом. В Rari self-fetch — это Rust HTTP client, который делает loopback-запрос через tokio. Сетевой overhead минимален, а JavaScript-обвязки на сетевом уровне нет вообще. V8 получает результат через один op.</p>Streaming: самый честный dynamic-сценарий<p>Здесь оба фреймворка реально выполняют dynamic RSC/Suspense pipeline. Кеш отключён для страницы, получается, нельзя просто отдать подготовленный буфер. Оба runtime каждый раз генерируют страницу. Тестовая страница: 10 <code>&lt;Suspense&gt;</code> boundaries с задержками 100ms×5, 500ms×3, 1000ms×2. Минимальное время рендера — 1 секунда (самая длинная задержка). Нагрузка: 50 конкурентных соединений, 15 секунд.</p><p><strong>Результаты:</strong></p><p>Метрика</p><p>Rari</p><p>Next.js</p><p>Разница</p><p>req/s</p><p>74</p><p>22</p><p><strong>3.4x</strong></p><p>TTFB</p><p>7ms</p><p>5ms</p><p>Next.js быстрее</p><p>Chunks</p><p>13</p><p>14</p><p>разное количество</p><p>Inter-chunk gap p95</p><p>500ms</p><p>500ms</p><p>идентично</p><p>И вот тут начинается интересное. TTFB: Next.js оказывается быстрее. Next.js отправляет первый байт за 5ms, а Rari — за 7ms. Казалось бы, Next.js выигрывает на старте. Но дальше начинается streaming, и картина меняется.  </p>Chunks: разное количество при одинаковых Suspense boundaries<p>Оба фреймворка рендерят одни и те же 10 Suspense boundaries. Но Rari отправляет 13 чанков, а Next.js за 14. При абсолютно одинаковой вёрстке. Почему? Next.js стримит больше транспортных данных: RSC payload metadata, script tags для hydration, дополнительные обёртки. Каждый чанк — это отдельный проход через Node.js HTTP stack: serialize → chunked transfer encoding → event loop → TCP write. Rari группирует данные плотнее. Меньше чанков, соответственно, меньше проходов через транспортный стек. Каждый чанк в Rari — это V8 serialize → Rust HTTP write. Без event loop, без промежуточных обёрток.</p>Inter-chunk gap: идентично<p>Причём можно заметить, что p95 inter-chunk gap — 500ms у обоих. Это значит, что задержки Suspense boundaries (100ms, 500ms, 1000ms) доминируют. Оба фреймворка ждут одинаково. Progressive delivery работает у обоих: shell уходит сразу, Suspense-границы резолвятся по мере готовности, клиент получает данные инкрементально. Разница не в том, когда приходят данные. Разница в том, сколько overhead приходится на каждый чанк.</p>Почему 3.4x при одинаковом inter-chunk gap<p>Каждый чанк в Next.js проходит через:</p><pre><code>React render → serialize → Node.js HTTP response\n  → chunked transfer encoding → event loop → TCP write\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Каждый чанк в Rari:</p><pre><code>V8 render → serialize → Rust HTTP write\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>При 13–14 чанках на запрос overhead на каждый чанк умножается. Next.js делает больше чанков, и каждый чанк дороже. Rari делает меньше чанков, и каждый чанк дешевле. 3.4x — это не «каждый запрос в 3.4 раза быстрее». При 50 конкурентных соединениях и 1-секундном рендере это <strong>throughput</strong>: Rari обслуживает в 3.4 раза больше конкурентных запросов в секунду. Latency на запрос примерно одинаковая (Suspense-задержки доминируют), но способность сервера обрабатывать параллельные запросы разная. Тут стоит подчеркнуть, что разница в TCP chunks — транспортная, а не RSC-level. Rari быстрее в этом сценарии не за счёт отключения progressive delivery, а за счёт более быстрого транспортного стека на каждый чанк.  </p><h3>Итог первой части</h3><p>Rari позиционируется как drop-in replacement для Next.js. И на уровне API это во многом так: App Router, Server Components, 'use client', streaming — всё на месте.</p><p>Но, как обычно бывает с drop-in, есть свои моменты. От Next.js в коде Rari фактически ничего не осталось — это другой runtime, HTTP-слой и другая модель инициализации. Совместимость на уровне интерфейса не означает идентичность внутри.</p><p>Что именно поменялось под капотом, где это даёт выигрыш, а где создаёт ограничения, &nbsp;во второй статье.</p><p><em>Бенчмарки:</em><a href=\"https://github.com/jarick/rari-vs-nextjs\"><em> github.com/jarick/rari-vs-nextjs</em></a><em>. Rari:</em><a href=\"https://github.com/rari-build/rari\"><em> github.com/rari-build/rari</em></a><em>.</em></p>"
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/28011547:2026-08-14T06:03:16.000Z:В Красноярске вынесли приговоры за орган",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В Красноярске вынесли приговоры за организацию сети подпольных казино",
-      "url": "https://tass.ru/proisshestviya/28011547",
-      "publishedAt": "2026-08-14T06:03:16.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Участники преступной группы получили от 6,5 года до 14 лет колонии",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/ekonomika/28011541:2026-08-14T06:02:53.000Z:Чистый убыток \"Делимобиля\" в I полугодии",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Чистый убыток \"Делимобиля\" в I полугодии сократился по МСФО на 14%",
-      "url": "https://tass.ru/ekonomika/28011541",
-      "publishedAt": "2026-08-14T06:02:53.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "Показатель составил 1,7 млрд рублей",
-      "contentHtml": ""
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/business/1109251:2026-08-14T06:02:00.000Z:РФ в I полугодии увеличила выручку от эк",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "РФ в I полугодии увеличила выручку от экспорта креветок на 17% до $76 млн",
-      "url": "https://www.interfax.ru/business/1109251",
-      "publishedAt": "2026-08-14T06:02:00.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "РФ в первой половине этого года экспортировала креветок почти на $76 млн, что на 17% больше, чем за аналогичный период прошлого года, сообщает федеральный центр \"Агроэкспорт\" со ссылкой на оценки экспертов.",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/28011493:2026-08-14T06:01:21.000Z:Повреждения в порту Усть-Луга и на склад",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Повреждения в порту Усть-Луга и на складе Wildberries под Тверью. Последствия атак БПЛА",
-      "url": "https://tass.ru/proisshestviya/28011493",
-      "publishedAt": "2026-08-14T06:01:21.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260814/9299955.jpg",
-      "excerpt": "Режимы воздушной угрозы с 00:00 до 07:00 мск вводились в 17 российских регионах",
       "contentHtml": ""
     }
   ]
