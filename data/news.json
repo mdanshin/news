@@ -1,13 +1,320 @@
 {
-  "generatedAt": "2026-08-15T17:12:25.505Z",
+  "generatedAt": "2026-08-15T17:42:33.198Z",
   "items": [
     {
-      "id": "lenta:https://lenta.ru/news/2026/08/15/vlasti-ssha-otozvali-150-viz-iz-za-rodilnogo-turizma/:2026-08-15T17:09:20.000Z:Власти США отозвали 150 виз из-за «родил",
+      "id": "lenta:https://lenta.ru/news/2026/08/15/v-rossiyskom-gorode-pri-pozhare-v-stroyaschemsya-zdanii-postradali-11-chelovek/:2026-08-15T17:38:00.000Z:В российском городе при пожаре в строяще",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "В российском городе при пожаре в строящемся здании пострадали 11 человек",
+      "url": "https://lenta.ru/news/2026/08/15/v-rossiyskom-gorode-pri-pozhare-v-stroyaschemsya-zdanii-postradali-11-chelovek/",
+      "publishedAt": "2026-08-15T17:38:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/20/20260815203927561/pic_1727e8bc18f5d624f934a3a4c4c23f35.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "habr:https://habr.com/ru/articles/1070820/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070820:2026-08-15T17:38:00.000Z:Как я добавил в Braille eMotion установк",
+      "sourceId": "habr",
+      "sourceName": "Хабр",
+      "title": "Как я добавил в Braille eMotion установку APK: доступный диспетчер приложений и автономный EXE",
+      "url": "https://habr.com/ru/articles/1070820/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070820",
+      "publishedAt": "2026-08-15T17:38:00.000Z",
+      "categoryIds": [
+        "tech"
+      ],
+      "image": "",
+      "excerpt": "Я незрячий и пользуюсь двумя Braille eMotion 40. На одном устройстве мне стало тесно в рамках штатного набора программ, поэтому я сделал доступный диспетчер APK и автономный установщик для Windows. Рассказываю, почему для интеграции понадобился отдельный пакет-мост, как я проверял опасные операции и какую часть работы взял на себя GPT Codex. Читать далее",
+      "contentHtml": "<p>Меня зовут Андрей. Я незрячий, и у меня два дисплея Braille eMotion 40. Одним я пользуюсь как основным и на нём же проводил все эксперименты. Второй намеренно оставил в заводском состоянии. Он нужен мне как рабочий запас и точка сравнения, если на основном устройстве что-то пойдёт не так.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr//post_images/525/e13/8d0/525e138d064c5a7b8c66340c7c2873e9.png\" alt=\"Braille eMotion 40: корпус устройства, клавиатура и 40-ячеечная брайлевская строка\"><figcaption>Braille eMotion 40: корпус устройства, клавиатура и 40-ячеечная брайлевская строка</figcaption></figure><p><em>Источник: </em><a href=\"https://himsintl.com/en/blindness/view.php?idx=34\"><em>официальная страница HIMS International</em></a><em>. © SELVAS Healthcare, Inc., all rights reserved.</em></p><p>Braille eMotion интересен тем, что внутри это полноценное Android-устройство с брайлевской строкой, клавиатурой и собственной оболочкой. Штатных функций мне довольно быстро стало мало. В доступном меню моей версии прошивки не было способа взять обычный APK-файл, установить его и затем управлять установленными программами. Для каждого эксперимента приходилось возвращаться к компьютеру и работать через Android Debug Bridge, или ADB.</p><p>Мне хотелось получить нормальный пользовательский сценарий: скопировать APK в папку Download, открыть на самом eMotion диспетчер приложений, прочитать сведения о пакете на брайлевской строке и передать установку системному установщику Android. Для первоначальной установки самого диспетчера я хотел один EXE-файл под Windows, без отдельной настройки Python, Android Studio и ADB.</p><p>Так появился <a href=\"https://github.com/andreykadelite/braille-emotion-jailbreak-toolkit\">Braille eMotion Jailbreak Toolkit</a>. Название осталось от первых опытов, хотя технически это не jailbreak. Проект не получает root-доступ, не разблокирует загрузчик, не меняет прошивку и не обходит защиту платного содержимого. Он использует штатную отладку Android по USB.</p><h3>Что мешало установить обычное приложение</h3><p>Сначала задача казалась простой. Braille eMotion работает на Android 12, ADB доступен, значит APK можно отправить стандартной командой установки. Первый пакет действительно установился, но в заводском меню не появился. Получилось приложение, которое есть в системе, однако запустить его с самого устройства неудобно.</p><p>После изучения заводской оболочки обнаружилось первое ограничение. Её раздел для дополнительных программ распознаёт пакеты с ожидаемым префиксом <code>com.selvashc.*</code>. Так я сделал раннюю версию диспетчера с подходящим именем пакета. Ярлык появился в разделе «Онлайн библиотеки», зато возникла более неприятная проблема: элементы приложения неправильно читались встроенным скринридером, а фокус вёл себя так, словно перед ним внутренний экран производителя.</p><p>Причина оказалась в обработке пакетов самим скринридером. Имена с префиксами <code>com.jawon</code>, <code>com.selvas</code>, <code>com.infraware</code> и <code>com.selvashc</code> считаются частью родной среды. Для штатных экранов это логично, а обычное Android-приложение попадает не в тот режим доступности.</p><p>Один и тот же пакет должен был одновременно притвориться родным для оболочки и остаться сторонним для скринридера. Совместить эти требования в одном APK у меня не получилось. Поэтому я разделил решение на две части.</p><h3>Пакет-мост и основной диспетчер</h3><p>В заводском меню виден маленький пакет <code>com.selvashc.shortcut.appmanager</code>. У него нет собственного окна. Он сразу запускает основной пакет <code>org.brailleemotion.appmanager</code> и завершает работу. Основной диспетчер уже не подпадает под специальную обработку заводского скринридера и ведёт себя как обычное доступное приложение Android.</p><p>Схема получилась такой:</p><pre><code>Windows-установщик\n    └── ADB\n        ├── основной APK: org.brailleemotion.appmanager\n        └── пакет-мост:  com.selvashc.shortcut.appmanager\n\nЗаводское меню eMotion\n    └── «Диспетчер приложений»\n        └── пакет-мост\n            └── основной диспетчер\n                ├── список программ\n                ├── системное удаление\n                └── APK из Download → системный установщик Android\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Код моста умещается в одной Activity. Существенная часть выглядит так:</p><pre><code class=\"java\">String targetPackage = getString(R.string.target_package);\nIntent launchIntent = getPackageManager()\n        .getLaunchIntentForPackage(targetPackage);\n\nif (launchIntent == null) {\n    showNotInstalledMessage();\n} else {\n    launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);\n    startActivity(launchIntent);\n}\nfinish();\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Сам диспетчер не маскируется под системную программу. Мост решает только вопрос видимости в заводской оболочке. Это разделение стало главным архитектурным решением проекта.</p><h3>Интерфейс, который должен работать без зрения</h3><p>В дисплее Брайля красивый визуальный экран сам по себе ничего не решает. Важнее порядок фокуса, понятные названия элементов, предсказуемые клавиши и отсутствие ситуаций, когда курсор оказывается в безымянной области.</p><p>На главном экране диспетчера пять действий:</p><ol><li><p>«Запустить приложение».</p></li><li><p>«Удалить приложение».</p></li><li><p>«Установить APK из папки Download».</p></li><li><p>«Справка».</p></li><li><p>«Выход».</p></li></ol><p>Список приложений формируется динамически. Для новой программы не требуется создавать ещё один ярлык в заводском меню. Системные пакеты, компоненты HIMS и SELVAS, сама оболочка и диспетчер скрыты из списка удаления. Удаление всё равно подтверждает Android, поэтому случайное нажатие не приводит к немедленному стиранию программы.</p><p>Управление проверялось стрелками, <code>Tab</code>, <code>Shift+Tab</code>, <code>Page Up</code>, <code>Page Down</code>, <code>Home</code>, <code>End</code>, <code>Enter</code>, пробелом и <code>Escape</code>. При движении по длинному списку видимая прокрутка синхронизируется с фокусом. Это нужно в том числе зрячему помощнику: он видит на экране тот же пункт, который сейчас читает пользователь.</p><p>Справку я разбил на 11 тем и отдельные абзацы. Скринридер может читать их последовательно, без одного огромного текстового блока. У опасных диалогов начальный фокус стоит на отмене. Такой мелочи легко не заметить при разработке мышью, но на устройстве без привычного сенсорного управления она заметно снижает риск.</p><h3>Как устанавливается APK</h3><p>Диспетчер ищет обычные файлы с расширением <code>.apk</code> непосредственно в <code>/sdcard/Download</code>. Вложенные каталоги он не обходит. Форматы XAPK, APKS и другие наборы split APK пока не поддерживаются.</p><p>Перед передачей файла Android выполняются несколько проверок:</p><ol><li><p>Файл повторно разбирается как APK, из него читаются имя, пакет и версия.</p></li><li><p>Пользователь видит имя файла, размер и сведения о приложении.</p></li><li><p>APK копируется в приватный кэш диспетчера, при этом проверяются свободное место и полный размер копии.</p></li><li><p>Подготовленная копия разбирается ещё раз. Пакет и версия должны совпасть с первоначально показанными данными.</p></li><li><p>Доступ к копии выдаётся системному установщику по одному URI через закрытый для посторонних приложений <code>ContentProvider</code> в режиме только для чтения.</p></li><li><p>После результата временная копия удаляется. Исходный APK остаётся в Download.</p></li></ol><p>Последнее действие выполняет штатный Package Installer Android:</p><pre><code class=\"java\">Intent installIntent = new Intent(Intent.ACTION_INSTALL_PACKAGE);\ninstallIntent.setData(apkUri);\ninstallIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);\nstartActivityForResult(installIntent, REQUEST_INSTALL_APK);\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Тихой установки здесь нет. Android показывает сведения о приложении и запрашивает подтверждение. При первом запуске также потребуются разрешение на работу с файлами и право устанавливать неизвестные приложения для диспетчера.</p><p>В манифесте нет доступа к интернету, контактам, камере, микрофону и геопозиции. Это относится только к самому диспетчеру. Устанавливаемый пользователем APK имеет собственный набор разрешений и собственные риски.</p><h3>Зачем понадобился автономный установщик для Windows</h3><p>ADB удобен разработчику, но я не хотел превращать установку в инструкцию из десятка консольных команд. Windows-программа версии 2.0 собрана на Python 3.11 и PyQt5 в один 64-разрядный EXE. Внутри находятся ADB и оба APK, поэтому отдельная среда разработки пользователю не нужна.</p><p>Установщик делает больше, чем последовательный запуск <code>adb install</code>:</p><ul><li><p>проверяет SHA-256 всех встроенных файлов до любой операции;</p></li><li><p>распознаёт состояния <code>unauthorized</code> и <code>offline</code>, а также подключение нескольких устройств;</p></li><li><p>сверяет модель, производителя, системное имя и наличие заводской оболочки, чтобы не установить набор на обычный телефон;</p></li><li><p>работает только с выбранным серийным номером ADB;</p></li><li><p>сначала ставит основной пакет, затем мост, а при ошибке второго шага откатывает первый;</p></li><li><p>после установки проверяет версии, Activity, мост и, где возможно, хеш установленного APK;</p></li><li><p>возвращает заводскую оболочку в состояние HOME;</p></li><li><p>при удалении затрагивает только пакеты этого проекта.</p></li></ul><p>EXE не удаляет программы, которые пользователь поставил через диспетчер. Он убирает основной менеджер, мост и ранний тестовый пакет, если тот сохранился.</p><p>Само окно тоже пришлось проектировать как доступное. У всех интерактивных элементов есть имена, порядок обхода клавишей <code>Tab</code> зафиксирован, журнал можно читать скринридером. Кнопки установки и удаления заблокированы, пока устройство не опознано и пользователь не прочитал предупреждение об ответственности. В диалоге подтверждения фокус сначала получает безопасная кнопка отмены.</p><p>У файла нет коммерческой подписи Authenticode, поэтому SmartScreen способен показать предупреждение. Я не советую отключать защиту Windows. Верный порядок действий состоит в загрузке файла со страницы релиза и сравнении его SHA-256 с <code>SHA256SUMS.txt</code>.</p><h3>Что делал я и что делал GPT Codex</h3><p>Здесь важно не приписывать себе набор каждой строки вручную. Я сформулировал задачу из собственного опыта, определил пользовательские сценарии и границы безопасности, исследовал поведение Braille eMotion, запускал сборки на настоящем устройстве и проверял результат через брайлевскую строку. Я воспроизводил ошибки, менял требования после неудачных попыток и решал, какие операции можно включить в релиз.</p><p>Код в репозитории создавался в диалоге с GPT Codex. По моим заданиям Codex анализировал структуру проекта, писал и перерабатывал Java, Python и PowerShell, добавлял автоматические тесты, проверял сборку и готовил документацию. Когда реальное устройство вело себя иначе, чем ожидалось, я приносил журналы и точное описание, после чего мы меняли реализацию и снова проверяли её на eMotion.</p><p>Поэтому разделение такое. Я автор идеи, требований, экспериментов на устройстве, решений по поведению продукта и приёмочных проверок. Codex был инструментом, который помог превратить эти решения в исходный код и последовательно его доработать. Ответственность за то, что попало в опубликованный релиз, я оставляю за собой.</p><p>Для меня такой способ разработки особенно полезен. Графический макет не был источником истины. Источником служили дерево элементов, текстовые журналы, названия контролов, последовательность фокуса и то, что я фактически читал пальцами на брайлевской строке.</p><h3>Как я проверял результат</h3><p>На момент подготовки статьи последней опубликованной производителем прошивкой была <a href=\"https://www.himsintl.com/en/public_relations/media.php?bgu=view&amp;idx=82\">Braille eMotion V1.5 от 20 апреля 2026 года</a>. Все аппаратные проверки проекта я выполнял на одном Braille eMotion 40 B340 с этой прошивкой и Android 12. Второе моё устройство в тестах не участвовало и осталось в заводском состоянии.</p><p>Итоговый прогон 14 августа 2026 года дал такие результаты:</p><p>Проверка</p><p>Результат</p><p>Автоматизированные тесты установщика</p><p>33 из 33 пройдены</p><p>Запускаемые приложения в длинном списке на eMotion</p><p>54 пункта, доступны от начала до конца</p><p>APK в тестовой папке Download</p><p>9 файлов отображены и прочитаны</p><p>Повреждённый файл с расширением <code>.apk</code></p><p>отклонён до установки</p><p>Полный цикл удаления и возврата RuStore</p><p>версия <code>1.107.0.3</code> восстановлена и запускается</p><p>Число пакетов до и после цикла Windows-установщика</p><p>223 и 223, посторонних изменений нет</p><p>Фокусируемые элементы в собранном EXE</p><p>17, безымянных среди них нет</p><p>Для RuStore я отдельно разрешил проверку с реальным удалением. Приложение было удалено через новый диспетчер, отсутствие пакета проверено через ADB, затем тот же APK установлен из Download и запущен. Остальные пользовательские приложения при этом не трогались.</p><p>Я также проверил отказ в разрешениях, отмену системных диалогов, неподходящее ADB-устройство, повреждение встроенного файла, ошибку на втором шаге установки и восстановление после неё. В пройденных сценариях не было <code>FATAL EXCEPTION</code>, а после выхода управление возвращалось в заводскую оболочку.</p><p>Это испытания одного экземпляра B340, а не обещание совместимости со всей линейкой. Установщик намеренно останавливается, если подключённое устройство не похоже на проверенную модель.</p><h3>Установка</h3><p>Исходники, документация и готовый релиз находятся в <a href=\"https://github.com/andreykadelite/braille-emotion-jailbreak-toolkit\">репозитории проекта на GitHub</a>. Для обычной установки нужен файл <code>Braille-eMotion-AppManager-Setup-2.0.exe</code> со <a href=\"https://github.com/andreykadelite/braille-emotion-jailbreak-toolkit/releases/latest\">страницы последнего релиза</a>.</p><p>Перед началом стоит сохранить документы и настройки eMotion, зарядить устройство и использовать USB-кабель с передачей данных. Дальше порядок такой:</p><ol><li><p>Скачайте EXE и файл <code>SHA256SUMS.txt</code> из одного релиза.</p></li><li><p>Проверьте контрольную сумму в PowerShell:</p><pre><code class=\"powershell\">Get-FileHash .\\Braille-eMotion-AppManager-Setup-2.0.exe -Algorithm SHA256\n</code><a href=\"https://sourcecraft.dev/\"><img></a></pre></li><li><p>На eMotion включите параметры разработчика и отладку по USB. Разблокировка загрузчика и беспроводная отладка не нужны.</p></li><li><p>Подключите только один eMotion. При первом соединении подтвердите системный запрос с отпечатком RSA на самом устройстве.</p></li><li><p>Запустите EXE, дождитесь состояния «Устройство готово», прочитайте предупреждение и выберите установку.</p></li><li><p>После сообщения об успехе вернитесь в заводскую оболочку. На проверенной конфигурации пункт «Диспетчер приложений» находится в разделе «Онлайн библиотеки».</p></li></ol><p>Для релиза 2.0.0 SHA-256 установщика равен <code>9c624bdeb7352479110c8b03d05de9847860d24c5d888309cba23daff06749b7</code>. Если на GitHub уже опубликована другая версия, нужно использовать сумму из её собственного <code>SHA256SUMS.txt</code>, а не значение из этой статьи.</p><h3>Ограничения и ответственность</h3><p>Сейчас проект рассчитан на Braille eMotion 40 B340. Основная проверка проведена на Android 12 и прошивке V1.5. Самому диспетчеру требуется Android 8.0 или новее, но это ещё не означает поддержку другого устройства или другой оболочки.</p><p>Диспетчер принимает одиночные APK. Split APK, XAPK и APKS не поддерживаются. Он также не может сделать недоступное стороннее приложение удобным для скринридера. Если разработчик APK не разметил элементы интерфейса, диспетчер этого не исправит.</p><p>Проект не связан с HIMS или SELVAS и не одобрен ими. В открытом репозитории нет заводской прошивки, закрытых APK производителя и сторонних магазинов. Исходный код опубликован по лицензии MIT.</p><blockquote><p>Все действия пользователь выполняет на свой риск. Установка стороннего ПО меняет конфигурацию устройства и может привести к потере данных, сбоям специальных возможностей, необходимости сброса или проблемам с гарантией. Автор проекта не несёт ответственности за поломку устройства, утрату данных и другие последствия. Перед началом нужно сделать резервную копию и самостоятельно проверить условия гарантии в своей стране.</p></blockquote><p>Я сознательно работал только с одним из двух своих дисплеев. На нём диспетчер и Windows-установщик сейчас работают, включая реальный цикл удаления и повторной установки приложения. Второй eMotion остаётся нетронутым напоминанием о простой вещи: даже полезное расширение возможностей не отменяет осторожность.</p><p>Если проект пригодится другим владельцам Braille eMotion, буду рад отчётам об испытаниях и сообщениям об ошибках в <a href=\"https://github.com/andreykadelite/braille-emotion-jailbreak-toolkit/issues\">Issues репозитория</a>. Перед публикацией журнала лучше удалить из него серийный номер устройства, имена файлов и другие личные данные.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 17113,
+        "approxBlocks": 133
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/proisshestviya/28015809:2026-08-15T17:35:22.000Z:Пожар в строящемся здании в Омске. Что и",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Пожар в строящемся здании в Омске. Что известно",
+      "url": "https://tass.ru/proisshestviya/28015809",
+      "publishedAt": "2026-08-15T17:35:22.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302533.jpg",
+      "excerpt": "Один из пострадавших умер в реанимации",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/podrostok-ustroila-pozhar-vo-vremya-gotovki-v-moskve/:2026-08-15T17:32:00.000Z:Девочка-подросток сожгла кухню во время ",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Девочка-подросток сожгла кухню во время готовки в Москве",
+      "url": "https://lenta.ru/news/2026/08/15/podrostok-ustroila-pozhar-vo-vremya-gotovki-v-moskve/",
+      "publishedAt": "2026-08-15T17:32:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/20/20260815203415922/pic_f8589e348567fc09add20b2260bf147e.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/sport/28015821:2026-08-15T17:31:53.000Z:\"Ростов\" и \"Рубин\" сыграли вничью и прод",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "\"Ростов\" и \"Рубин\" сыграли вничью и продлили беспроигрышные серии в РПЛ",
+      "url": "https://tass.ru/sport/28015821",
+      "publishedAt": "2026-08-15T17:31:53.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "",
+      "excerpt": "",
+      "contentHtml": ""
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/world/1109543:2026-08-15T17:30:00.000Z:Что произошло за день: суббота, 15 авгус",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Что произошло за день: суббота, 15 августа",
+      "url": "https://www.interfax.ru/world/1109543",
+      "publishedAt": "2026-08-15T17:30:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Последствия атаки на Самарскую область, археологическое открытие в Суздале и победы российских гимнасток",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/sport/28015819:2026-08-15T17:27:49.000Z:Пловчиха Гилязова назвала посещение Эйфе",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Пловчиха Гилязова назвала посещение Эйфелевой башни сбывшейся мечтой",
+      "url": "https://tass.ru/sport/28015819",
+      "publishedAt": "2026-08-15T17:27:49.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302549.jpg",
+      "excerpt": "По словам спортсменки, ее очень понравилась достопримечательность",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/rossiyanin-vernulsya-s-svo-ne-uvidel-svoyu-sobaku-i-obratilsya-v-sud/:2026-08-15T17:26:00.000Z:Россиянин вернулся с СВО, не увидел свою",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Россиянин вернулся с СВО, не увидел свою собаку и обратился в суд",
+      "url": "https://lenta.ru/news/2026/08/15/rossiyanin-vernulsya-s-svo-ne-uvidel-svoyu-sobaku-i-obratilsya-v-sud/",
+      "publishedAt": "2026-08-15T17:26:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://icdn.lenta.ru/assets/webpack/images/lenta_og.8735b949.png",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/proisshestviya/28015817:2026-08-15T17:25:11.000Z:В Омске завели дело после пожара из-за н",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "В Омске завели дело после пожара из-за нарушений условий охраны труда",
+      "url": "https://tass.ru/proisshestviya/28015817",
+      "publishedAt": "2026-08-15T17:25:11.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "При происшествии пострадали 11 человек, 1 из которых умер в реанимации",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/nikol-kidman-vozmutila-publiku-vneshnostyu-na-novom-video/:2026-08-15T17:24:00.000Z:Николь Кидман возмутила публику внешност",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Николь Кидман возмутила публику внешностью на новом видео",
+      "url": "https://lenta.ru/news/2026/08/15/nikol-kidman-vozmutila-publiku-vneshnostyu-na-novom-video/",
+      "publishedAt": "2026-08-15T17:24:00.000Z",
+      "categoryIds": [
+        "culture"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/14/18/20260814181002082/pic_d3a038a93ce61e6246bca13ff8387b89.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/sport/28015815:2026-08-15T17:22:28.000Z:Пловчиха Гилязова начала захлебываться в",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Пловчиха Гилязова начала захлебываться в конце заплыва на ЧЕ",
+      "url": "https://tass.ru/sport/28015815",
+      "publishedAt": "2026-08-15T17:22:28.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302541.jpg",
+      "excerpt": "Спортсменка не вышла в финал соревнований на 50 м брассом",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/kultura/28015803:2026-08-15T17:16:03.000Z:Умер филолог Константин Поливанов",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Умер филолог Константин Поливанов",
+      "url": "https://tass.ru/kultura/28015803",
+      "publishedAt": "2026-08-15T17:16:03.000Z",
+      "categoryIds": [
+        "ru",
+        "culture"
+      ],
+      "image": "",
+      "excerpt": "Ему было 66 лет",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/el-alameyn/:2026-08-15T17:16:00.000Z:В Москве приземлился первый самолет из Э",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "В Москве приземлился первый самолет из Эль-Аламейна",
+      "url": "https://lenta.ru/news/2026/08/15/el-alameyn/",
+      "publishedAt": "2026-08-15T17:16:00.000Z",
+      "categoryIds": [
+        "culture"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/20/20260815201926604/pic_8dfc954bcc384e488a52d5c38cf5b3f4.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/proisshestviya/28015807:2026-08-15T17:15:34.000Z:Умер один из пострадавших при пожаре в с",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Умер один из пострадавших при пожаре в строящемся здании в Омске",
+      "url": "https://tass.ru/proisshestviya/28015807",
+      "publishedAt": "2026-08-15T17:15:34.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302557.jpg",
+      "excerpt": "Мужчину ранее госпитализировали",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/v-krymu-otreagirovali-na-opublikovannuyu-nasa-kartu-s-poluostrovom-v-sostave-rossii/:2026-08-15T17:15:28.000Z:В Крыму отреагировали на опубликованную ",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "В Крыму отреагировали на опубликованную NASA карту с полуостровом в составе России",
+      "url": "https://lenta.ru/news/2026/08/15/v-krymu-otreagirovali-na-opublikovannuyu-nasa-kartu-s-poluostrovom-v-sostave-rossii/",
+      "publishedAt": "2026-08-15T17:15:28.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/20/20260815201845273/pic_e8129059160d9853a5b09bc8c0dceac8.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/sport/28015805:2026-08-15T17:15:20.000Z:Гимнастка Мельникова призналась, что оче",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Гимнастка Мельникова призналась, что очень устала на чемпионате Европы",
+      "url": "https://tass.ru/sport/28015805",
+      "publishedAt": "2026-08-15T17:15:20.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "",
+      "excerpt": "По словам спортсменки, она надеется восстановиться к командному турниру, который пройдет в воскресенье",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/28015799:2026-08-15T17:12:05.000Z:Die Welt: Зеленский впал в отчаяние из-з",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Die Welt: Зеленский впал в отчаяние из-за нехватки Patriot в преддверии зимы",
+      "url": "https://tass.ru/mezhdunarodnaya-panorama/28015799",
+      "publishedAt": "2026-08-15T17:12:05.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Для Украины ситуация перед зимой настолько \"шаткая\", что Киев бьет тревогу на всех уровнях, отмечает газета",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/sbornaya-rossii-vyigrala-chempionat-mira-po-hudozhestvennoy-gimnastike-v-komandnom-mnogoborie/:2026-08-15T17:11:33.000Z:Сборная России выиграла чемпионат мира п",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Сборная России выиграла чемпионат мира по художественной гимнастике в командном многоборье",
+      "url": "https://lenta.ru/news/2026/08/15/sbornaya-rossii-vyigrala-chempionat-mira-po-hudozhestvennoy-gimnastike-v-komandnom-mnogoborie/",
+      "publishedAt": "2026-08-15T17:11:33.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/20/20260815200047304/pic_b04b6a9d870485a40439be19b5a0e313.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/sport/28015801:2026-08-15T17:11:23.000Z:Синхронистки РФ выиграли золото в акроба",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Синхронистки РФ выиграли золото в акробатической программе юниорского ЧМ",
+      "url": "https://tass.ru/sport/28015801",
+      "publishedAt": "2026-08-15T17:11:23.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302517.jpg",
+      "excerpt": "Российские атлеты завоевали шестую золотую награду на турнире",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/vlasti-ssha-otozvali-150-viz-iz-za-rodilnogo-turizma/:2026-08-15T17:09:00.000Z:Власти США отозвали 150 виз из-за «родил",
       "sourceId": "lenta",
       "sourceName": "Lenta.ru",
       "title": "Власти США отозвали 150 виз из-за «родильного туризма»",
       "url": "https://lenta.ru/news/2026/08/15/vlasti-ssha-otozvali-150-viz-iz-za-rodilnogo-turizma/",
-      "publishedAt": "2026-08-15T17:09:20.000Z",
+      "publishedAt": "2026-08-15T17:09:00.000Z",
       "categoryIds": [
         "world"
       ],
@@ -32,6 +339,20 @@
       ],
       "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302509.jpg",
       "excerpt": "Нападающий оформил хет-трик в матче РПЛ против \"Акрона\"",
+      "contentHtml": ""
+    },
+    {
+      "id": "interfax:https://www.sport-interfax.ru/1109544:2026-08-15T17:07:00.000Z:Гимнастка Мельникова довела до четырех ч",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Гимнастка Мельникова довела до четырех число своих медалей на ЧЕ-2026",
+      "url": "https://www.sport-interfax.ru/1109544",
+      "publishedAt": "2026-08-15T17:07:00.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "",
+      "excerpt": "Россиянка Ангелина Мельникова стала бронзовым призером чемпионата Европы по спортивной гимнастике в упражнении на бревне.",
       "contentHtml": ""
     },
     {
@@ -77,8 +398,8 @@
       "categoryIds": [
         "business"
       ],
-      "image": "",
-      "excerpt": "",
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302505.jpg",
+      "excerpt": "Среди них есть Китай, Индия, ОАЭ и Япония, отметил советник президента России, ответственный секретарь Организационного комитета форума",
       "contentHtml": ""
     },
     {
@@ -260,7 +581,7 @@
       "categoryIds": [
         "sports"
       ],
-      "image": "",
+      "image": "https://www.interfax.ru/ftproot/textphotos/2026/08/15/sof1200.jpg",
       "excerpt": "Российские спортсменки стали победительницами чемпионата мира по художественной гимнастике в командном многоборье.",
       "contentHtml": ""
     },
@@ -1486,7 +1807,7 @@
         "world"
       ],
       "image": "https://www.interfax.ru/ftproot/textphotos/2026/08/15/rome1200.jpg",
-      "excerpt": "Остатки древнеримского моста показались в Тибре близ Базилики Святого Петра в итальянской столице, сообщает Associated Press.",
+      "excerpt": "Остатки древнеримского моста показались в Тибре близ Собора Святого Петра в итальянской столице, сообщает Associated Press.",
       "contentHtml": ""
     },
     {
@@ -3457,12 +3778,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/15/14/20260815143919963/pic_d777d556b7219b75e2c3413508c95016.jpg",
       "excerpt": "",
-      "contentHtml": "",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 0,
-        "approxBlocks": 0
-      }
+      "contentHtml": ""
     },
     {
       "id": "lenta:https://lenta.ru/news/2026/08/15/nurmagomedov-obratilsya-k-mahachevu-pered-boem-s-gerri/:2026-08-15T11:37:00.000Z:Нурмагомедов обратился к Махачеву перед ",
@@ -3476,12 +3792,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/15/14/20260815143247250/pic_d53c9c311a802296790508bdee64f877.jpg",
       "excerpt": "",
-      "contentHtml": "",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 0,
-        "approxBlocks": 0
-      }
+      "contentHtml": ""
     },
     {
       "id": "interfax:https://www.interfax.ru/russia/1109520:2026-08-15T11:37:00.000Z:Минобороны заявило об ударе по пункту за",
@@ -3524,12 +3835,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/15/14/20260815143348312/pic_e03511360d8a698d3328700ce0ec73c3.jpg",
       "excerpt": "",
-      "contentHtml": "",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 0,
-        "approxBlocks": 0
-      }
+      "contentHtml": ""
     },
     {
       "id": "lenta:https://lenta.ru/news/2026/08/15/vrach-predupredil-rossiyan-ob-opasnosti-chaya-v-paketikah-dlya-sustavov/:2026-08-15T11:30:00.000Z:Врач предупредил россиян об опасности ча",
@@ -3543,12 +3849,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/06/12/20260806121048976/pic_43f6bb64a732b910e678219597b67b39.jpg",
       "excerpt": "",
-      "contentHtml": "",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 0,
-        "approxBlocks": 0
-      }
+      "contentHtml": ""
     },
     {
       "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/28015397:2026-08-15T11:29:50.000Z:El PaÍs: полиция Марокко применила силу ",
@@ -3576,12 +3877,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/15/13/20260815135951528/pic_4359ded9517fce0d1d9844912d21c21e.jpg",
       "excerpt": "",
-      "contentHtml": "",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 0,
-        "approxBlocks": 0
-      }
+      "contentHtml": ""
     },
     {
       "id": "interfax:https://www.interfax.ru/russia/1109519:2026-08-15T11:29:00.000Z:Аэропорт Махачкалы возобновил работу",
@@ -3679,12 +3975,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/15/14/20260815142208135/pic_990b977fe79971024d4ef570537cb537.jpg",
       "excerpt": "",
-      "contentHtml": "",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 0,
-        "approxBlocks": 0
-      }
+      "contentHtml": ""
     },
     {
       "id": "lenta:https://lenta.ru/news/2026/08/15/pyat-rossiyanok-i-byvshuyu-korolevu-konkursov-krasoty-spasli-iz-seti-torgovli-lyudmi/:2026-08-15T11:21:00.000Z:Россиянок и бывшую королеву конкурсов кр",
@@ -3698,12 +3989,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/15/14/20260815142908252/pic_efd802377b54d80f35b097fe746cf7c1.jpg",
       "excerpt": "",
-      "contentHtml": "",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 0,
-        "approxBlocks": 0
-      }
+      "contentHtml": ""
     },
     {
       "id": "tass:https://tass.ru/proisshestviya/28015377:2026-08-15T11:20:03.000Z:В Индонезии произошло землетрясение магн",
@@ -21214,288 +21500,6 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/14/14/20260814144508244/pic_547d380a53c2512faa072244b2718405.jpg",
       "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/priznanie-porezavshego-rossiyskuyu-shkolnitsu-muzhchiny-popalo-na-video/:2026-08-14T11:48:00.000Z:Признание порезавшего российскую школьни",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Признание порезавшего российскую школьницу мужчины попало на видео",
-      "url": "https://lenta.ru/news/2026/08/14/priznanie-porezavshego-rossiyskuyu-shkolnitsu-muzhchiny-popalo-na-video/",
-      "publishedAt": "2026-08-14T11:48:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/14/20260814144223596/pic_730da11df044ef5c7f93aa2378913c12.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/rossiyskie-istrebiteli-sbrosili-3-5-tonny-aviabomb-na-dva-ob-ekta-vsu/:2026-08-14T11:48:00.000Z:Российские истребители сбросили три с по",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Российские истребители сбросили три с половиной тонны авиабомб на два объекта ВСУ",
-      "url": "https://lenta.ru/news/2026/08/14/rossiyskie-istrebiteli-sbrosili-3-5-tonny-aviabomb-na-dva-ob-ekta-vsu/",
-      "publishedAt": "2026-08-14T11:48:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/14/20260814142609319/pic_f7a88c367f7805fc6fd61a1af27da9b0.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "habr:https://habr.com/ru/articles/1070528/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070528:2026-08-14T11:46:58.000Z:До ChatGPT когнитивным долгом управляли ",
-      "sourceId": "habr",
-      "sourceName": "Хабр",
-      "title": "До ChatGPT когнитивным долгом управляли начальники. Теперь — все",
-      "url": "https://habr.com/ru/articles/1070528/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070528",
-      "publishedAt": "2026-08-14T11:46:58.000Z",
-      "categoryIds": [
-        "tech"
-      ],
-      "image": "https://habrastorage.org/getpro/habr/upload_files/09e/eae/db9/09eeaedb9f650bf3abf133333ccc9a09.png",
-      "excerpt": "Вы уже брали когнитивный долгПредставьте, что вы руководите проектом. Аналитик Вася присылает двадцать слайдов, которые сегодня (а на самом деле вчера) надо показать клиенту. Общая логика вроде ОК, ключевые цифры разумные. На 17-м слайде есть результаты расчета, на проверку которого, по-хорошему, уйдет день. Вася говорит, что все проверил. Можно попытаться перенести встречу. А можно решить: достаточно, Вася выглядит адекватным, риск небольшой, идем к клиенту.Если вы были в похожей ситуации – вы уже брали когнитивный долг.И никакого искусственного интеллекта для этого не требовалось.Когнитивный долг – это разница между уровнем понимания результата, которым мы располагаем, и уровнем понимания, необходимым для той ответственности и того риска, которые мы на себя приняли.Начальник не повторяет все вычисления сотрудника. Архитектор не читает каждую строчку каждого сервиса. Главный редактор не перепроверяет каждый факт так, как это делал автор. Партнер консалтинговой фирмы не строит своими руками каждую модель, которую показывает клиенту. Более того, если заставить его все это делать, организация перестанет иметь экономический смысл. Поэтому вопрос — не «есть ли у нас когнитивный долг?» А два других: сколько его у нас и достаточно ли мы контролируем риск? Читать далее",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/voennyy-ob-yasnil-neobhodimost-ukrainy-vygryzat-rakety-pvo/:2026-08-14T11:43:00.000Z:Военный объяснил необходимость Украины «",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Военный объяснил необходимость Украины «выгрызать» ракеты ПВО",
-      "url": "https://lenta.ru/news/2026/08/14/voennyy-ob-yasnil-neobhodimost-ukrainy-vygryzat-rakety-pvo/",
-      "publishedAt": "2026-08-14T11:43:00.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/14/20260814143421848/pic_40cd4a86c4ffb4723fe209535c5b327f.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/v-sankt-peterburge-proydet-vystavka-kukol-dima-pzh/:2026-08-14T11:42:00.000Z:В Санкт-Петербурге пройдет выставка куко",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "В Санкт-Петербурге пройдет выставка кукол Dima ПЖ",
-      "url": "https://lenta.ru/news/2026/08/14/v-sankt-peterburge-proydet-vystavka-kukol-dima-pzh/",
-      "publishedAt": "2026-08-14T11:42:00.000Z",
-      "categoryIds": [
-        "culture"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/13/20260814134739222/pic_994566de2258b2d769ef853300283898.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/iphonex/:2026-08-14T11:42:00.000Z:Легендарный iPhone признали устаревшим",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Легендарный iPhone признали устаревшим",
-      "url": "https://lenta.ru/news/2026/08/14/iphonex/",
-      "publishedAt": "2026-08-14T11:42:00.000Z",
-      "categoryIds": [
-        "tech",
-        "science"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/13/20260814133718919/pic_d9f7560b38a67ddd0a4527831ff45b5c.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "habr:https://habr.com/ru/articles/1070526/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070526:2026-08-14T11:41:12.000Z:Как я перестал разрывать архитектуру на ",
-      "sourceId": "habr",
-      "sourceName": "Хабр",
-      "title": "Как я перестал разрывать архитектуру на десяток документов — и сделал свой C4-редактор",
-      "url": "https://habr.com/ru/articles/1070526/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070526",
-      "publishedAt": "2026-08-14T11:41:12.000Z",
-      "categoryIds": [
-        "tech"
-      ],
-      "image": "https://habrastorage.org/getpro/habr/upload_files/3bb/8d9/c97/3bb8d9c972f2da629ea7062a9687bf0a.png",
-      "excerpt": "Инструмент: C4 QuietGridLabs. Можно открыть демо без авторизации: проект будет храниться локально в браузере.Иногда архитектура «есть» — но пользоваться ею невозможно.На доске лежит схема сервисов. В Confluence живёт описание. Где-то рядом — sequence-диаграмма, которую никто не открывал с прошлого года. ER-модель хранится в другом инструменте. А когда на ревью возникает простой вопрос «какой endpoint обслуживает этот путь?», команда начинает собирать ответ из памяти, догадок, выдумок, ссылок и исходников.Я больше 15 лет работаю в ИТ, из них около десяти занимаюсь проектированием и системным дизайном. За это время перепробовал немало: Sparx, ArchiMate, Structurizr, Confluence, whiteboard-сервисы. Я не считаю их плохими — у каждого есть свой сценарий и своя аудитория. Но лично у меня постоянно оставалось ощущение разрыва: диаграмма была отдельно, документация отдельно, а живой контекст системы — в голове у людей.В какой-то момент моими рабочими спасателями стали whiteboard и VS Code, а позже Cursor. В них можно быстро собрать мысль, оставить немного полезного творческого беспорядка и двигаться дальше. Но они не решали главную проблему: хотелось, чтобы система, её связи, сценарии и документация были одной навигационной моделью.Так появился C4 QuietGridLabs. Это мой экспериментальный редактор, где C4-модель — это каркас проекта. К элементам можно прикреплять документацию, sequence-диаграммы, ER-диаграммы и описание API, а по связям — переходить от общего ландшафта к конкретным участникам взаимодействия. Читать далее",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/dopros-popavshegosya-v-rossii-polskogo-shpiona-popal-na-video/:2026-08-14T11:34:00.000Z:Допрос попавшегося в России польского шп",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Допрос попавшегося в России польского шпиона попал на видео",
-      "url": "https://lenta.ru/news/2026/08/14/dopros-popavshegosya-v-rossii-polskogo-shpiona-popal-na-video/",
-      "publishedAt": "2026-08-14T11:34:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/14/20260814143707603/pic_620bc6b8591aa49923d68c9ae4f25195.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "habr:https://habr.com/ru/articles/1070522/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070522:2026-08-14T11:33:40.000Z:Как ИИ в строительстве помогает сберечь ",
-      "sourceId": "habr",
-      "sourceName": "Хабр",
-      "title": "Как ИИ в строительстве помогает сберечь здоровье рабочих: кейс строительной компании",
-      "url": "https://habr.com/ru/articles/1070522/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070522",
-      "publishedAt": "2026-08-14T11:33:40.000Z",
-      "categoryIds": [
-        "tech",
-        "health"
-      ],
-      "image": "https://habrastorage.org/getpro/habr/upload_files/60a/644/b4f/60a644b4f2dcc83dc94ca41d98d6b8e3.jpg",
-      "excerpt": "Рассказываем, как одна система из камер, датчиков и нейросетей закрыла сразу три задачи стройки: охрану труда, учет транспорта и контроль сроков. Читать далее",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/pozhilym-lyudyam-nazvali-sposob-otlichit-obychnye-priznaki-stareniya-ot-simptomov-bolezni/:2026-08-14T11:31:00.000Z:Пожилым людям назвали способ отличить об",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Пожилым людям назвали способ отличить обычные признаки старения от симптомов болезни",
-      "url": "https://lenta.ru/news/2026/08/14/pozhilym-lyudyam-nazvali-sposob-otlichit-obychnye-priznaki-stareniya-ot-simptomov-bolezni/",
-      "publishedAt": "2026-08-14T11:31:00.000Z",
-      "categoryIds": [
-        "health"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/13/11/20260813111429459/pic_00ea03c625439ec3c0d12f7188848793.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "habr:https://habr.com/ru/articles/1070518/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070518:2026-08-14T11:30:33.000Z:Цена, которой не существовало: две недел",
-      "sourceId": "habr",
-      "sourceName": "Хабр",
-      "title": "Цена, которой не существовало: две недели поиска бага, который не видел мониторинг",
-      "url": "https://habr.com/ru/articles/1070518/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070518",
-      "publishedAt": "2026-08-14T11:30:33.000Z",
-      "categoryIds": [
-        "tech"
-      ],
-      "image": "https://habrastorage.org/getpro/habr/upload_files/b91/11c/7f0/b9111c7f05e9cd8521e4eda55822cc7b.png",
-      "excerpt": "Есть класс ошибок, которые невозможно найти простой сверкой. Не потому, что данные хорошо спрятаны, а потому, что искомого состояния нет ни в одной системе. Оно собирается на лету из двух правильных половинок, каждая из которых по отдельности абсолютно валидна.Хочу рассказать про случай, где в одном стартапе мы искали причину две недели, но при этом мониторинг всё это время показывал, что всё в порядке, и формально он был прав. Читать далее",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/v-armenii-prishli-v-uzhas-ot-naplyva-armyan/:2026-08-14T11:30:00.000Z:В Армении пришли в ужас от наплыва армян",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "В Армении пришли в ужас от наплыва армян",
-      "url": "https://lenta.ru/news/2026/08/14/v-armenii-prishli-v-uzhas-ot-naplyva-armyan/",
-      "publishedAt": "2026-08-14T11:30:00.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/14/20260814142816062/pic_344cd005e044a765cbc4ef9079ac2314.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/klyuchevoy-soyuznik-rossii-stolknulsya-s-usugubleniem-ekonomicheskogo-krizisa/:2026-08-14T11:30:00.000Z:Ключевой союзник России столкнулся с усу",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Ключевой союзник России столкнулся с усугублением экономического кризиса",
-      "url": "https://lenta.ru/news/2026/08/14/klyuchevoy-soyuznik-rossii-stolknulsya-s-usugubleniem-ekonomicheskogo-krizisa/",
-      "publishedAt": "2026-08-14T11:30:00.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/14/20260814141444553/pic_45bc35c06f9f5a28e4eb8d90c28108c2.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "habr:https://habr.com/ru/articles/1070340/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070340:2026-08-14T11:29:46.000Z:Почему e2e тесты это круто, но никто их ",
-      "sourceId": "habr",
-      "sourceName": "Хабр",
-      "title": "Почему e2e тесты это круто, но никто их не пишет. На примере Laravel Dusk",
-      "url": "https://habr.com/ru/articles/1070340/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070340",
-      "publishedAt": "2026-08-14T11:29:46.000Z",
-      "categoryIds": [
-        "tech"
-      ],
-      "image": "https://habrastorage.org/getpro/habr/upload_files/c00/9d6/888/c009d688828fc4d791c3532c30259577.png",
-      "excerpt": "Добрый день, я хотел бы поднять крайне недооценённую среди PHP-разработчиков тему e2e-тестов, затронуть бизнес-важность таких тестов, техническую часть и почему их никто не пишет. Читать далее",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/rossiyanke-ne-zaschitali-v-stazh-rabotu-v-moshennicheskom-call-tsentre/:2026-08-14T11:29:00.000Z:Россиянке не засчитали в стаж работу в м",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Россиянке не засчитали в стаж работу в мошенническом call-центре",
-      "url": "https://lenta.ru/news/2026/08/14/rossiyanke-ne-zaschitali-v-stazh-rabotu-v-moshennicheskom-call-tsentre/",
-      "publishedAt": "2026-08-14T11:29:00.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/13/20260814134711247/pic_8b64421d33b7eb78c64e203e0c907b9e.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/v-germanii-ukazali-na-bezzaschitnost-ukrainy-pered-rossiyskimi-atakami/:2026-08-14T11:29:00.000Z:В Германии указали на беззащитность Укра",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "В Германии указали на беззащитность Украины перед российскими атаками",
-      "url": "https://lenta.ru/news/2026/08/14/v-germanii-ukazali-na-bezzaschitnost-ukrainy-pered-rossiyskimi-atakami/",
-      "publishedAt": "2026-08-14T11:29:00.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/14/20260814142914691/pic_3d61c38f06c778d83c6fef3d9f5e4459.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/v-istoricheskom-tsentre-sankt-peterburga-proizoshel-moschnyy-pozhar/:2026-08-14T11:28:00.000Z:В историческом центре Санкт-Петербурга п",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "В историческом центре Санкт-Петербурга произошел мощный пожар",
-      "url": "https://lenta.ru/news/2026/08/14/v-istoricheskom-tsentre-sankt-peterburga-proizoshel-moschnyy-pozhar/",
-      "publishedAt": "2026-08-14T11:28:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/14/20260814142915903/pic_a2fe300e4df3c93a83377985cf14ee6b.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "habr:https://habr.com/ru/specials/1070234/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070234:2026-08-14T11:20:48.000Z:Итоги сезона DIY: луноход, бинарные часы",
-      "sourceId": "habr",
-      "sourceName": "Хабр",
-      "title": "Итоги сезона DIY: луноход, бинарные часы и стоп‑сигнал в котельной",
-      "url": "https://habr.com/ru/specials/1070234/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070234",
-      "publishedAt": "2026-08-14T11:20:48.000Z",
-      "categoryIds": [
-        "tech"
-      ],
-      "image": "https://habrastorage.org/getpro/habr/upload_files/89e/9ce/e09/89e9cee09e2bea574d0d8b36dbd3c819.PNG",
-      "excerpt": "Сделай сам — покажи другим, как надо. На старте сезона DIY Лемана Тех и Хабр пришли с таким запросом к сообществу авторов, и они не подвели. В рамках сезона вышло множество статей о самых разнообразных проектах, сочетающих работу с железом и софтом. Участники соревновались в том, кто лучше всех владеет отвёрткой, 3D‑принтером, различными языками программирования, у кого самая необычная идея и кто способен максимально хардкорно её воплотить.В этом материале подводим итоги, делимся лучшими статьями и вновь наблюдаем на множестве примеров, что связь между DIY и разработкой глубока и разнообразна. Читать далее",
-      "contentHtml": ""
-    },
-    {
-      "id": "habr:https://habr.com/ru/articles/1070514/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070514:2026-08-14T11:10:13.000Z:Astryx: дизайн-система, которой может по",
-      "sourceId": "habr",
-      "sourceName": "Хабр",
-      "title": "Astryx: дизайн-система, которой может пользоваться AI-агент",
-      "url": "https://habr.com/ru/articles/1070514/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070514",
-      "publishedAt": "2026-08-14T11:10:13.000Z",
-      "categoryIds": [
-        "tech"
-      ],
-      "image": "https://habrastorage.org/getpro/habr/upload_files/daa/bc8/4f0/daabc84f0f1e618ce468c7feb0e40436.png",
-      "excerpt": "В прошлой статье про StyleX я разбирал, почему компилируемый CSS выглядит логичным продолжением ветки CSS-in-JS. Одно из главных свойств StyleX для меня — предсказуемость: стили описываются в ограниченной форме, которую можно анализировать ещё до запуска приложения.Это особенно важно в момент, когда код всё чаще пишет не только человек, но и AI-ассистент. Если инструмент допускает любую форму записи стилей, ассистент рано или поздно начнёт пользоваться всей этой свободой: добавлять магические значения, дублировать решения, обходить токены и постепенно размывать дизайн-систему. StyleX сужает пространство для таких ошибок.Теперь Meta открыла Astryx — дизайн-систему, построенную на React и StyleX. На первый взгляд это выглядит как релиз большой библиотеки: больше 170 компонентов, темы, тёмный режим, шаблоны, CLI, всё как мы любим. Но количество компонентов здесь не самое интересное. Astryx стоит рассматривать как следующий шаг после StyleX: если StyleX делает предсказуемыми стили, то Astryx пытается сделать предсказуемой работу с интерфейсом целиком — и для человека, и для AI-агента. Читать далее",
-      "contentHtml": ""
-    },
-    {
-      "id": "habr:https://habr.com/ru/companies/ru_mts/articles/1070190/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070190:2026-08-14T11:09:05.000Z:Как агентский ИИ перестраивает клиентски",
-      "sourceId": "habr",
-      "sourceName": "Хабр",
-      "title": "Как агентский ИИ перестраивает клиентский опыт",
-      "url": "https://habr.com/ru/companies/ru_mts/articles/1070190/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070190",
-      "publishedAt": "2026-08-14T11:09:05.000Z",
-      "categoryIds": [
-        "tech"
-      ],
-      "image": "https://habrastorage.org/getpro/habr/upload_files/6d0/eba/ff9/6d0ebaff986aad543e98e8986581677f.png",
-      "excerpt": "Привет, Хабр! Представьте ситуацию в интернет-магазине. Клиент звонит и пишет в поддержку, так как получил поврежденный заказ. При этом он уже откладывал повторную покупку из-за долгой доставки в прошлый раз и не дописал отзыв, который хотел оставить неделю назад. Человек на грани ухода к конкурентам. Что увидит типичный оператор поддержки? Да просто текущее обращение. Он оформит возврат, закроет тикет — и на этом как бы все. Остальные сигналы останутся незамеченными им. В противовес ему, агентная система видит всю картину, ловит паттерны и закрывает боли клиента: оформляет возврат, предлагает промокод на следующую покупку, устраняет причину недовольства. Это рабочая модель, которую уже описывают аналитики McKinsey в свежем отчете о перестройке клиентского опыта в эпоху агентского ИИ.Последние пару лет компании в основном просто добавляли генеративный ИИ поверх старых процессов. Да, чат-боты стали вежливее и быстрее, но логика принятия решений при этом у них не изменилась. Клиент как сталкивался с разрозненными сценариями на разных этапах пути, так и сталкивается. Агентский ИИ меняет эту логику. Вместо заранее прописанных сценариев он в моменте принимает решение на основе реального контекста. Что это значит на практике, через какие этапы проходят компании и какой результат получают на выходе? Читать далее",
       "contentHtml": ""
     }
   ]
