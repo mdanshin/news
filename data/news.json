@@ -1,13 +1,447 @@
 {
-  "generatedAt": "2026-08-15T10:13:25.560Z",
+  "generatedAt": "2026-08-15T10:45:14.735Z",
   "items": [
     {
-      "id": "lenta:https://lenta.ru/news/2026/08/15/costs/:2026-08-15T10:10:46.000Z:Раскрыты советы по сокращению расходов",
+      "id": "habr:https://habr.com/ru/articles/1070652/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070652:2026-08-15T10:40:23.000Z:[Перевод] Что я узнал, поместив GitHub C",
+      "sourceId": "habr",
+      "sourceName": "Хабр",
+      "title": "[Перевод] Что я узнал, поместив GitHub Copilot за MITM‑прокси",
+      "url": "https://habr.com/ru/articles/1070652/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070652",
+      "publishedAt": "2026-08-15T10:40:23.000Z",
+      "categoryIds": [
+        "tech"
+      ],
+      "image": "https://habrastorage.org/getpro/habr/upload_files/916/48d/bd3/91648dbd3ff030f4d268169e6b695d1f.jpeg",
+      "excerpt": "За последнюю пару лет появилось множество приложений на основе ИИ и ИИ‑функций. Чем больше появляется таких приложений, тем любопытнее мне становится изучить их внутреннюю работу. Надеюсь, мне удастся узнать что‑то новое; по крайней мере, почерпну какие‑нибудь знания о разработке десктопных приложений.В то же время я заметил, что каждый месяц всё быстрее исчерпываю свои кредиты Copilot. Это заставило меня выбрать его в качестве главного кандидата для моих экспериментов. Я решил подробно исследовать VS Code и Copilot. Читать далее",
+      "contentHtml": "<figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/d14/c18/d90/d14c18d907ed6924892d3bcca6aba107.jpeg\"></figure><p>За&nbsp;последнюю пару лет появилось множество приложений на&nbsp;основе ИИ и ИИ‑функций. Чем больше появляется таких приложений, тем любопытнее мне становится изучить их внутреннюю работу. Надеюсь, мне удастся узнать что‑то новое; по&nbsp;крайней мере, почерпну какие‑нибудь знания о&nbsp;разработке десктопных приложений.</p><p>В&nbsp;то&nbsp;же время я заметил, что&nbsp;каждый месяц всё&nbsp;быстрее исчерпываю свои кредиты Copilot. Это заставило меня выбрать его в&nbsp;качестве главного кандидата для&nbsp;моих экспериментов. Я решил подробно исследовать <strong>VS Code и Copilot.</strong></p>Общий делитель: Electron<p>Общее для&nbsp;подобных приложений заключается в&nbsp;том, что&nbsp;они разработаны на&nbsp;основе <a href=\"https://www.electronjs.org/\">Electron</a>. Это JavaScript‑фреймворк, помогающий разработчикам собирать и распространять десктопные приложения. Если вкратце, он объединяет среду исполнения Node.js с&nbsp;артефактами HTML, CSS и JavaScript, которые затем рендерятся при&nbsp;помощи <a href=\"https://www.chromium.org/Home/\">Chromium</a>.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/494/a93/5cf/494a935cf7a6b1a73af292002ddc229b.jpeg\" alt=\"Список приложений, использующих Electron\"><figcaption>Список приложений, использующих Electron</figcaption></figure><p>Это позволяет избавиться от&nbsp;необходимости поддержки нескольких кодовых баз на&nbsp;нативных языках для&nbsp;разных платформ (например, C# для&nbsp;Windows и Swift для&nbsp;macOS), упрощая разработчикам создание десктопных приложений, работающих из&nbsp;единой кодовой базы на&nbsp;множестве разных платформ. (Для нативных модулей и некоторых этапов упаковки всё&nbsp;же требуется платформозависимая обработка, но&nbsp;основная часть логики приложений остаётся неизменной.)</p><p>Так как&nbsp;все они используют Electron, у&nbsp;них приблизительно одинаковая архитектура, а&nbsp;значит, навыки исследования одного приложения должны&nbsp;быть применимы и к&nbsp;другим.</p>Сначала сетевые пакеты, потом исходники<p>Первым делом я хотел просто изучить <a href=\"https://github.com/microsoft/vscode\">исходники VS Code</a>, чтобы понять, смогут&nbsp;ли они ответить на&nbsp;мои вопросы. Проблема в&nbsp;том, что&nbsp;у&nbsp;меня пока не&nbsp;было полного списка вопросов, а&nbsp;их поиск среди миллионов строк кода стоил&nbsp;бы мне или&nbsp;слишком много времени, или&nbsp;слишком много токенов<strong>.</strong></p><p>Это заставило меня двигаться по&nbsp;пути <strong>реверс‑инжиниринга</strong>: сначала пассивно отслеживать трафик, позволив запросам и ответам сформулировать интересующие меня вопросы, и только затем переходить к&nbsp;исходникам, чтобы подтвердить (или опровергнуть) наблюдаемое мной.</p><p>Для&nbsp;этого мне придётся погрузиться в&nbsp;изучение архитектуры и сетевого стека Electron, а&nbsp;эти навыки могут приходиться и в&nbsp;будущем.</p>Сетевая архитектура Electron<p>Мы уже знаем, что&nbsp;приложения Electron содержат Chromium. Браузер предоставляет движок рендеринга для&nbsp;веб‑UI приложения, а&nbsp;также обеспечивает сетевой стек, который могут использовать процессы рендерера для&nbsp;соединений по&nbsp;HTTP и WebSocket.</p><p>Это популярный (и рекомендуемый) способ общения приложений с&nbsp;удалённым бэкендом, но&nbsp;он не&nbsp;единственный. Приложения также могут выполнять HTTP‑запросы при&nbsp;помощи <em>http/https/fetch </em>Node. Если мы пытаемся перехватить запрос, то важен путь, по&nbsp;которому он идёт.</p><p>В&nbsp;некоторых случаях, например, в&nbsp;случае VS Code, приложение имеет изолированную архитектуру: <strong>отдельная группа процессов работает с&nbsp;хостом расширений</strong>. Это помогает поддерживать <strong>чёткие границы </strong>между задачами; в&nbsp;случае VS Code это граница между UI, базовой функциональностью IDE и плагинами/расширениями.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/b5d/97d/3e2/b5d97d3e2ff3ddeadbfe51f0a1abf33f.png\" alt=\"VS Code process model after sandboxing in late 2022\"><figcaption>Архитектура VS Code</figcaption></figure>Изучаем сетевой трафик от&nbsp;приложений Electron<p>Один из&nbsp;классических способов перехвата сетевого трафика приложения заключается в&nbsp;создании прокси‑сервера, которым будет пользоваться приложение.</p><p>Прокси действует в&nbsp;качестве <strong>«человека посередине»</strong> (<strong>man‑in‑the‑middle</strong>,<strong> MITM</strong>): он перехватывает HTTP‑запросы со стороны клиента, переадресует их на&nbsp;сервер и ретранслирует ответы сервера клиенту.</p><blockquote><p><em>Любопытный факт: похожее решение довольно часто применяется для&nbsp;изучения трафика в&nbsp;корпоративных сетевых окружениях, особенно в&nbsp;отраслях с&nbsp;сильной нормативной регуляцией. Один из&nbsp;основных опенсорсных инструментов для&nbsp;этого называется </em><a href=\"https://www.mitmproxy.org/\"><em>mitmproxy</em></a><em>; его мы и будем использовать в&nbsp;дальнейшем.</em></p></blockquote><p>Важная особенность заключается в&nbsp;том, что&nbsp;сегодня сетевой трафик почти всегда передаётся через защищённый HTTP (HTTPS). То есть трафик зашифрован при&nbsp;помощи TLS.</p><p>Доверившись локально сгенерированному поставщику сертификатов (certificate authority, CA) mitmproxy, клиент может принимать генерируемые на&nbsp;лету сертификаты mitmproxy для&nbsp;каждой конечной точки. Вместо одного сквозного зашифрованного подключения мы получаем два: одно между приложением и mitmproxy, второе между mitmproxy и целевым сервером.</p><p>Следовательно, mitmproxy может расшифровать запрос, изучить его, создать отдельное TLS‑соединение на&nbsp;более высоком уровне и переадресовать ответ обратно приложению.</p><h3>Приступаем к&nbsp;работе</h3><blockquote><p><em>Если вы не&nbsp;хотите изучать код и вам просто нужно узнать результаты, то можете пропустить этот раздел.</em></p></blockquote>Установка mitmproxy<p>В&nbsp;macOS проще всего воспользоваться brew:</p><pre><code class=\"powershell\">brew install mitmproxy</code><a href=\"https://sourcecraft.dev/\"><img></a></pre>Настройка VS Code<p>Для&nbsp;маршрутизации трафик через mitmproxy нужно изменить параметры VS Code. Для&nbsp;этого можно нажать сочетание клавиш <code>Cmd+Shift+P</code>&nbsp;и выполнить поиск <em>User Settings.&nbsp;</em>Затем следует задать для&nbsp;приведённых ниже настроек следующие значения:</p><ul><li><p><strong>Http Proxy</strong>: http://localhost:8080&nbsp;(mitmproxy будет слушать соединения по&nbsp;этому порту)</p></li><li><p><strong>Http Proxy Strict SSL</strong>: снять флажок (мы хотим отказаться от&nbsp;верификации сертификата mitmproxy по&nbsp;списку CA)</p></li><li><p><strong>Http: Proxy Support</strong>: override (принудительная поддержка прокси для&nbsp;расширений)</p></li></ul><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/991/dce/f1c/991dcef1c835b3a09b523d767a867e57.jpeg\" alt=\"\"></figure><p>После внесения этих изменений следует перезапустить VS Code.</p>Веб‑UI mitm <p>Последним этапом перед началом работы будет запуск веб‑UI mitmproxy:</p><pre><code class=\"powershell\">mitmweb</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Подождите несколько секунд, и вскоре вы начнёте видеть, как&nbsp;него проходит сетевой трафик от&nbsp;VS Code.</p><p>В&nbsp;верхней части окна можно увидеть несколько текстовых полей. Пока самое полезное из&nbsp;них для&nbsp;нас первое&nbsp;— <em>Search</em>. Это поле позволяет выполнять поиск по&nbsp;ключевым словам, регулярным выражениям и так далее. Например, если нас особенно интересуют запросы, выполняемые VS Code к&nbsp;его Extensions Marketplace API, то можно просто в&nbsp;качестве строки фильтра указать <code>marketplace</code>.</p><p>Будут найдены все совпадения запросов к <code>https://marketplace.visualstudio.com</code>.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/3b2/547/215/3b25472152b57dfb95b23bf4f5b00e86.jpeg\" alt=\"\"></figure>Устаревшие процессы Extension Host<p>Может случиться так, что&nbsp;даже после всех этих действий прокси всё ещё не&nbsp;сможет перехватывать трафик расширений. Такое может произойти, если группа процессов VS Code Extension Host устарела. Чтобы проверить это, выполните в&nbsp;терминале следующую команду:</p><pre><code class=\"powershell\">ps -eo pid,ppid,lstart,command | grep -i -E \"copilot|extensionHost|Code Helper\"\n\n# Должно отобразиться нечто подобное:\n\n27896 27243 Fri Jul 24 15:40:11 2026.    \\\n    /Applications/Visual Studio Code.app/Contents/Frameworks/ # (...)</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Проверьте дату и время. Если они не&nbsp;совпадают с&nbsp;датой и временем перезапуска VS Code, то процесс хоста расширений, скорее всего, устарел. Эта проблема решается легко:</p><ul><li><p>В&nbsp;VSCode откройте Command Palette (<code>Cmd+Shift+P</code>)</p></li><li><p>Выполните «<strong>Developer: Restart Extension Host</strong>»</p></li><li><p>Затем снова выполните команду <code>ps</code>&nbsp;grep; вы должны теперь увидеть новые PID с&nbsp;актуальной временной меткой <code>Code Helper</code></p></li></ul><h3>Что&nbsp;делает Copilot до&nbsp;того, как&nbsp;мы начинаем ввод</h3><p>Окинув взглядом сетевые запросы от&nbsp;VS Code в&nbsp;mitmweb, вы заметите, что&nbsp;основная их часть связана или&nbsp;с&nbsp;GitHub, или&nbsp;с&nbsp;Github Copilot. HTTP‑запросы выполняются ещё до&nbsp;того, как&nbsp;мы нажмём хотя&nbsp;бы одну клавишу в&nbsp;VS Code или&nbsp;в&nbsp;расширении Copilot.</p>Высокоуровневый анализ<p>Запросы, выполняемые VS Code и Copilot на&nbsp;этапе подготовки, можно разделить на&nbsp;следующие категории:&nbsp;<em>аутентификация и сессия</em> (<em>Auth &amp; Session), конфигурация и политики (Config &amp; Policy), реестр MCP (MCP Registry), контекст репозитория и сессии (Repo &amp; Session), определение доступности моделей (Model Discovery) и недавние репозитории (Recent repos).</em></p><p>Ниже я расскажу о&nbsp;том, что&nbsp;обнаружил в&nbsp;каждом типе запросов: информацию, включённую в&nbsp;заголовки и полезную нагрузку запросов и ответов.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/6ad/56e/8e5/6ad56e8e5731761e88e11038e3566eea.jpeg\" alt=\"\"></figure>Подготовка аутентификации и сессии<p>Это первое, что&nbsp;делает Copilot при&nbsp;запуске. Он получает токен <a href=\"https://en.wikipedia.org/wiki/OAuth\">OAuth</a>, обменивает его на&nbsp;токен с&nbsp;коротким сроком действия и валидирует права пользователя. Процесс практически аналогичен обычному потоку OAuth; он описан на&nbsp;диаграмме.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/2c4/47b/267/2c447b26762f628d772dc30f0a2f6fd9.jpeg\" alt=\"Поток аутентификации OAuth Copilot\"><figcaption>Поток аутентификации OAuth Copilot</figcaption></figure>Определение доступности моделей и возможностей<p>Перед выполнением запросов к&nbsp;LLM Copilot проверяет, какие модели и функции агентов доступны для&nbsp;его аккаунта/тарифа.</p><p>Есть два вида запросов. Первый&nbsp;— это запрос, выполняемый к <code>/models</code>. Этот начальный запрос возвращает общий список моделей, доступных внутри Copilot.</p><p>Следующий запрос выполняется к <code>/agents/swe/models</code>. Это запрос нужен для&nbsp;определения того, какие модели доступны для <strong>агентских функций</strong>, связанных с&nbsp;разработкой ПО (SWE).</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/2ee/598/2d9/2ee5982d96a893b0462ddb7f9c2b709a.jpeg\" alt=\"Последовательность запросов, выполняемая Copilot на этапе определения доступных моделей\"><figcaption>Последовательность запросов, выполняемая Copilot на&nbsp;этапе определения доступных моделей</figcaption></figure><h3>Немного информации о&nbsp;промптах, контексте и обвязке</h3><p>Самое интересное начинается после этой подготовки.</p>Маршрутизатор модели Copilot<p>В&nbsp;этом эксперименте я выбрал режим <em>Auto</em>&nbsp;для&nbsp;всех тестов Copilot. После отправки каждого сообщения я мог перехватывать запрос к&nbsp;конечной точке <code>/models/session/intent</code>&nbsp;ещё до&nbsp;ответа модели.</p><p>Здесь происходит следующее: промпт пользователя оценивается на&nbsp;его возможный смысл, например, <code>code-gen</code>, <code>debugging</code>, <code>reasoning</code> и <code>tool-use</code>. Результат классификации смысла помогает Copilot решить, какая из&nbsp;доступных моделей будет исполнять задачу.</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/9c2/fff/1b0/9c2fff1b05d734558ba2a851aa3abd80.jpeg\" alt=\"\"></figure><p>На&nbsp;самом деле, это не&nbsp;секрет: <a href=\"https://docs.github.com/en/copilot/concepts/models/auto-model-selection\">такое поведение описано в&nbsp;документации Copilot</a>, но&nbsp;мне всё равно&nbsp;было любопытно изучать реальные запросы и ответы на&nbsp;них.</p>(Секретные) переменные окружения<p>Я начал экспериментировать со <a href=\"https://docs.github.com/en/copilot/concepts/completions/code-suggestions\">встроенными подсказками и призрачным текстом</a>, наблюдая за&nbsp;передаваемыми по&nbsp;HTTP данными. Я уже знал, что&nbsp;функция встроенных подсказок инъецирует в&nbsp;промпты в&nbsp;качестве контекста текущий файл; именно так она и должна работать.</p><p>Но&nbsp;мне всё равно&nbsp;было любопытно, что&nbsp;ещё передаётся, поэтому я провёл небольшой тест. Я вставил фальшивый секрет в&nbsp;файл <code>.env</code>&nbsp;— печально известный файл, который рекомендуют не&nbsp;коммитить, но&nbsp;некоторые из&nbsp;нас всё равно это делают.</p><pre><code class=\"cpp\">TEST_ENV_VAR_SECRET=”реалистично выглядящий фальшивый токен”</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Редактирование этого файла на&nbsp;вызвало никаких HTTP‑запросов, и я посчитал, что&nbsp;это хороший знак. Затем я открыл совершенно не&nbsp;связанный с&nbsp;ним файл <code>pyproject.toml</code> и начал вводить в&nbsp;него текст.</p><p>Узрите&nbsp;же, какой запрос подсказки я увидел:</p><pre><code class=\"yaml\">{\n    \"prompt\":\"TEST_ENV_VAR_SECRET=\\\"mysecretenvvar\\\"\\n\\nT\",\n    \"suffix\":\"\",\n    \"max_tokens\":500,\n    \"temperature\":0,\n    \"top_p\":1,\n    \"n\":1,\n    \"stop\":[\"\\n\\n\\n\",\"\\n```\"],\n    \"stream\":true,\n    \"extra\":{\n        \"language\":\"dotenv\",\n        \"next_indent\":0,\n        \"trim_by_indentation\":true,\n        \"prompt_tokens\":175,\n        \"suffix_tokens\":0,\n        \"context\":[\n           \"Path: .env\",\n           \"These are recently edited files. Do not suggest code that has been deleted.\\nFile: pyproject.toml\\n--- a/file:///Users/rafaelpierre/copilot-mitm/pyproject.toml\\n+++ b/file:///Users/rafaelpierre/copilot-mitm/pyproject.toml\\n@@ -18,4 +18,4 @@\\n     \\\"polars&gt;=1.41.0\\\",\\n ]\\n \\n+# testing\\n- --- IGNORE ---\\nFile: config.ini\\n--- a/file:///Users/rafaelpierre/copilot-mitm/config.ini\\n+++ b/file:///Users/rafaelpierre/copilot-mitm/config.ini\\n@@ -1,2 +1,3 @@\\n TEST_CONFIG=\\\"test-config\\\"\\n \\n+# test .env\\nEnd of recent edits\"\n        ]\n    },\n    \"code_annotations\":false\n}</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><blockquote><p>Первым делом я подумал: что&nbsp;ж, я просто отключу Copilot для&nbsp;файлов <code>.env</code>. Оказалось, он уже отключён, я просто забыл об&nbsp;этом.</p><p>Но&nbsp;это и не&nbsp;было&nbsp;бы важно; запрос&nbsp;был выполнен на&nbsp;основании текста, введённого в&nbsp;файле <strong>pyproject.toml</strong>, где встроенные подсказки&nbsp;были включены.</p></blockquote><p><strong>Стоит запомнить</strong>: отключение встроенных подсказок для <code>.env</code>&nbsp;или&nbsp;любого другого «секретного» расширения ничего не&nbsp;меняет, потому что&nbsp;запрос связан не&nbsp;с&nbsp;ним.</p>Просим Copilot освежить мою память<p>У&nbsp;многих перехваченных запросов подсказок я видел в&nbsp;системных промптах определение инструмента <code>session_store_sql</code>. Вот определение инструмента из&nbsp;одного такого запроса:</p><pre><code>Query the local session store containing history from past coding sessions.\n\nUses SQLite syntax (NOT DuckDB or Postgres).\n\nSQL queries are read-only ‚Äî only SELECT and WITH are allowed.\n\nUse `datetime('now', '-1 day')` for date math (NOT `now() - INTERVAL '1 day'`), FTS5 `MATCH` for text search.\n\nTables: `sessions`, `turns`, `session_files`, `session_refs`, `checkpoints`, `search_index`.\n\nFor column details and query patterns, use the **chronicle** skill.\n\nActions: 'query' (execute SQL ‚Äî supports JOINs, FTS5 MATCH, aggregations), 'reindex' (rebuild index from debug logs).</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Однако я не&nbsp;видел последующей передачи в&nbsp;ответ никаких результатов вызова инструмента. Вероятно, инструмент не&nbsp;вызывался. Чтобы убедиться в&nbsp;этом наверняка, я попробовал принудительно выполнить вызов инструмента, задав в&nbsp;чате простой вопрос: «<em>Над чем я работал на&nbsp;прошлой неделе?</em>».</p><p>Последовал обмен данными между моделью и локальной базой данных SQLite под&nbsp;названием <code>session-store.db</code>, о&nbsp;существовании которой я не&nbsp;знал:</p><figure><img src=\"https://habrastorage.org/r/w1560/getpro/habr/upload_files/96f/483/c32/96f483c32b12183e668f44b902303edf.jpeg\" alt=\"\"></figure><p>Изучив эти беседы, я понял, что <code>session_store_sql</code>&nbsp;— это часть <a href=\"https://github.blog/changelog/2026-06-02-gain-insights-across-your-agent-sessions-with-chronicle/\">инструмента Copilot Chronicle</a>, позволяющий выполнять SQL‑запросы к <code>session-store.db</code>. В&nbsp;этой базе данных хранятся краткие сводки сессий, репозитории и ветви, с&nbsp;которыми работал пользователь.</p><p>Также в&nbsp;ней хранятся все промпты пользователя и соответствующие ответы LLM. Copilot хранит историю всего, что&nbsp;я у&nbsp;него спрашивал, и при&nbsp;необходимости обращается к&nbsp;этой истории.</p><p>Привлекло моё внимание то, что&nbsp;модель не&nbsp;знала заранее схему. Изначально она пробовала выполнить показанный ниже запрос,&nbsp;<strong>который завершился неудачно</strong>.</p><pre><code class=\"yaml\"># Отправка определения инструмента\n\n{\n    \"type\":\"function_call\",\n    \"name\":\"session_store_sql\",\n    \"arguments\":\"{\n        \\\"action\\\":\\\"query\\\",\n        \\\"description\\\":\\\"Fetch recent session activity for the past week\\\",\n        \\\"query\\\":\\\"SELECT s.id, s.start_time, s.title, t.turn_index, t.role, t.content FROM sessions s JOIN turns t ON t.session_id = s.id WHERE s.start_time &gt;= datetime('now', '-7 days') ORDER BY s.start_time, t.turn_index;\\\"\n    }\",\n    \"call_id\":\"call_Ay35CDeV0EFXtvFI8l3VgbWI\"\n}\n\n# Инструмент исполняется локально, результаты передаются агенту/LLM:\n\n{\n    \"type\":\"function_call_output\",\n    \"call_id\":\"call_Ay35CDeV0EFXtvFI8l3VgbWI\",\n    \"output\":\"Error: no such column: s.start_time\"\n}</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Затем она выполняет интроспекцию метаданных схемы, чтобы найти определения таблиц. После этого ей наконец‑то удаётся получить записи из&nbsp;моей локальной базы данных SQLite.</p><pre><code class=\"yaml\"># Вызов инструмента интроспеции базы данных SQLite Session Store\n\n{\n    \"type\":\"function_call\",\n    \"name\":\"session_store_sql\",\n    \"arguments\":\"{\n        \\\"action\\\":\\\"query\\\",\n        \\\"description\\\":\\\"Inspect session store schema\\\",\n        \\\"query\\\":\\\"\n            SELECT name, sql\n            FROM sqlite_schema\n            WHERE type IN ('table','view');\n        \\\"\n    }\",\n    \"call_id\":\"call_wY9dGEI4DSYbOXzpzPg3JTGN\"\n}\n\n# Результаты вызова инструмента интроспекции отправляются агенту/LLM:\n\n{\n    \"type\":\"function_call_output\",\n    \"call_id\":\"call_wY9dGEI4DSYbOXzpzPg3JTGN\",\n    \"output\":\"Results: 13 rows (source: local)\n        | name | sql |\n        | --- | --- |\n        | schema_version | CREATE TABLE schema_version (\\n\\t\\t\\t\\tversion INTEGER NOT NULL (...)\\\n    \",\n}</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Мне стало любопытно узнать, что&nbsp;ещё хранится в&nbsp;данных сессий, поэтому я начал изучать метаданные.</p><pre><code class=\"sql\">$ sqlite3 ~/Library/Application Support/Code/User/globalStorage/github.copilot-chat/session-store.db\n\n# Вывод\n\nCREATE TABLE turns (\n  id INTEGER PRIMARY KEY AUTOINCREMENT,\n  session_id TEXT NOT NULL REFERENCES sessions(id),\n  turn_index INTEGER NOT NULL,\n  user_message TEXT,\n  assistant_response TEXT,\n  timestamp TEXT DEFAULT (...),\n  UNIQUE(session_id, turn_index)\n);</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Как&nbsp;видите, <code>user_message</code> и <code>assistant_response</code> хранятся в&nbsp;незашифрованном виде. Давайте выполним запрос к&nbsp;ним вручную.</p><pre><code class=\"powershell\">$ sqlite3 session-store.db \"SELECT substr(user_message,1,60) FROM turns LIMIT 5;\"\nWhat is ML?\nhello\ntesting</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Это часть сообщений, которые я отправлял Copilot ранее для&nbsp;тестирования перехвата mitmproxy, так что&nbsp;в&nbsp;этом нет ничего удивительного. Но&nbsp;как&nbsp;насчёт сообщений, которые могут потенциально содержать нечто более…&nbsp;<em>проблематичное</em>?</p><p>Чтобы узнать это, я отправил Copilot сообщение чата с&nbsp;фальшивыми секретными данными: фальшивым токеном GitHub, фальшивым ключом AWS, строкой подключения с&nbsp;паролем в&nbsp;ней.</p><p>Затем я обратился к&nbsp;базе данных, чтобы увидеть, что&nbsp;туда&nbsp;было записано.</p><pre><code>$ sqlite3 session-store.db \"SELECT user_message FROM turns \\\n    WHERE user_message LIKE '%ghp_%' OR user_message LIKE '%postgres://%';\"\n\n...\nGITHUB_TOKEN=ghp_«fake token, stored exactly as typed»\nDATABASE_URL=postgres://admin:«password»@db.example.com:5432/prod\n...</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>Честно говоря, у&nbsp;меня&nbsp;было искушение дать статье заголовок <em>«Всё лежит здесь и в&nbsp;незашифрованном виде»</em>.</p><p>Но&nbsp;хотя это правда, мой вывод&nbsp;был гораздо менее тревожным и, как&nbsp;мне кажется, более интересным:&nbsp;<strong>инструменты ИИ‑кодинга становятся хранящими состояние системами.</strong></p><blockquote><p>Инструменты ИИ‑кодинга становятся системами, хранящими состояние. Они всё теснее сочетают в&nbsp;себе <em>пользовательское рабочее пространство + недавние изменения + беседы + инструменты + историю + маршрутизацию моделей.</em></p><p><em>Каждый новый источник контекста повышает полезность и увеличивает объём состояния разработчика, доступного системе. Но&nbsp;это привносит и дополнительные трудности: всё большее раздувание контекста, проблемы конфиденциальности и приватности данных.</em></p></blockquote><p>Хоть мне и понравилось заниматься этим реверс‑инжинирингом, я ещё и заинтересовался, подтверждаются&nbsp;ли мои предположения в&nbsp;реальном коде.&nbsp;Чтобы проверить это, мне нужно&nbsp;было изучить код.</p><h3>Проверка моих открытий при&nbsp;помощи исходников</h3>Незашифрованное хранение сессий<p>Код хранения сессий&nbsp;— часть расширения Chronicle; он находится в <a href=\"https://github.com/microsoft/vscode/blob/main/extensions/copilot/src/platform/chronicle/node/sessionStore.ts\">sessionStore.ts</a>. Определение таблиц там точно такое&nbsp;же, какое я видел на&nbsp;диске:&nbsp;<code>user_message</code> и <code>assistant_response</code> хранятся в&nbsp;незашифрованном тексте, никакого маскирования на&nbsp;уровне столбцов или&nbsp;чего‑то подобного.</p><p>Но&nbsp;сама <em>схема</em>&nbsp;не&nbsp;говорит о&nbsp;том, очищаются&nbsp;ли данные при&nbsp;поступлении. Об&nbsp;этом нам говорит путь записи. Вот insert, который записывается при&nbsp;каждой реплике:</p><pre><code>INSERT INTO turns (session_id, turn_index, user_message, assistant_response, timestamp)\nVALUES (?, ?, ?, ?, ?)</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p>…и связанные с&nbsp;ним значения:</p><pre><code>turn.session_id,\nturn.turn_index,\nturn.user_message ?? null,\nturn.assistant_response ?? null,\nturn.timestamp ?? new Date().toISOString(),</code><a href=\"https://sourcecraft.dev/\"><img></a></pre><p><code>turn.user_message</code>&nbsp;записывается в&nbsp;неизменном виде. Я поискал в&nbsp;коде любые изменения, санацию, фильтрацию секретов или&nbsp;маскирование на&nbsp;пути записи. Не&nbsp;нашлось ничего: никакая очистка не&nbsp;выполняется. Хранение в&nbsp;незашифрованном виде&nbsp;— это не&nbsp;баг и не&nbsp;упущенный пограничный случай; именно так и задумывалось в&nbsp;коде.</p><p>Это отвечает на&nbsp;мой первый вопрос: такое решение принято намеренно в&nbsp;том смысле, что&nbsp;в&nbsp;коде нет ничего, что&nbsp;бы этому препятствовало.</p>Сливать или&nbsp;не&nbsp;сливать секреты<p>Строка «<em>recently edited files</em>», которую я видел в&nbsp;перехвате mitm, поступила из <a href=\"https://github.com/microsoft/vscode/blob/main/extensions/copilot/src/extension/completions-core/vscode-node/lib/src/prompt/components/recentEdits.tsx\">recentEdits.tsx</a>. Используемое по&nbsp;умолчанию поведение скользящего окна жёстко прописано в&nbsp;коде: до <strong>20&nbsp;файлов, до 8&nbsp;кратких сводок изменений и до 3&nbsp;строк контекста </strong>вокруг каждого изменения; именно поэтому строка, к&nbsp;которой я не&nbsp;прикасался (та, в&nbsp;которой находится фальшивый секрет) стала частью HTTP‑запроса к&nbsp;Copilot API.</p><blockquote><p>Правила запрета на <code>.env</code> по&nbsp;умолчанию нигде нет. На&nbsp;индивидуальном тарифе система не&nbsp;обращается с&nbsp;файлами <code>.env</code>, как&nbsp;с&nbsp;чем‑то особенным; отсутствует и какая‑либо интеграция с <code>.gitignore</code> текущего пространства.</p></blockquote><p>Есть возможность исключения расширения, но&nbsp;она привязана к «политике репозитория»&nbsp;— функции GitHub <em>Business/Enterprise</em>, контролируемой администратором.</p><h3>В&nbsp;заключение</h3>С&nbsp;большой силой приходит большая ответственность<p>Моё исследование оказалось замечательным способом разобраться, как&nbsp;инструменты ИИ‑кодинга реализуют свои обвязки. Я считаю, что&nbsp;эту информацию следует изучать командами, создающими собственные ИИ‑системы.</p><p>Часть вопросов, которыми я часто задаюсь при&nbsp;разработке таких систем, остаётся актуальной. Какой контекст следует инъецировать? Что&nbsp;нужно передавать модели? Что&nbsp;должно оставаться локальным? Какие инструменты должны&nbsp;быть доступны модели? Что&nbsp;хранить в&nbsp;кратковременной памяти? Что&nbsp;надо переносить в&nbsp;долговременную?</p>Контекст становится продуктом<p>Я считаю, что <strong>контекст всё больше становится продуктом.</strong></p><p>Разумеется, модели и бенчмарк SOTA важны, но&nbsp;главное различие между инструментами ИИ‑кодинга (а также между ИИ‑инструментами в&nbsp;целом), похоже, постепенно сдвигается в&nbsp;сторону качества сборки нужного контекста: кода, последних изменений, действий, бесед, инструментов, истории и всего остального, что&nbsp;помогает решать текущие задачи. При&nbsp;этом возникают две сложности.</p><p>Во‑первых, инженерная: увеличение контекста не&nbsp;всегда приводит к&nbsp;улучшению контекста. Сложность в&nbsp;том, чтобы он оставался сжатым, релевантным и <a href=\"https://www.lighthousenewsletter.com/p/cutting-anthropic-token-costs-and\">удобным для&nbsp;кэширования</a>, не&nbsp;позволяя модели утонуть в&nbsp;раздувшихся промптах.</p><p>Во‑вторых, вопрос приватности и конфиденциальности. Чем больше контекстных данных собирает и хранит обвязка, тем тщательнее она должна определять, что&nbsp;может пересекать границы (между файлами, сессиями, машинами и, в&nbsp;конечном итоге, API моделями).</p><p>Очевидно, Copilot движется в&nbsp;этом направлении, и часть обнаруженных мной решений можно считать продуманными. Другая&nbsp;же часть вызвала у&nbsp;меня чувство неловкости. И пока ничто из&nbsp;увиденного не&nbsp;убедило меня снова становиться платным пользователем.</p><p>Но&nbsp;это убедило меня кое в&nbsp;чём ещё: если вы разрабатываете ИИ‑приложения, реверс‑инжиниринг и изучение обвязок моделей может научить вас большему, чем изучение самой модели.</p>",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 22009,
+        "approxBlocks": 150
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/armiya-i-opk/28015235:2026-08-15T10:40:00.000Z:Ход СВО. Сводка Минобороны РФ за 15 авгу",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Ход СВО. Сводка Минобороны РФ за 15 августа",
+      "url": "https://tass.ru/armiya-i-opk/28015235",
+      "publishedAt": "2026-08-15T10:40:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302055.jpg",
+      "excerpt": "Вооруженные Силы Российской Федерации продолжают проведение специальной военной операции",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/obschestvo/28015337:2026-08-15T10:39:20.000Z:В Польше проходит крупнейший в истории с",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "В Польше проходит крупнейший в истории страны военный парад",
+      "url": "https://tass.ru/obschestvo/28015337",
+      "publishedAt": "2026-08-15T10:39:20.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "К мероприятию присоединились военнослужащие США, Канады, Австралии, Литвы, Румынии, Швеции, Эстонии и других стран",
+      "contentHtml": ""
+    },
+    {
+      "id": "interfax:https://www.sport-interfax.ru/1109515:2026-08-15T10:39:00.000Z:Чемпион мира Ферран Торрес перешел в ПСЖ",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Чемпион мира Ферран Торрес перешел в ПСЖ",
+      "url": "https://www.sport-interfax.ru/1109515",
+      "publishedAt": "2026-08-15T10:39:00.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "",
+      "excerpt": "Нападающий сборной Испании Ферран Торрес стал игроком \"Пари Сен-Жермен\", сообщается на сайте французского футбольного клуба.",
+      "contentHtml": ""
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/world/1109514:2026-08-15T10:36:00.000Z:В результате землетрясения на востоке Ин",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "В результате землетрясения на востоке Индонезии погибли не менее 38 человек",
+      "url": "https://www.interfax.ru/world/1109514",
+      "publishedAt": "2026-08-15T10:36:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://www.interfax.ru/ftproot/textphotos/2026/08/15/indo1200_1.jpg",
+      "excerpt": "Не менее 38 человек погибли, еще 23 получили травмы в результате землетрясения, которое произошло в субботу в районе острова Флорес на востоке индонезийского архипелага, сообщает индонезийское Национальное агентство по борьбе со стихийными бедствиями.",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/obschestvo/28015333:2026-08-15T10:34:44.000Z:\"Страна\": в магазинах Украины из-за сбое",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "\"Страна\": в магазинах Украины из-за сбоев в работе карт банков очереди",
+      "url": "https://tass.ru/obschestvo/28015333",
+      "publishedAt": "2026-08-15T10:34:44.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Украинцы жалуются на невозможность безналичной оплаты картами Приватбанка",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/kultura/28015295:2026-08-15T10:33:52.000Z:Писарев заявил, что понятие амплуа в сов",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Писарев заявил, что понятие амплуа в современном театре никто не отменял",
+      "url": "https://tass.ru/kultura/28015295",
+      "publishedAt": "2026-08-15T10:33:52.000Z",
+      "categoryIds": [
+        "ru",
+        "culture"
+      ],
+      "image": "",
+      "excerpt": "По словам художественного руководителя Московского драматического театра им. А. С. Пушкина, в частных случаях амплуа может отменить только талант",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/sport/28015335:2026-08-15T10:33:12.000Z:Испанка Перес установила первый мировой ",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Испанка Перес установила первый мировой рекорд в ходьбе на полумарафоне",
+      "url": "https://tass.ru/sport/28015335",
+      "publishedAt": "2026-08-15T10:33:12.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "",
+      "excerpt": "Спортсменка преодолела дистанцию за 1 час 30 минут 6 секунд",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/kultura/28015315:2026-08-15T10:31:22.000Z:Писарев отметил снижение запроса режиссе",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Писарев отметил снижение запроса режиссеров на постановку спектаклей большой формы",
+      "url": "https://tass.ru/kultura/28015315",
+      "publishedAt": "2026-08-15T10:31:22.000Z",
+      "categoryIds": [
+        "ru",
+        "culture"
+      ],
+      "image": "",
+      "excerpt": "Художественный руководитель Московского драматического театра им. А. С. Пушкина добавил, что затрудняется назвать имена таких режиссеров, которые могли бы \"выстрелить в большой форме современного театра\"",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/politika/28015331:2026-08-15T10:28:17.000Z:В ГД по-прежнему ожидают визита американ",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "В ГД по-прежнему ожидают визита американских конгрессменов в РФ осенью",
+      "url": "https://tass.ru/politika/28015331",
+      "publishedAt": "2026-08-15T10:28:17.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Лидер партии ЛДПР Леонид Слуцкий уточнил, что Россия и США начали восстанавливать диалог сразу по нескольким направлениям",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/moskvich-do-smerti-zabil-zhenu-i-izbil-pasynka/:2026-08-15T10:27:52.000Z:Москвич до смерти забил жену и избил пас",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Москвич до смерти забил жену и избил пасынка",
+      "url": "https://lenta.ru/news/2026/08/15/moskvich-do-smerti-zabil-zhenu-i-izbil-pasynka/",
+      "publishedAt": "2026-08-15T10:27:52.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/13/20260815133437151/pic_7faf19146d536ee14ec42dec16724b31.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/proisshestviya/28015327:2026-08-15T10:27:12.000Z:Cebu Daily News: из сети торговли людьми",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Cebu Daily News: из сети торговли людьми на Филиппинах спасли пять россиянок",
+      "url": "https://tass.ru/proisshestviya/28015327",
+      "publishedAt": "2026-08-15T10:27:12.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Пострадавших передали властям Макати для получения необходимой помощи, пишет газета",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/obschestvo/28015329:2026-08-15T10:26:29.000Z:В Лондоне нашли мертвым бывшего профессо",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "В Лондоне нашли мертвым бывшего профессора Кембриджского университета",
+      "url": "https://tass.ru/obschestvo/28015329",
+      "publishedAt": "2026-08-15T10:26:29.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Обстоятельства смерти Джейсона Ардея не уточняются, при этом следователи не считают его смерть подозрительной",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/armiya-i-opk/28015323:2026-08-15T10:26:00.000Z:Минобороны опубликовало кадры освобожден",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Минобороны опубликовало кадры освобождения Рыбальского Запорожской области",
+      "url": "https://tass.ru/armiya-i-opk/28015323",
+      "publishedAt": "2026-08-15T10:26:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "На кадрах видно, как ВС РФ уничтожают технику, пункты временной дислокации и живую силу противника",
+      "contentHtml": ""
+    },
+    {
+      "id": "interfax:https://www.sport-interfax.ru/1109513:2026-08-15T10:25:00.000Z:Умер победитель первого чемпионата мира ",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Умер победитель первого чемпионата мира по боксу Руфат Рискиев",
+      "url": "https://www.sport-interfax.ru/1109513",
+      "publishedAt": "2026-08-15T10:25:00.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "",
+      "excerpt": "Многократный чемпион СССР по боксу Руфат Рискиев скончался на 77-м году жизни, сообщает пресс-служба Федерации бокса России.",
+      "contentHtml": ""
+    },
+    {
+      "id": "tass:https://tass.ru/sport/28015325:2026-08-15T10:23:37.000Z:Гимнастка Мельникова рассказала, что нах",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Гимнастка Мельникова рассказала, что находится в центре внимания на ЧЕ",
+      "url": "https://tass.ru/sport/28015325",
+      "publishedAt": "2026-08-15T10:23:37.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302133.jpg",
+      "excerpt": "В четверг спортсменка выиграла личное многоборье",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/v-mvd-rossii-opisali-otsutstvie-pasporta-u-cheloveka-slovami-eto-nestrashno/:2026-08-15T10:20:02.000Z:В МВД России описали отсутствие паспорта",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "В МВД России описали отсутствие паспорта у человека словами «это нестрашно»",
+      "url": "https://lenta.ru/news/2026/08/15/v-mvd-rossii-opisali-otsutstvie-pasporta-u-cheloveka-slovami-eto-nestrashno/",
+      "publishedAt": "2026-08-15T10:20:02.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/13/20260815132327935/pic_a2e9932f7ee9a79e859ae11af1d2e2ad.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/sport/28015303:2026-08-15T10:18:20.000Z:Революция отменяется. Почему Инфантино в",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Революция отменяется. Почему Инфантино выиграет войну против УЕФА",
+      "url": "https://tass.ru/sport/28015303",
+      "publishedAt": "2026-08-15T10:18:20.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302113.jpg",
+      "excerpt": "Союз европейских футбольных ассоциаций (УЕФА) продолжает добиваться отставки президента Международной федерации футбола (ФИФА) Джанни Инфантино, однако тот начал перехватывать инициативу. О смутных перспективах УЕФА в борьбе за свержение швейцарца с главной должности в мировом футболе — в материале ТАСС.",
+      "contentHtml": ""
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/world/1109512:2026-08-15T10:18:00.000Z:Ситуация с лесным пожаром во французском",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Ситуация с лесным пожаром во французском департаменте Ланды ухудшилась",
+      "url": "https://www.interfax.ru/world/1109512",
+      "publishedAt": "2026-08-15T10:18:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "",
+      "excerpt": "Лесной пожар, бушующий с четверга в департаменте Ланды на юго-западе Франции, в субботу вновь распространился, что привело к дальнейшей эвакуации населения, передает Le Figaro.\"Было эвакуировано еще около ста человек (...), в результате чего общее число эвакуированных достигло 650\", - приводит издание слова префекта департамента Жиля Клаврёля.",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/autumn-food/:2026-08-15T10:17:00.000Z:Россиянам рассказали о питании в преддве",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Россиянам рассказали о питании в преддверии осени",
+      "url": "https://lenta.ru/news/2026/08/15/autumn-food/",
+      "publishedAt": "2026-08-15T10:17:00.000Z",
+      "categoryIds": [
+        "health"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/13/20260815132230616/pic_c5dae0ed3fd853eb55b20f7680733893.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/sport/28015313:2026-08-15T10:16:15.000Z:Gazzetta: футболист Тикнизян отказался о",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "Gazzetta: футболист Тикнизян отказался от перехода в \"Зенит\" ради \"Олимпиакоса\"",
+      "url": "https://tass.ru/sport/28015313",
+      "publishedAt": "2026-08-15T10:16:15.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "",
+      "excerpt": "Сербская \"Црвена Звезда\" получит за игрока €7 млн",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/rossiyskiy-plovets-nazval-svoi-rezultaty-na-chempionate-evropy-tuhlymi/:2026-08-15T10:16:00.000Z:Российский пловец назвал свои результаты",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Российский пловец назвал свои результаты на чемпионате Европы тухлыми",
+      "url": "https://lenta.ru/news/2026/08/15/rossiyskiy-plovets-nazval-svoi-rezultaty-na-chempionate-evropy-tuhlymi/",
+      "publishedAt": "2026-08-15T10:16:00.000Z",
+      "categoryIds": [
+        "sports"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/13/20260815131827280/pic_39d05ea1609507a38dc9f5441d6cf4dc.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/lukashenko-nazval-zalog-spokoystviya-v-belorussii/:2026-08-15T10:16:00.000Z:Лукашенко назвал залог спокойствия Белор",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Лукашенко назвал залог спокойствия Белоруссии",
+      "url": "https://lenta.ru/news/2026/08/15/lukashenko-nazval-zalog-spokoystviya-v-belorussii/",
+      "publishedAt": "2026-08-15T10:16:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/13/20260815130934556/pic_16f81096e102f928471525aa110ffee3.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/world/1109510:2026-08-15T10:16:00.000Z:В Иране назвали безумными слова Трампа о",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "В Иране назвали безумными слова Трампа о планах сделать Ормузский пролив американским",
+      "url": "https://www.interfax.ru/world/1109510",
+      "publishedAt": "2026-08-15T10:16:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://www.interfax.ru/ftproot/textphotos/2026/08/15/gar1200.jpg",
+      "excerpt": "Иран отверг заявления президента США Дональда Трампа о возможном объявлении Ормузского пролива территорией США.\"Трамп заявил, что после поражения Ирана он объявит Ормузский пролив территорией США.",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/stali-izvestny-podrobnosti-avarii-avtobusa-s-rossiyskimi-turistami-vo-vietname/:2026-08-15T10:15:00.000Z:Стали известны подробности аварии автобу",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "Стали известны подробности аварии автобуса с российскими туристами во Вьетнаме",
+      "url": "https://lenta.ru/news/2026/08/15/stali-izvestny-podrobnosti-avarii-avtobusa-s-rossiyskimi-turistami-vo-vietname/",
+      "publishedAt": "2026-08-15T10:15:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/13/20260815131716217/pic_86862815e66c406f4aba926b02c58895.jpg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "interfax:https://www.interfax.ru/russia/1109511:2026-08-15T10:14:00.000Z:Аэропорт Астрахани возобновил работу",
+      "sourceId": "interfax",
+      "sourceName": "Интерфакс",
+      "title": "Аэропорт Астрахани возобновил работу",
+      "url": "https://www.interfax.ru/russia/1109511",
+      "publishedAt": "2026-08-15T10:14:00.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Аэропорт Астрахани (Нариманово) возобновил прием и отправку рейсов, сообщила в субботу пресс-служба Росавиации в мессенджере Мах.",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/v-berline-zhitelnitse-mnogokvartirnogo-doma-prishlos-prygat-iz-okna-11-etazha-iz-za-pozhara/:2026-08-15T10:13:00.000Z:В Берлине жительница многоквартирного до",
+      "sourceId": "lenta",
+      "sourceName": "Lenta.ru",
+      "title": "В Берлине жительница многоквартирного дома прыгнула из окна 11-го этажа из-за пожара",
+      "url": "https://lenta.ru/news/2026/08/15/v-berline-zhitelnitse-mnogokvartirnogo-doma-prishlos-prygat-iz-okna-11-etazha-iz-za-pozhara/",
+      "publishedAt": "2026-08-15T10:13:00.000Z",
+      "categoryIds": [
+        "world"
+      ],
+      "image": "https://icdn.lenta.ru/images/2026/08/15/13/20260815132017949/pic_dc08e6e4bccd55afd27c7d64dd152df9.jpeg",
+      "excerpt": "",
+      "contentHtml": "",
+      "contentTruncated": false,
+      "contentMeta": {
+        "approxChars": 0,
+        "approxBlocks": 0
+      }
+    },
+    {
+      "id": "tass:https://tass.ru/proisshestviya/28015293:2026-08-15T10:12:42.000Z:В Москве на Лужнецкой эстакаде произошло",
+      "sourceId": "tass",
+      "sourceName": "ТАСС",
+      "title": "В Москве на Лужнецкой эстакаде произошло ДТП",
+      "url": "https://tass.ru/proisshestviya/28015293",
+      "publishedAt": "2026-08-15T10:12:42.000Z",
+      "categoryIds": [
+        "ru"
+      ],
+      "image": "",
+      "excerpt": "Обстоятельства произошедшего и информация о пострадавших уточняются",
+      "contentHtml": ""
+    },
+    {
+      "id": "lenta:https://lenta.ru/news/2026/08/15/costs/:2026-08-15T10:10:00.000Z:Раскрыты советы по сокращению расходов",
       "sourceId": "lenta",
       "sourceName": "Lenta.ru",
       "title": "Раскрыты советы по сокращению расходов",
       "url": "https://lenta.ru/news/2026/08/15/costs/",
-      "publishedAt": "2026-08-15T10:10:46.000Z",
+      "publishedAt": "2026-08-15T10:10:00.000Z",
       "categoryIds": [
         "health"
       ],
@@ -24,14 +458,14 @@
       "id": "tass:https://tass.ru/ekonomika/28015301:2026-08-15T10:09:51.000Z:\"Победа\" корректирует расписание из-за в",
       "sourceId": "tass",
       "sourceName": "ТАСС",
-      "title": "\"Победа\" корректирует расписание из-за временных ограничений",
+      "title": "\"Победа\" корректирует расписание из-за временных ограничений в регионах",
       "url": "https://tass.ru/ekonomika/28015301",
       "publishedAt": "2026-08-15T10:09:51.000Z",
       "categoryIds": [
         "business"
       ],
       "image": "",
-      "excerpt": "",
+      "excerpt": "Некоторые рейсы задержаны или отменены, сообщила авиакомпания",
       "contentHtml": ""
     },
     {
@@ -218,7 +652,7 @@
       "id": "tass:https://tass.ru/obschestvo/28015279:2026-08-15T09:56:52.000Z:ТАСС: в Казахстане перепродают билеты c ",
       "sourceId": "tass",
       "sourceName": "ТАСС",
-      "title": "ТАСС: в Казахстане перепродают билеты c рук низ-за переноса концерта Канье Уэста",
+      "title": "ТАСС: в Казахстане перепродают билеты c рук из-за переноса концерта Канье Уэста",
       "url": "https://tass.ru/obschestvo/28015279",
       "publishedAt": "2026-08-15T09:56:52.000Z",
       "categoryIds": [
@@ -306,7 +740,7 @@
       "categoryIds": [
         "ru"
       ],
-      "image": "",
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302119.jpg",
       "excerpt": "Подробности искового заявления и требований ведомства не известны",
       "contentHtml": ""
     },
@@ -443,7 +877,7 @@
       "categoryIds": [
         "world"
       ],
-      "image": "",
+      "image": "https://www.interfax.ru/ftproot/textphotos/2026/08/15/luk1200.jpg",
       "excerpt": "Белорусская власть будет делать все для сохранения мира, заявил президент республики Александр Лукашенко.\"Мы будем делать все для того, чтобы был мир.",
       "contentHtml": ""
     },
@@ -819,7 +1253,7 @@
       "categoryIds": [
         "world"
       ],
-      "image": "",
+      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260815/9302123.png",
       "excerpt": "В ходе боев ВС РФ уничтожили 7 боевых бронированных машин, 10 автомобилей, 13 наземных роботизированных комплексов и более 20 тяжелых гексакоптеров типа R-18, сообщили в Минобороны",
       "contentHtml": ""
     },
@@ -974,17 +1408,17 @@
       "contentHtml": ""
     },
     {
-      "id": "tass:https://tass.ru/proisshestviya/28015195:2026-08-15T09:06:39.000Z:VTC News раскрыл детали ДТП с экскурсион",
+      "id": "tass:https://tass.ru/proisshestviya/28015195:2026-08-15T09:06:39.000Z:Tuoi tre раскрыла детали ДТП с экскурсио",
       "sourceId": "tass",
       "sourceName": "ТАСС",
-      "title": "VTC News раскрыл детали ДТП с экскурсионным автобусом с россиянами во Вьетнаме",
+      "title": "Tuoi tre раскрыла детали ДТП с экскурсионным автобусом с россиянами во Вьетнаме",
       "url": "https://tass.ru/proisshestviya/28015195",
       "publishedAt": "2026-08-15T09:06:39.000Z",
       "categoryIds": [
         "ru"
       ],
       "image": "",
-      "excerpt": "По данным портала, в результате аварии на автомагистрали Фантхиет - Даузяй в провинции Ламдонг погибла 38-летняя женщина",
+      "excerpt": "По данным газеты, в результате аварии на дороге из Нячанга в Хошимин погибла 38-летняя женщина",
       "contentHtml": ""
     },
     {
@@ -1017,17 +1451,17 @@
       "contentHtml": ""
     },
     {
-      "id": "tass:https://tass.ru/ekonomika/28015177:2026-08-15T09:05:34.000Z:В аэропорту Астрахани ввели временные ог",
+      "id": "tass:https://tass.ru/ekonomika/28015177:2026-08-15T09:05:34.000Z:В аэропорту Астрахани вводили временные ",
       "sourceId": "tass",
       "sourceName": "ТАСС",
-      "title": "В аэропорту Астрахани ввели временные ограничения",
+      "title": "В аэропорту Астрахани вводили временные ограничения",
       "url": "https://tass.ru/ekonomika/28015177",
       "publishedAt": "2026-08-15T09:05:34.000Z",
       "categoryIds": [
         "business"
       ],
       "image": "",
-      "excerpt": "Они необходимы для обеспечения безопасности полетов",
+      "excerpt": "Они были необходимы для обеспечения безопасности полетов",
       "contentHtml": ""
     },
     {
@@ -3923,12 +4357,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/15/08/20260815085016432/pic_a663145aeae4edc4152f018ac52f5fc8.jpg",
       "excerpt": "",
-      "contentHtml": "",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 0,
-        "approxBlocks": 0
-      }
+      "contentHtml": ""
     },
     {
       "id": "tass:https://tass.ru/proisshestviya/28014833:2026-08-15T05:50:07.000Z:С начала суток тревога объявлялась в 11 ",
@@ -3956,12 +4385,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/15/08/20260815084759897/pic_1d6a1931fec7a42149cd902c9696c537.jpg",
       "excerpt": "",
-      "contentHtml": "",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 0,
-        "approxBlocks": 0
-      }
+      "contentHtml": ""
     },
     {
       "id": "interfax:https://www.interfax.ru/russia/1109471:2026-08-15T05:47:00.000Z:Промышленная инфраструктура Самары получ",
@@ -4059,12 +4483,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/15/08/20260815084557427/pic_a2edb4f3629dbd901db5e97842e64ee6.jpg",
       "excerpt": "",
-      "contentHtml": "",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 0,
-        "approxBlocks": 0
-      }
+      "contentHtml": ""
     },
     {
       "id": "tass:https://tass.ru/armiya-i-opk/28014817:2026-08-15T05:36:30.000Z:ВС РФ поразили инфраструктуру порта Изма",
@@ -4092,12 +4511,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/15/08/20260815082655809/pic_695aba1b5b03521c8177e0768aa669e0.jpg",
       "excerpt": "",
-      "contentHtml": "",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 0,
-        "approxBlocks": 0
-      }
+      "contentHtml": ""
     },
     {
       "id": "interfax:https://www.interfax.ru/world/1109469:2026-08-15T05:36:00.000Z:Что случилось этой ночью: суббота, 15 ав",
@@ -4139,12 +4553,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/15/08/20260815083505846/pic_a4aee62e95cf01f4bee2efeef753461d.jpg",
       "excerpt": "",
-      "contentHtml": "",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 0,
-        "approxBlocks": 0
-      }
+      "contentHtml": ""
     },
     {
       "id": "interfax:https://www.interfax.ru/russia/1109470:2026-08-15T05:35:00.000Z:За ночь над регионами сбиты 598 украинск",
@@ -4298,12 +4707,7 @@
       ],
       "image": "https://icdn.lenta.ru/images/2026/08/15/08/20260815082702702/pic_d4592a7394517cd0c584786cd63c4314.jpg",
       "excerpt": "",
-      "contentHtml": "",
-      "contentTruncated": false,
-      "contentMeta": {
-        "approxChars": 0,
-        "approxBlocks": 0
-      }
+      "contentHtml": ""
     },
     {
       "id": "tass:https://tass.ru/obschestvo/28014761:2026-08-15T05:22:33.000Z:В ЛНР намерены приехать свыше 30 \"земски",
@@ -21000,399 +21404,6 @@
       ],
       "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260814/9300071.jpg",
       "excerpt": "Пострадали шесть человек",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/28011665:2026-08-14T06:54:08.000Z:Посол Ирана: США пытаются лишить республ",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Посол Ирана: США пытаются лишить республику права на мирное использование атома",
-      "url": "https://tass.ru/mezhdunarodnaya-panorama/28011665",
-      "publishedAt": "2026-08-14T06:54:08.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "",
-      "excerpt": "Тегеран никогда не стремился к созданию оружия массового уничтожения, включая ядерное, подчеркнул Насреддин Хейдари",
-      "contentHtml": ""
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/russia/1109260:2026-08-14T06:52:00.000Z:Житель брянского поселка ранен в результ",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "Житель брянского поселка ранен в результате атаки БПЛА",
-      "url": "https://www.interfax.ru/russia/1109260",
-      "publishedAt": "2026-08-14T06:52:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "В Брянской области БПЛА атаковали поселок Сныткино Брасовского района, пострадал местный житель, сообщил врио губернатора региона Егор Ковальчук.",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/28011663:2026-08-14T06:51:10.000Z:В Ростовской области задержали подозрева",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "В Ростовской области задержали подозреваемого в убийстве подростка",
-      "url": "https://tass.ru/proisshestviya/28011663",
-      "publishedAt": "2026-08-14T06:51:10.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260814/9300057.jpg",
-      "excerpt": "По предварительным данным, во время конфликта мужчина множество раз ударил несовершеннолетнюю ножом",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/28011571:2026-08-14T06:51:06.000Z:Во Франции 13 августа стало одним из сам",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Во Франции 13 августа стало одним из самых жарких дней за всю историю наблюдений",
-      "url": "https://tass.ru/obschestvo/28011571",
-      "publishedAt": "2026-08-14T06:51:06.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "По данным Météo-France, среднее значение минимальной и максимальной температуры на 30 французских метеостанциях составило 28,8 градуса",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/raskryta-sudba-rabotavshego-na-polskie-spetssluzhby-rossiyanina/:2026-08-14T06:51:00.000Z:Раскрыта судьба работавшего на польские ",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Раскрыта судьба работавшего на польские спецслужбы россиянина",
-      "url": "https://lenta.ru/news/2026/08/14/raskryta-sudba-rabotavshego-na-polskie-spetssluzhby-rossiyanina/",
-      "publishedAt": "2026-08-14T06:51:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/09/20260814095221878/pic_9598d14218c0f1184b4f2c3ef1b86c57.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/ronaldu-smenil-imidzh-posle-svadby/:2026-08-14T06:50:00.000Z:Роналду сменил имидж после свадьбы",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Роналду сменил имидж после свадьбы",
-      "url": "https://lenta.ru/news/2026/08/14/ronaldu-smenil-imidzh-posle-svadby/",
-      "publishedAt": "2026-08-14T06:50:00.000Z",
-      "categoryIds": [
-        "sports"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/09/20260814093139574/pic_773779c7be9f63e1a380d8cabdbd679b.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/tseny-na-neft-pereshli-k-rostu-na-fone-novoy-ugrozy-ssha-iranu/:2026-08-14T06:50:00.000Z:Цены на нефть перешли к росту на фоне но",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Цены на нефть перешли к росту на фоне новой угрозы США Ирану",
-      "url": "https://lenta.ru/news/2026/08/14/tseny-na-neft-pereshli-k-rostu-na-fone-novoy-ugrozy-ssha-iranu/",
-      "publishedAt": "2026-08-14T06:50:00.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/09/20260814093809206/pic_ac27d2203b6f6d22a2947de16cbe8406.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/velikobritaniya/:2026-08-14T06:49:00.000Z:В Великобритании испугались предупрежден",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "В Великобритании испугались предупреждения Путина",
-      "url": "https://lenta.ru/news/2026/08/14/velikobritaniya/",
-      "publishedAt": "2026-08-14T06:49:00.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/09/20260814095112383/pic_6d4a44123d14c57dbf98689d4908042d.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/meladze-s-zhenoy-i-detmi-provel-otpusk-dvuh-stranah-evropy-za-8-millionov-rubley/:2026-08-14T06:47:00.000Z:Меладзе с женой и детьми провел отпуск з",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Меладзе с женой и детьми провел отпуск за 8 миллионов рублей в двух странах Европы",
-      "url": "https://lenta.ru/news/2026/08/14/meladze-s-zhenoy-i-detmi-provel-otpusk-dvuh-stranah-evropy-za-8-millionov-rubley/",
-      "publishedAt": "2026-08-14T06:47:00.000Z",
-      "categoryIds": [
-        "culture"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/09/20260814094748473/pic_e4081567926837c11e83700bbf737290.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/nauka/28011601:2026-08-14T06:46:58.000Z:На Урале и в Казахстане найдены девять д",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "На Урале и в Казахстане найдены девять древних поселений",
-      "url": "https://tass.ru/nauka/28011601",
-      "publishedAt": "2026-08-14T06:46:58.000Z",
-      "categoryIds": [
-        "science"
-      ],
-      "image": "",
-      "excerpt": "Археологи обследовали восемь объектов в долинах Тобола и Обагана, провели маловысотную аэрофотосъемку и собрали коллекцию артефактов бронзового века",
-      "contentHtml": ""
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/russia/1109259:2026-08-14T06:46:00.000Z:В Смоленской области за ночь нейтрализов",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "В Смоленской области за ночь нейтрализовали восемь БПЛА",
-      "url": "https://www.interfax.ru/russia/1109259",
-      "publishedAt": "2026-08-14T06:46:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Губернатор Смоленской области Василий Анохин сообщил об уничтожении восьми беспилотников над регионом.\"За прошедшую ночь над территорией региона силами министерства обороны России сбиты восемь вражеских БПЛА.",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/28011655:2026-08-14T06:45:51.000Z:Россиянина приговорили к 23 годам колони",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Россиянина приговорили к 23 годам колонии за шпионаж в пользу Польши",
-      "url": "https://tass.ru/proisshestviya/28011655",
-      "publishedAt": "2026-08-14T06:45:51.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260814/9300053.jpg",
-      "excerpt": "Осужденный передавал данные о перспективных образцах оружия, ракетных комплексов, применяемых на СВО",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/28010493:2026-08-14T06:45:37.000Z:Спокойствие и доверие: как поддержка муж",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Спокойствие и доверие: как поддержка мужа помогла москвичке родить 15-го ребенка",
-      "url": "https://tass.ru/obschestvo/28010493",
-      "publishedAt": "2026-08-14T06:45:37.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Рука помощи, спокойствие и доверие — так мать 15 детей из Москвы Надежда Рогова описала присутствие мужа Ивана в период родов",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/28011649:2026-08-14T06:45:17.000Z:Индонезия поддерживает призыв уведомлять",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Индонезия поддерживает призыв уведомлять заранее о пусках баллистических ракет",
-      "url": "https://tass.ru/mezhdunarodnaya-panorama/28011649",
-      "publishedAt": "2026-08-14T06:45:17.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "",
-      "excerpt": "Пресс-секретарь индонезийского МИД Вахд Набил Мулачела отметил, что это поспособствует прозрачности и укреплению доверия",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/tramp-prikazal-vernutsya-k-paru-na-avianostsah/:2026-08-14T06:45:00.000Z:Трамп приказал вернуться к пару на авиан",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Трамп приказал вернуться к пару на авианосцах",
-      "url": "https://lenta.ru/news/2026/08/14/tramp-prikazal-vernutsya-k-paru-na-avianostsah/",
-      "publishedAt": "2026-08-14T06:45:00.000Z",
-      "categoryIds": [
-        "tech",
-        "science"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/09/20260814093334640/pic_6fe7dffed9f68767d02f187939f3b34e.jpg",
-      "excerpt": "",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/28011641:2026-08-14T06:44:42.000Z:Над Брянской областью за сутки сбили 262",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Над Брянской областью за сутки сбили 262 БПЛА",
-      "url": "https://tass.ru/proisshestviya/28011641",
-      "publishedAt": "2026-08-14T06:44:42.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Беспилотники были самолетного типа",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/sport/28011635:2026-08-14T06:44:06.000Z:Альпинисты не планируют эвакуацию тела Н",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Альпинисты не планируют эвакуацию тела Наговициной",
-      "url": "https://tass.ru/sport/28011635",
-      "publishedAt": "2026-08-14T06:44:06.000Z",
-      "categoryIds": [
-        "sports"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260814/9300035.jpg",
-      "excerpt": "Как сообщил председатель комиссии по классическому альпинизму Федерации альпинизма России Александр Яковенко, это может произойти в случае просьбы родственников погибшей",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/novosti-regionov/28011647:2026-08-14T06:43:31.000Z:Анохин: в 2026 году на Смоленщине планир",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Анохин: в 2026 году на Смоленщине планируют набрать более 2600 целевиков СПО",
-      "url": "https://tass.ru/novosti-regionov/28011647",
-      "publishedAt": "2026-08-14T06:43:31.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Губернатор выступил на слете молодых профессионалов Группы \"НЭК\", собравшем молодежный актив компании со всей страны",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/proisshestviya/28011621:2026-08-14T06:42:26.000Z:Над Смоленской областью сбили восемь БПЛ",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Над Смоленской областью сбили восемь БПЛА",
-      "url": "https://tass.ru/proisshestviya/28011621",
-      "publishedAt": "2026-08-14T06:42:26.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Никто не пострадал",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/sport/28011629:2026-08-14T06:41:01.000Z:Гонщик Карякин заявил, что после допуска",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Гонщик Карякин заявил, что после допуска FIA в жизни появился просвет",
-      "url": "https://tass.ru/sport/28011629",
-      "publishedAt": "2026-08-14T06:41:01.000Z",
-      "categoryIds": [
-        "sports"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260814/9300031.jpg",
-      "excerpt": "С 2022 года российские автогонщики из-за ситуации на Украине могли выступать в соревнованиях под эгидой FIA только под нейтральным флагом и при условии подписания особого документа",
-      "contentHtml": ""
-    },
-    {
-      "id": "habr:https://habr.com/ru/articles/1070372/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070372:2026-08-14T06:40:35.000Z:Почему Илону Маску не удается создать по",
-      "sourceId": "habr",
-      "sourceName": "Хабр",
-      "title": "Почему Илону Маску не удается создать по-настоящему правдивую нейросеть?",
-      "url": "https://habr.com/ru/articles/1070372/?utm_source=habrahabr&utm_medium=rss&utm_campaign=1070372",
-      "publishedAt": "2026-08-14T06:40:35.000Z",
-      "categoryIds": [
-        "tech"
-      ],
-      "image": "",
-      "excerpt": "Илон Маск как одержимый выпускает на рынок все новые модели своей нейронной сети Grok, и 12 августа уже стала доступной версия 4.6, но, хотя он постоянно подчеркивает, что его детище является максимально правдивым ИИ, правдивость ответов Grok в некоторых случаях не обеспечивает. Это не случайно – в модели содержится принципиальный дефект – она не владеет научными правилами отличия правды от лжи и заблуждений. Чтобы исправить этот дефект, к алгоритмам обучения SFT и RL следует добавить новый – НРД.Несколько лет назад Илон Маск захотел создать альтернативу ChatGPT – нейросеть TruthGPT, в которой упор был бы сделан на поиск правды, однако что-то пошло не так, и у него получилась в 2023 году нейросеть Grok, у которой из-за минимальной цензуры существует значительный риск воспроизведения непроверенных данных, поэтому ее пользователям рекомендуют обязательно проверять факты.Тем не менее, сам Илон Маск постоянно подчеркивает, что его детище является максимально правдивым ИИ, даже если эта истина иногда противоречит общепринятой точке зрения или политкорректности. Да и название нейросети, которое взято из романа Роберта Хайнлайна «Чужак в чужой стране», там использовалось в смысле интуитивного, глубинное понимание чего-либо. То есть претензии на правду остались, несмотря на другое название.Маск считает, в частности, что другие нейросети содержат скрытые элементы идеологии разнообразия, равенства и инклюзивности (DEI), а это представляет серьезную угрозу, так как ИИ может из-за этого принимать неверные решения. Например, если ИИ научить, что разнообразие является единственным приемлемым результатом, то нейросеть может сказать, что у власти слишком много белых парней, и их надо просто казнить. А если, допустим, запрограммировать ИИ думать, что неправильное определение пола – это худшее, что может произойти, тот, чтобы гарантировать, что неправильное определение пола никогда не произойдет, решит просто уничтожить всех людей, так как это сведет к нулю вероятность неправильного определения пола. Читать далее",
-      "contentHtml": "<p>Илон Маск как одержимый выпускает на рынок все новые модели своей нейронной сети Grok, и 12 августа уже стала доступной версия 4.6, но, хотя он постоянно подчеркивает, что его детище является максимально правдивым ИИ, правдивость ответов Grok в некоторых случаях не обеспечивает. Это не случайно – в модели содержится принципиальный дефект – она не владеет научными правилами отличия правды от лжи и заблуждений. Чтобы исправить этот дефект, к алгоритмам обучения SFT и RL следует добавить новый – НРД.</p><p>Несколько лет назад Илон Маск захотел создать альтернативу ChatGPT – нейросеть TruthGPT, в которой упор был бы сделан на поиск правды, однако что-то пошло не так, и у него получилась в 2023 году нейросеть Grok, у которой из-за минимальной цензуры существует значительный риск воспроизведения непроверенных данных, поэтому ее пользователям рекомендуют обязательно проверять факты.</p><p>Тем не менее, сам Илон Маск постоянно подчеркивает, что его детище является максимально правдивым ИИ, даже если эта истина иногда противоречит общепринятой точке зрения или политкорректности. Да и название нейросети, которое взято из романа Роберта Хайнлайна «Чужак в чужой стране», там использовалось в смысле интуитивного, глубинное понимание чего-либо. То есть претензии на правду остались, несмотря на другое название.</p><p>Маск считает, в частности, что другие нейросети содержат скрытые элементы идеологии разнообразия, равенства и инклюзивности (DEI), а это представляет серьезную угрозу, так как ИИ может из-за этого принимать неверные решения. Например, если ИИ научить, что разнообразие является единственным приемлемым результатом, то нейросеть может сказать, что у власти слишком много белых парней, и их надо просто казнить. А если, допустим, запрограммировать ИИ думать, что неправильное определение пола – это худшее, что может произойти, тот, чтобы гарантировать, что неправильное определение пола никогда не произойдет, решит просто уничтожить всех людей, так как это сведет к нулю &nbsp;вероятность неправильного определения пола.</p><p>В Grok декларируют следование принципу «maximum truth-seeking». В нейросети используют несколько способов различения правды от лжи. </p><p>Во-первых, это доступ к данным в реальном времени посредством интеграции с социальной сетью X, что позволяет анализировать актуальные обсуждения, новости и события в социальной сети.</p><p>Во-вторых, есть режим Deep Search, в рамках которого осуществляется многошаговое исследование темы, сравниваются и перепроверяются данные из разных источников.</p><p>В-третьих, над ответом пользователя могут работать одновременно несколько ИИ-агентов, что повышает вероятность точного синтеза информации.</p><p>В-четвертых, в Grok внедрены некоторые элементы самоанализа, что позволяет ей самостоятельно исправлять ошибки.</p><p>Возможно, имеется еще что-то. По крайней мере, Илон Маск говорил, что часть мыслительного процесса нейросети является скрытой, чтобы избежать явного раскрытия логики рассуждений. При отборе источников декларируется учет их релевантности, структурированность, актуальность и общая надёжность, но каким образом это осуществляется, помимо указанных выше способов, неизвестно</p><p>В этом слабое место Grok, как, впрочем, и других нейросетей. В конечном итоге отбор источников осуществляется на основе личных предпочтений его разработчиков. Илон Маск правильно считает, что скрытые элементы идеологии разнообразия, равенства и инклюзивности представляют серьезную угрозу принятия нейросетями неверных решений. Но сколько таких скрытых элементов каких-то идеологий он не заметил? Ведь явления типа DEI существуют в самых разных сферах знания.</p><p>Американский экономист Джон Гэлбрейт еще в середине прошлого века заметил, что в обществе постоянно возникает ситуация, когда люди предпочитают придерживаться идей, которые считают приемлемыми, не обращая внимания на то, являются ли они истинными или ложными.</p><p>Джон Гэлбрейт написал в книге «Общество изобилия», что «во всем, что касается описания общественных явлений, наблюдается непрекращающееся, нестихающее противоборство между тем, что является истинным, и тем, что считается всего лишь приемлемым». И констатировал печальный результат этой борьбы: «Самая различная публика бурными аплодисментами приветствует именно то, что больше всего ей нравится. И в общественной дискуссии критерий публичного одобрения становится важнее критерия истинности, тем самым оказывая влияние на саму эту дискуссию. Оратор или публицист, намереваясь рассказать всю правду о нелицеприятных и даже шокирующих фактах, неизменно переходит к изложению того, что больше всего публика хочет от него услышать».</p><p>Эта закономерность затронула не только ораторов и публицистов, но и нейросети, и их идеологизированность, отмеченная Маском, как раз является следствием данного закона. Миллиардер попробовал данное правило изменить, но только в одном вопросе, связанном с DEI, тогда как, допустим, о расхожей мудрости в экономике, как и о Джоне Гэлбрейте, не упоминал. То есть по целому ряду вопросов, в том числе в экономике и финансах, Grok выдает ответы, основываясь на публично одобренной информации, которая вовсе не обязательно является истиной, и этого не замечает, так как опознавать расхожую мудрость в разных сферах знания не умеет.</p><p>А нейросеть, действительно ориентированная на правдивость, должна уметь отличать приемлемость и истинность, то есть знать и применять правила, позволяющие это сделать. Их не так уж и много, и писал о них еще писатель Федор Михайлович Достоевский в своем проекте «Дневник писателя». Он умел отличать правду от всего остального, на что обратил внимание еще Виссарион Белинский, сказав писателю: «Вам правда открыта и возвещена как художнику, досталась как дар, цените же ваш дар и оставайтесь верным и будете великим писателем!»</p><p>Достоевский понимал суть своего дара, он знал, что использует особый метод и называл его реализмом в высшем смысле: «Меня зовут психологом: неправда, я лишь реалист в высшем смысле, т. е. изображаю все глубины души человеческой». А вот как он описал свой метод в письме А. Н. Майкову: «Совершенно другие я понятия имею о действительности и реализме, чем наши реалисты и критики. Мой идеализм реальнее ихнего. … А между тем это исконный, настоящий реализм! Это-то и есть реализм, только глубже, а у них мелко плавает. – Ихним реализмом – сотой доли реальных, действительно случившихся фактов не объяснишь. А мы нашим идеализмом пророчили даже факты. Случалось.»</p><p>Используемую писателем систему способов поиска правды можно назвать Настоящим Реализмом Достоевского – НРД (по аналогии с названиями методов обучения ИИ). Он использовал систему правил, позволяющих отличать правду от лжи и заблуждений. Их применял и Джон Гэлбрейт, и его представления о расхожей мудрости – это только один из способов. Они подробно рассмотрены в первом выпуске Продолжения Дневника писателя, опубликованном в 2026 году («О чем бы писал Достоевский в современной России?»). А писал бы он о том, что хорошо умел делать – о том, как отличить правду от всего прочего.</p><p>Таким образом нейросеть, ориентированная на поиск правды, должна основываться на научном понимании того, что есть правда, а не на интуитивном и субъективном, как это происходит в Grok, даже если это интуиция Илона Маска. А при обучении ИИ в качестве источника знаний о правилах поиска правды можно использовать Дневник писателя и его Продолжение, а также некоторые труды Джона Гэлбрейта.</p><p>Илон Маск пока не понял важность использования правил НРД – Настоящего Реализма Достоевского, и, в частности, представлений о расхожей мудрости, и развивает свой проект, обеспечивая все более полный охват информации и производительность, а не внедряя правила отличия правды от заблуждений и обмана. Описывая новую версию <strong>Grok 4.7</strong>, которая была представлена 12 августа, Илон Маск сообщил, что новая модель будет иметь 1,5 трлн. параметров, а также улучшенные механизмы обучения SFT (Supervised Fine-Tuning) и RL (Reinforcement Learning). Он подчеркнул, что благодаря этим изменениям нейросеть сможет быстрее адаптироваться к запросам пользователей и точнее выполнять поставленные задачи. А <strong>Grok 4.7, которая должна появиться через несколько недель,</strong>&nbsp;получит до 2,1&nbsp;трлн. параметров. Акцент в новых версиях сделан на применение в сферах профессиональной интеллектуальной деятельности – типа разработки ПО, веб-разработки, использования в системах автоматизированного проектирования и т. д. Не исключено, что разработчики нейросети поняли, что решить проблему истинности в общем виде не удается, и решили сосредоточиться на тех областях, где это сделать легче всего.</p><p>Весьма показательно, что в опубликованном официальном описании <strong>Grok 4.6 нет ни слова об особом отношении к правде, зато много производящих впечатление аббревиатур: </strong>SFT, RL, STEM, CAD<strong>. Сразу понимаешь, что надо платить. То есть, нейросеть сама эволюционирует в соответствие с теми законами развития общества, которые приводят к расхожему мнению – как писал Джон Гэлбрейт, «</strong>... критерий публичного одобрения становится важнее критерия истинности …». В данном случае, правда, речь идет не столько об одобрении, сколько о стремлении заработать на этом одобрении (что вполне нормально), но суть не меняется.</p><p>Конечно, новые версии нейросети действительно будут быстрее адаптироваться к запросам пользователей и точнее выполнять поставленные задачи в некоторых сферах интеллектуальной деятельности. Но в некоторых случаях, связанных с предсказанием событий, лучше отличать правду от заблуждений и обмана <strong>Grokи</strong> не станут, так как чтобы ИИ научился находить правду, его надо обучать не на все большем массиве информации, а на тех источниках, где продемонстрированы примеры правильных рассуждений, находить которые сами люди, использующие SFT и RL, пока не научились. Чтобы нейросети стали правдивее, их необходимо обучить НРД – Настоящему Реализму Достоевского.</p><p>Владимир Федорович Тарасов.</p>"
-    },
-    {
-      "id": "interfax:https://www.interfax.ru/russia/1109258:2026-08-14T06:40:00.000Z:Для аэропорта Перми ввели ограничения",
-      "sourceId": "interfax",
-      "sourceName": "Интерфакс",
-      "title": "Для аэропорта Перми ввели ограничения",
-      "url": "https://www.interfax.ru/russia/1109258",
-      "publishedAt": "2026-08-14T06:40:00.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Для аэропорта Перми ввели ограничения на прием и отправку рейсов, сообщила Росавиация.",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/nedvizhimost/28011553:2026-08-14T06:39:58.000Z:\"Яндекс аренда\" отметила рост цен на съе",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "\"Яндекс аренда\" отметила рост цен на съем жилья в городах-миллионниках",
-      "url": "https://tass.ru/nedvizhimost/28011553",
-      "publishedAt": "2026-08-14T06:39:58.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "За месяц медианная ставка выросла в 12 городах от менее 0,5% до 6,5%",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/mezhdunarodnaya-panorama/28011625:2026-08-14T06:39:38.000Z:МИД Ирана: удары США привели к нефтяному",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "МИД Ирана: удары США привели к нефтяному загрязнению берегов Персидского залива",
-      "url": "https://tass.ru/mezhdunarodnaya-panorama/28011625",
-      "publishedAt": "2026-08-14T06:39:38.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "",
-      "excerpt": "Замглавы министерства иностранных дел исламской республики Казем Гарибабади заявил, что такая ситуация требует внедрения Тегераном механизма управления Ормузским проливом",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/obschestvo/28011637:2026-08-14T06:39:36.000Z:Пострадавшая в ДТП пиар-директор \"Москви",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Пострадавшая в ДТП пиар-директор \"Москвички\" рассказала о своем состоянии",
-      "url": "https://tass.ru/obschestvo/28011637",
-      "publishedAt": "2026-08-14T06:39:36.000Z",
-      "categoryIds": [
-        "ru"
-      ],
-      "image": "",
-      "excerpt": "Екатерина Чаковская поблагодарила всех за поддержку",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/ekonomika/28011631:2026-08-14T06:38:21.000Z:Россия в I полугодии увеличила выручку о",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Россия в I полугодии увеличила выручку от экспорта креветок на 17%",
-      "url": "https://tass.ru/ekonomika/28011631",
-      "publishedAt": "2026-08-14T06:38:21.000Z",
-      "categoryIds": [
-        "business"
-      ],
-      "image": "",
-      "excerpt": "По данным \"Агроэкспорта\", российские поставки превысили 5 тыс. тонн на сумму около $76 млн",
-      "contentHtml": ""
-    },
-    {
-      "id": "tass:https://tass.ru/sport/28011619:2026-08-14T06:37:12.000Z:Третий бой Бивол - Бетербиев может пройт",
-      "sourceId": "tass",
-      "sourceName": "ТАСС",
-      "title": "Третий бой Бивол - Бетербиев может пройти в 2027 году",
-      "url": "https://tass.ru/sport/28011619",
-      "publishedAt": "2026-08-14T06:37:12.000Z",
-      "categoryIds": [
-        "sports"
-      ],
-      "image": "https://cdn-media.tass.ru/fit/400x300_b2b00b17/tass/m2/uploads/i/20260814/9300021.jpg",
-      "excerpt": "Боксеры провели два поединка в Саудовской Аравии и одержали по одной победе",
-      "contentHtml": ""
-    },
-    {
-      "id": "lenta:https://lenta.ru/news/2026/08/14/pentagon-nazval-sroki-vosstanovleniya-energosistemy-ukrainy/:2026-08-14T06:37:00.000Z:Пентагон назвал сроки восстановления эне",
-      "sourceId": "lenta",
-      "sourceName": "Lenta.ru",
-      "title": "Пентагон назвал сроки восстановления энергосистемы Украины",
-      "url": "https://lenta.ru/news/2026/08/14/pentagon-nazval-sroki-vosstanovleniya-energosistemy-ukrainy/",
-      "publishedAt": "2026-08-14T06:37:00.000Z",
-      "categoryIds": [
-        "world"
-      ],
-      "image": "https://icdn.lenta.ru/images/2026/08/14/09/20260814093636943/pic_9d65b378badeb178393ba7308b315f80.jpg",
-      "excerpt": "",
       "contentHtml": ""
     }
   ]
