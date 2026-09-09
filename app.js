@@ -752,7 +752,7 @@ const HEAT_TEXT_MIN_WIDTH = 44;
 const HEAT_TEXT_MIN_HEIGHT = 26;
 const TICKER_QUOTES = 28;
 
-/** @type {{snapshot: any, live: boolean, fetchedAt: number} | null} */
+/** @type {{snapshot: any, live: boolean, fetchedAt: number, reasons: string[]} | null} */
 let marketData = null;
 let marketRequest = null;
 let marketTimer = 0;
@@ -794,28 +794,62 @@ function loadJsonp(url, callback) {
   });
 }
 
-/** Live quotes straight from the exchange, as the reader's browser sees it. */
-async function loadLiveMarket() {
-  if (typeof MoexSnapshot === "undefined") throw new Error("Модуль биржи не загружен");
+/**
+ * The parser is a separate script tag; a page served from an older cached
+ * index.html would lack it, so load it on demand rather than give up.
+ */
+function loadMoexModule() {
+  if (typeof MoexSnapshot !== "undefined") return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    const fail = () => reject(new Error("модуль разбора не загрузился"));
+    script.onload = () => (typeof MoexSnapshot !== "undefined" ? resolve() : fail());
+    script.onerror = fail;
+    script.src = "moex-snapshot.js";
+    document.head.appendChild(script);
+  });
+}
+
+/** Short human reason for the notice under the board. */
+function describeMarketError(error) {
+  const message = String((error && error.message) || error || "");
+  if (/failed to fetch|networkerror|load failed/i.test(message)) return "сеть или запрет браузера (CORS)";
+  return message || "неизвестная ошибка";
+}
+
+/**
+ * Live quotes straight from the exchange, as the reader's browser sees it.
+ * `reasons` collects what each transport answered, for the notice.
+ */
+async function loadLiveMarket(reasons) {
+  await loadMoexModule();
   let shares;
   let indices;
   try {
     const urls = MoexSnapshot.urls("json");
     [shares, indices] = await Promise.all([fetchJsonFrom(urls.shares, { cache: "no-store" }), fetchJsonFrom(urls.indices, { cache: "no-store" })]);
   } catch (error) {
-    // Only a network-level failure (a blocked cross-origin request) is worth a
-    // second attempt through JSONP; an HTTP error would repeat itself.
-    if (!error || error.name !== "TypeError") throw error;
+    reasons.push(`прямой запрос: ${describeMarketError(error)}`);
+    // Second attempt through JSONP: a blocked cross-origin request is the
+    // usual failure, and a script tag is not subject to it.
     marketJsonpSeq += 1;
     const sharesCallback = `moexShares${marketJsonpSeq}`;
     const indicesCallback = `moexIndices${marketJsonpSeq}`;
-    [shares, indices] = await Promise.all([
-      loadJsonp(MoexSnapshot.urls("jsonp", sharesCallback).shares, sharesCallback),
-      loadJsonp(MoexSnapshot.urls("jsonp", indicesCallback).indices, indicesCallback)
-    ]);
+    try {
+      [shares, indices] = await Promise.all([
+        loadJsonp(MoexSnapshot.urls("jsonp", sharesCallback).shares, sharesCallback),
+        loadJsonp(MoexSnapshot.urls("jsonp", indicesCallback).indices, indicesCallback)
+      ]);
+    } catch (jsonpError) {
+      reasons.push(`JSONP: ${describeMarketError(jsonpError)}`);
+      throw jsonpError;
+    }
   }
   const snapshot = MoexSnapshot.build(shares, indices);
-  if (!snapshot) throw new Error("Биржа не вернула бумаг");
+  if (!snapshot) {
+    reasons.push("биржа вернула пустой список бумаг");
+    throw new Error("Биржа не вернула бумаг");
+  }
   return snapshot;
 }
 
@@ -836,16 +870,22 @@ function marketFresh() {
 function ensureMarketData() {
   if (marketFresh()) return Promise.resolve(marketData.snapshot);
   if (!marketRequest) {
-    marketRequest = loadLiveMarket()
+    const reasons = [];
+    marketRequest = loadLiveMarket(reasons)
       .then((snapshot) => ({ snapshot, live: true }))
-      .catch(async () => {
+      .catch(async (error) => {
+        if (reasons.length === 0) reasons.push(describeMarketError(error));
         // Keep what the board already shows rather than replacing it with an
         // older committed file; go to the file only when there is nothing.
         if (marketData && marketData.snapshot) return { snapshot: marketData.snapshot, live: false };
-        return { snapshot: await loadFallbackMarket().catch(() => null), live: false };
+        const fallback = await loadFallbackMarket().catch((fallbackError) => {
+          reasons.push(`резерв: ${describeMarketError(fallbackError)}`);
+          return null;
+        });
+        return { snapshot: fallback, live: false };
       })
       .then((next) => {
-        marketData = { ...next, fetchedAt: Date.now() };
+        marketData = { ...next, reasons, fetchedAt: Date.now() };
         return next.snapshot;
       })
       .finally(() => {
@@ -880,7 +920,7 @@ function updateMarketBoard() {
   ensureMarketData().then((snapshot) => {
     if (!boardActive()) return;
     if (snapshot) renderBoard(snapshot, marketData.live);
-    else renderBoardEmpty("Котировки Московской биржи сейчас недоступны: биржа не ответила. Лента раздела работает как обычно.");
+    else renderBoardEmpty(`Котировки Московской биржи сейчас недоступны (${marketData.reasons.join("; ")}). Лента раздела работает как обычно.`, true);
   });
   startMarketRefresh();
 }
@@ -978,12 +1018,23 @@ function renderBoardSkeleton() {
   if (meta) meta.textContent = "Запрашиваем котировки Московской биржи…";
 }
 
-function renderBoardEmpty(text) {
+function renderBoardEmpty(text, retryable) {
   elMarketBoard.classList.remove("board--loading");
   elMarketBoard.classList.add("board--empty");
   elMarketBoard.setAttribute("aria-busy", "false");
   const meta = $("#boardMeta");
-  if (meta) meta.textContent = text;
+  if (!meta) return;
+  meta.textContent = text;
+  if (!retryable) return;
+  const retry = document.createElement("button");
+  retry.type = "button";
+  retry.className = "board__retry";
+  retry.textContent = "Повторить";
+  retry.addEventListener("click", () => {
+    marketData = null;
+    updateMarketBoard();
+  });
+  meta.append(" ", retry);
 }
 
 function renderBoard(parsed, live) {

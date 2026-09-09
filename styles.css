@@ -183,7 +183,7 @@ h1 { margin: 0; font: 400 clamp(2rem, 3vw, 2.875rem)/1.15 var(--serif); letter-s
 .card--lead .card__title { font-size: clamp(1.75rem, 2.3vw, 2.25rem); line-height: 1.25; letter-spacing: -.03em; }
 .card--lead .card__desc { -webkit-line-clamp: 3; margin-top: 16px; }
 .card--lead .card__footer { padding-top: 22px; }
-.card--brief .card__media { aspect-ratio: 2.8; margin-bottom: 12px; }
+.card--brief .card__media { aspect-ratio: 16 / 9; margin-bottom: 12px; }
 .card--brief .card__title { font-size: 1.1875rem; line-height: 1.4; }
 .card--brief .card__desc { display: none; }
 .card--brief .card__meta { margin-bottom: 7px; }
@@ -249,7 +249,7 @@ h1 { margin: 0; font: 400 clamp(2rem, 3vw, 2.875rem)/1.15 var(--serif); letter-s
 .modal__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--line); }
 .noscript { margin: 24px; padding: 24px; background: var(--accent-soft); }
 @media (min-width: 1600px) { .workspace { grid-template-columns: 225px minmax(0, 1fr); gap: 60px; } .grid { column-gap: 30px; } }
-@media (max-width: 1150px) { .wrap { width: calc(100% - 48px); } .workspace { gap: 28px; grid-template-columns: 190px minmax(0, 1fr); } .grid { column-gap: 20px; } .card--lead .card__media { aspect-ratio: 4 / 3; } .card--brief .card__media { aspect-ratio: 2; } .feed__info { flex-wrap: wrap; } .sidebar__hint { margin-inline: 4px; } .edition { margin-inline: 4px; } }
+@media (max-width: 1150px) { .wrap { width: calc(100% - 48px); } .workspace { gap: 28px; grid-template-columns: 190px minmax(0, 1fr); } .grid { column-gap: 20px; } .card--lead .card__media { aspect-ratio: 4 / 3; } .card--brief .card__media { aspect-ratio: 16 / 9; } .feed__info { flex-wrap: wrap; } .sidebar__hint { margin-inline: 4px; } .edition { margin-inline: 4px; } }
 @media (max-width: 960px) {
   .workspace { display: block; padding-top: 24px; }
   .sidebar { position: static; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 10px 14px; margin-bottom: 28px; }
@@ -425,6 +425,7 @@ h1 { margin: 0; font: 400 clamp(2rem, 3vw, 2.875rem)/1.15 var(--serif); letter-s
 /* No quotes yet (or none at all): only the heading and the notice stay. */
 .board--empty .ticker, .board--empty .heat, .board--empty .board__legend, .board--empty .board__table { display: none; }
 .board--empty .board__foot { margin-top: 4px; }
+.board__retry { margin: 0; padding: 0; border: 0; background: none; font: inherit; color: var(--ink); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
 .board__foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 12px; }
 .board__legend { display: flex; align-items: center; gap: 8px; margin: 0; font-size: .75rem; color: var(--muted); }
 .board__scale { display: inline-flex; gap: 2px; }

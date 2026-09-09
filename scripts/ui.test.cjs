@@ -280,6 +280,11 @@ function issFixture() {
   };
 }
 
+/** No network in jsdom: fail the JSONP script tags the page injected. */
+function failJsonp(document, window) {
+  for (const node of document.head.querySelectorAll('script[src*="iss.moex.com"]')) node.dispatchEvent(new window.Event('error'));
+}
+
 function marketsOnly() {
   const news = fixture();
   for (const item of news.items) item.categoryIds = ['markets', 'business'];
@@ -356,7 +361,10 @@ test('market board falls back to JSONP when the plain request to the exchange is
 });
 
 test('market board shows the committed snapshot when the exchange refuses, and says so', async (t) => {
-  const { document, state } = await setup(t, { news: marketsOnly(), saved: ['markets'], moex: moexFixture() });
+  const { document, window, state } = await setup(t, { news: marketsOnly(), saved: ['markets'], moex: moexFixture() });
+  await tick();
+  await tick();
+  failJsonp(document, window);
   await tick();
   await tick();
   assert.ok(state.calls.includes('data/moex.json'));
@@ -368,15 +376,30 @@ test('market board shows the committed snapshot when the exchange refuses, and s
 test('market board explains itself when no quotes are available at all', async (t) => {
   const news = fixture();
   for (const item of news.items) item.categoryIds = ['markets'];
-  const { document } = await setup(t, { news, saved: ['markets'] });
+  const { document, window, state } = await setup(t, { news, saved: ['markets'] });
+  await tick();
+  await tick();
+  failJsonp(document, window);
   await tick();
   await tick();
   const board = document.querySelector('#marketBoard');
   assert.equal(board.hidden, false);
   assert.ok(board.classList.contains('board--empty'));
-  assert.match(document.querySelector('#boardMeta').textContent, /недоступны/);
+  const meta = document.querySelector('#boardMeta');
+  // The notice names what every path answered, so a reader can report it.
+  assert.match(meta.textContent, /недоступны \(прямой запрос: HTTP 403; JSONP: Скрипт не загрузился; резерв: HTTP 404\)/);
   assert.equal(document.querySelectorAll('#boardHeat .heat__tile').length, 0);
   assert.ok(ids(document).length > 0, 'лента продолжает работать без биржевых данных');
+
+  // "Повторить" asks again without a reload; this time the exchange answers.
+  const before = state.calls.length;
+  state.iss = issFixture();
+  meta.querySelector('.board__retry').click();
+  await tick();
+  await tick();
+  assert.ok(state.calls.length > before, 'повтор действительно запрашивает биржу');
+  assert.equal(document.querySelectorAll('#boardHeat .heat__tile').length, 4);
+  assert.equal(board.classList.contains('board--empty'), false);
 });
 
 test('cleared selection persists, explains the empty state and can be restored', async (t) => {
