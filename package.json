@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "node dev-server.js",
     "dev:live": "node scripts/dev-live.mjs",
+    "test:ui": "node --test scripts/ui.test.cjs",
     "build:data": "node scripts/build-data.mjs",
     "check:data-secrets": "node scripts/check-data-secrets.mjs"
   },
