@@ -51,9 +51,69 @@ const PAGE_HEADERS = {
   "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
   accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
   "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+  "accept-encoding": "gzip, deflate, br",
   "cache-control": "no-cache",
-  pragma: "no-cache"
+  pragma: "no-cache",
+  "upgrade-insecure-requests": "1",
+  "sec-fetch-dest": "document",
+  "sec-fetch-mode": "navigate",
+  "sec-fetch-site": "none",
+  "sec-fetch-user": "?1"
 };
+
+// Fields in which feeds carry the full article text. When present and long
+// enough, the article page is not requested at all.
+const FEED_FULL_TEXT_FIELDS = ["content:encoded", "yandex:full-text", "rbc_news:full-text", "turbo:content", "full-text", "fulltext"];
+const FEED_FULL_TEXT_MIN_CHARS = 500;
+
+function pickFullTextFromItem(item) {
+  for (const key of FEED_FULL_TEXT_FIELDS) {
+    const html = safeText(item[key]);
+    if (!html) continue;
+    const text = stripHtmlToText(html);
+    if (text.length >= FEED_FULL_TEXT_MIN_CHARS) return html;
+  }
+  return "";
+}
+
+// Article text from JSON-LD (NewsArticle.articleBody) for pages that render
+// the article client-side, where Readability finds nothing in the HTML.
+function pickArticleBodyFromJsonLd(doc) {
+  const visit = (node) => {
+    if (!node || typeof node !== "object") return "";
+    if (Array.isArray(node)) {
+      for (const n of node) {
+        const hit = visit(n);
+        if (hit) return hit;
+      }
+      return "";
+    }
+    if (typeof node.articleBody === "string" && node.articleBody.trim().length > 200) return node.articleBody.trim();
+    for (const key of ["@graph", "mainEntity", "mainEntityOfPage", "hasPart"]) {
+      const hit = visit(node[key]);
+      if (hit) return hit;
+    }
+    return "";
+  };
+  for (const script of Array.from(doc.querySelectorAll('script[type="application/ld+json"]'))) {
+    try {
+      const body = visit(JSON.parse(script.textContent || ""));
+      if (body) return body;
+    } catch {
+      // malformed JSON-LD is common; ignore
+    }
+  }
+  return "";
+}
+
+function paragraphsToHtml(text) {
+  return text
+    .split(/\n{1,}|(?<=[.!?…»"])\s{2,}/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .map((p) => `<p>${escapeHtml(p)}</p>`)
+    .join("");
+}
 
 async function fetchText(url, { timeoutMs = TIMEOUT_MS, retries = 2, headers = FEED_HEADERS } = {}) {
   let last = null;
@@ -273,21 +333,43 @@ function extractArticleHtml(url, html) {
         const content = body.innerHTML || "";
         const text = (body.textContent || "").replace(/\s+/g, " ").trim();
         const title = (doc.querySelector("h1")?.textContent || "").replace(/\s+/g, " ").trim();
-        return { content, text, title, image };
+        return { content, text, title, image, diag: pageDiagnostics(doc, html) };
       }
     }
   } catch {
     // ignore
   }
 
+  // JSON-LD is read before Readability, which rewrites the document.
+  const ldBody = pickArticleBodyFromJsonLd(doc);
+  const diag = pageDiagnostics(doc, html);
+
   const reader = new Readability(doc, {
     keepClasses: false
   });
   const parsed = reader.parse();
-  const content = parsed?.content || "";
-  const text = (parsed?.textContent || "").replace(/\s+/g, " ").trim();
+  let content = parsed?.content || "";
+  let text = (parsed?.textContent || "").replace(/\s+/g, " ").trim();
   const title = (parsed?.title || "").trim();
-  return { content, text, title, image };
+
+  // Client-rendered pages leave Readability with nothing (or a stub shorter
+  // than the structured data); fall back to the article body from JSON-LD.
+  if (ldBody && text.length < Math.min(400, ldBody.length / 2)) {
+    content = paragraphsToHtml(ldBody);
+    text = ldBody.replace(/\s+/g, " ").trim();
+  }
+  return { content, text, title, image, diag };
+}
+
+// One-line description of a page that yielded no text, for the log.
+function pageDiagnostics(doc, html) {
+  const markers = [];
+  if (/application\/ld\+json/i.test(html)) markers.push("ld+json");
+  if (/__NUXT__|__NEXT_DATA__|window\.__INITIAL_STATE__/.test(html)) markers.push("spa-state");
+  if (doc.querySelector("article")) markers.push("<article>");
+  if (/captcha|cf-chl|challenge-platform|Just a moment/i.test(html)) markers.push("challenge");
+  if (/paywall|подписк/i.test(html)) markers.push("paywall?");
+  return `${html.length} bytes, ${(doc.body?.textContent || "").replace(/\s+/g, " ").trim().length} chars of text${markers.length ? `, ${markers.join(" ")}` : ""}`;
 }
 
 function sanitizeReadabilityHtml(html, { maxBlocks = 1500, maxChars = 220_000 } = {}) {
@@ -476,6 +558,7 @@ async function main() {
     }
     if (feedItems.length === 0) console.error(`[feed] ${source.id}: no items found`);
     const rssItems = feedItems.slice(0, MAX_ITEMS_PER_SOURCE);
+    const before = items.length;
 
     for (const it of rssItems) {
       const title = safeText(it.title);
@@ -486,6 +569,8 @@ async function main() {
       const image = pickImageFromItem(it);
       const descHtml = safeText(it.description);
       const excerpt = stripHtmlToText(descHtml);
+      const feedHtml = pickFullTextFromItem(it);
+      const feedContent = feedHtml ? sanitizeReadabilityHtml(feedHtml) : null;
 
       const item = {
         id: itemId(url),
@@ -499,13 +584,16 @@ async function main() {
         categoryIds: [],
         image,
         excerpt,
-        contentHtml: ""
+        contentHtml: feedContent?.html || "",
+        contentTruncated: Boolean(feedContent?.truncated)
       };
       item.categoryIds = classifyItem(item, cfg);
       if (item.categoryIds.length === 0) continue;
 
       items.push(item);
     }
+    const added = items.slice(before);
+    console.log(`[feed] ${source.id}: ${rssItems.length} entries, ${added.length} with a section, ${added.filter((x) => x.contentHtml).length} with full text in the feed`);
   }
 
   // Deduplicate by url.
@@ -647,6 +735,7 @@ async function main() {
           s.ok += 1;
         } else {
           s.empty += 1;
+          if (!s.emptySample) s.emptySample = `${x.url}: ${parsed.diag}`;
         }
         x.contentTruncated = Boolean(cleaned.truncated);
         x.contentMeta = {
@@ -658,8 +747,10 @@ async function main() {
         if (!x.title && parsed.title) x.title = parsed.title;
       } catch (e) {
         s.failed += 1;
-        const reason = e?.name === "AbortError" ? "timeout" : String(e?.message || e).slice(0, 60);
+        const cause = e?.cause;
+        const reason = e?.name === "AbortError" ? "timeout" : String(cause?.code || cause?.message || e?.message || e).slice(0, 60);
         s.reasons.set(reason, (s.reasons.get(reason) || 0) + 1);
+        if (!s.failSample) s.failSample = `${x.url}: ${reason}`;
       }
     }),
     CONCURRENCY,
@@ -669,6 +760,8 @@ async function main() {
   for (const [sourceId, s] of [...fetchStats.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
     const reasons = [...s.reasons.entries()].map(([r, n]) => `${r} ×${n}`).join(", ");
     console.log(`[pages] ${sourceId}: text ${s.ok}, no text ${s.empty}, failed ${s.failed}${reasons ? ` (${reasons})` : ""}`);
+    if (s.emptySample) console.log(`[pages]   no text sample: ${s.emptySample}`);
+    if (s.failSample) console.log(`[pages]   failure sample: ${s.failSample}`);
   }
 
   // Article extraction can add a previously missing excerpt, so run the
