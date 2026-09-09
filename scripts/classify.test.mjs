@@ -26,7 +26,7 @@ test("feeds.json only references known categories and known sources", () => {
     assert.ok(sourceIds.has(sourceId));
     for (const id of ids) assert.ok(isKnownCategory(id));
   }
-  assert.deepEqual(Object.keys(CATEGORY_DEFS), ["world", "ru", "business", "tech", "ai", "security", "science", "health", "sports", "culture"]);
+  assert.deepEqual(Object.keys(CATEGORY_DEFS), ["world", "ru", "business", "markets", "tech", "ai", "security", "science", "health", "sports", "culture"]);
   const ids = new Set(cfg.sources.map((s) => s.id));
   assert.equal(ids.size, cfg.sources.length, "source ids must be unique");
   for (const s of cfg.sources) assert.match(s.feedUrl, /^https:\/\//);
@@ -185,6 +185,38 @@ test("classifyItem recomputes categories from stored source sections", () => {
     categoryIds: ["world"]
   });
   assert.deepEqual(classifyItem(politics, cfg), ["ru"]);
+});
+
+test("stock market section: exchange reporting counts, look-alike wording does not", () => {
+  const markets = (title, excerpt = "") => inferCategoriesByText(title, excerpt);
+  // Unambiguous market terms are enough on their own, and market news is
+  // business news too.
+  assert.deepEqual(markets("Индекс Мосбиржи вырос на 0,33%"), ["markets", "business"]);
+  for (const title of [
+    "Уолл-стрит снизилась во вторник",
+    "Минфин проведет аукционы по размещению ОФЗ",
+    "Совет директоров рекомендовал дивиденды за полугодие",
+    "Компания вышла на IPO",
+    "Инвесторы получили депозитарные расписки",
+    "Нефтяные фьючерсы подорожали",
+    "S&P 500 closed lower",
+    "Капитализация компании превысила триллион рублей"
+  ]) {
+    assert.ok(markets(title).includes("markets"), title);
+  }
+  // Ambiguous terms need trading context next to them.
+  assert.ok(markets("Акции компании подешевели на бирже").includes("markets"));
+  assert.deepEqual(markets("Акции протеста прошли в Далласе", "Город готовится к росту расходов на охрану"), []);
+  assert.deepEqual(markets("Рекламная акция сети магазинов", "Скидки выросли до 40 процентов"), []);
+  assert.deepEqual(markets("Секретная поисковая архитектура и собственный индекс ChatGPT", "видимость выросла"), ["ai"]);
+  assert.deepEqual(markets("Индекс потребительских цен вырос", "Росстат отчитался о процентах"), []);
+  assert.deepEqual(markets("Торги по аренде помещений", "Ставка выросла на 10 процентов"), []);
+  // Cyrillic word boundaries: these stems must not match inside longer words.
+  assert.deepEqual(markets("Объем торгов рыбой по внебиржевым сделкам составил тонну"), []);
+  assert.deepEqual(markets("«Тиара холдинг» стал владельцем долей зернотрейдера"), []);
+  assert.deepEqual(markets("Зарегистрировано новое акционерное общество"), []);
+  assert.deepEqual(markets("Опциональный режим появился в приложении"), []);
+  assert.deepEqual(markets("The Wall Street Journal сообщил об увольнении"), []);
 });
 
 test("classifyItem does not trust stored sections of items without source rubrics", () => {

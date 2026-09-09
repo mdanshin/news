@@ -14,6 +14,7 @@ export const CATEGORY_DEFS = {
   world: { name: "Мир" },
   ru: { name: "Россия" },
   business: { name: "Бизнес" },
+  markets: { name: "Фондовый рынок" },
   tech: { name: "Технологии" },
   ai: { name: "ИИ" },
   security: { name: "Кибербезопасность" },
@@ -127,7 +128,142 @@ export function inferCategoriesByText(title, excerpt) {
 
   if (isSecurityText(t)) out.add("security");
 
+  if (isMarketsText(t)) {
+    out.add("markets");
+    // Market news is business news; the section is a narrower view of it.
+    out.add("business");
+  }
+
   return Array.from(out);
+}
+
+// Stock markets. Two tiers again: terms that only occur in market reporting,
+// and terms that need trading context ("акция" is also a protest and a sale,
+// "торги" are also public procurement, "индекс" is also a search index).
+//
+// JavaScript's `\b` and `\w` are ASCII-only, so Cyrillic is matched with
+// explicit Unicode boundaries: without a left boundary "внебиржевым" matches
+// the stem "биржев", "зернотрейдера" matches "трейдер" and "акционерное
+// общество" matches "акционер". Stems match any Russian ending, so they carry
+// no right boundary; Latin acronyms carry one, or "ipo" would match inside
+// longer Latin words.
+const LETTER = "[\\p{L}\\p{N}]";
+const LEFT = `(?<!${LETTER})`;
+const RIGHT = `(?!${LETTER})`;
+const RU = "\\p{L}*"; // any Russian ending
+
+/** Alternation anchored at a word start; entries may add their own suffix rules. */
+const anchored = (alternatives) => new RegExp(`${LEFT}(?:${alternatives.join("|")})`, "iu");
+/** Whole-word alternation, for Latin acronyms and exact Russian forms. */
+const word = (form) => `${form}${RIGHT}`;
+
+export const MARKETS_STRONG = anchored([
+  "мосбирж",
+  `моск(?:овской|овская|овскую) бирж`,
+  "ммвб",
+  `индекс${RU} ртс`,
+  `фондов${RU} (?:рынок|рынк${RU}|бирж${RU}|индекс${RU})`,
+  "биржев",
+  "котировк",
+  "дивиденд",
+  "облигаци",
+  "делистинг",
+  "листинг",
+  // "акционерное общество" is a legal form, not market news.
+  "акционер(?!н)",
+  "трейдер",
+  "брокер",
+  "фьючерс",
+  "опцион(?!альн)",
+  "эмитент",
+  `депозитарн${RU} расписк`,
+  "ценны(?:е|х|ми) бумаг",
+  `(?:обыкновенн|привилегированн)${RU} акци`,
+  "капитализаци",
+  word("офз"),
+  `обратн${RU} выкуп акци`,
+  "уолл-стрит(?! ?джорнал)",
+  `индекс (?:мосбирж|доу|насдак|s&p)`,
+  ...[`imoex\\p{N}*`, "ipo", "spo", "etf", "nasdaq", "nyse", "ftse", "stoxx", "nikkei", "buyback", "s&p ?500", "dow jones", "hang seng", "share price", "shareholders?", "stock (?:market|exchange)"].map(word),
+  `wall street${RIGHT}(?! journal)`
+]);
+
+export const MARKETS_WEAK = anchored([
+  ...["акци(?:я|и|й|ю|ям|ями|ях)", "торг(?:и|ах|ов|ами)"].map(word),
+  // "индекс" and "бумаги" are deliberately absent: a search index or a
+  // consumer price index also rises, so they would need context that only
+  // the strong terms above can give. Named indices are strong terms already.
+  "бирж",
+  "инвестор",
+  `рынок (?:акци${RU}|облигац${RU}|капитал${RU}|ценных бумаг)`
+]);
+
+export const MARKETS_CONTEXT = anchored([
+  "бирж",
+  "котиров",
+  "акционер(?!н)",
+  "дивиденд",
+  "трейдер",
+  "брокер",
+  "эмитент",
+  "капитализац",
+  "облигац",
+  "фьючерс",
+  word("офз"),
+  "подорожал",
+  "подешевел",
+  "вырос",
+  "рост(?!ов)",
+  "снижени",
+  "падени",
+  "снизил",
+  "упал",
+  "пункт",
+  "процент",
+  `торгов${RU} сесси`,
+  "ценны(?:е|х|ми) бумаг"
+]);
+
+// Common non-market senses of the weak terms.
+export const MARKETS_EXCLUDE = anchored([
+  "акци(?:я|и|ю|ей) (?:протеста|неповиновения|памяти|солидарности|устрашения|возмездия)",
+  `(?:протестн|благотворительн|рекламн|террористическ|гуманитарн|экологическ)${RU} акци`,
+  `индекс (?:массы тела|потребительских цен|цен производителей|промышленн${RU}|производств${RU}|деловой активности|человеческого развития|счастья|бедности|качества жизни)`,
+  // A protest, a rally or a strike nearby means "акция" is not a share.
+  "протест",
+  "митинг",
+  "демонстрац",
+  "пикет",
+  "забастовк",
+  "госзакупк",
+  "торги по (?:закупк|аренде)",
+  "аукцион по продаже (?:имущества|земл)"
+]);
+
+// A weak term only counts when trading context stands next to it: "индекс"
+// in a story about a search index, or "торгов" in a story about fish sales,
+// must not be rescued by an unrelated "вырос" elsewhere in the summary.
+const NEARBY_CHARS = 80;
+const MARKETS_WEAK_ALL = new RegExp(MARKETS_WEAK.source, "giu");
+
+function hasNearbyMarketContext(t) {
+  MARKETS_WEAK_ALL.lastIndex = 0;
+  let match;
+  while ((match = MARKETS_WEAK_ALL.exec(t)) !== null) {
+    const from = Math.max(0, match.index - NEARBY_CHARS);
+    const to = match.index + match[0].length + NEARBY_CHARS;
+    // The matched term is blanked out so it cannot serve as its own context.
+    const window = t.slice(from, match.index) + " ".repeat(match[0].length) + t.slice(match.index + match[0].length, to);
+    if (MARKETS_EXCLUDE.test(window)) continue;
+    if (MARKETS_CONTEXT.test(window)) return true;
+  }
+  return false;
+}
+
+function isMarketsText(t) {
+  if (MARKETS_STRONG.test(t)) return true;
+  if (MARKETS_EXCLUDE.test(t)) return false;
+  return hasNearbyMarketContext(t);
 }
 
 // Artificial intelligence. A story is about AI when the headline names it or

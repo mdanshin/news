@@ -69,6 +69,16 @@
       "id": "thehackernews",
       "name": "The Hacker News",
       "feedUrl": "https://feeds.feedburner.com/TheHackersNews"
+    },
+    {
+      "id": "finam",
+      "name": "Финам",
+      "feedUrl": "https://www.finam.ru/analysis/conews/rsspoint/"
+    },
+    {
+      "id": "investing",
+      "name": "Investing.com",
+      "feedUrl": "https://ru.investing.com/rss/news_25.rss"
     }
   ],
   "defaultCategoryForSource": {
@@ -89,6 +99,12 @@
     ],
     "thehackernews": [
       "security"
+    ],
+    "finam": [
+      "business"
+    ],
+    "investing": [
+      "business"
     ]
   },
   "categoryMap": {

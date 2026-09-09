@@ -14,6 +14,7 @@ const CATEGORY_DEFS = [
   { id: "world", name: "Мир" },
   { id: "ru", name: "Россия" },
   { id: "business", name: "Бизнес" },
+  { id: "markets", name: "Фондовый рынок" },
   { id: "tech", name: "Технологии" },
   { id: "ai", name: "ИИ" },
   // `chipName` carries a soft hyphen so the narrow sidebar breaks the word
@@ -30,6 +31,7 @@ const TOPIC_ICONS = {
   world: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c5 5 5 13 0 18-5-5-5-13 0-18Z"/>',
   ru: '<path d="m3 9 9-6 9 6H3Zm2 3v6m5-6v6m4-6v6m5-6v6M3 21h18"/>',
   business: '<rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V3h8v4M3 12c5 3 13 3 18 0M12 12v4"/>',
+  markets: '<path d="M3 21h18M7 17v-6m5 6V7m5 10v-4"/><path d="m4 9 4-4 5 3 7-5"/>',
   tech: '<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 1v5m6-5v5M9 18v5m6-5v5M1 9h5m-5 6h5m12-6h5m-5 6h5M10 10h4v4h-4z"/>',
   ai: '<path d="M8 4.5A3.5 3.5 0 0 1 14.2 3a3.5 3.5 0 0 1 4.3 4.3A3.5 3.5 0 0 1 20 13.5a3.5 3.5 0 0 1-4.3 4.3A3.5 3.5 0 0 1 9.5 19a3.5 3.5 0 0 1-4.3-4.3A3.5 3.5 0 0 1 4 8.5 3.5 3.5 0 0 1 8 4.5Z"/><path d="M9 9v6m6-6v6M7.5 12h3m3 0h3"/>',
   security: '<path d="M12 3 4 6v6c0 5 3.4 8.6 8 9.5 4.6-.9 8-4.5 8-9.5V6l-8-3Z"/><path d="m9 12 2 2 4-4"/>',
