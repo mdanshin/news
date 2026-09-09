@@ -752,7 +752,7 @@ const HEAT_TEXT_MIN_WIDTH = 44;
 const HEAT_TEXT_MIN_HEIGHT = 26;
 const TICKER_QUOTES = 28;
 
-/** @type {{snapshot: any, live: boolean, fetchedAt: number} | null} */
+/** @type {{snapshot: any, live: boolean, fetchedAt: number, reasons: string[]} | null} */
 let marketData = null;
 let marketRequest = null;
 let marketTimer = 0;
@@ -794,28 +794,62 @@ function loadJsonp(url, callback) {
   });
 }
 
-/** Live quotes straight from the exchange, as the reader's browser sees it. */
-async function loadLiveMarket() {
-  if (typeof MoexSnapshot === "undefined") throw new Error("Модуль биржи не загружен");
+/**
+ * The parser is a separate script tag; a page served from an older cached
+ * index.html would lack it, so load it on demand rather than give up.
+ */
+function loadMoexModule() {
+  if (typeof MoexSnapshot !== "undefined") return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    const fail = () => reject(new Error("модуль разбора не загрузился"));
+    script.onload = () => (typeof MoexSnapshot !== "undefined" ? resolve() : fail());
+    script.onerror = fail;
+    script.src = "moex-snapshot.js";
+    document.head.appendChild(script);
+  });
+}
+
+/** Short human reason for the notice under the board. */
+function describeMarketError(error) {
+  const message = String((error && error.message) || error || "");
+  if (/failed to fetch|networkerror|load failed/i.test(message)) return "сеть или запрет браузера (CORS)";
+  return message || "неизвестная ошибка";
+}
+
+/**
+ * Live quotes straight from the exchange, as the reader's browser sees it.
+ * `reasons` collects what each transport answered, for the notice.
+ */
+async function loadLiveMarket(reasons) {
+  await loadMoexModule();
   let shares;
   let indices;
   try {
     const urls = MoexSnapshot.urls("json");
     [shares, indices] = await Promise.all([fetchJsonFrom(urls.shares, { cache: "no-store" }), fetchJsonFrom(urls.indices, { cache: "no-store" })]);
   } catch (error) {
-    // Only a network-level failure (a blocked cross-origin request) is worth a
-    // second attempt through JSONP; an HTTP error would repeat itself.
-    if (!error || error.name !== "TypeError") throw error;
+    reasons.push(`прямой запрос: ${describeMarketError(error)}`);
+    // Second attempt through JSONP: a blocked cross-origin request is the
+    // usual failure, and a script tag is not subject to it.
     marketJsonpSeq += 1;
     const sharesCallback = `moexShares${marketJsonpSeq}`;
     const indicesCallback = `moexIndices${marketJsonpSeq}`;
-    [shares, indices] = await Promise.all([
-      loadJsonp(MoexSnapshot.urls("jsonp", sharesCallback).shares, sharesCallback),
-      loadJsonp(MoexSnapshot.urls("jsonp", indicesCallback).indices, indicesCallback)
-    ]);
+    try {
+      [shares, indices] = await Promise.all([
+        loadJsonp(MoexSnapshot.urls("jsonp", sharesCallback).shares, sharesCallback),
+        loadJsonp(MoexSnapshot.urls("jsonp", indicesCallback).indices, indicesCallback)
+      ]);
+    } catch (jsonpError) {
+      reasons.push(`JSONP: ${describeMarketError(jsonpError)}`);
+      throw jsonpError;
+    }
   }
   const snapshot = MoexSnapshot.build(shares, indices);
-  if (!snapshot) throw new Error("Биржа не вернула бумаг");
+  if (!snapshot) {
+    reasons.push("биржа вернула пустой список бумаг");
+    throw new Error("Биржа не вернула бумаг");
+  }
   return snapshot;
 }
 
@@ -836,16 +870,22 @@ function marketFresh() {
 function ensureMarketData() {
   if (marketFresh()) return Promise.resolve(marketData.snapshot);
   if (!marketRequest) {
-    marketRequest = loadLiveMarket()
+    const reasons = [];
+    marketRequest = loadLiveMarket(reasons)
       .then((snapshot) => ({ snapshot, live: true }))
-      .catch(async () => {
+      .catch(async (error) => {
+        if (reasons.length === 0) reasons.push(describeMarketError(error));
         // Keep what the board already shows rather than replacing it with an
         // older committed file; go to the file only when there is nothing.
         if (marketData && marketData.snapshot) return { snapshot: marketData.snapshot, live: false };
-        return { snapshot: await loadFallbackMarket().catch(() => null), live: false };
+        const fallback = await loadFallbackMarket().catch((fallbackError) => {
+          reasons.push(`резерв: ${describeMarketError(fallbackError)}`);
+          return null;
+        });
+        return { snapshot: fallback, live: false };
       })
       .then((next) => {
-        marketData = { ...next, fetchedAt: Date.now() };
+        marketData = { ...next, reasons, fetchedAt: Date.now() };
         return next.snapshot;
       })
       .finally(() => {
@@ -876,11 +916,11 @@ function updateMarketBoard() {
     return;
   }
   elMarketBoard.hidden = false;
-  if (!marketData) renderBoardEmpty("Запрашиваем котировки Московской биржи…");
+  if (!marketData) renderBoardSkeleton();
   ensureMarketData().then((snapshot) => {
     if (!boardActive()) return;
     if (snapshot) renderBoard(snapshot, marketData.live);
-    else renderBoardEmpty("Котировки Московской биржи сейчас недоступны: биржа не ответила. Лента раздела работает как обычно.");
+    else renderBoardEmpty(`Котировки Московской биржи сейчас недоступны (${marketData.reasons.join("; ")}). Лента раздела работает как обычно.`, true);
   });
   startMarketRefresh();
 }
@@ -913,14 +953,99 @@ function heatStep(change) {
   return `${change > 0 ? "u" : "d"}${level}`;
 }
 
-function renderBoardEmpty(text) {
-  elMarketBoard.classList.add("board--empty");
+// Placeholder layout of the heat map while the first quotes are on their way:
+// a treemap-looking arrangement in percentages of the board, three columns of
+// unequal blocks, so the page does not jump when the real tiles replace it.
+const HEAT_GHOSTS = [
+  [0, 0, 38, 55], [0, 55, 20, 45], [20, 55, 18, 45],
+  [38, 0, 34, 40], [38, 40, 17, 30], [55, 40, 17, 30], [38, 70, 34, 30],
+  [72, 0, 28, 30], [72, 30, 14, 35], [86, 30, 14, 35], [72, 65, 28, 35]
+];
+
+function skeletonBar(className, width) {
+  const bar = document.createElement("span");
+  bar.className = `ghost ${className}`.trim();
+  if (width) bar.style.width = width;
+  return bar;
+}
+
+/** Shapes of the board shown until the first answer of the exchange. */
+function renderBoardSkeleton() {
+  elMarketBoard.classList.remove("board--empty");
+  elMarketBoard.classList.add("board--loading");
+  elMarketBoard.setAttribute("aria-busy", "true");
+
+  const indices = $("#boardIndices");
+  if (indices) {
+    indices.replaceChildren();
+    for (const width of ["7.5em", "5em", "8em"]) {
+      const wrap = document.createElement("div");
+      wrap.className = "board__index";
+      wrap.setAttribute("aria-hidden", "true");
+      wrap.append(skeletonBar("ghost--label", width), skeletonBar("ghost--value", "4.5em"));
+      indices.appendChild(wrap);
+    }
+  }
+
+  const track = $("#boardTickerTrack");
+  if (track) {
+    track.replaceChildren();
+    for (let i = 0; i < 16; i += 1) {
+      const quote = document.createElement("span");
+      quote.className = "quote";
+      quote.append(skeletonBar("ghost--text", `${3 + (i % 3)}em`), skeletonBar("ghost--text", "3.5em"));
+      track.appendChild(quote);
+    }
+  }
+  const tickerText = $("#boardTickerText");
+  if (tickerText) tickerText.textContent = "";
+
+  const heat = $("#boardHeat");
+  if (heat) {
+    heat.replaceChildren();
+    for (const [x, y, w, h] of HEAT_GHOSTS) {
+      const ghost = document.createElement("span");
+      ghost.className = "ghost heat__ghost";
+      ghost.style.left = `${x}%`;
+      ghost.style.top = `${y}%`;
+      ghost.style.width = `calc(${w}% - var(--heat-gap))`;
+      ghost.style.height = `calc(${h}% - var(--heat-gap))`;
+      heat.appendChild(ghost);
+    }
+  }
+
   const meta = $("#boardMeta");
-  if (meta) meta.textContent = text;
+  if (meta) meta.textContent = "Запрашиваем котировки Московской биржи…";
+}
+
+function renderBoardEmpty(text, retryable) {
+  elMarketBoard.classList.remove("board--loading");
+  elMarketBoard.classList.add("board--empty");
+  elMarketBoard.setAttribute("aria-busy", "false");
+  // The index placeholders of the skeleton are not hidden by the empty
+  // state's styles, so clear them along with the rest.
+  for (const id of ["#boardIndices", "#boardTickerTrack", "#boardHeat"]) {
+    const host = $(id);
+    if (host) host.replaceChildren();
+  }
+  const meta = $("#boardMeta");
+  if (!meta) return;
+  meta.textContent = text;
+  if (!retryable) return;
+  const retry = document.createElement("button");
+  retry.type = "button";
+  retry.className = "board__retry";
+  retry.textContent = "Повторить";
+  retry.addEventListener("click", () => {
+    marketData = null;
+    updateMarketBoard();
+  });
+  meta.append(" ", retry);
 }
 
 function renderBoard(parsed, live) {
-  elMarketBoard.classList.remove("board--empty");
+  elMarketBoard.classList.remove("board--empty", "board--loading");
+  elMarketBoard.setAttribute("aria-busy", "false");
   renderBoardIndices(parsed.indices || []);
   renderTicker(parsed.stocks);
   renderHeatmap(parsed.stocks);
