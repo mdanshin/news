@@ -59,6 +59,19 @@ async function fetchJson(url) {
   }
 }
 
+/**
+ * "fetch failed" alone says nothing; the network-level reason (DNS, reset,
+ * certificate, timeout) sits in `error.cause`, so the log prints the chain.
+ */
+function describeError(error) {
+  const parts = [];
+  for (let e = error, depth = 0; e && depth < 4; e = e.cause, depth += 1) {
+    const code = e.code ? ` (${e.code})` : "";
+    parts.push(`${e.name === "Error" || !e.name ? "" : `${e.name}: `}${e.message || String(e)}${code}`);
+  }
+  return parts.join(" <- ");
+}
+
 /** Rows of an ISS block as objects keyed by column name. */
 function rows(block) {
   const columns = Array.isArray(block?.columns) ? block.columns : [];
@@ -144,7 +157,7 @@ async function main() {
   try {
     [shares, indices] = await Promise.all([fetchJson(SHARES_URL), fetchJson(INDEX_URL)]);
   } catch (error) {
-    console.error(`[moex] запрос не удался: ${error?.message || error}; предыдущий срез оставлен без изменений`);
+    console.error(`[moex] запрос не удался: ${describeError(error)}; предыдущий срез оставлен без изменений`);
     return;
   }
 
