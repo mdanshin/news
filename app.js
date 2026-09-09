@@ -733,9 +733,15 @@ function normalizeItem(it) {
 
 /* ── Биржевой блок: бегущая строка и тепловая карта ───────────────────────
    Показывается, когда единственная выбранная тема — «Фондовый рынок».
-   Данные готовит scripts/build-moex.mjs; страница только рисует. */
+   Котировки страница берёт у Московской биржи сама (ISS API): биржа
+   отвечает браузерам читателей, но рвёт соединения с серверов GitHub, так что
+   срез data/moex.json от сборщика — лишь запасной вариант. Разбор ответа
+   биржи общий с сборщиком и живёт в moex-snapshot.js. */
 
-const MOEX_URL = "data/moex.json";
+const MOEX_FALLBACK_URL = "data/moex.json";
+const MARKET_TTL_MS = 5 * 60 * 1000; // quotes are refreshed this often while the board is open
+const MARKET_RETRY_MS = 60 * 1000; // a failed request is not repeated sooner than this
+const MARKET_JSONP_TIMEOUT_MS = 10_000;
 const HEAT_LABEL_HEIGHT = 17;
 // A sector smaller than this share of the board cannot hold a readable label
 // and a tile, so the tail is merged into one "Прочие" group.
@@ -746,8 +752,11 @@ const HEAT_TEXT_MIN_WIDTH = 44;
 const HEAT_TEXT_MIN_HEIGHT = 26;
 const TICKER_QUOTES = 28;
 
+/** @type {{snapshot: any, live: boolean, fetchedAt: number} | null} */
 let marketData = null;
 let marketRequest = null;
+let marketTimer = 0;
+let marketJsonpSeq = 0;
 let boardShown = false;
 
 const elMarketBoard = $("#marketBoard");
@@ -756,40 +765,129 @@ function boardActive() {
   return Boolean(elMarketBoard) && !IS_AI_SECTION && selected.size === 1 && selected.has("markets");
 }
 
+async function fetchJsonFrom(url, init) {
+  const response = await fetch(url, init);
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  return response.json();
+}
+
+/**
+ * JSONP request for browsers where the plain cross-origin request to the
+ * exchange is blocked: ISS supports a `.jsonp` format with a callback name.
+ */
+function loadJsonp(url, callback) {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    const finish = (error, payload) => {
+      clearTimeout(timer);
+      delete window[callback];
+      script.remove();
+      if (error) reject(error);
+      else resolve(payload);
+    };
+    const timer = setTimeout(() => finish(new Error("Таймаут")), MARKET_JSONP_TIMEOUT_MS);
+    window[callback] = (payload) => finish(null, payload);
+    script.onerror = () => finish(new Error("Скрипт не загрузился"));
+    script.async = true;
+    script.src = url;
+    document.head.appendChild(script);
+  });
+}
+
+/** Live quotes straight from the exchange, as the reader's browser sees it. */
+async function loadLiveMarket() {
+  if (typeof MoexSnapshot === "undefined") throw new Error("Модуль биржи не загружен");
+  let shares;
+  let indices;
+  try {
+    const urls = MoexSnapshot.urls("json");
+    [shares, indices] = await Promise.all([fetchJsonFrom(urls.shares, { cache: "no-store" }), fetchJsonFrom(urls.indices, { cache: "no-store" })]);
+  } catch (error) {
+    // Only a network-level failure (a blocked cross-origin request) is worth a
+    // second attempt through JSONP; an HTTP error would repeat itself.
+    if (!error || error.name !== "TypeError") throw error;
+    marketJsonpSeq += 1;
+    const sharesCallback = `moexShares${marketJsonpSeq}`;
+    const indicesCallback = `moexIndices${marketJsonpSeq}`;
+    [shares, indices] = await Promise.all([
+      loadJsonp(MoexSnapshot.urls("jsonp", sharesCallback).shares, sharesCallback),
+      loadJsonp(MoexSnapshot.urls("jsonp", indicesCallback).indices, indicesCallback)
+    ]);
+  }
+  const snapshot = MoexSnapshot.build(shares, indices);
+  if (!snapshot) throw new Error("Биржа не вернула бумаг");
+  return snapshot;
+}
+
+/** The snapshot the build committed, for readers who cannot reach the exchange. */
+async function loadFallbackMarket() {
+  const parsed = await fetchJsonFrom(MOEX_FALLBACK_URL, { cache: "no-cache" });
+  if (!parsed || !Array.isArray(parsed.stocks) || parsed.stocks.length === 0) throw new Error("Пустой срез");
+  return parsed;
+}
+
+function marketFresh() {
+  if (!marketData) return false;
+  const age = Date.now() - marketData.fetchedAt;
+  return age < (marketData.live ? MARKET_TTL_MS : MARKET_RETRY_MS);
+}
+
+/** Resolves with the best snapshot available, or null; never rejects. */
 function ensureMarketData() {
-  if (marketData) return Promise.resolve(marketData);
+  if (marketFresh()) return Promise.resolve(marketData.snapshot);
   if (!marketRequest) {
-    marketRequest = fetch(MOEX_URL, { cache: "no-cache" })
-      .then((response) => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.json();
+    marketRequest = loadLiveMarket()
+      .then((snapshot) => ({ snapshot, live: true }))
+      .catch(async () => {
+        // Keep what the board already shows rather than replacing it with an
+        // older committed file; go to the file only when there is nothing.
+        if (marketData && marketData.snapshot) return { snapshot: marketData.snapshot, live: false };
+        return { snapshot: await loadFallbackMarket().catch(() => null), live: false };
       })
-      .then((parsed) => {
-        if (!parsed || !Array.isArray(parsed.stocks) || parsed.stocks.length === 0) throw new Error("Пустой срез");
-        marketData = parsed;
-        return parsed;
+      .then((next) => {
+        marketData = { ...next, fetchedAt: Date.now() };
+        return next.snapshot;
       })
-      .catch(() => {
-        // Let a later switch back to the section try again.
+      .finally(() => {
         marketRequest = null;
-        return null;
       });
   }
   return marketRequest;
+}
+
+function startMarketRefresh() {
+  if (marketTimer) return;
+  marketTimer = window.setInterval(() => {
+    if (boardActive() && document.visibilityState !== "hidden") updateMarketBoard();
+  }, MARKET_TTL_MS);
+}
+
+function stopMarketRefresh() {
+  if (!marketTimer) return;
+  clearInterval(marketTimer);
+  marketTimer = 0;
 }
 
 function updateMarketBoard() {
   if (!elMarketBoard) return;
   if (!boardActive()) {
     elMarketBoard.hidden = true;
+    stopMarketRefresh();
     return;
   }
-  ensureMarketData().then((parsed) => {
-    if (!parsed || !boardActive()) return;
-    elMarketBoard.hidden = false;
-    renderBoard(parsed);
+  elMarketBoard.hidden = false;
+  if (!marketData) renderBoardEmpty("Запрашиваем котировки Московской биржи…");
+  ensureMarketData().then((snapshot) => {
+    if (!boardActive()) return;
+    if (snapshot) renderBoard(snapshot, marketData.live);
+    else renderBoardEmpty("Котировки Московской биржи сейчас недоступны: биржа не ответила. Лента раздела работает как обычно.");
   });
+  startMarketRefresh();
 }
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && boardActive()) updateMarketBoard();
+});
 
 function formatMoney(value) {
   const abs = Math.abs(value);
@@ -815,15 +913,23 @@ function heatStep(change) {
   return `${change > 0 ? "u" : "d"}${level}`;
 }
 
-function renderBoard(parsed) {
+function renderBoardEmpty(text) {
+  elMarketBoard.classList.add("board--empty");
+  const meta = $("#boardMeta");
+  if (meta) meta.textContent = text;
+}
+
+function renderBoard(parsed, live) {
+  elMarketBoard.classList.remove("board--empty");
   renderBoardIndices(parsed.indices || []);
   renderTicker(parsed.stocks);
   renderHeatmap(parsed.stocks);
   renderBoardTable(parsed.stocks);
   const updated = toAbsTime(parsed.generatedAt);
+  const freshness = live ? `котировки на ${updated}` : `срез от ${updated}, биржа сейчас не отвечает`;
   const basis = parsed.stocks.some((stock) => stock.weightBasis === "capitalisation") ? "площадь плитки — капитализация" : "площадь плитки — объём торгов";
   const meta = $("#boardMeta");
-  if (meta) meta.textContent = [parsed.source || "Московская биржа", updated && `обновлено ${updated}`, basis].filter(Boolean).join(" · ");
+  if (meta) meta.textContent = [parsed.source || "Московская биржа", updated && freshness, basis].filter(Boolean).join(" · ");
 }
 
 function renderBoardIndices(indices) {

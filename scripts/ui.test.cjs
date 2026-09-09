@@ -8,6 +8,7 @@ const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const aiHtml = fs.readFileSync(path.join(root, 'ai.html'), 'utf8');
 const script = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
+const moexScript = fs.readFileSync(path.join(root, 'moex-snapshot.js'), 'utf8');
 const snapshot = JSON.parse(fs.readFileSync(path.join(root, 'data/news.json'), 'utf8'));
 const categoryIds = ['world', 'ru', 'business', 'markets', 'tech', 'ai', 'security', 'science', 'health', 'sports', 'culture'];
 const tick = () => new Promise((resolve) => setImmediate(resolve));
@@ -29,7 +30,7 @@ function fixture() {
   };
 }
 
-async function setup(t, { news = fixture(), saved, savedTheme, hidden, moex = null, systemDark = false, fail = false, observer = true, ai = false } = {}) {
+async function setup(t, { news = fixture(), saved, savedTheme, hidden, moex = null, iss = null, systemDark = false, fail = false, observer = true, ai = false } = {}) {
   const dom = new JSDOM(ai ? aiHtml : html, { url: `https://mdanshin.github.io/news/${ai ? 'ai.html' : ''}`, runScripts: 'outside-only', pretendToBeVisual: true });
   t.after(() => dom.window.close());
   const { window } = dom;
@@ -41,7 +42,7 @@ async function setup(t, { news = fixture(), saved, savedTheme, hidden, moex = nu
   };
   window.matchMedia = () => media;
   const state = {
-    news, fail, calls: [], deferred: null, intersect: null, articles: {}, moex,
+    news, fail, calls: [], deferred: null, intersect: null, articles: {}, moex, iss,
     setSystemDark(value) {
       media.matches = value;
       themeListeners.forEach((listener) => listener({ matches: value }));
@@ -54,6 +55,14 @@ async function setup(t, { news = fixture(), saved, savedTheme, hidden, moex = nu
     state.calls.push(url);
     if (state.deferred) await state.deferred;
     if (state.fail) throw new Error('Offline');
+    if (url.startsWith('https://iss.moex.com/')) {
+      // `iss` is the raw exchange answer, 'network' a blocked cross-origin
+      // request, and null an HTTP refusal that should not be retried.
+      if (state.iss === 'network') throw new TypeError('Failed to fetch');
+      if (!state.iss) return { ok: false, status: 403, json: async () => ({}) };
+      const block = url.includes('/markets/index/') ? state.iss.indices : state.iss.shares;
+      return { ok: true, json: async () => structuredClone(block) };
+    }
     if (url === 'data/moex.json') {
       if (!state.moex) return { ok: false, status: 404, json: async () => ({}) };
       return { ok: true, json: async () => structuredClone(state.moex) };
@@ -70,6 +79,7 @@ async function setup(t, { news = fixture(), saved, savedTheme, hidden, moex = nu
     observe() {}
     disconnect() {}
   };
+  if (!ai) window.eval(moexScript);
   window.eval(script);
   await tick();
   return { window, document: window.document, state };
@@ -250,27 +260,59 @@ function moexFixture() {
   };
 }
 
-test('market board replaces the lead card in the stock section and stays out of other sections', async (t) => {
+/** The exchange's own answer shape: one {columns, data} table per block. */
+function issFixture() {
+  return {
+    shares: {
+      securities: {
+        columns: ['SECID', 'SHORTNAME', 'PREVPRICE', 'ISSUECAPITALIZATION'],
+        data: [['SBER', 'Сбербанк', 306.9, 7e12], ['GAZP', 'Газпром', 132.3, 3e12], ['LKOH', 'Лукойл', 6797, 4.5e12], ['GMKN', 'Норникель', 148.8, 2.1e12], ['ZZZZ', 'Без торгов', null, null]]
+      },
+      marketdata: {
+        columns: ['SECID', 'LAST', 'LASTTOPREVPRICE', 'VALTODAY'],
+        data: [['SBER', 312.4, 1.8, 9.4e9], ['GAZP', 128.9, -2.6, 5.1e9], ['LKOH', 6800, 0.04, 4.2e9], ['GMKN', null, null, 2.8e9], ['ZZZZ', null, null, 0]]
+      }
+    },
+    indices: {
+      securities: { columns: ['SECID', 'SHORTNAME'], data: [['IMOEX', 'Индекс МосБиржи'], ['RTSI', 'Индекс РТС']] },
+      marketdata: { columns: ['SECID', 'CURRENTVALUE', 'LASTCHANGEPRC'], data: [['RTSI', 1100.2, 0.5], ['IMOEX', 2841.55, -0.34], ['MCXSM', 1, 1]] }
+    }
+  };
+}
+
+function marketsOnly() {
   const news = fixture();
   for (const item of news.items) item.categoryIds = ['markets', 'business'];
-  const { document } = await setup(t, { news, saved: ['markets'], moex: moexFixture() });
+  return news;
+}
+
+test('market board asks the exchange itself, replaces the lead card and stays out of other sections', async (t) => {
+  const { document, state } = await setup(t, { news: marketsOnly(), saved: ['markets'], iss: issFixture() });
   await tick();
   await tick();
 
   assert.equal(document.querySelector('#marketBoard').hidden, false);
+  assert.equal(document.querySelector('#marketBoard').classList.contains('board--empty'), false);
   assert.equal(document.querySelector('#grid .card--lead'), null, 'большая карточка уступает место карте рынка');
-  assert.equal(document.querySelectorAll('#boardHeat .heat__tile').length, 4);
+  assert.ok(state.calls.some((url) => url.startsWith('https://iss.moex.com/iss/engines/stock/markets/shares/')), 'котировки запрошены у биржи');
+  assert.ok(!state.calls.includes('data/moex.json'), 'срез сборщика не нужен, когда биржа отвечает');
+  assert.equal(document.querySelectorAll('#boardHeat .heat__tile').length, 4, 'бумага без цены и капитализации не попадает на карту');
   assert.deepEqual([...document.querySelectorAll('#boardHeat .heat__ticker')].map((n) => n.textContent).sort(), ['GAZP', 'GMKN', 'LKOH', 'SBER']);
   // Colour is never the only channel: every tile names itself and its change.
   const tile = [...document.querySelectorAll('#boardHeat .heat__tile')].find((node) => node.dataset.ticker === 'SBER');
   assert.match(tile.getAttribute('aria-label'), /Сбербанк, \+1,80%/);
   assert.equal(tile.style.getPropertyValue('--fill'), 'var(--heat-u3)');
   assert.equal([...document.querySelectorAll('#boardHeat .heat__tile')].find((node) => node.dataset.ticker === 'LKOH').style.getPropertyValue('--fill'), 'var(--heat-zero)');
+  // No trade yet today: the previous close stands in, with no change.
+  const idle = [...document.querySelectorAll('#boardHeat .heat__tile')].find((node) => node.dataset.ticker === 'GMKN');
+  assert.match(idle.getAttribute('aria-label'), /0,00%/);
   assert.equal(document.querySelectorAll('#boardTable tbody tr').length, 4);
+  assert.match(document.querySelector('#boardTable').textContent, /148,8/);
   // The quote line repeats the list so the loop has no seam.
   assert.equal(document.querySelectorAll('#boardTickerTrack .quote').length, 8);
-  assert.match(document.querySelector('#boardIndices').textContent, /Индекс МосБиржи/);
-  assert.match(document.querySelector('#boardMeta').textContent, /капитализация/);
+  const indices = [...document.querySelectorAll('#boardIndices .board__indexName')].map((n) => n.textContent);
+  assert.deepEqual(indices, ['Индекс МосБиржи', 'Индекс РТС'], 'индексы в устоявшемся порядке, лишние не показываются');
+  assert.match(document.querySelector('#boardMeta').textContent, /котировки на .+капитализация/);
 
   // Adding a second topic is no longer "the stock section": the board goes
   // away and the usual lead card comes back.
@@ -279,13 +321,48 @@ test('market board replaces the lead card in the stock section and stays out of 
   assert.ok(document.querySelector('#grid .card--lead'), 'вне раздела крупная карточка возвращается');
 });
 
-test('market board stays hidden when its data is unavailable', async (t) => {
+test('market board falls back to JSONP when the plain request to the exchange is blocked', async (t) => {
+  const { document, window, state } = await setup(t, { news: marketsOnly(), saved: ['markets'], iss: 'network' });
+  await tick();
+  await tick();
+  const scripts = [...document.head.querySelectorAll('script[src*="iss.moex.com"]')];
+  assert.equal(scripts.length, 2, 'после сетевой ошибки оба запроса уходят через script');
+  const raw = issFixture();
+  for (const node of scripts) {
+    const url = new URL(node.src);
+    assert.ok(url.pathname.endsWith('.jsonp'));
+    const callback = url.searchParams.get('callback');
+    assert.equal(typeof window[callback], 'function');
+    window[callback](url.pathname.includes('/markets/index/') ? raw.indices : raw.shares);
+  }
+  await tick();
+  await tick();
+  assert.equal(document.querySelectorAll('#boardHeat .heat__tile').length, 4);
+  assert.equal(document.head.querySelectorAll('script[src*="iss.moex.com"]').length, 0, 'временные script убраны');
+  assert.ok(!state.calls.includes('data/moex.json'));
+});
+
+test('market board shows the committed snapshot when the exchange refuses, and says so', async (t) => {
+  const { document, state } = await setup(t, { news: marketsOnly(), saved: ['markets'], moex: moexFixture() });
+  await tick();
+  await tick();
+  assert.ok(state.calls.includes('data/moex.json'));
+  assert.equal(document.querySelector('#marketBoard').hidden, false);
+  assert.equal(document.querySelectorAll('#boardHeat .heat__tile').length, 4);
+  assert.match(document.querySelector('#boardMeta').textContent, /срез от .+биржа сейчас не отвечает/);
+});
+
+test('market board explains itself when no quotes are available at all', async (t) => {
   const news = fixture();
   for (const item of news.items) item.categoryIds = ['markets'];
   const { document } = await setup(t, { news, saved: ['markets'] });
   await tick();
   await tick();
-  assert.equal(document.querySelector('#marketBoard').hidden, true);
+  const board = document.querySelector('#marketBoard');
+  assert.equal(board.hidden, false);
+  assert.ok(board.classList.contains('board--empty'));
+  assert.match(document.querySelector('#boardMeta').textContent, /недоступны/);
+  assert.equal(document.querySelectorAll('#boardHeat .heat__tile').length, 0);
   assert.ok(ids(document).length > 0, 'лента продолжает работать без биржевых данных');
 });
 
