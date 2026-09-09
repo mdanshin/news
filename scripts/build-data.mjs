@@ -26,7 +26,9 @@ const CONCURRENCY = 6;
 const TIMEOUT_MS = 25_000;
 
 const HISTORY_MAX_DAYS = 7;
-const HISTORY_MAX_ITEMS = 1500;
+// Fourteen sources produce well over 1500 items a day, so a lower cap would
+// squeeze small sources out before the seven-day window is used up.
+const HISTORY_MAX_ITEMS = 4000;
 
 const REDACTED_SECRET = "[REDACTED_SECRET]";
 const REDACTED_PRIVATE_KEY = "[REDACTED_PRIVATE_KEY]";
