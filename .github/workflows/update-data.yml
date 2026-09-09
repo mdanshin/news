@@ -39,7 +39,10 @@ jobs:
 
       - name: Commit data
         run: |
-          git add -A data/news.json data/articles data/moex.json
+          git add -A data/news.json data/articles
+          # The market snapshot is optional: the build keeps the previous file
+          # or leaves none at all when the exchange did not answer.
+          if [ -f data/moex.json ]; then git add data/moex.json; fi
           if git diff --cached --quiet; then
             echo "No changes"
             exit 0
