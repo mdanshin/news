@@ -15,6 +15,7 @@ const CATEGORY_DEFS = [
   { id: "ru", name: "Россия" },
   { id: "business", name: "Бизнес" },
   { id: "tech", name: "Технологии" },
+  { id: "ai", name: "ИИ" },
   { id: "science", name: "Наука" },
   { id: "health", name: "Здоровье" },
   { id: "sports", name: "Спорт" },
@@ -27,6 +28,7 @@ const TOPIC_ICONS = {
   ru: '<path d="m3 9 9-6 9 6H3Zm2 3v6m5-6v6m4-6v6m5-6v6M3 21h18"/>',
   business: '<rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V3h8v4M3 12c5 3 13 3 18 0M12 12v4"/>',
   tech: '<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 1v5m6-5v5M9 18v5m6-5v5M1 9h5m-5 6h5m12-6h5m-5 6h5M10 10h4v4h-4z"/>',
+  ai: '<path d="M8 4.5A3.5 3.5 0 0 1 14.2 3a3.5 3.5 0 0 1 4.3 4.3A3.5 3.5 0 0 1 20 13.5a3.5 3.5 0 0 1-4.3 4.3A3.5 3.5 0 0 1 9.5 19a3.5 3.5 0 0 1-4.3-4.3A3.5 3.5 0 0 1 4 8.5 3.5 3.5 0 0 1 8 4.5Z"/><path d="M9 9v6m6-6v6M7.5 12h3m3 0h3"/>',
   science: '<path d="M9 3h6M10 3v7L4 19a1 1 0 0 0 1 2h14a1 1 0 0 0 1-2l-6-9V3M7 15h10"/>',
   health: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>',
   sports: '<path d="M8 3h8v7a4 4 0 0 1-8 0V3ZM8 5H3v3a4 4 0 0 0 5 4m8-7h5v3a4 4 0 0 1-5 4m-4 2v7m-5 0h10"/>',
@@ -47,6 +49,7 @@ const LOCAL_REBUILD_PATH = "/__rebuild";
 const END_POLL_INTERVAL_MS = 20 * 1000;
 
 const AUTO_REFRESH_MS = 3 * 60 * 1000;
+const IS_AI_SECTION = document.body.dataset.section === "ai";
 let lastAutoRefreshAttemptAt = 0;
 
 const $ = (sel) => document.querySelector(sel);
@@ -78,7 +81,7 @@ const elThemeToggle = $("#themeToggle");
 const elThemeColor = $("#themeColor");
 
 /** @type {Set<string>} */
-let selected = new Set(["tech"]);
+let selected = new Set(IS_AI_SECTION ? ["ai"] : ["tech"]);
 
 /** @type {{generatedAt?: string, items?: any[]}} */
 let data = { generatedAt: "", items: [] };
@@ -182,10 +185,15 @@ function safeHttpUrl(value) {
   }
 }
 
+function isAiNews(title, excerpt) {
+  const text = `${title || ""} ${excerpt || ""}`.toLowerCase();
+  return /(?:искусственн(?:ый|ого|ому|ым|ом) интеллект|нейросет|нейронн(?:ая|ые|ой|ую) сет|генеративн(?:ый|ого|ому|ым|ом) ии|машинн(?:ое|ого|ому|ым|ом) обучен|больш(?:ая|ой|ую|ие|их) языков(?:ая|ой|ую|ые|ых) модел|(?:^|[^а-яёa-z0-9])ии(?:$|[^а-яёa-z0-9])|\bartificial intelligence\b|\bgenerative ai\b|\bmachine learning\b|\bdeep learning\b|\blarge language models?\b|\bllms?\b|\bchatgpt\b|\bopenai\b|\banthropic\b|\bclaude (?:ai|\d|model)\b|(?:модель|model)\s+claude\b|\bgoogle gemini\b|(?:модель|model)\s+gemini\b|\bgemini (?:ai|\d)\b|\bgpt-?\d)/i.test(text);
+}
+
 function updateOverview() {
   const ids = selectedIds();
   const allSelected = ids.length === CATEGORY_DEFS.length;
-  const title = allSelected ? "Все новости" : ids.length === 1 ? categoryById(ids[0]).name : "Ваша лента";
+  const title = IS_AI_SECTION ? "Искусственный интеллект" : allSelected ? "Все новости" : ids.length === 1 ? categoryById(ids[0]).name : "Ваша лента";
   elFeedTitle.textContent = title;
   document.title = `${title} — Лента`;
   elSelectAllBtn.setAttribute("aria-pressed", String(allSelected));
@@ -203,7 +211,8 @@ function updateOverview() {
   updated.textContent = generatedAt || "—";
   if (generatedAt) updated.dateTime = data.generatedAt;
   else updated.removeAttribute("datetime");
-  const sources = new Set(data.items.map((item) => item.sourceName).filter(Boolean)).size;
+  const sourceItems = IS_AI_SECTION ? filtered : data.items;
+  const sources = new Set(sourceItems.map((item) => item.sourceName).filter(Boolean)).size;
   $("#sourceSummary").textContent = sources ? `${sources} ${plural(sources, ["источник", "источника", "источников"])} в общей ленте` : "Новости из разных источников";
 }
 
@@ -215,6 +224,10 @@ function updateEmptyState() {
   if (loadError && !data.items.length) {
     title = "Не удалось загрузить новости";
     description = "Проверьте подключение к интернету и попробуйте ещё раз.";
+    stateActionMode = "retry";
+  } else if (IS_AI_SECTION) {
+    title = "Новости об ИИ скоро появятся";
+    description = "Проверьте обновления: раздел автоматически собирает публикации об искусственном интеллекте.";
     stateActionMode = "retry";
   } else if (!selected.size) {
     title = "Что вам интересно?";
@@ -470,6 +483,7 @@ function highlightModalCode() {
 }
 
 function saveSelection() {
+  if (IS_AI_SECTION) return;
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(selected)));
   } catch {
@@ -478,6 +492,7 @@ function saveSelection() {
 }
 
 function loadSelection() {
+  if (IS_AI_SECTION) return;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
@@ -557,7 +572,8 @@ function normalizeItem(it) {
   const contentTruncated = Boolean(it.contentTruncated);
   const contentMeta = it && typeof it.contentMeta === "object" ? it.contentMeta : null;
   const id = typeof it.id === "string" ? it.id : `${url}:${publishedAt}`;
-  const categoryIds = Array.isArray(it.categoryIds) ? it.categoryIds.filter((x) => typeof x === "string") : [];
+  const categoryIds = new Set(Array.isArray(it.categoryIds) ? it.categoryIds.filter((x) => typeof x === "string") : []);
+  if (isAiNews(title, excerpt)) categoryIds.add("ai");
 
   return {
     id,
@@ -567,7 +583,7 @@ function normalizeItem(it) {
     image,
     sourceName,
     publishedAt,
-    categoryIds,
+    categoryIds: Array.from(categoryIds),
     contentHtml,
     contentTruncated,
     contentMeta
