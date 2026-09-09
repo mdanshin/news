@@ -718,6 +718,7 @@ function applyFilterAndReset(reason) {
   filtered = data.items
     .filter((item) => isSourceVisible(item) && item.categoryIds.some((id) => wanted.has(id)))
     .sort((a, b) => (Date.parse(b.publishedAt) || 0) - (Date.parse(a.publishedAt) || 0));
+  promoteLead(filtered);
   resetFeed();
   renderNextBatch();
   if (reason !== "Фильтр" && reason !== "Источники") renderSources();
@@ -732,6 +733,14 @@ function applyFilterAndReset(reason) {
     setStatus(generated ? `${prefix} · ${generated}` : "Новости по выбранным темам");
   }
   updateEndText();
+}
+
+// The lead card is the newest story with a picture among the first batch;
+// the rest of the feed stays in chronological order.
+function promoteLead(list) {
+  const index = list.slice(0, BATCH_SIZE).findIndex((item) => item.image);
+  if (index > 0) list.unshift(list.splice(index, 1)[0]);
+  return list;
 }
 
 function resetFeed() {

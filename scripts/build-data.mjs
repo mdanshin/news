@@ -21,7 +21,8 @@ const ARTICLES_DIR = path.join(ROOT, "data", "articles");
 const EXCERPT_MAX_CHARS = 500;
 
 const MAX_ITEMS_PER_SOURCE = 120;
-const ARTICLE_FETCH_LIMIT = 120; // total pages to parse (keeps runtime bounded)
+const ARTICLE_FETCH_LIMIT = 200; // total pages to parse per run (keeps runtime bounded)
+const IMAGE_LOOKUP_MAX_AGE_MS = 24 * 60 * 60 * 1000; // look up page images only for recent items
 const CONCURRENCY = 6;
 const TIMEOUT_MS = 25_000;
 
@@ -153,17 +154,67 @@ function stripHtmlToText(html) {
   return t.replace(/\s+/g, " ").trim();
 }
 
+function isHttpUrl(u) {
+  return typeof u === "string" && /^https?:\/\//i.test(u);
+}
+
+// Image URL from a media-like node: <enclosure>, <media:content>,
+// <media:thumbnail>. Non-image enclosures (audio, video) are skipped when
+// the node says what it carries.
+function mediaUrl(node) {
+  if (!node || typeof node !== "object") return "";
+  const type = String(node["@_type"] || "");
+  const medium = String(node["@_medium"] || "");
+  if ((type && !type.startsWith("image/")) || (medium && medium !== "image")) return "";
+  const u = node["@_url"] || node.url || node["@_href"];
+  return isHttpUrl(u) ? u : "";
+}
+
 function pickImageFromItem(item) {
-  const enc = item.enclosure;
-  const encFirst = Array.isArray(enc) ? enc[0] : enc;
-  if (encFirst && typeof encFirst === "object") {
-    const u = encFirst["@_url"] || encFirst.url;
-    if (typeof u === "string" && /^https?:/i.test(u)) return u;
+  for (const key of ["enclosure", "media:content", "media:thumbnail", "media:group"]) {
+    for (const node of toArray(item[key])) {
+      // <media:group> nests the same media tags one level down.
+      const candidates = key === "media:group" && node && typeof node === "object" ? [...toArray(node["media:content"]), ...toArray(node["media:thumbnail"])] : [node];
+      for (const c of candidates) {
+        const u = mediaUrl(c);
+        if (u) return u;
+      }
+    }
   }
 
-  const desc = safeText(item.description);
-  const m = desc.match(/<img[^>]+src=["']([^"']+)["']/i);
-  if (m && m[1] && /^https?:/i.test(m[1])) return m[1];
+  const image = item.image;
+  const imageUrl = typeof image === "string" ? image : image && typeof image === "object" ? image.url || image["@_url"] || safeText(image) : "";
+  if (isHttpUrl(imageUrl)) return imageUrl;
+
+  for (const html of [safeText(item.description), safeText(item["content:encoded"]), safeText(item["yandex:full-text"])]) {
+    const m = html.match(/<img[^>]+src=["']([^"']+)["']/i);
+    if (m && isHttpUrl(m[1])) return m[1];
+  }
+  return "";
+}
+
+// Preview image declared by the article page itself (Open Graph, Twitter
+// cards, or the older image_src link).
+function pickImageFromPage(doc, baseUrl) {
+  const selectors = [
+    'meta[property="og:image:secure_url"]',
+    'meta[property="og:image"]',
+    'meta[property="og:image:url"]',
+    'meta[name="twitter:image"]',
+    'meta[name="twitter:image:src"]',
+    'link[rel="image_src"]'
+  ];
+  for (const selector of selectors) {
+    const el = doc.querySelector(selector);
+    const raw = el?.getAttribute("content") || el?.getAttribute("href") || "";
+    if (!raw.trim()) continue;
+    try {
+      const u = new URL(raw.trim(), baseUrl).href;
+      if (isHttpUrl(u)) return u;
+    } catch {
+      // ignore malformed values
+    }
+  }
   return "";
 }
 
@@ -262,6 +313,8 @@ function reclassify(items, cfg) {
 function extractArticleHtml(url, html) {
   const dom = new JSDOM(html, { url });
   const doc = dom.window.document;
+  // Read the preview image before Readability, which prunes <head>.
+  const image = pickImageFromPage(doc, url);
 
   // Habr: keep original markup (code classes like "bash", "yaml", etc.)
   // Readability often strips these, which breaks language-aware highlighting.
@@ -273,7 +326,7 @@ function extractArticleHtml(url, html) {
         const content = body.innerHTML || "";
         const text = (body.textContent || "").replace(/\s+/g, " ").trim();
         const title = (doc.querySelector("h1")?.textContent || "").replace(/\s+/g, " ").trim();
-        return { content, text, title };
+        return { content, text, title, image };
       }
     }
   } catch {
@@ -287,7 +340,7 @@ function extractArticleHtml(url, html) {
   const content = parsed?.content || "";
   const text = (parsed?.textContent || "").replace(/\s+/g, " ").trim();
   const title = (parsed?.title || "").trim();
-  return { content, text, title };
+  return { content, text, title, image };
 }
 
 function sanitizeReadabilityHtml(html, { maxBlocks = 1500, maxChars = 220_000 } = {}) {
@@ -589,24 +642,29 @@ async function main() {
     })
     .slice(0, HISTORY_MAX_ITEMS);
 
-  // Fetch article pages for missing text.
-  const need = items
-    .filter((x) => {
-      const hasHtml = typeof x.contentHtml === "string" && x.contentHtml.length > 0;
-
-      // Habr: prefer full rebuild (older snapshots may have short HTML).
-      if (x.sourceId === "habr") {
-        if (!hasHtml) return true;
-        const h = x.contentHtml.toLowerCase();
-        // Before we allowed <pre>/<code>, older cached content lost code blocks.
-        if (!h.includes("<pre") && !h.includes("<code")) return true;
-        return x.contentHtml.length < 8000;
-      }
-
-      if (hasHtml) return false;
-      return (x.excerpt || "").length < 60;
-    })
-    .slice(0, ARTICLE_FETCH_LIMIT);
+  // Fetch article pages: first for items that lack readable text, then for
+  // recent items whose feed entry came without a picture (the page usually
+  // declares one). Items are newest first, so the freshest get the budget.
+  const hasHtml = (x) => typeof x.contentHtml === "string" && x.contentHtml.length > 0;
+  const needsText = (x) => {
+    // Habr: prefer full rebuild (older snapshots may have short HTML).
+    if (x.sourceId === "habr") {
+      if (!hasHtml(x)) return true;
+      const h = x.contentHtml.toLowerCase();
+      // Before we allowed <pre>/<code>, older cached content lost code blocks.
+      if (!h.includes("<pre") && !h.includes("<code")) return true;
+      return x.contentHtml.length < 8000;
+    }
+    if (hasHtml(x)) return false;
+    return (x.excerpt || "").length < 60;
+  };
+  // A page already fetched (it has text) but still without an image has no
+  // usable picture; don't ask again. Older items are left alone as well.
+  const imageCutoff = Date.now() - IMAGE_LOOKUP_MAX_AGE_MS;
+  const needsImage = (x) => !x.image && !hasHtml(x) && x.publishedAt && new Date(x.publishedAt).getTime() >= imageCutoff;
+  const needText = items.filter(needsText);
+  const needImage = items.filter((x) => !needsText(x) && needsImage(x));
+  const need = [...needText, ...needImage].slice(0, ARTICLE_FETCH_LIMIT);
 
   await withPool(
     need.map((x) => async () => {
@@ -620,6 +678,7 @@ async function main() {
           approxChars: cleaned.approxChars,
           approxBlocks: cleaned.approxBlocks
         };
+        if (!x.image && parsed.image) x.image = parsed.image;
         if (!x.excerpt && parsed.text) x.excerpt = parsed.text.slice(0, 240);
         if (!x.title && parsed.title) x.title = parsed.title;
       } catch {

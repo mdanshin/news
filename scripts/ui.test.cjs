@@ -76,8 +76,12 @@ function ids(document) {
 }
 
 function wanted(news, categories) {
-  return news.items.filter((item) => item.categoryIds.some((id) => categories.includes(id)))
+  const list = news.items.filter((item) => item.categoryIds.some((id) => categories.includes(id)))
     .sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
+  // The newest story with a picture in the first batch leads the feed.
+  const lead = list.slice(0, 12).findIndex((item) => item.image);
+  if (lead > 0) list.unshift(list.splice(lead, 1)[0]);
+  return list;
 }
 
 test('real snapshot: selection, combined topics, chronological batches and source dates', async (t) => {
@@ -184,6 +188,29 @@ test('source filter hides sources, persists, keeps counts honest and can be rest
   assert.deepEqual(ids(ai.document), ['b1', 'legacy']);
 });
 
+test('lead card is the newest illustrated story of the first batch; order is otherwise chronological', async (t) => {
+  const news = fixture();
+  // Tech items newest first: 30 (no picture), 28, 26 (pictures), 24 (none)...
+  const { document } = await setup(t, { news });
+  const shown = ids(document);
+  assert.deepEqual(shown.slice(0, 4), ['article-28', 'article-30', 'article-26', 'article-24']);
+  assert.ok(document.querySelector('.card--lead .card__media img'));
+  assert.equal(document.querySelector('.card--lead').dataset.id, 'article-28');
+
+  // Without any picture in the first batch nothing is reordered.
+  const plain = fixture();
+  for (const item of plain.items) item.image = '';
+  const bare = await setup(t, { news: plain });
+  assert.deepEqual(ids(bare.document).slice(0, 3), ['article-30', 'article-28', 'article-26']);
+  assert.ok(bare.document.querySelector('.card--lead.card--text'));
+
+  // A picture deep in the list does not jump over the first batch.
+  const far = fixture();
+  for (const item of far.items) item.image = item.id === 'article-0' ? 'https://example.com/far.jpg' : '';
+  const deep = await setup(t, { news: far });
+  assert.equal(ids(deep.document)[0], 'article-30');
+});
+
 test('cyber security section collects security stories from any source until the next build', async (t) => {
   const news = {
     generatedAt: '2026-09-09T10:00:00Z',
@@ -243,8 +270,9 @@ test('reader opens from a real button, traps focus, closes through its icon and 
 
 test('reader fetches article text on demand, caches it, and survives a missing file', async (t) => {
   const news = fixture();
-  // The default feed shows the «tech» items, i.e. the even indexes, newest first.
-  const [first, second, third] = ['article-30', 'article-28', 'article-26'].map((id) => news.items.find((item) => item.id === id));
+  // The default feed shows the «tech» items, i.e. the even indexes, newest
+  // first; article-30 has no picture, so article-28 is promoted to the lead.
+  const [first, second, third] = ['article-28', 'article-30', 'article-26'].map((id) => news.items.find((item) => item.id === id));
   first.contentHtml = '';
   first.hasContent = true;
   second.contentHtml = '';
