@@ -409,6 +409,9 @@ h1 { margin: 0; font: 400 clamp(2rem, 3vw, 2.875rem)/1.15 var(--serif); letter-s
 .heat__tip b { display: block; font-weight: 600; }
 .heat__tip span { color: var(--strong-muted); }
 
+/* No quotes yet (or none at all): only the heading and the notice stay. */
+.board--empty .ticker, .board--empty .heat, .board--empty .board__legend, .board--empty .board__table { display: none; }
+.board--empty .board__foot { margin-top: 4px; }
 .board__foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 12px; }
 .board__legend { display: flex; align-items: center; gap: 8px; margin: 0; font-size: .75rem; color: var(--muted); }
 .board__scale { display: inline-flex; gap: 2px; }
