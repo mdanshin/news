@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" id="themeColor" content="#fafafa" />
-    <title>Лента — новости по вашим темам</title>
-    <meta name="description" content="Новости мира, бизнеса, технологий и культуры в одной ленте. Выбирайте темы и читайте материалы из разных источников." />
+    <title>Искусственный интеллект — Лента</title>
+    <meta name="description" content="Новости искусственного интеллекта, нейросетей и языковых моделей из разных источников." />
     <script>
       (() => {
         try {
@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body data-section="ai">
     <a class="skip-link" href="#feedTitle">Перейти к новостям</a>
     <div id="pageShell">
       <header class="masthead">
@@ -46,20 +46,25 @@
       </header>
       <nav class="section-nav" aria-label="Разделы">
         <div class="wrap section-nav__inner">
-          <a class="section-nav__link is-active" href="./" aria-current="page">Главная</a>
-          <a class="section-nav__link section-nav__link--ai" href="ai.html"><span class="section-nav__badge" aria-hidden="true">AI</span> Искусственный интеллект</a>
+          <a class="section-nav__link" href="./">Главная</a>
+          <a class="section-nav__link section-nav__link--ai is-active" href="ai.html" aria-current="page"><span class="section-nav__badge" aria-hidden="true">AI</span> Искусственный интеллект</a>
         </div>
       </nav>
       <div class="wrap workspace">
-        <aside class="sidebar" aria-label="Темы новостей">
-          <div class="sidebar__head"><h2 class="eyebrow">Мои темы</h2><button class="text-btn" id="clearBtn" type="button">Сбросить</button></div>
-          <button class="all-topics" id="selectAllBtn" type="button" aria-pressed="false">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-            <span>Все новости</span><span class="topic-count" id="allCount"></span>
-          </button>
-          <div class="chips" id="chips" role="group" aria-label="Выберите одну или несколько тем"></div>
-          <p class="sidebar__hint">Выберите несколько тем,<br class="desktop-break" /> чтобы собрать свою ленту.</p>
-          <div class="edition">
+        <aside class="sidebar sidebar--ai" aria-label="Об этом разделе">
+          <div class="ai-aside">
+            <span class="ai-aside__mark" aria-hidden="true">AI</span>
+            <p class="eyebrow">Спецраздел</p>
+            <h2>Технологии, которые меняют мир</h2>
+            <p>Модели, продукты, исследования и решения в области искусственного интеллекта.</p>
+            <a href="./">Все новости <span aria-hidden="true">→</span></a>
+          </div>
+          <div hidden>
+            <button id="clearBtn" type="button">Сбросить</button>
+            <button id="selectAllBtn" type="button"><span id="allCount"></span></button>
+            <div id="chips"></div>
+          </div>
+          <div class="edition edition--ai">
             <span class="edition__rule" aria-hidden="true"></span>
             <p class="eyebrow">Последнее обновление</p>
             <time class="edition__time" id="updatedAt">—</time>
@@ -68,7 +73,7 @@
         </aside>
         <main class="feed" aria-labelledby="feedTitle">
           <div class="feed__heading">
-            <div><p class="eyebrow feed__eyebrow">Последние публикации</p><h1 id="feedTitle" tabindex="-1">Ваша лента</h1></div>
+            <div><p class="eyebrow feed__eyebrow">Специальный раздел</p><h1 id="feedTitle" tabindex="-1">Искусственный интеллект</h1></div>
             <div class="feed__info"><span id="resultCount"></span><span class="feed__order">Сначала новые</span></div>
           </div>
           <div class="feed__status" id="status" role="status" aria-live="polite">Загружаем новости…</div>
@@ -85,7 +90,7 @@
           </div>
         </main>
       </div>
-      <footer class="wrap footer"><a class="footer__brand" href="./">Лента.</a><span>Агрегатор новостей</span><a href="#feedTitle">К началу ↑</a></footer>
+      <footer class="wrap footer"><a class="footer__brand" href="./">Лента.</a><span>Новости искусственного интеллекта</span><a href="#feedTitle">К началу ↑</a></footer>
     </div>
     <div class="modal" id="modal" aria-hidden="true">
       <div class="modal__backdrop" data-close="1"></div>

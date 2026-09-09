@@ -6,9 +6,10 @@ const { JSDOM } = require('jsdom');
 
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const aiHtml = fs.readFileSync(path.join(root, 'ai.html'), 'utf8');
 const script = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
 const snapshot = JSON.parse(fs.readFileSync(path.join(root, 'data/news.json'), 'utf8'));
-const categoryIds = ['world', 'ru', 'business', 'tech', 'science', 'health', 'sports', 'culture'];
+const categoryIds = ['world', 'ru', 'business', 'tech', 'ai', 'science', 'health', 'sports', 'culture'];
 const tick = () => new Promise((resolve) => setImmediate(resolve));
 
 function fixture() {
@@ -28,8 +29,8 @@ function fixture() {
   };
 }
 
-async function setup(t, { news = fixture(), saved, savedTheme, systemDark = false, fail = false, observer = true } = {}) {
-  const dom = new JSDOM(html, { url: 'https://mdanshin.github.io/news/', runScripts: 'outside-only', pretendToBeVisual: true });
+async function setup(t, { news = fixture(), saved, savedTheme, systemDark = false, fail = false, observer = true, ai = false } = {}) {
+  const dom = new JSDOM(ai ? aiHtml : html, { url: `https://mdanshin.github.io/news/${ai ? 'ai.html' : ''}`, runScripts: 'outside-only', pretendToBeVisual: true });
   t.after(() => dom.window.close());
   const { window } = dom;
   const themeListeners = [];
@@ -109,6 +110,24 @@ test('theme follows the system until a manual choice is saved', async (t) => {
   assert.equal(document.documentElement.dataset.theme, 'light');
   const restored = await setup(t, { savedTheme: 'dark', systemDark: false });
   assert.equal(restored.document.documentElement.dataset.theme, 'dark');
+});
+
+test('dedicated AI section contains only AI stories and ignores the main feed selection', async (t) => {
+  const news = {
+    generatedAt: '2026-09-09T10:00:00Z',
+    items: [
+      { id: 'openai', title: 'OpenAI представила GPT-6', excerpt: 'Новая языковая модель', categoryIds: ['tech'], publishedAt: '2026-09-09T09:00:00Z', sourceName: 'Источник' },
+      { id: 'economy', title: 'Центробанк изменил ставку', excerpt: 'Новости экономики', categoryIds: ['business'], publishedAt: '2026-09-09T08:00:00Z', sourceName: 'Источник' },
+      { id: 'ml', title: 'Машинное обучение ускорило исследование', excerpt: 'Работа учёных', categoryIds: ['science'], publishedAt: '2026-09-09T07:00:00Z', sourceName: 'Другой источник' },
+      { id: 'gemini-zodiac', title: 'Gemini: сезон Близнецов', excerpt: 'Астрологический прогноз', categoryIds: ['culture'], publishedAt: '2026-09-09T06:00:00Z', sourceName: 'Источник' }
+    ]
+  };
+  const { document } = await setup(t, { news, saved: ['business'], ai: true });
+  assert.deepEqual(ids(document), ['openai', 'ml']);
+  assert.equal(document.querySelector('#feedTitle').textContent, 'Искусственный интеллект');
+  assert.equal(document.querySelector('#resultCount').textContent, '2 материала');
+  assert.equal(document.querySelector('.section-nav__link[aria-current="page"]').getAttribute('href'), 'ai.html');
+  assert.deepEqual([...document.querySelectorAll('.tag')].map((node) => node.textContent), ['ИИ', 'ИИ']);
 });
 
 test('cleared selection persists, explains the empty state and can be restored', async (t) => {

@@ -93,6 +93,7 @@ const CATEGORY_DEFS = {
   ru: { name: "Россия" },
   business: { name: "Бизнес" },
   tech: { name: "Технологии" },
+  ai: { name: "ИИ" },
   science: { name: "Наука" },
   health: { name: "Здоровье" },
   sports: { name: "Спорт" },
@@ -201,6 +202,16 @@ function mapCategories(sourceId, itemCats, cfg) {
 function inferCategoriesByText(title, excerpt) {
   const t = `${title || ""} ${excerpt || ""}`.toLowerCase();
   const out = new Set();
+
+  // Artificial intelligence. Word boundaries around the Russian abbreviation
+  // are written explicitly because JavaScript's `\\b` is ASCII-oriented.
+  if (
+    /(?:искусственн(?:ый|ого|ому|ым|ом) интеллект|нейросет|нейронн(?:ая|ые|ой|ую) сет|генеративн(?:ый|ого|ому|ым|ом) ии|машинн(?:ое|ого|ому|ым|ом) обучен|больш(?:ая|ой|ую|ие|их) языков(?:ая|ой|ую|ые|ых) модел|(?:^|[^а-яёa-z0-9])ии(?:$|[^а-яёa-z0-9])|\bartificial intelligence\b|\bgenerative ai\b|\bmachine learning\b|\bdeep learning\b|\blarge language models?\b|\bllms?\b|\bchatgpt\b|\bopenai\b|\banthropic\b|\bclaude (?:ai|\d|model)\b|(?:модель|model)\s+claude\b|\bgoogle gemini\b|(?:модель|model)\s+gemini\b|\bgemini (?:ai|\d)\b|\bgpt-?\d)/i.test(
+      t,
+    )
+  ) {
+    out.add("ai");
+  }
 
   // Health / medicine
   if (
@@ -461,6 +472,14 @@ async function main() {
   }
   items = Array.from(byUrl.values());
 
+  // Reclassify carried history as well, so the AI section is populated on
+  // the first build after this category is introduced.
+  for (const item of items) {
+    const categories = new Set(item.categoryIds || []);
+    for (const id of inferCategoriesByText(item.title, item.excerpt)) categories.add(id);
+    item.categoryIds = Array.from(categories).filter((id) => CATEGORY_DEFS[id]);
+  }
+
   // Merge with previous snapshot to simulate an "infinite" feed.
   try {
     const prevRaw = await fs.readFile(OUT_PATH, "utf8");
@@ -561,6 +580,14 @@ async function main() {
     }),
     CONCURRENCY,
   );
+
+  // Article extraction can add a previously missing excerpt, so run the
+  // lightweight classification once more before writing the snapshot.
+  for (const item of items) {
+    const categories = new Set(item.categoryIds || []);
+    for (const id of inferCategoriesByText(item.title, item.excerpt)) categories.add(id);
+    item.categoryIds = Array.from(categories).filter((id) => CATEGORY_DEFS[id]);
+  }
 
   const out = {
     generatedAt: new Date().toISOString(),
