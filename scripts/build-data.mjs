@@ -61,6 +61,74 @@ const PAGE_HEADERS = {
   "sec-fetch-user": "?1"
 };
 
+// Two ways to ask for a page. The browser-like profile is what most sites
+// expect; some bot filters challenge exactly that (a browser that runs no
+// JavaScript) and let a plainly declared crawler through, so a refusal or a
+// challenge page is retried once with the honest identity of this build.
+const PAGE_PROFILES = [
+  { name: "browser", headers: PAGE_HEADERS },
+  { name: "bot", headers: FEED_HEADERS }
+];
+
+// Requests to one host go one at a time with a pause between them: a burst
+// of parallel requests is what gets a crawler throttled or dropped.
+const HOST_DELAY_MS = 400;
+// Shorter than this is not an article: a challenge page or a stub that
+// Readability turned into a sentence.
+const MIN_ARTICLE_CHARS = 120;
+/** @type {Map<string, Promise<unknown>>} */
+const hostQueues = new Map();
+
+function politely(url, task) {
+  let host = "";
+  try {
+    host = new URL(url).hostname;
+  } catch {
+    return task();
+  }
+  const previous = hostQueues.get(host) || Promise.resolve();
+  const run = previous.then(async () => {
+    try {
+      return await task();
+    } finally {
+      await sleep(HOST_DELAY_MS);
+    }
+  });
+  hostQueues.set(host, run.catch(() => {}));
+  return run;
+}
+
+function isRefusal(error) {
+  return /HTTP (?:403|406|429|503)/.test(String(error?.message || ""));
+}
+
+/**
+ * Article page through the profiles in turn. A refusal or a challenge page
+ * moves to the next profile; a real page without text does not, since it
+ * would not change with another identity.
+ */
+async function fetchArticlePage(url) {
+  let lastError = null;
+  let lastEmpty = null;
+  for (const profile of PAGE_PROFILES) {
+    let html;
+    try {
+      html = await politely(url, () => fetchText(url, { headers: profile.headers, retries: 1 }));
+    } catch (error) {
+      lastError = error;
+      if (isRefusal(error)) continue;
+      break;
+    }
+    const parsed = extractArticleHtml(url, html);
+    const cleaned = sanitizeReadabilityHtml(parsed.content);
+    if (cleaned.html && parsed.text.length >= MIN_ARTICLE_CHARS) return { parsed, cleaned, profile: profile.name };
+    lastEmpty = { parsed, cleaned: { ...cleaned, html: "" }, profile: profile.name };
+    if (!/challenge/.test(parsed.diag)) break;
+  }
+  if (lastEmpty) return lastEmpty;
+  throw lastError || new Error("fetch failed");
+}
+
 // Fields in which feeds carry the full article text. When present and long
 // enough, the article page is not requested at all.
 const FEED_FULL_TEXT_FIELDS = ["content:encoded", "yandex:full-text", "rbc_news:full-text", "turbo:content", "full-text", "fulltext"];
@@ -715,7 +783,7 @@ async function main() {
   const fetchStats = new Map();
   const stat = (sourceId) => {
     let s = fetchStats.get(sourceId);
-    if (!s) fetchStats.set(sourceId, (s = { ok: 0, empty: 0, failed: 0, reasons: new Map() }));
+    if (!s) fetchStats.set(sourceId, (s = { ok: 0, empty: 0, failed: 0, reasons: new Map(), profiles: new Map() }));
     return s;
   };
 
@@ -724,15 +792,14 @@ async function main() {
       x.contentTries = (x.contentTries || 0) + 1;
       const s = stat(x.sourceId);
       try {
-        const html = await fetchText(x.url, { headers: PAGE_HEADERS });
-        const parsed = extractArticleHtml(x.url, html);
-        const cleaned = sanitizeReadabilityHtml(parsed.content);
+        const { parsed, cleaned, profile } = await fetchArticlePage(x.url);
         if (cleaned.html) {
           x.contentHtml = cleaned.html;
           // Done: no need to remember attempts once the text is in hand
           // (Habr keeps counting while its rebuild rule still applies).
           if (x.sourceId !== "habr" || cleaned.html.length >= 8000) delete x.contentTries;
           s.ok += 1;
+          s.profiles.set(profile, (s.profiles.get(profile) || 0) + 1);
         } else {
           s.empty += 1;
           if (!s.emptySample) s.emptySample = `${x.url}: ${parsed.diag}`;
@@ -759,7 +826,9 @@ async function main() {
   // One line per source in the workflow log: how article pages went.
   for (const [sourceId, s] of [...fetchStats.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
     const reasons = [...s.reasons.entries()].map(([r, n]) => `${r} ×${n}`).join(", ");
-    console.log(`[pages] ${sourceId}: text ${s.ok}, no text ${s.empty}, failed ${s.failed}${reasons ? ` (${reasons})` : ""}`);
+    // Which identity the text came through, when the honest one had to step in.
+    const profiles = s.profiles.has("bot") ? ` (${[...s.profiles.entries()].map(([name, n]) => `${name} ${n}`).join(", ")})` : "";
+    console.log(`[pages] ${sourceId}: text ${s.ok}${profiles}, no text ${s.empty}, failed ${s.failed}${reasons ? ` (${reasons})` : ""}`);
     if (s.emptySample) console.log(`[pages]   no text sample: ${s.emptySample}`);
     if (s.failSample) console.log(`[pages]   failure sample: ${s.failSample}`);
   }

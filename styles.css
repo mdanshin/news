@@ -125,6 +125,7 @@ svg { display: block; width: 20px; height: 20px; flex-shrink: 0; }
 .chip input:checked + label { background: var(--accent-soft); color: var(--accent); }
 .chip input:focus-visible + label { outline: 2px solid var(--accent); outline-offset: 2px; }
 .chip__name { min-width: 0; font-size: .9375rem; line-height: 1.5; overflow-wrap: anywhere; }
+.chip__note { display: block; font-size: .6875rem; line-height: 1.3; font-weight: 400; color: var(--muted); }
 .chip input:checked + label .chip__name { font-weight: 500; }
 .chip__check { display: none; width: 16px; height: 16px; }
 .chip input:checked + label > svg:first-child { visibility: hidden; }
