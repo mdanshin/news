@@ -77,8 +77,6 @@
     "cnews": ["tech"],
     "nplus1": ["science"],
     "xakep": ["security"],
-    "securitylab": ["security"],
-    "bleepingcomputer": ["security"],
     "thehackernews": ["security"]
   },
   "categoryMap": {
@@ -181,26 +179,58 @@
       "Спорт": ["sports"]
     },
     "vedomosti": {
-      "/politics": ["ru"],
-      "/society": ["ru"],
-      "/economics": ["business"],
-      "/business": ["business"],
-      "/finance": ["business"],
-      "/technology": ["tech"],
-      "/sport": ["sports"],
       "Политика": ["ru"],
+      "Политика / Международные новости": ["world"],
+      "Политика / Международные отношения": ["world"],
       "Общество": ["ru"],
       "Экономика": ["business"],
       "Бизнес": ["business"],
       "Финансы": ["business"],
       "Технологии": ["tech"],
+      "Медиа": ["culture"],
+      "Культура": ["culture"],
       "Спорт": ["sports"]
     },
     "habr": {
       "Информационная безопасность": ["security"],
       "Искусственный интеллект": ["ai"],
       "Машинное обучение": ["ai"],
+      "Нейросети": ["ai"],
+      "ИИ": ["ai"],
+      "LLM": ["ai"],
+      "ИИ-агенты": ["ai"],
       "Natural Language Processing": ["ai"]
+    },
+    "3dnews": {
+      "вирусы, трояны, уязвимости в ПО, вопросы безопасности": ["security", "tech"],
+      "Искусственный интеллект, машинное обучение, нейросети": ["ai", "tech"]
+    },
+    "securitylab": {
+      "Технологии": ["tech"],
+      "Наука": ["science"],
+      "Информация": ["security"],
+      "Отчеты": ["security"],
+      "Уязвимости": ["security"],
+      "Вирусы": ["security"],
+      "Хакеры": ["security"],
+      "Инциденты": ["security"],
+      "Утечки": ["security"],
+      "Мошенничество": ["security"],
+      "Безопасность": ["security"]
+    },
+    "bleepingcomputer": {
+      "Security": ["security"],
+      "Microsoft": ["tech"],
+      "Software": ["tech"],
+      "Technology": ["tech"],
+      "Hardware": ["tech"],
+      "Google": ["tech"],
+      "Apple": ["tech"],
+      "Linux": ["tech"],
+      "Mobile": ["tech"],
+      "Gaming": ["tech"],
+      "CryptoCurrency": ["tech"],
+      "Artificial Intelligence": ["ai"]
     }
   }
 }

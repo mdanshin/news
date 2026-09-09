@@ -22,9 +22,14 @@ const ARTICLES_DIR = path.join(ROOT, "data", "articles");
 const EXCERPT_MAX_CHARS = 500;
 
 const MAX_ITEMS_PER_SOURCE = 120;
-const ARTICLE_FETCH_LIMIT = 200; // total pages to parse per run (keeps runtime bounded)
+// Every item gets its article page fetched so the reader can show the full
+// text on the site; the budget per run keeps the workflow bounded and the
+// newest items go first. A page that yields no text is retried a few times
+// (timeouts, temporary errors) and then left alone.
+const ARTICLE_FETCH_LIMIT = 400; // total pages to parse per run (keeps runtime bounded)
+const MAX_CONTENT_TRIES = 3;
 const IMAGE_LOOKUP_MAX_AGE_MS = 24 * 60 * 60 * 1000; // look up page images only for recent items
-const CONCURRENCY = 6;
+const CONCURRENCY = 8;
 const TIMEOUT_MS = 25_000;
 
 const HISTORY_MAX_DAYS = 7;
@@ -504,6 +509,7 @@ async function main() {
           existing.contentHtml = stored.contentHtml;
           existing.contentTruncated = stored.contentTruncated;
         }
+        if (Number.isInteger(raw.contentTries) && raw.contentTries > 0) existing.contentTries = raw.contentTries;
         if ((!existing.excerpt || existing.excerpt.length < 40) && typeof raw.excerpt === "string") existing.excerpt = raw.excerpt;
         if (!existing.image && typeof raw.image === "string") existing.image = raw.image;
         if (!existing.publishedAt && typeof raw.publishedAt === "string") existing.publishedAt = raw.publishedAt;
@@ -524,6 +530,7 @@ async function main() {
           contentHtml: stored ? stored.contentHtml : "",
           contentTruncated: stored ? stored.contentTruncated : false
         };
+        if (Number.isInteger(raw.contentTries) && raw.contentTries > 0) carried.contentTries = raw.contentTries;
         // Snapshots written before sections were stored have no
         // `sourceCategories`; such items keep their stored categories.
         if (Array.isArray(raw.sourceCategories)) carried.sourceCategories = uniqueStrings(raw.sourceCategories);
@@ -559,33 +566,39 @@ async function main() {
   // recent items whose feed entry came without a picture (the page usually
   // declares one). Items are newest first, so the freshest get the budget.
   const hasHtml = (x) => typeof x.contentHtml === "string" && x.contentHtml.length > 0;
+  const canRetry = (x) => (x.contentTries || 0) < MAX_CONTENT_TRIES;
   const needsText = (x) => {
+    if (!hasHtml(x)) return canRetry(x);
     // Habr: prefer full rebuild (older snapshots may have short HTML).
     if (x.sourceId === "habr") {
-      if (!hasHtml(x)) return true;
       const h = x.contentHtml.toLowerCase();
       // Before we allowed <pre>/<code>, older cached content lost code blocks.
-      if (!h.includes("<pre") && !h.includes("<code")) return true;
-      return x.contentHtml.length < 8000;
+      if (!h.includes("<pre") && !h.includes("<code")) return canRetry(x);
+      return x.contentHtml.length < 8000 && canRetry(x);
     }
-    if (hasHtml(x)) return false;
-    return (x.excerpt || "").length < 60;
+    return false;
   };
   // A page already fetched (it has text) but still without an image has no
   // usable picture; don't ask again. Older items are left alone as well.
   const imageCutoff = Date.now() - IMAGE_LOOKUP_MAX_AGE_MS;
-  const needsImage = (x) => !x.image && !hasHtml(x) && x.publishedAt && new Date(x.publishedAt).getTime() >= imageCutoff;
+  const needsImage = (x) => !x.image && !hasHtml(x) && canRetry(x) && x.publishedAt && new Date(x.publishedAt).getTime() >= imageCutoff;
   const needText = items.filter(needsText);
   const needImage = items.filter((x) => !needsText(x) && needsImage(x));
   const need = [...needText, ...needImage].slice(0, ARTICLE_FETCH_LIMIT);
 
   await withPool(
     need.map((x) => async () => {
+      x.contentTries = (x.contentTries || 0) + 1;
       try {
         const html = await fetchText(x.url);
         const parsed = extractArticleHtml(x.url, html);
         const cleaned = sanitizeReadabilityHtml(parsed.content);
-        if (cleaned.html) x.contentHtml = cleaned.html;
+        if (cleaned.html) {
+          x.contentHtml = cleaned.html;
+          // Done: no need to remember attempts once the text is in hand
+          // (Habr keeps counting while its rebuild rule still applies).
+          if (x.sourceId !== "habr" || cleaned.html.length >= 8000) delete x.contentTries;
+        }
         x.contentTruncated = Boolean(cleaned.truncated);
         x.contentMeta = {
           approxChars: cleaned.approxChars,
@@ -635,7 +648,8 @@ async function writeSnapshot(items) {
       categoryIds: item.categoryIds,
       image: item.image,
       excerpt: trimExcerpt(excerpt),
-      hasContent: Boolean(contentHtml)
+      hasContent: Boolean(contentHtml),
+      ...(Number.isInteger(item.contentTries) && item.contentTries > 0 ? { contentTries: item.contentTries } : {})
     });
   }
 

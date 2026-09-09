@@ -219,14 +219,17 @@ test('cyber security section collects security stories from any source until the
       { id: 'cve', title: 'Critical vulnerability CVE-2026-1234 exploited in the wild', excerpt: '', categoryIds: ['tech'], publishedAt: '2026-09-09T08:00:00Z', sourceName: 'Источник' },
       { id: 'esports', title: 'Киберспортсмены выиграли турнир', excerpt: 'Финал прошёл в Москве', categoryIds: ['sports'], publishedAt: '2026-09-09T07:00:00Z', sourceName: 'Источник' },
       { id: 'gas', title: 'Утечка газа в жилом доме', excerpt: '', categoryIds: ['ru'], publishedAt: '2026-09-09T06:00:00Z', sourceName: 'Источник' },
+      { id: 'game', title: 'Вышел киберпанковый шутер', excerpt: 'Вдохновлён Half-Life 2', categoryIds: ['tech'], publishedAt: '2026-09-09T05:30:00Z', sourceName: 'Источник' },
+      { id: 'car', title: 'Угнал машины без взлома', excerpt: 'Умение убеждать', categoryIds: ['ru'], publishedAt: '2026-09-09T05:20:00Z', sourceName: 'Источник' },
+      { id: 'phone', title: 'Ваш телефон всё равно взломают', excerpt: '', categoryIds: ['tech'], publishedAt: '2026-09-09T05:10:00Z', sourceName: 'Источник' },
       { id: 'built', title: 'Обзор новых средств защиты', excerpt: '', categoryIds: ['security'], publishedAt: '2026-09-09T05:00:00Z', sourceName: 'Источник' }
     ]
   };
   const { document } = await setup(t, { news, saved: ['security'] });
-  assert.deepEqual(ids(document), ['leak', 'cve', 'built']);
+  assert.deepEqual(ids(document), ['leak', 'cve', 'phone', 'built']);
   assert.equal(document.querySelector('#feedTitle').textContent, 'Кибербезопасность');
-  assert.deepEqual([...document.querySelectorAll('.tag')].map((node) => node.textContent), ['Кибербезопасность', 'Кибербезопасность', 'Кибербезопасность']);
-  assert.equal(document.querySelector('#count-security').textContent, '3');
+  assert.deepEqual([...document.querySelectorAll('.tag')].map((node) => node.textContent), ['Кибербезопасность', 'Кибербезопасность', 'Кибербезопасность', 'Кибербезопасность']);
+  assert.equal(document.querySelector('#count-security').textContent, '4');
 });
 
 test('cleared selection persists, explains the empty state and can be restored', async (t) => {
