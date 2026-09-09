@@ -211,9 +211,19 @@ function isAiNews(title, excerpt) {
   return /(?:искусственн(?:ый|ого|ому|ым|ом) интеллект|нейросет|нейронн(?:ая|ые|ой|ую) сет|генеративн(?:ый|ого|ому|ым|ом) ии|машинн(?:ое|ого|ому|ым|ом) обучен|больш(?:ая|ой|ую|ие|их) языков(?:ая|ой|ую|ые|ых) модел|(?:^|[^а-яёa-z0-9])ии(?:$|[^а-яёa-z0-9])|\bartificial intelligence\b|\bgenerative ai\b|\bmachine learning\b|\bdeep learning\b|\blarge language models?\b|\bllms?\b|\bchatgpt\b|\bopenai\b|\banthropic\b|\bclaude (?:ai|\d|model)\b|(?:модель|model)\s+claude\b|\bgoogle gemini\b|(?:модель|model)\s+gemini\b|\bgemini (?:ai|\d)\b|\bgpt-?\d)/i.test(text);
 }
 
+// Mirrors the two-tier rule in scripts/classify.mjs: unambiguous terms count
+// on their own, ambiguous ones ("взлом", "exploit") only next to something
+// digital. Keep both copies in sync.
+const SECURITY_STRONG =
+  /(?:кибер(?:атак|преступ|безопасност|угроз|шпион|мошенн|инцидент|войн|развед|полиц|расслед|защит)|хакер|уязвимост|вредонос|малвар|шифровальщик|фишинг|эксплойт|ботнет|троян|бэкдор|руткит|антивирус|пентест|инфобез|даркнет|информационн(?:ая|ой|ую) безопасност|утечк[а-я]* (?:данных|персональн|баз|информац|парол)|\bddos\b|\bmalware\b|\bransomware\b|\bspyware\b|\brootkit\b|\bphishing\b|\bcve-\d{4}-\d+|\bzero-day\b|\b0-day\b|\binfostealer|\bdata breach|\bcyber ?(?:attack|security|crime|threat|espionage)|\bhackers?\b(?! news)|\bhacked\b|\bbotnet\b|\bbackdoor\b|\bweb shell\b|\bdark ?web\b|\bcredential (?:theft|stuffing)|\binfosec\b)/i;
+const SECURITY_WEAK = /(?:взлом|вымогател|\bexploit|\bvulnerabilit|\bbreach)/i;
+const DIGITAL_CONTEXT =
+  /(?:аккаунт|учетн(?:ая|ой|ую) запис|сайт|сервер|систем|баз[а-я]* данных|данны[ех]|парол|телефон|смартфон|компьютер|ноутбук|сет[ьи]\b|почт|приложен|мессендж|крипто|бирж|банк|\bпо\b|софт|программ|прошивк|плагин|патч|обновлен|устройств|роутер|камер|браузер|\bит\b|\bit\b|windows|linux|android|ios|iphone|chrome|api|wi-?fi|bluetooth|\bsoftware\b|\bservers?\b|\bnetwork|\bpassword|\baccounts?\b|\bdevices?\b|\bapps?\b|\brouter|\bdatabase|\bcredential|\bpatch|\bupdate|\bbrowser|\bplugin|\bfirmware|\bcloud\b|\bemail\b|\bcrypto)/i;
+
 function isSecurityNews(title, excerpt) {
   const text = `${title || ""} ${excerpt || ""}`.toLowerCase();
-  return /(?:кибер(?!спорт)|хакер|взлом|уязвимост|вредонос|шифровальщик|фишинг|эксплойт|ботнет|троян|бэкдор|антивирус|пентест|инфобез|даркнет|информационн(?:ая|ой|ую) безопасност|утечк[а-я]* (?:данных|персональн|баз|информац|парол)|\bddos\b|\bmalware\b|\bransomware\b|\bphishing\b|\bvulnerabilit|\bcve-\d{4}-\d+|\bexploit|\bzero-day\b|\b0-day\b|\binfostealer|\bdata breach|\bcyber ?(?:attack|security|crime|threat)|\bhackers?\b|\bhacked\b|\bbotnet\b|\bbackdoor\b|\bdark ?web\b)/i.test(text);
+  if (SECURITY_STRONG.test(text)) return true;
+  return SECURITY_WEAK.test(text) && DIGITAL_CONTEXT.test(text);
 }
 
 /** Sources present in the loaded snapshot, alphabetically by name. */

@@ -33,9 +33,21 @@ test("feeds.json only references known categories and known sources", () => {
 });
 
 test("security sources and Habr security hub land in the security section", () => {
-  for (const id of ["xakep", "securitylab", "bleepingcomputer", "thehackernews"]) {
+  for (const id of ["xakep", "thehackernews"]) {
     assert.deepEqual(mapCategories(id, [], `https://example.com/${id}/1`, cfg), ["security"], id);
   }
+  // SecurityLab and BleepingComputer publish general tech and science news as
+  // well; their feed rubrics decide, and an unmapped rubric means no section.
+  assert.deepEqual(mapCategories("securitylab", ["Наука/"], "https://www.securitylab.ru/news/1.php", cfg), ["science"]);
+  assert.deepEqual(mapCategories("securitylab", ["Технологии/"], "https://www.securitylab.ru/news/2.php", cfg), ["tech"]);
+  assert.deepEqual(mapCategories("securitylab", ["Отчеты/"], "https://www.securitylab.ru/news/3.php", cfg), ["security"]);
+  assert.deepEqual(mapCategories("securitylab", ["Право/"], "https://www.securitylab.ru/news/4.php", cfg), []);
+  assert.deepEqual(mapCategories("securitylab", [], "https://www.securitylab.ru/news/5.php", cfg), []);
+  assert.deepEqual(mapCategories("bleepingcomputer", ["Security"], "https://www.bleepingcomputer.com/news/security/x/", cfg), ["security"]);
+  assert.deepEqual(mapCategories("bleepingcomputer", ["Microsoft", "Software"], "https://www.bleepingcomputer.com/news/microsoft/x/", cfg), ["tech"]);
+  assert.deepEqual(mapCategories("bleepingcomputer", ["Artificial Intelligence", "Security"], "https://www.bleepingcomputer.com/news/x/", cfg), ["ai", "security"]);
+  assert.deepEqual(mapCategories("3dnews", ["- вирусы, трояны, уязвимости в ПО, вопросы безопасности"], "https://3dnews.ru/1", cfg), ["security", "tech"]);
+  assert.deepEqual(mapCategories("3dnews", ["- игры"], "https://3dnews.ru/2", cfg), ["tech"]);
   assert.deepEqual(mapCategories("habr", ["Информационная безопасность", "Kubernetes"], "https://habr.com/ru/articles/1/", cfg), ["security", "tech"]);
   assert.deepEqual(mapCategories("habr", ["Машинное обучение"], "https://habr.com/ru/articles/1/", cfg), ["ai", "tech"]);
   assert.deepEqual(mapCategories("nplus1", ["Физика"], "https://nplus1.ru/news/2026/09/09/x", cfg), ["science"]);
@@ -44,6 +56,19 @@ test("security sources and Habr security hub land in the security section", () =
   assert.deepEqual(mapCategories("rbc", ["Общество"], "https://www.rbc.ru/technology_and_media/09/09/2026/1", cfg), ["tech"]);
   assert.deepEqual(mapCategories("vedomosti", ["Мнения"], "https://www.vedomosti.ru/opinion/articles/2026/09/09/x", cfg), []);
   assert.deepEqual(mapCategories("vedomosti", ["Технологии"], "https://www.vedomosti.ru/technology/news/2026/09/09/x", cfg), ["tech"]);
+});
+
+test("rubrics match case-insensitively, with sub-rubrics falling back to the parent", () => {
+  // Vedomosti files foreign news under «Политика / Международные новости».
+  assert.deepEqual(mapCategories("vedomosti", ["Политика / Международные новости"], "https://www.vedomosti.ru/politics/news/1", cfg), ["world"]);
+  assert.deepEqual(mapCategories("vedomosti", ["Политика / Власть"], "https://www.vedomosti.ru/politics/news/2", cfg), ["ru"]);
+  assert.deepEqual(mapCategories("vedomosti", ["Бизнес / Транспорт"], "https://www.vedomosti.ru/business/news/3", cfg), ["business"]);
+  assert.deepEqual(mapCategories("vedomosti", ["Финансы / Банки"], "https://www.vedomosti.ru/finance/news/4", cfg), ["business"]);
+  // Habr hubs arrive in whatever case the author used.
+  assert.deepEqual(mapCategories("habr", ["нейросети"], "https://habr.com/ru/articles/1/", cfg), ["ai", "tech"]);
+  assert.deepEqual(mapCategories("habr", ["ии"], "https://habr.com/ru/articles/2/", cfg), ["ai", "tech"]);
+  assert.deepEqual(mapCategories("habr", ["информационная безопасность"], "https://habr.com/ru/articles/3/", cfg), ["security", "tech"]);
+  assert.deepEqual(mapCategories("habr", ["Kubernetes"], "https://habr.com/ru/articles/4/", cfg), ["tech"]);
 });
 
 test("security text rules catch attacks, malware and data leaks but not e-sports or gas leaks", () => {
@@ -55,6 +80,15 @@ test("security text rules catch attacks, malware and data leaks but not e-sports
   assert.deepEqual(inferCategoriesByText("Киберспортсмены выиграли турнир", ""), []);
   assert.deepEqual(inferCategoriesByText("Утечка газа в жилом доме", ""), []);
   assert.deepEqual(inferCategoriesByText("Хакатон собрал студентов", ""), []);
+  // Ambiguous words need a digital context.
+  assert.deepEqual(inferCategoriesByText("В Steam вышел киберпанковый шутер Sprawl Zero", "вдохновлённый Half-Life 2"), []);
+  assert.deepEqual(inferCategoriesByText("Умение убеждать помогло преступнику угнать несколько дорогих машин без взлома", ""), []);
+  assert.deepEqual(inferCategoriesByText("Не берёте трубку с незнакомых номеров? Ваш телефон всё равно взломают", ""), ["security"]);
+  assert.deepEqual(inferCategoriesByText("Я проанализировал 100 000 постов с Hacker News", ""), []);
+  assert.deepEqual(inferCategoriesByText("Workers exploited in supply chain, report says", ""), []);
+  assert.deepEqual(inferCategoriesByText("Adobe fixes Magento zero-day exploited to backdoor servers", ""), ["security"]);
+  assert.deepEqual(inferCategoriesByText("Спящие чёрные дыры Gaia поставили астрономов в тупик", ""), []);
+  assert.deepEqual(inferCategoriesByText("Россиянин экстрадирован в США по делу о кибермошенничестве", ""), ["security"]);
 });
 
 test("source sections without a matching site category are not forced into one", () => {
@@ -140,5 +174,10 @@ test("classifyItem keeps stored categories for items without source sections", (
   assert.deepEqual(classifyItem(legacy, cfg), ["world"]);
   const legacyAi = item({ title: "Модель ChatGPT обновили", categoryIds: ["tech"] });
   assert.deepEqual(classifyItem(legacyAi, cfg), ["tech", "ai"]);
+  // Text-inferred sections stored by an older, broader rule are recomputed.
+  const legacyFalsePositive = item({ title: "Вышел киберпанковый шутер", categoryIds: ["tech", "security", "ai"] });
+  assert.deepEqual(classifyItem(legacyFalsePositive, cfg), ["tech"]);
+  const legacyHealth = item({ title: "Ретрит на Алтае", categoryIds: ["health"] });
+  assert.deepEqual(classifyItem(legacyHealth, cfg), ["health"]);
   assert.deepEqual(classifyItem(item({ title: "Без категорий" }), cfg), []);
 });
