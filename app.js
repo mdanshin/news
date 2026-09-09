@@ -244,6 +244,25 @@ function knownSources() {
   return Array.from(byId.values()).sort((a, b) => a.name.localeCompare(b.name, "ru"));
 }
 
+// A source whose pages the build cannot read (a bot filter, a network
+// block) gives the reader only announcements; the filter says so, so hiding
+// it is an informed choice. Judged on the last days, with enough items.
+const TEXTLESS_WINDOW_MS = 3 * 24 * 60 * 60 * 1000;
+const TEXTLESS_MIN_ITEMS = 5;
+const TEXTLESS_MAX_SHARE = 0.2;
+
+function sourceHasNoText(sourceId) {
+  const cutoff = Date.now() - TEXTLESS_WINDOW_MS;
+  let total = 0;
+  let withText = 0;
+  for (const item of data.items) {
+    if (item.sourceId !== sourceId || Date.parse(item.publishedAt || 0) < cutoff) continue;
+    total += 1;
+    if (item.hasContent) withText += 1;
+  }
+  return total >= TEXTLESS_MIN_ITEMS && withText / total < TEXTLESS_MAX_SHARE;
+}
+
 function isSourceVisible(item) {
   return !item.sourceId || !hiddenSources.has(item.sourceId);
 }
@@ -624,6 +643,13 @@ function renderSources() {
     const name = document.createElement("span");
     name.className = "chip__name";
     name.textContent = source.name;
+    if (sourceHasNoText(source.id)) {
+      const note = document.createElement("span");
+      note.className = "chip__note";
+      note.textContent = "только анонсы";
+      name.appendChild(note);
+      label.title = "Сайт источника не отдаёт текст статей сборщику: в окне чтения будет описание и ссылка";
+    }
     const count = document.createElement("span");
     count.className = "topic-count";
     count.id = `count-src-${source.id}`;

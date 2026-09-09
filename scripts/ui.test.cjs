@@ -216,6 +216,26 @@ test('source filter hides sources, persists, keeps counts honest and can be rest
   assert.deepEqual(ids(ai.document), ['b1', 'legacy']);
 });
 
+test('source filter marks a source whose pages the build cannot read', async (t) => {
+  const news = { generatedAt: '2026-09-09T10:00:00Z', items: [] };
+  const hour = 3600e3;
+  // Delta publishes all day but the build never gets its text; Alpha lost
+  // one page out of six; Gamma has too few items to judge.
+  for (let i = 0; i < 6; i += 1) {
+    news.items.push({ id: `d${i}`, title: `Анонс ${i}`, categoryIds: ['tech'], publishedAt: new Date(Date.now() - i * hour).toISOString(), sourceId: 'd', sourceName: 'Дельта', url: `https://d.example/${i}`, hasContent: i === 0 });
+    news.items.push({ id: `a${i}`, title: `Статья ${i}`, categoryIds: ['tech'], publishedAt: new Date(Date.now() - i * hour).toISOString(), sourceId: 'a', sourceName: 'Альфа', url: `https://a.example/${i}`, hasContent: i !== 0 });
+  }
+  for (let i = 0; i < 3; i += 1) {
+    news.items.push({ id: `g${i}`, title: `Заметка ${i}`, categoryIds: ['tech'], publishedAt: new Date(Date.now() - i * hour).toISOString(), sourceId: 'g', sourceName: 'Гамма', url: `https://g.example/${i}`, hasContent: false });
+  }
+  const { document } = await setup(t, { news });
+  assert.deepEqual([...document.querySelectorAll('#sources .chip__name')].map((node) => node.firstChild.textContent), ['Альфа', 'Гамма', 'Дельта']);
+  assert.deepEqual([...document.querySelectorAll('#sources .chip__note')].map((node) => node.parentNode.firstChild.textContent), ['Дельта']);
+  assert.equal(document.querySelector('#sources .chip__note').textContent, 'только анонсы');
+  assert.match(document.querySelector('label[for="src-d"]').title, /не отдаёт текст/);
+  assert.equal(document.querySelector('label[for="src-a"]').title, '');
+});
+
 test('lead card is the newest illustrated story of the first batch; order is otherwise chronological', async (t) => {
   const news = fixture();
   // Tech items newest first: 30 (no picture), 28, 26 (pictures), 24 (none)...
