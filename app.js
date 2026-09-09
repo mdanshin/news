@@ -1056,7 +1056,7 @@ function renderBoardSkeleton() {
   }
 
   chartGhost();
-  for (const id of ["#boardMacro", "#boardMovers", "#boardFocus"]) {
+  for (const id of ["#boardMacro", "#boardMovers", "#boardFocus", "#boardSession", "#boardWatch"]) {
     const host = $(id);
     if (host) {
       host.replaceChildren();
@@ -1078,7 +1078,7 @@ function renderBoardEmpty(text, retryable) {
     const host = $(id);
     if (host) host.replaceChildren();
   }
-  for (const id of ["#boardMacro", "#boardMovers", "#boardFocus"]) {
+  for (const id of ["#boardMacro", "#boardMovers", "#boardFocus", "#boardSession", "#boardWatch"]) {
     const host = $(id);
     if (host) host.hidden = true;
   }
@@ -1105,6 +1105,9 @@ function renderBoard(parsed, live) {
   renderHeatmap(parsed.stocks);
   renderBoardTable(parsed.stocks);
   renderMovers(parsed.movers);
+  lastBoardSnapshot = parsed;
+  renderWatchlist(parsed);
+  renderSession(parsed.session, live, parsed.generatedAt);
   if (live) {
     updateIndexChart();
     updateMacro();
@@ -1682,13 +1685,28 @@ function showCompanyFocus(stock, trigger) {
   change.textContent = formatChange(stock.change);
   meta.append(`${Number(stock.price).toLocaleString("ru-RU", { maximumFractionDigits: 2 })} ₽ · `, change, ` · оборот ${formatMoney(Number(stock.turnover) || 0)}${stock.sector ? ` · ${stock.sector}` : ""}`);
   titles.append(title, meta);
+  const actions = document.createElement("div");
+  actions.className = "focus__actions";
+  const watch = document.createElement("button");
+  watch.type = "button";
+  watch.className = "focus__watch";
+  const labelWatch = () => {
+    watch.textContent = isWatched(stock.ticker) ? "Убрать из моих бумаг" : "В мои бумаги";
+    watch.setAttribute("aria-pressed", String(isWatched(stock.ticker)));
+  };
+  labelWatch();
+  watch.addEventListener("click", () => {
+    toggleWatched(stock.ticker);
+    labelWatch();
+  });
   const close = document.createElement("button");
   close.type = "button";
   close.className = "focus__close";
   close.textContent = "Закрыть";
   close.setAttribute("aria-label", `Закрыть панель ${stock.name}`);
   close.addEventListener("click", () => hideCompanyFocus(trigger));
-  head.append(titles, close);
+  actions.append(watch, close);
+  head.append(titles, actions);
   host.appendChild(head);
 
   const news = companyNews(stock);
@@ -1721,6 +1739,195 @@ function showCompanyFocus(stock, trigger) {
   if (typeof host.scrollIntoView === "function" && !trigger?.classList.contains("heat__tile")) host.scrollIntoView({ block: "nearest", behavior: "smooth" });
   const closeButton = host.querySelector(".focus__close");
   if (closeButton && !trigger?.classList.contains("heat__tile")) closeButton.focus();
+}
+
+
+/* ── Мои бумаги и статус торгов ──────────────────────────────────────────── */
+
+const WATCHLIST_KEY = "news:watchlist:v1";
+const WATCHLIST_LIMIT = 20;
+/** @type {string[]} */
+let watchlist = [];
+let lastBoardSnapshot = null;
+
+function loadWatchlist() {
+  try {
+    const raw = localStorage.getItem(WATCHLIST_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    watchlist = Array.isArray(parsed) ? parsed.filter((t) => typeof t === "string" && /^[A-Z0-9]{1,12}$/.test(t)).slice(0, WATCHLIST_LIMIT) : [];
+  } catch {
+    watchlist = [];
+  }
+}
+
+function saveWatchlist() {
+  try {
+    localStorage.setItem(WATCHLIST_KEY, JSON.stringify(watchlist));
+  } catch {
+    // Storage may be unavailable; the list still works for this page view.
+  }
+}
+
+/** Quote of a ticker from the snapshot: the full board first, the tiles as a fallback. */
+function quoteFor(snapshot, ticker) {
+  if (!snapshot) return null;
+  const quote = snapshot.quotes && snapshot.quotes[ticker];
+  if (quote) return { ticker, ...quote };
+  const tile = (snapshot.stocks || []).find((s) => s.ticker === ticker);
+  return tile ? { ticker, name: tile.name, price: tile.price, change: tile.change, turnover: tile.turnover, sector: tile.sector } : null;
+}
+
+function isWatched(ticker) {
+  return watchlist.includes(ticker);
+}
+
+function toggleWatched(ticker) {
+  if (isWatched(ticker)) watchlist = watchlist.filter((t) => t !== ticker);
+  else if (watchlist.length < WATCHLIST_LIMIT) watchlist = [...watchlist, ticker];
+  else return false;
+  saveWatchlist();
+  renderWatchlist(lastBoardSnapshot);
+  return true;
+}
+
+/** Chip of one watched share; a missing quote still shows the ticker. */
+function renderWatchItem(snapshot, ticker) {
+  const quote = quoteFor(snapshot, ticker);
+  const item = document.createElement("li");
+  item.className = "watch__item";
+  const open = document.createElement("button");
+  open.type = "button";
+  open.className = "watch__quote";
+  const code = document.createElement("span");
+  code.className = "watch__ticker";
+  code.textContent = ticker;
+  open.appendChild(code);
+  if (quote) {
+    const price = document.createElement("span");
+    price.className = "watch__price";
+    price.textContent = `${Number(quote.price).toLocaleString("ru-RU", { maximumFractionDigits: 2 })} ₽`;
+    const change = document.createElement("span");
+    change.className = `watch__change ${changeClass(quote.change)}`.trim();
+    change.textContent = formatChange(quote.change);
+    open.append(price, change);
+    open.setAttribute("aria-label", `${quote.name}, ${formatChange(quote.change)}, цена ${Number(quote.price).toLocaleString("ru-RU")} ₽. Показать новости компании`);
+    open.addEventListener("click", () => showCompanyFocus(quote, open));
+  } else {
+    const missing = document.createElement("span");
+    missing.className = "watch__missing";
+    missing.textContent = "нет котировки";
+    open.append(missing);
+    open.disabled = true;
+  }
+  const remove = document.createElement("button");
+  remove.type = "button";
+  remove.className = "watch__remove";
+  remove.textContent = "×";
+  remove.setAttribute("aria-label", `Убрать ${ticker} из моих бумаг`);
+  remove.addEventListener("click", () => toggleWatched(ticker));
+  item.append(open, remove);
+  return item;
+}
+
+function renderWatchlist(snapshot) {
+  const host = $("#boardWatch");
+  if (!host) return;
+  host.replaceChildren();
+  host.hidden = false;
+
+  const head = document.createElement("div");
+  head.className = "watch__head";
+  const title = document.createElement("h3");
+  title.className = "watch__title";
+  title.id = "watchTitle";
+  title.textContent = "Мои бумаги";
+  head.appendChild(title);
+
+  const form = document.createElement("form");
+  form.className = "watch__form";
+  form.setAttribute("aria-label", "Добавить бумагу в мой список");
+  const input = document.createElement("input");
+  input.type = "text";
+  input.className = "watch__input";
+  input.placeholder = "Тикер, например SBER";
+  input.autocomplete = "off";
+  input.setAttribute("aria-label", "Тикер");
+  input.setAttribute("list", "watchTickers");
+  input.maxLength = 12;
+  const list = document.createElement("datalist");
+  list.id = "watchTickers";
+  for (const [ticker, quote] of Object.entries((snapshot && snapshot.quotes) || {})) {
+    const option = document.createElement("option");
+    option.value = ticker;
+    option.label = quote.name;
+    list.appendChild(option);
+  }
+  const submit = document.createElement("button");
+  submit.type = "submit";
+  submit.className = "watch__add";
+  submit.textContent = "Добавить";
+  const note = document.createElement("span");
+  note.className = "watch__note";
+  note.setAttribute("role", "status");
+  form.append(input, list, submit, note);
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const ticker = input.value.trim().toUpperCase();
+    if (!ticker) return;
+    if (!quoteFor(lastBoardSnapshot, ticker)) {
+      note.textContent = `Бумаги ${ticker} нет на основном рынке Московской биржи`;
+      return;
+    }
+    if (isWatched(ticker)) {
+      note.textContent = `${ticker} уже в списке`;
+      return;
+    }
+    if (!toggleWatched(ticker)) note.textContent = `В списке не больше ${WATCHLIST_LIMIT} бумаг`;
+  });
+  head.appendChild(form);
+  host.appendChild(head);
+
+  if (watchlist.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "watch__empty";
+    empty.textContent = "Добавьте бумаги, за которыми следите: тикером выше или кнопкой в панели компании. Список хранится на этом устройстве.";
+    host.appendChild(empty);
+    return;
+  }
+  const items = document.createElement("ul");
+  items.className = "watch__list";
+  for (const ticker of watchlist) items.appendChild(renderWatchItem(snapshot, ticker));
+  host.appendChild(items);
+}
+
+function moscowTimeLabel(stamp) {
+  const text = String(stamp || "");
+  const match = text.match(/(\d{2}):(\d{2})(?::\d{2})?$/);
+  return match ? `${match[1]}:${match[2]} мск` : "";
+}
+
+/** Line under the title: whether the exchange is trading and how fresh the numbers are. */
+function renderSession(session, live, generatedAt) {
+  const host = $("#boardSession");
+  if (!host) return;
+  host.replaceChildren();
+  host.classList.remove("is-open", "is-closed");
+  if (!session) {
+    host.hidden = true;
+    return;
+  }
+  host.hidden = false;
+  const open = session.status === "open";
+  host.classList.add(open ? "is-open" : "is-closed");
+  const dot = document.createElement("span");
+  dot.className = "board__sessionDot";
+  dot.setAttribute("aria-hidden", "true");
+  const stamp = moscowTimeLabel(session.time) || (generatedAt ? toAbsTime(generatedAt) : "");
+  const parts = [open ? "Торги идут" : "Торги закрыты"];
+  if (stamp) parts.push(open ? `данные на ${stamp}` : `последние данные ${stamp}`);
+  if (live && open) parts.push("задержка 15 минут");
+  if (!session.fromExchange) parts.push("по расписанию биржи");
+  host.append(dot, parts.join(" · "));
 }
 
 
@@ -2129,6 +2336,7 @@ function init() {
   applyReaderFont();
   loadSelection();
   loadHiddenSources();
+  loadWatchlist();
   renderChips();
   renderSources();
   updateOverview();
