@@ -206,9 +206,15 @@ function safeHttpUrl(value) {
   }
 }
 
+// Mirrors the rule in scripts/classify.mjs: AI in the headline, or at least
+// two mentions across headline and summary. Keep both copies in sync.
+const AI_TERMS =
+  /(?:искусственн(?:ый|ого|ому|ым|ом) интеллект|нейросет|нейронн(?:ая|ые|ой|ую) сет|генеративн(?:ый|ого|ому|ым|ом) ии|машинн(?:ое|ого|ому|ым|ом) обучен|больш(?:ая|ой|ую|ие|их) языков(?:ая|ой|ую|ые|ых) модел|вайб-?кодинг|(?:^|[^а-яёa-z0-9])ии(?:$|[^а-яёa-z0-9])|\bartificial intelligence\b|\bgenerative ai\b|\bmachine learning\b|\bdeep learning\b|\blarge language models?\b|\bllms?\b|\bml\b|\bvibe coding\b|\bchatgpt\b|\bopenai\b|\banthropic\b|\bclaude (?:ai|\d|model)\b|(?:модель|model)\s+claude\b|\bgoogle gemini\b|(?:модель|model)\s+gemini\b|\bgemini (?:ai|\d)\b|\bgpt-?\d|\b(?:qwen|llama|deepseek|mistral|gemma|grok)(?:\d|\b)|\bcopilot\b|\bmidjourney\b|\bstable diffusion\b|\bai[- ]agents?\b)/gi;
+
 function isAiNews(title, excerpt) {
-  const text = `${title || ""} ${excerpt || ""}`.toLowerCase();
-  return /(?:искусственн(?:ый|ого|ому|ым|ом) интеллект|нейросет|нейронн(?:ая|ые|ой|ую) сет|генеративн(?:ый|ого|ому|ым|ом) ии|машинн(?:ое|ого|ому|ым|ом) обучен|больш(?:ая|ой|ую|ие|их) языков(?:ая|ой|ую|ые|ых) модел|(?:^|[^а-яёa-z0-9])ии(?:$|[^а-яёa-z0-9])|\bartificial intelligence\b|\bgenerative ai\b|\bmachine learning\b|\bdeep learning\b|\blarge language models?\b|\bllms?\b|\bchatgpt\b|\bopenai\b|\banthropic\b|\bclaude (?:ai|\d|model)\b|(?:модель|model)\s+claude\b|\bgoogle gemini\b|(?:модель|model)\s+gemini\b|\bgemini (?:ai|\d)\b|\bgpt-?\d)/i.test(text);
+  const head = String(title || "").toLowerCase();
+  if ((head.match(AI_TERMS) || []).length > 0) return true;
+  return ((`${head} ${String(excerpt || "").toLowerCase()}`).match(AI_TERMS) || []).length >= 2;
 }
 
 // Mirrors the two-tier rule in scripts/classify.mjs: unambiguous terms count

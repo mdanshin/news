@@ -72,165 +72,431 @@
     }
   ],
   "defaultCategoryForSource": {
-    "habr": ["tech"],
-    "3dnews": ["tech"],
-    "cnews": ["tech"],
-    "nplus1": ["science"],
-    "xakep": ["security"],
-    "thehackernews": ["security"]
+    "habr": [
+      "tech"
+    ],
+    "3dnews": [
+      "tech"
+    ],
+    "cnews": [
+      "tech"
+    ],
+    "nplus1": [
+      "science"
+    ],
+    "xakep": [
+      "security"
+    ],
+    "thehackernews": [
+      "security"
+    ]
   },
   "categoryMap": {
     "lenta": {
-      "Россия": ["ru"],
-      "Силовые структуры": ["ru"],
-      "Мир": ["world"],
-      "Бывший СССР": ["world"],
-      "Экономика": ["business"],
-      "Наука и техника": ["science", "tech"],
-      "Забота о себе": ["health"],
-      "Спорт": ["sports"],
-      "Культура": ["culture"],
-      "Ценности": ["culture"],
-      "Интернет и СМИ": ["culture"]
+      "Россия": [
+        "ru"
+      ],
+      "Силовые структуры": [
+        "ru"
+      ],
+      "Мир": [
+        "world"
+      ],
+      "Бывший СССР": [
+        "world"
+      ],
+      "Экономика": [
+        "business"
+      ],
+      "Наука и техника": [
+        "science",
+        "tech"
+      ],
+      "Забота о себе": [
+        "health"
+      ],
+      "Спорт": [
+        "sports"
+      ],
+      "Культура": [
+        "culture"
+      ]
     },
     "tass": {
-      "/politika": ["ru"],
-      "/obschestvo": ["ru"],
-      "/proisshestviya": ["ru"],
-      "/armiya-i-opk": ["ru"],
-      "/moskva": ["ru"],
-      "/moskovskaya-oblast": ["ru"],
-      "/novosti-regionov": ["ru"],
-      "/mezhdunarodnaya-panorama": ["world"],
-      "/ekonomika": ["business"],
-      "/nedvizhimost": ["business"],
-      "/nauka": ["science"],
-      "/kosmos": ["science"],
-      "/sport": ["sports"],
-      "/kultura": ["culture"],
-      "В мире": ["world"],
-      "Политика": ["ru"],
-      "Внешняя политика": ["ru"],
-      "Армия и ОПК": ["ru"],
-      "Общество": ["ru"],
-      "Происшествия": ["ru"],
-      "Москва": ["ru"],
-      "Московская область": ["ru"],
-      "Северо-Запад": ["ru"],
-      "Сибирь": ["ru"],
-      "Северный Кавказ": ["ru"],
-      "Новости регионов": ["ru"],
-      "Экономика и бизнес": ["business"],
-      "Недвижимость": ["business"],
-      "Наука": ["science"],
-      "Космос": ["science"],
-      "Спорт": ["sports"],
-      "Культура": ["culture"]
+      "/politika": [
+        "ru"
+      ],
+      "/obschestvo": [
+        "ru"
+      ],
+      "/proisshestviya": [
+        "ru"
+      ],
+      "/armiya-i-opk": [
+        "ru"
+      ],
+      "/moskva": [
+        "ru"
+      ],
+      "/moskovskaya-oblast": [
+        "ru"
+      ],
+      "/novosti-regionov": [
+        "ru"
+      ],
+      "/mezhdunarodnaya-panorama": [
+        "world"
+      ],
+      "/ekonomika": [
+        "business"
+      ],
+      "/nedvizhimost": [
+        "business"
+      ],
+      "/nauka": [
+        "science"
+      ],
+      "/kosmos": [
+        "science"
+      ],
+      "/sport": [
+        "sports"
+      ],
+      "/kultura": [
+        "culture"
+      ],
+      "В мире": [
+        "world"
+      ],
+      "Политика": [
+        "ru"
+      ],
+      "Внешняя политика": [
+        "ru"
+      ],
+      "Армия и ОПК": [
+        "ru"
+      ],
+      "Общество": [
+        "ru"
+      ],
+      "Происшествия": [
+        "ru"
+      ],
+      "Москва": [
+        "ru"
+      ],
+      "Московская область": [
+        "ru"
+      ],
+      "Северо-Запад": [
+        "ru"
+      ],
+      "Сибирь": [
+        "ru"
+      ],
+      "Северный Кавказ": [
+        "ru"
+      ],
+      "Новости регионов": [
+        "ru"
+      ],
+      "Экономика и бизнес": [
+        "business"
+      ],
+      "Недвижимость": [
+        "business"
+      ],
+      "Наука": [
+        "science"
+      ],
+      "Космос": [
+        "science"
+      ],
+      "Спорт": [
+        "sports"
+      ],
+      "Культура": [
+        "culture"
+      ],
+      "/voennaya-operaciya-na-ukraine": [
+        "ru"
+      ]
     },
     "interfax": {
-      "/world": ["world"],
-      "/russia": ["ru"],
-      "/moscow": ["ru"],
-      "/business": ["business"],
-      "/culture": ["culture"],
-      "/sport": ["sports"],
-      "В мире": ["world"],
-      "В России": ["ru"],
-      "Общество": ["ru"],
-      "Происшествия": ["ru"],
-      "Экономика": ["business"],
-      "Спорт": ["sports"],
-      "Культура": ["culture"],
-      "Наука": ["science"],
-      "Технологии": ["tech"],
-      "Здоровье": ["health"]
+      "/world": [
+        "world"
+      ],
+      "/russia": [
+        "ru"
+      ],
+      "/moscow": [
+        "ru"
+      ],
+      "/business": [
+        "business"
+      ],
+      "/culture": [
+        "culture"
+      ],
+      "/sport": [
+        "sports"
+      ],
+      "В мире": [
+        "world"
+      ],
+      "В России": [
+        "ru"
+      ],
+      "Общество": [
+        "ru"
+      ],
+      "Происшествия": [
+        "ru"
+      ],
+      "Экономика": [
+        "business"
+      ],
+      "Спорт": [
+        "sports"
+      ],
+      "Культура": [
+        "culture"
+      ],
+      "Наука": [
+        "science"
+      ],
+      "Технологии": [
+        "tech"
+      ],
+      "Здоровье": [
+        "health"
+      ]
     },
     "kommersant": {
-      "Мир": ["world"],
-      "Политика": ["ru"],
-      "Общество": ["ru"],
-      "Происшествия": ["ru"],
-      "Экономика": ["business"],
-      "Бизнес": ["business"],
-      "Финансы": ["business"],
-      "Спорт": ["sports"],
-      "Культура": ["culture"],
-      "КУЛЬТУРА\\СПОРТ": ["culture", "sports"],
-      "Телекоммуникации": ["tech"],
-      "Hi-Tech": ["tech"],
-      "Наука": ["science"],
-      "Здоровье": ["health"]
+      "Мир": [
+        "world"
+      ],
+      "Политика": [
+        "ru"
+      ],
+      "Общество": [
+        "ru"
+      ],
+      "Происшествия": [
+        "ru"
+      ],
+      "Экономика": [
+        "business"
+      ],
+      "Бизнес": [
+        "business"
+      ],
+      "Финансы": [
+        "business"
+      ],
+      "Спорт": [
+        "sports"
+      ],
+      "Культура": [
+        "culture"
+      ],
+      "КУЛЬТУРА\\СПОРТ": [
+        "culture",
+        "sports"
+      ],
+      "Телекоммуникации": [
+        "tech"
+      ],
+      "Hi-Tech": [
+        "tech"
+      ],
+      "Наука": [
+        "science"
+      ],
+      "Здоровье": [
+        "health"
+      ]
     },
     "rbc": {
-      "/politics": ["ru"],
-      "/society": ["ru"],
-      "/economics": ["business"],
-      "/business": ["business"],
-      "/finances": ["business"],
-      "/technology_and_media": ["tech"],
-      "Политика": ["ru"],
-      "Общество": ["ru"],
-      "Экономика": ["business"],
-      "Бизнес": ["business"],
-      "Финансы": ["business"],
-      "Недвижимость": ["business"],
-      "Свое дело": ["business"],
-      "Технологии и медиа": ["tech"],
-      "Спорт": ["sports"]
+      "/politics": [
+        "ru"
+      ],
+      "/society": [
+        "ru"
+      ],
+      "/economics": [
+        "business"
+      ],
+      "/business": [
+        "business"
+      ],
+      "/finances": [
+        "business"
+      ],
+      "/technology_and_media": [
+        "tech"
+      ],
+      "Политика": [
+        "ru"
+      ],
+      "Общество": [
+        "ru"
+      ],
+      "Экономика": [
+        "business"
+      ],
+      "Бизнес": [
+        "business"
+      ],
+      "Финансы": [
+        "business"
+      ],
+      "Недвижимость": [
+        "business"
+      ],
+      "Свое дело": [
+        "business"
+      ],
+      "Технологии и медиа": [
+        "tech"
+      ],
+      "Спорт": [
+        "sports"
+      ]
     },
     "vedomosti": {
-      "Политика": ["ru"],
-      "Политика / Международные новости": ["world"],
-      "Политика / Международные отношения": ["world"],
-      "Общество": ["ru"],
-      "Экономика": ["business"],
-      "Бизнес": ["business"],
-      "Финансы": ["business"],
-      "Технологии": ["tech"],
-      "Медиа": ["culture"],
-      "Культура": ["culture"],
-      "Спорт": ["sports"]
-    },
-    "habr": {
-      "Информационная безопасность": ["security"],
-      "Искусственный интеллект": ["ai"],
-      "Машинное обучение": ["ai"],
-      "Нейросети": ["ai"],
-      "ИИ": ["ai"],
-      "LLM": ["ai"],
-      "ИИ-агенты": ["ai"],
-      "Natural Language Processing": ["ai"]
+      "Политика": [
+        "ru"
+      ],
+      "Политика / Международные новости": [
+        "world"
+      ],
+      "Политика / Международные отношения": [
+        "world"
+      ],
+      "Общество": [
+        "ru"
+      ],
+      "Экономика": [
+        "business"
+      ],
+      "Бизнес": [
+        "business"
+      ],
+      "Финансы": [
+        "business"
+      ],
+      "Технологии": [
+        "tech"
+      ],
+      "Медиа": [
+        "culture"
+      ],
+      "Культура": [
+        "culture"
+      ],
+      "Спорт": [
+        "sports"
+      ]
     },
     "3dnews": {
-      "вирусы, трояны, уязвимости в ПО, вопросы безопасности": ["security", "tech"],
-      "Искусственный интеллект, машинное обучение, нейросети": ["ai", "tech"]
+      "вирусы, трояны, уязвимости в ПО, вопросы безопасности": [
+        "security",
+        "tech"
+      ],
+      "Искусственный интеллект, машинное обучение, нейросети": [
+        "ai",
+        "tech"
+      ]
     },
     "securitylab": {
-      "Технологии": ["tech"],
-      "Наука": ["science"],
-      "Информация": ["security"],
-      "Отчеты": ["security"],
-      "Уязвимости": ["security"],
-      "Вирусы": ["security"],
-      "Хакеры": ["security"],
-      "Инциденты": ["security"],
-      "Утечки": ["security"],
-      "Мошенничество": ["security"],
-      "Безопасность": ["security"]
+      "Технологии": [
+        "tech"
+      ],
+      "Наука": [
+        "science"
+      ],
+      "Информация": [
+        "tech"
+      ],
+      "Отчеты": [
+        "security"
+      ],
+      "Уязвимости": [
+        "security"
+      ],
+      "Вирусы": [
+        "security"
+      ],
+      "Хакеры": [
+        "security"
+      ],
+      "Инциденты": [
+        "security"
+      ],
+      "Утечки": [
+        "security"
+      ],
+      "Мошенничество": [
+        "security"
+      ],
+      "Безопасность": [
+        "security"
+      ],
+      "Кибератаки": [
+        "security"
+      ],
+      "Кибервойна": [
+        "security"
+      ],
+      "Уязвимости нулевого дня": [
+        "security"
+      ],
+      "Кибершпионаж": [
+        "security"
+      ],
+      "Вредоносное ПО": [
+        "security"
+      ]
     },
     "bleepingcomputer": {
-      "Security": ["security"],
-      "Microsoft": ["tech"],
-      "Software": ["tech"],
-      "Technology": ["tech"],
-      "Hardware": ["tech"],
-      "Google": ["tech"],
-      "Apple": ["tech"],
-      "Linux": ["tech"],
-      "Mobile": ["tech"],
-      "Gaming": ["tech"],
-      "CryptoCurrency": ["tech"],
-      "Artificial Intelligence": ["ai"]
+      "Security": [
+        "security"
+      ],
+      "Microsoft": [
+        "tech"
+      ],
+      "Software": [
+        "tech"
+      ],
+      "Technology": [
+        "tech"
+      ],
+      "Hardware": [
+        "tech"
+      ],
+      "Google": [
+        "tech"
+      ],
+      "Apple": [
+        "tech"
+      ],
+      "Linux": [
+        "tech"
+      ],
+      "Mobile": [
+        "tech"
+      ],
+      "Gaming": [
+        "tech"
+      ],
+      "CryptoCurrency": [
+        "tech"
+      ],
+      "Artificial Intelligence": [
+        "ai"
+      ]
     }
   }
 }

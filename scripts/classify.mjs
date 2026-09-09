@@ -114,15 +114,7 @@ export function inferCategoriesByText(title, excerpt) {
   const t = `${title || ""} ${excerpt || ""}`.toLowerCase();
   const out = new Set();
 
-  // Artificial intelligence. Word boundaries around the Russian abbreviation
-  // are written explicitly because JavaScript's `\b` is ASCII-oriented.
-  if (
-    /(?:искусственн(?:ый|ого|ому|ым|ом) интеллект|нейросет|нейронн(?:ая|ые|ой|ую) сет|генеративн(?:ый|ого|ому|ым|ом) ии|машинн(?:ое|ого|ому|ым|ом) обучен|больш(?:ая|ой|ую|ие|их) языков(?:ая|ой|ую|ые|ых) модел|(?:^|[^а-яёa-z0-9])ии(?:$|[^а-яёa-z0-9])|\bartificial intelligence\b|\bgenerative ai\b|\bmachine learning\b|\bdeep learning\b|\blarge language models?\b|\bllms?\b|\bchatgpt\b|\bopenai\b|\banthropic\b|\bclaude (?:ai|\d|model)\b|(?:модель|model)\s+claude\b|\bgoogle gemini\b|(?:модель|model)\s+gemini\b|\bgemini (?:ai|\d)\b|\bgpt-?\d)/i.test(
-      t,
-    )
-  ) {
-    out.add("ai");
-  }
+  if (isAiText(title, excerpt)) out.add("ai");
 
   // Health / medicine
   if (
@@ -136,6 +128,24 @@ export function inferCategoriesByText(title, excerpt) {
   if (isSecurityText(t)) out.add("security");
 
   return Array.from(out);
+}
+
+// Artificial intelligence. A story is about AI when the headline names it or
+// the headline and summary together mention it at least twice; a single
+// passing mention in the summary ("память для ИИ-серверов") is not enough.
+// Word boundaries around the Russian abbreviation are written explicitly
+// because JavaScript's `\b` is ASCII-oriented.
+const AI_TERMS =
+  /(?:искусственн(?:ый|ого|ому|ым|ом) интеллект|нейросет|нейронн(?:ая|ые|ой|ую) сет|генеративн(?:ый|ого|ому|ым|ом) ии|машинн(?:ое|ого|ому|ым|ом) обучен|больш(?:ая|ой|ую|ие|их) языков(?:ая|ой|ую|ые|ых) модел|вайб-?кодинг|(?:^|[^а-яёa-z0-9])ии(?:$|[^а-яёa-z0-9])|\bartificial intelligence\b|\bgenerative ai\b|\bmachine learning\b|\bdeep learning\b|\blarge language models?\b|\bllms?\b|\bml\b|\bvibe coding\b|\bchatgpt\b|\bopenai\b|\banthropic\b|\bclaude (?:ai|\d|model)\b|(?:модель|model)\s+claude\b|\bgoogle gemini\b|(?:модель|model)\s+gemini\b|\bgemini (?:ai|\d)\b|\bgpt-?\d|\b(?:qwen|llama|deepseek|mistral|gemma|grok)(?:\d|\b)|\bcopilot\b|\bmidjourney\b|\bstable diffusion\b|\bai[- ]agents?\b)/gi;
+
+function countMatches(re, text) {
+  return (text.match(re) || []).length;
+}
+
+function isAiText(title, excerpt) {
+  const head = String(title || "").toLowerCase();
+  if (countMatches(AI_TERMS, head) > 0) return true;
+  return countMatches(AI_TERMS, `${head} ${String(excerpt || "").toLowerCase()}`) >= 2;
 }
 
 // Cyber security. Two tiers: terms that are unambiguous on their own, and
@@ -164,14 +174,12 @@ function isSecurityText(t) {
 export function classifyItem(item, cfg) {
   const fromSource = Array.isArray(item.sourceCategories)
     ? mapCategories(item.sourceId, item.sourceCategories, item.url, cfg)
-    : // Legacy snapshot: the stored list mixes rubric-mapped sections with
-      // text-inferred ones. The inferred-only sections are dropped and
-      // recomputed with the current rules so old false positives do not
-      // linger for the life of the history.
-      toArray(item.categoryIds).filter((id) => isKnownCategory(id) && !INFERRED_ONLY.has(id));
+    : // Legacy snapshot without the feed rubrics: the stored sections were
+      // produced by older, looser rules and are not trusted. What can still
+      // be derived from the URL section and the source default is used;
+      // an item that has neither ends up with text-inferred sections only
+      // (or none, and is then dropped from the feed).
+      mapCategories(item.sourceId, [], item.url, cfg);
   const inferred = inferCategoriesByText(item.title, item.excerpt);
   return Array.from(new Set([...fromSource, ...inferred]));
 }
-
-// Sections that legacy snapshots could only have obtained from text rules.
-const INFERRED_ONLY = new Set(["ai", "security"]);
