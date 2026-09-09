@@ -41,7 +41,7 @@ async function setup(t, { news = fixture(), saved, savedTheme, hidden, systemDar
   };
   window.matchMedia = () => media;
   const state = {
-    news, fail, calls: [], deferred: null, intersect: null,
+    news, fail, calls: [], deferred: null, intersect: null, articles: {},
     setSystemDark(value) {
       media.matches = value;
       themeListeners.forEach((listener) => listener({ matches: value }));
@@ -54,6 +54,11 @@ async function setup(t, { news = fixture(), saved, savedTheme, hidden, systemDar
     state.calls.push(url);
     if (state.deferred) await state.deferred;
     if (state.fail) throw new Error('Offline');
+    if (url.startsWith('data/articles/')) {
+      const article = state.articles[decodeURIComponent(url.slice('data/articles/'.length, -'.json'.length))];
+      if (!article) return { ok: false, status: 404, json: async () => ({}) };
+      return { ok: true, json: async () => structuredClone(article) };
+    }
     return { ok: true, json: async () => structuredClone(state.news) };
   };
   if (observer) window.IntersectionObserver = class {
@@ -92,7 +97,7 @@ test('real snapshot: selection, combined topics, chronological batches and sourc
   assert.equal(new Set(rendered).size, rendered.length);
   assert.deepEqual(rendered, all.slice(0, rendered.length).map((item) => item.id));
   assert.match(document.querySelector('#resultCount').textContent.replace(/\s/g, ''), new RegExp(`^${all.length}`));
-  assert.ok(state.calls.every((url) => url.startsWith('data/news.json?')));
+  assert.ok(state.calls.every((url) => url === 'data/news.json'));
 });
 
 test('theme follows the system until a manual choice is saved', async (t) => {
@@ -234,6 +239,66 @@ test('reader opens from a real button, traps focus, closes through its icon and 
   opener.click();
   window.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape' }));
   assert.equal(document.activeElement, opener);
+});
+
+test('reader fetches article text on demand, caches it, and survives a missing file', async (t) => {
+  const news = fixture();
+  // The default feed shows the «tech» items, i.e. the even indexes, newest first.
+  const [first, second, third] = ['article-30', 'article-28', 'article-26'].map((id) => news.items.find((item) => item.id === id));
+  first.contentHtml = '';
+  first.hasContent = true;
+  second.contentHtml = '';
+  second.hasContent = true;
+  third.contentHtml = '';
+  third.hasContent = false;
+  const { document, state } = await setup(t, { news });
+  state.articles[first.id] = { contentHtml: '<h2>Из файла</h2><p>Полный текст</p><script>alert(1)</script>', contentTruncated: true };
+  const openers = [...document.querySelectorAll('.card__title button')];
+  const body = document.querySelector('#modalBody');
+  assert.equal(state.calls.length, 1);
+
+  openers[0].click();
+  assert.match(body.textContent, /Загружаем полный текст/);
+  assert.match(body.textContent, /Краткое описание/);
+  await tick();
+  await tick();
+  assert.match(body.textContent, /Из файла/);
+  assert.match(body.textContent, /сокращённая версия/);
+  assert.equal(body.querySelector('script'), null);
+  assert.deepEqual(state.calls.slice(1), [`data/articles/${first.id}.json`]);
+
+  document.querySelector('#modalClose').click();
+  openers[0].click();
+  assert.match(body.textContent, /Из файла/);
+  assert.equal(state.calls.length, 2);
+
+  document.querySelector('#modalClose').click();
+  openers[1].click();
+  await tick();
+  await tick();
+  assert.match(body.textContent, /Не удалось загрузить текст/);
+  assert.match(body.textContent, /доступен в источнике/);
+  assert.equal(state.calls.length, 3);
+
+  document.querySelector('#modalClose').click();
+  openers[2].click();
+  await tick();
+  assert.match(body.textContent, /Полный текст этой публикации доступен в источнике/);
+  assert.equal(state.calls.length, 3);
+
+  // A late response for a previous story must not overwrite the current one.
+  let release;
+  state.deferred = new Promise((done) => { release = done; });
+  state.articles[second.id] = { contentHtml: '<p>Поздний ответ</p>' };
+  document.querySelector('#modalClose').click();
+  openers[1].click();
+  document.querySelector('#modalClose').click();
+  openers[2].click();
+  release();
+  state.deferred = null;
+  await tick();
+  await tick();
+  assert.doesNotMatch(body.textContent, /Поздний ответ/);
 });
 
 test('failed initial request is retryable; failed or unchanged refresh keeps visible articles', async (t) => {

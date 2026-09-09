@@ -36,7 +36,7 @@ jobs:
 
       - name: Commit data
         run: |
-          git add data/news.json
+          git add -A data/news.json data/articles
           if git diff --cached --quiet; then
             echo "No changes"
             exit 0

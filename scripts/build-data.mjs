@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 
@@ -9,7 +10,15 @@ import { classifyItem, isKnownCategory } from "./classify.mjs";
 
 const ROOT = process.cwd();
 const FEEDS_PATH = path.join(ROOT, "data", "feeds.json");
+// The snapshot is split in two: `news.json` is the index the feed loads on
+// every visit (cards only), and `articles/<id>.json` holds the reader text of
+// one item, fetched only when that item is opened.
 const OUT_PATH = path.join(ROOT, "data", "news.json");
+const ARTICLES_DIR = path.join(ROOT, "data", "articles");
+
+// Card summaries longer than this are shortened in the index; the full
+// summary then lives in the article file so nothing is lost for reading.
+const EXCERPT_MAX_CHARS = 500;
 
 const MAX_ITEMS_PER_SOURCE = 120;
 const ARTICLE_FETCH_LIMIT = 120; // total pages to parse (keeps runtime bounded)
@@ -202,8 +211,39 @@ function parseFeedItems(obj) {
   });
 }
 
-function buildId(sourceId, url, publishedAt, title) {
-  return `${sourceId}:${url || ""}:${publishedAt || ""}:${(title || "").slice(0, 40)}`;
+// Items are unique by URL, so the id is a short digest of it. It doubles as
+// the article file name.
+function itemId(url) {
+  return createHash("sha1").update(String(url || "")).digest("hex").slice(0, 16);
+}
+
+function trimExcerpt(text) {
+  const t = (text || "").trim();
+  if (t.length <= EXCERPT_MAX_CHARS) return t;
+  const cut = t.slice(0, EXCERPT_MAX_CHARS);
+  const at = cut.lastIndexOf(" ");
+  const head = at > EXCERPT_MAX_CHARS / 2 ? cut.slice(0, at) : cut;
+  return `${head.replace(/[\s,;:—–-]+$/u, "")}…`;
+}
+
+async function readStoredArticle(id) {
+  try {
+    const parsed = JSON.parse(await fs.readFile(path.join(ARTICLES_DIR, `${id}.json`), "utf8"));
+    if (typeof parsed?.contentHtml !== "string" || !parsed.contentHtml) return null;
+    return { contentHtml: parsed.contentHtml, contentTruncated: Boolean(parsed.contentTruncated) };
+  } catch {
+    return null;
+  }
+}
+
+// Reader text of an item from a previous snapshot: inline in old snapshots,
+// in a separate article file in new ones.
+async function storedContent(raw, url) {
+  if (typeof raw.contentHtml === "string" && raw.contentHtml) {
+    return { contentHtml: raw.contentHtml, contentTruncated: Boolean(raw.contentTruncated) };
+  }
+  if (raw.hasContent) return readStoredArticle(itemId(url));
+  return null;
 }
 
 function uniqueStrings(values) {
@@ -440,7 +480,7 @@ async function main() {
       const excerpt = stripHtmlToText(descHtml);
 
       const item = {
-        id: buildId(source.id, url, publishedAt, title),
+        id: itemId(url),
         sourceId: source.id,
         sourceName: source.name,
         title,
@@ -489,9 +529,13 @@ async function main() {
       const url = typeof raw?.url === "string" ? raw.url : "";
       if (!url) continue;
       const existing = byUrl.get(url);
+      const stored = await storedContent(raw, url);
       if (existing) {
         // Prefer richer fields if the new run didn't get them.
-        if (!existing.contentHtml && typeof raw.contentHtml === "string") existing.contentHtml = raw.contentHtml;
+        if (!existing.contentHtml && stored) {
+          existing.contentHtml = stored.contentHtml;
+          existing.contentTruncated = stored.contentTruncated;
+        }
         if ((!existing.excerpt || existing.excerpt.length < 40) && typeof raw.excerpt === "string") existing.excerpt = raw.excerpt;
         if (!existing.image && typeof raw.image === "string") existing.image = raw.image;
         if (!existing.publishedAt && typeof raw.publishedAt === "string") existing.publishedAt = raw.publishedAt;
@@ -500,7 +544,7 @@ async function main() {
       } else {
         // Carry forward an older item.
         const carried = {
-          id: typeof raw.id === "string" ? raw.id : buildId(String(raw.sourceId || ""), url, String(raw.publishedAt || ""), String(raw.title || "")),
+          id: itemId(url),
           sourceId: typeof raw.sourceId === "string" ? raw.sourceId : "",
           sourceName: typeof raw.sourceName === "string" ? raw.sourceName : "",
           title: typeof raw.title === "string" ? raw.title : "",
@@ -509,7 +553,8 @@ async function main() {
           categoryIds: Array.isArray(raw.categoryIds) ? raw.categoryIds.filter(isKnownCategory) : [],
           image: typeof raw.image === "string" ? raw.image : "",
           excerpt: typeof raw.excerpt === "string" ? raw.excerpt : "",
-          contentHtml: typeof raw.contentHtml === "string" ? raw.contentHtml : ""
+          contentHtml: stored ? stored.contentHtml : "",
+          contentTruncated: stored ? stored.contentTruncated : false
         };
         // Snapshots written before sections were stored have no
         // `sourceCategories`; such items keep their stored categories.
@@ -586,11 +631,58 @@ async function main() {
   // classification once more before writing the snapshot.
   items = reclassify(items, cfg);
 
-  const out = {
-    generatedAt: new Date().toISOString(),
-    items: items.map(redactItemSensitiveContent)
-  };
+  await writeSnapshot(items);
+}
 
+// Write the index and one article file per item with reader text, and
+// remove article files that no longer belong to any item.
+async function writeSnapshot(items) {
+  /** @type {Map<string, {contentHtml: string, contentTruncated: boolean}>} */
+  const articles = new Map();
+  const index = [];
+
+  for (const raw of items) {
+    const item = redactItemSensitiveContent(raw);
+    const excerpt = typeof item.excerpt === "string" ? item.excerpt.trim() : "";
+    let contentHtml = typeof item.contentHtml === "string" ? item.contentHtml : "";
+    // A long summary is the whole text for items without an article; keep
+    // it readable in full through the article file.
+    if (!contentHtml && excerpt.length > EXCERPT_MAX_CHARS) contentHtml = `<p>${escapeHtml(excerpt)}</p>`;
+    if (contentHtml) articles.set(item.id, { contentHtml, contentTruncated: Boolean(item.contentTruncated) });
+
+    index.push({
+      id: item.id,
+      sourceId: item.sourceId,
+      sourceName: item.sourceName,
+      title: item.title,
+      url: item.url,
+      publishedAt: item.publishedAt,
+      ...(Array.isArray(item.sourceCategories) ? { sourceCategories: item.sourceCategories } : {}),
+      categoryIds: item.categoryIds,
+      image: item.image,
+      excerpt: trimExcerpt(excerpt),
+      hasContent: Boolean(contentHtml)
+    });
+  }
+
+  await fs.mkdir(ARTICLES_DIR, { recursive: true });
+  for (const [id, article] of articles) {
+    const file = path.join(ARTICLES_DIR, `${id}.json`);
+    const body = JSON.stringify(article) + "\n";
+    let current = "";
+    try {
+      current = await fs.readFile(file, "utf8");
+    } catch {
+      // new article
+    }
+    if (current !== body) await fs.writeFile(file, body, "utf8");
+  }
+  for (const name of await fs.readdir(ARTICLES_DIR)) {
+    if (!name.endsWith(".json")) continue;
+    if (!articles.has(name.slice(0, -".json".length))) await fs.unlink(path.join(ARTICLES_DIR, name));
+  }
+
+  const out = { generatedAt: new Date().toISOString(), items: index };
   await fs.writeFile(OUT_PATH, JSON.stringify(out, null, 2) + "\n", "utf8");
 }
 

@@ -40,6 +40,8 @@ const TOPIC_ICONS = {
 };
 
 const DATA_URL = "data/news.json";
+// Reader text lives in one small file per item and is fetched on demand.
+const ARTICLES_URL = "data/articles/";
 const BATCH_SIZE = 12;
 const STORAGE_KEY = "news:selectedCats:v2";
 // Sources are stored as an exclusion list so that a source added later is
@@ -108,6 +110,12 @@ let loadError = false;
 let stateActionMode = "all";
 
 let readerFontPx = READER_FONT_DEFAULT;
+
+/** Loaded article texts by item id. @type {Map<string, {contentHtml: string, contentTruncated: boolean}>} */
+const articleCache = new Map();
+// Incremented on every open so a late article response for a previous
+// story is ignored.
+let modalOpenToken = 0;
 
 let endPollTimer = 0;
 
@@ -681,7 +689,9 @@ function normalizeItem(it) {
   const sourceId = typeof it.sourceId === "string" && it.sourceId ? it.sourceId : sourceName;
   const contentHtml = typeof it.contentHtml === "string" ? it.contentHtml : "";
   const contentTruncated = Boolean(it.contentTruncated);
-  const contentMeta = it && typeof it.contentMeta === "object" ? it.contentMeta : null;
+  // Old snapshots carry the text inline; new ones only flag that an article
+  // file exists.
+  const hasContent = Boolean(contentHtml) || Boolean(it.hasContent);
   const id = typeof it.id === "string" ? it.id : `${url}:${publishedAt}`;
   const categoryIds = new Set(Array.isArray(it.categoryIds) ? it.categoryIds.filter((x) => typeof x === "string") : []);
   if (isAiNews(title, excerpt)) categoryIds.add("ai");
@@ -699,7 +709,7 @@ function normalizeItem(it) {
     categoryIds: Array.from(categoryIds),
     contentHtml,
     contentTruncated,
-    contentMeta
+    hasContent
   };
 }
 
@@ -829,22 +839,64 @@ function renderCard(item, index) {
   return card;
 }
 
+async function loadArticle(item) {
+  if (item.contentHtml) return { contentHtml: item.contentHtml, contentTruncated: item.contentTruncated };
+  const cached = articleCache.get(item.id);
+  if (cached) return cached;
+  const response = await fetch(`${ARTICLES_URL}${encodeURIComponent(item.id)}.json`);
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const parsed = await response.json();
+  if (!parsed || typeof parsed.contentHtml !== "string" || !parsed.contentHtml) throw new Error("Invalid article data");
+  const article = { contentHtml: parsed.contentHtml, contentTruncated: Boolean(parsed.contentTruncated) };
+  articleCache.set(item.id, article);
+  return article;
+}
+
+function renderModalBody(item, article, state) {
+  const fallback = item.excerpt ? `<p>${escapeHtml(item.excerpt)}</p>` : "";
+  let html = "";
+  if (article) {
+    const note = article.contentTruncated ? '<p class="reader-note">Это сокращённая версия. Полный материал доступен в источнике.</p>' : "";
+    html = `${note}${sanitizeHtml(article.contentHtml)}`;
+  } else if (state === "loading") {
+    html = `${fallback}<p class="reader-note">Загружаем полный текст…</p>`;
+  } else if (state === "error") {
+    html = `${fallback}<p class="reader-note">Не удалось загрузить текст. ${item.url ? "Полный материал доступен в источнике." : "Попробуйте ещё раз позже."}</p>`;
+  } else {
+    const missingText = item.url ? "Полный текст этой публикации доступен в источнике." : "Текст этой публикации пока недоступен.";
+    html = `${fallback}<p class="reader-note">${missingText}</p>`;
+  }
+  elModalBody.innerHTML = html;
+  highlightModalCode();
+}
+
 function openModal(id, trigger = document.activeElement) {
   const item = filtered.find((entry) => entry.id === id) || data.items.find((entry) => entry.id === id);
   if (!item) return;
   if (!elModal.classList.contains("isOpen")) lastFocusedElement = trigger;
+  const token = ++modalOpenToken;
   elModalTitle.textContent = item.title || "Без заголовка";
   const category = categoryById(item.categoryIds.find((value) => selected.has(value)) || item.categoryIds[0]);
   elModalMeta.textContent = [category?.name, item.sourceName, toAbsTime(item.publishedAt)].filter(Boolean).join(" · ");
   elModalLink.hidden = !item.url;
   if (item.url) elModalLink.href = item.url;
   else elModalLink.removeAttribute("href");
-  const html = item.contentHtml ? sanitizeHtml(item.contentHtml) : "";
-  const fallback = item.excerpt ? `<p>${escapeHtml(item.excerpt)}</p>` : "";
-  const note = item.contentTruncated ? '<p class="reader-note">Это сокращённая версия. Полный материал доступен в источнике.</p>' : "";
-  const missingText = item.url ? "Полный текст этой публикации доступен в источнике." : "Текст этой публикации пока недоступен.";
-  elModalBody.innerHTML = html ? `${note}${html}` : `${fallback}<p class="reader-note">${missingText}</p>`;
-  highlightModalCode();
+  const ready = item.contentHtml ? { contentHtml: item.contentHtml, contentTruncated: item.contentTruncated } : articleCache.get(item.id);
+  if (ready) {
+    renderModalBody(item, ready);
+  } else if (item.hasContent) {
+    renderModalBody(item, null, "loading");
+    loadArticle(item).then(
+      (article) => {
+        if (token === modalOpenToken && elModal.classList.contains("isOpen")) renderModalBody(item, article);
+      },
+      () => {
+        if (token === modalOpenToken && elModal.classList.contains("isOpen")) renderModalBody(item, null, "error");
+      },
+    );
+  } else {
+    renderModalBody(item, null, "missing");
+  }
   elModal.classList.add("isOpen");
   elModal.setAttribute("aria-hidden", "false");
   elPageShell.inert = true;
@@ -1018,7 +1070,10 @@ async function refreshData(reason) {
         rebuildFailed = true;
       }
     }
-    const response = await fetch(`${DATA_URL}?t=${Date.now()}`, { cache: "no-store" });
+    // "no-cache" always revalidates with the server, which answers
+    // "not modified" without a body when the snapshot is unchanged. A
+    // cache-busting query string would defeat that.
+    const response = await fetch(DATA_URL, { cache: "no-cache" });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const next = await response.json();
     if (!next || !Array.isArray(next.items)) throw new Error("Invalid news data");
