@@ -60,7 +60,8 @@ async function setup(t, { news = fixture(), saved, savedTheme, hidden, moex = nu
       // request, and null an HTTP refusal that should not be retried.
       if (state.iss === 'network') throw new TypeError('Failed to fetch');
       if (!state.iss) return { ok: false, status: 403, json: async () => ({}) };
-      const block = url.includes('/markets/index/') ? state.iss.indices : state.iss.shares;
+      const block = issBlock(state.iss, url);
+      if (!block) return { ok: false, status: 404, json: async () => ({}) };
       return { ok: true, json: async () => structuredClone(block) };
     }
     if (url === 'data/moex.json') {
@@ -83,6 +84,19 @@ async function setup(t, { news = fixture(), saved, savedTheme, hidden, moex = nu
   window.eval(script);
   await tick();
   return { window, document: window.document, state };
+}
+
+/** Which fixture answers an ISS URL: the board, candles of an interval, a currency board, a contract. */
+function issBlock(iss, url) {
+  const { pathname, searchParams } = new URL(url);
+  if (pathname.includes('/candles')) return (iss.candles || {})[searchParams.get('interval')] || null;
+  if (pathname.includes('/markets/shares/')) return iss.shares || null;
+  if (pathname.includes('/boards/FIXI/')) return iss.fixing || null;
+  if (pathname.includes('/markets/index/')) return iss.indices || null;
+  if (pathname.includes('/markets/selt/')) return iss.currency || null;
+  const contract = pathname.match(/\/forts\/securities\/([A-Z0-9]+)/);
+  if (contract) return (iss.futures || {})[contract[1]] || null;
+  return null;
 }
 
 function ids(document) {
@@ -274,10 +288,56 @@ function issFixture() {
       }
     },
     indices: {
-      securities: { columns: ['SECID', 'SHORTNAME'], data: [['IMOEX', 'Индекс МосБиржи'], ['RTSI', 'Индекс РТС']] },
-      marketdata: { columns: ['SECID', 'CURRENTVALUE', 'LASTCHANGEPRC'], data: [['RTSI', 1100.2, 0.5], ['IMOEX', 2841.55, -0.34], ['MCXSM', 1, 1]] }
+      securities: { columns: ['SECID', 'SHORTNAME'], data: [['IMOEX', 'Индекс МосБиржи'], ['RTSI', 'Индекс РТС'], ['RGBI', 'Индекс гособлигаций']] },
+      marketdata: { columns: ['SECID', 'CURRENTVALUE', 'LASTCHANGEPRC'], data: [['RTSI', 1100.2, 0.5], ['IMOEX', 2841.55, -0.34], ['MCXSM', 1, 1], ['RGBI', 112.4, 0.12]] }
+    },
+    candles: {
+      10: {
+        candles: {
+          columns: ['begin', 'end', 'open', 'close', 'high', 'low'],
+          data: [
+            ['2026-09-08 18:30:00', '2026-09-08 18:39:59', 2850, 2851.2, 2852, 2849],
+            ['2026-09-09 10:00:00', '2026-09-09 10:09:59', 2851, 2848, 2852, 2847],
+            ['2026-09-09 10:10:00', '2026-09-09 10:19:59', 2848, 2836.4, 2849, 2835],
+            ['2026-09-09 10:20:00', '2026-09-09 10:29:59', 2836.4, 2844, 2845, 2836],
+            ['2026-09-09 18:40:00', '2026-09-09 18:49:59', 2844, 2841.55, 2846, 2840]
+          ]
+        }
+      },
+      24: {
+        candles: {
+          columns: ['begin', 'end', 'open', 'close', 'high', 'low'],
+          data: Array.from({ length: 20 }, (_, i) => [`2026-08-${String(10 + i).padStart(2, '0')} 00:00:00`, '', 2700 + i * 5, 2700 + i * 7, 2760, 2690])
+        }
+      }
+    },
+    currency: {
+      securities: { columns: ['SECID', 'SHORTNAME', 'PREVPRICE'], data: [['CNYRUB_TOM', 'CNYRUB_TOM', 11.5]] },
+      marketdata: { columns: ['SECID', 'LAST', 'LASTTOPREVPRICE'], data: [['CNYRUB_TOM', 11.62, 1.04]] }
+    },
+    fixing: {
+      securities: { columns: ['SECID', 'SHORTNAME', 'PREVPRICE'], data: [['USDFIX', 'USD/RUB fixing', 82.1]] },
+      marketdata: { columns: ['SECID', 'CURRENTVALUE'], data: [['USDFIX', 83.3]] }
+    },
+    futures: {
+      BRV6: {
+        securities: { columns: ['SECID', 'SHORTNAME', 'PREVSETTLEPRICE'], data: [['BRV6', 'BR-10.26', 100.5]] },
+        marketdata: { columns: ['SECID', 'LAST', 'VALTODAY', 'LASTTOPREVPRICE'], data: [['BRV6', 101.2, 5e9, 0.7]] }
+      }
     }
   };
+}
+
+/** Feed where a few stories name listed companies. */
+function companyNewsFixture() {
+  const news = fixture();
+  for (const item of news.items) item.categoryIds = ['markets', 'business'];
+  news.items[0].title = 'Сбер повысил ставки по вкладам';
+  news.items[1].title = 'Сберегательные сертификаты возвращаются';
+  news.items[2].title = 'Газпром нефть увеличила добычу';
+  news.items[3].title = '«Газпром» подписал контракт с Китаем';
+  news.items[4].excerpt = 'Аналитики Сбербанка ждут снижения ставки.';
+  return news;
 }
 
 /** No network in jsdom: fail the JSONP script tags the page injected. */
@@ -356,8 +416,76 @@ test('market board falls back to JSONP when the plain request to the exchange is
   assert.equal(document.querySelectorAll('#boardHeat .heat__ghost').length, 0, 'скелетон ушёл вместе с ответом');
   assert.equal(board.classList.contains('board--loading'), false);
   assert.equal(board.getAttribute('aria-busy'), 'false');
-  assert.equal(document.head.querySelectorAll('script[src*="iss.moex.com"]').length, 0, 'временные script убраны');
+  const pending = [...document.head.querySelectorAll('script[src*="iss.moex.com"]')].map((node) => new URL(node.src).pathname);
+  assert.ok(pending.every((path) => !path.includes('/markets/shares/') && !path.endsWith('/SNDX/securities.jsonp')), 'временные script котировок убраны');
+  // Once the plain request is known to be blocked, the follow-up requests
+  // (candles, currencies) go straight through script tags.
+  assert.ok(pending.some((path) => path.includes('/candles')), 'свечи запрошены через JSONP без повторной прямой попытки');
+  assert.equal(state.calls.filter((url) => url.includes('/candles')).length, 0);
   assert.ok(!state.calls.includes('data/moex.json'));
+});
+
+test('index chart, macro strip, movers and company news round out the stock section', async (t) => {
+  const { document, state } = await setup(t, { news: companyNewsFixture(), saved: ['markets'], iss: issFixture() });
+  await tick();
+  await tick();
+  await tick();
+
+  // Chart of the last session: five candles of the week fixture, four of them today.
+  const line = document.querySelector('#boardChart svg .chart__line');
+  assert.ok(line, 'линия графика нарисована');
+  assert.equal((line.getAttribute('d').match(/[ML]/g) || []).length, 4, 'на графике только последняя сессия');
+  assert.ok(document.querySelector('#boardChart svg').classList.contains('is-down'), 'цвет по изменению к закрытию прошлой сессии');
+  assert.match(document.querySelector('#boardChartStats').textContent, /2\s841,55.*−0,34%.*мин\.\s2\s836,4/);
+  assert.deepEqual([...document.querySelectorAll('#boardChartAxis span')].map((n) => n.textContent), ['10:00', '18:40']);
+  assert.match(document.querySelector('#boardChart').getAttribute('aria-label'), /Индекс МосБиржи, день: от 2\s848 до 2\s841,55, −0,34%/);
+  const ranges = [...document.querySelectorAll('#boardRanges .chart__range')];
+  assert.deepEqual(ranges.map((n) => n.textContent), ['День', 'Неделя', 'Месяц', 'С начала года']);
+  assert.equal(ranges[0].getAttribute('aria-pressed'), 'true');
+
+  ranges[2].click();
+  await tick();
+  await tick();
+  assert.equal(ranges[2].getAttribute('aria-pressed'), 'true');
+  assert.equal(ranges[0].getAttribute('aria-pressed'), 'false');
+  assert.ok(state.calls.some((url) => url.includes('/candles') && url.includes('interval=24')), 'месяц запрашивает дневные свечи');
+  assert.equal((document.querySelector('#boardChart svg .chart__line').getAttribute('d').match(/[ML]/g) || []).length, 20);
+  assert.ok(document.querySelector('#boardChart svg').classList.contains('is-up'));
+
+  // Macro strip: whatever answered, in a fixed order; the euro did not.
+  const macro = [...document.querySelectorAll('#boardMacro .macro__row')].map((row) => row.querySelector('.macro__name').textContent);
+  assert.deepEqual(macro, ['Гособлигации RGBI', 'Юань', 'Доллар (фиксинг)', 'Нефть Brent']);
+  assert.match(document.querySelector('#boardMacro').textContent, /11,62 ₽.*\+1,04%/);
+  assert.match(document.querySelector('#boardMacro').textContent, /101,2 \$.*\+0,70%/);
+
+  // Movers come from the liquid names of the board.
+  const titles = [...document.querySelectorAll('#boardMovers .movers__title')].map((n) => n.textContent);
+  assert.deepEqual(titles, ['Рост дня', 'Падение дня', 'Оборот дня']);
+  const columns = [...document.querySelectorAll('#boardMovers .movers__col')];
+  assert.deepEqual([...columns[0].querySelectorAll('.movers__ticker')].map((n) => n.textContent), ['SBER', 'LKOH']);
+  assert.deepEqual([...columns[1].querySelectorAll('.movers__ticker')].map((n) => n.textContent), ['GAZP']);
+  assert.equal(columns[2].querySelector('.movers__ticker').textContent, 'SBER');
+
+  // A tile opens the company panel with the feed's stories about it, and
+  // "Сберегательные" is not "Сбер".
+  const tile = [...document.querySelectorAll('#boardHeat .heat__tile')].find((node) => node.dataset.ticker === 'SBER');
+  tile.click();
+  const focus = document.querySelector('#boardFocus');
+  assert.equal(focus.hidden, false);
+  assert.equal(tile.getAttribute('aria-pressed'), 'true');
+  assert.match(focus.querySelector('.focus__title').textContent, /Сбербанк · SBER/);
+  assert.deepEqual([...focus.querySelectorAll('.focus__itemTitle')].map((n) => n.textContent), ['Сбер повысил ставки по вкладам', 'Публикация 27']);
+  focus.querySelector('.focus__item').click();
+  assert.equal(document.querySelector('#modal').getAttribute('aria-hidden'), 'false');
+  assert.equal(document.querySelector('#modalTitle').textContent, 'Сбер повысил ставки по вкладам');
+  document.querySelector('#modalClose').click();
+
+  // Gazprom is not Gazprom Neft.
+  [...document.querySelectorAll('#boardMovers .movers__row')].find((row) => row.dataset.ticker === 'GAZP').click();
+  assert.deepEqual([...focus.querySelectorAll('.focus__itemTitle')].map((n) => n.textContent), ['«Газпром» подписал контракт с Китаем']);
+  assert.equal(tile.hasAttribute('aria-pressed'), false);
+  focus.querySelector('.focus__close').click();
+  assert.equal(focus.hidden, true);
 });
 
 test('market board shows the committed snapshot when the exchange refuses, and says so', async (t) => {
@@ -387,7 +515,7 @@ test('market board explains itself when no quotes are available at all', async (
   assert.ok(board.classList.contains('board--empty'));
   const meta = document.querySelector('#boardMeta');
   // The notice names what every path answered, so a reader can report it.
-  assert.match(meta.textContent, /недоступны \(прямой запрос: HTTP 403; JSONP: Скрипт не загрузился; резерв: HTTP 404\)/);
+  assert.match(meta.textContent, /недоступны \(прямой запрос: HTTP 403; резерв: HTTP 404\)/);
   assert.equal(document.querySelectorAll('#boardHeat .heat__tile').length, 0);
   assert.equal(document.querySelectorAll('#marketBoard .ghost').length, 0, 'скелетон не остаётся под сообщением');
   assert.ok(ids(document).length > 0, 'лента продолжает работать без биржевых данных');
