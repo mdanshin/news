@@ -9,7 +9,7 @@ const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const aiHtml = fs.readFileSync(path.join(root, 'ai.html'), 'utf8');
 const script = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
 const snapshot = JSON.parse(fs.readFileSync(path.join(root, 'data/news.json'), 'utf8'));
-const categoryIds = ['world', 'ru', 'business', 'tech', 'ai', 'security', 'science', 'health', 'sports', 'culture'];
+const categoryIds = ['world', 'ru', 'business', 'markets', 'tech', 'ai', 'security', 'science', 'health', 'sports', 'culture'];
 const tick = () => new Promise((resolve) => setImmediate(resolve));
 
 function fixture() {
