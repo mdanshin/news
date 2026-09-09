@@ -5,6 +5,8 @@ import { XMLParser } from "fast-xml-parser";
 import { JSDOM } from "jsdom";
 import { Readability } from "@mozilla/readability";
 
+import { classifyItem, isKnownCategory } from "./classify.mjs";
+
 const ROOT = process.cwd();
 const FEEDS_PATH = path.join(ROOT, "data", "feeds.json");
 const OUT_PATH = path.join(ROOT, "data", "news.json");
@@ -88,18 +90,6 @@ const AUTH_HEADER_PATTERN = /(\bAuthorization\s*[:=]\s*["']?(?:Bearer|Basic)\s+)
 const SENSITIVE_QUERY_PATTERN = /([?&](?:access_token|refresh_token|token|api_key|apikey|key|signature|x-amz-signature|x-amz-credential|awsaccesskeyid)=)(?!\[REDACTED_)[^&#\s"'<>]{8,}/gi;
 const SENSITIVE_ASSIGNMENT_PATTERN = /(\b(?:password|passwd|pwd|secret|token|api[_-]?key|client[_-]?secret|access[_-]?token|refresh[_-]?token|jwt[_-]?secret|private[_-]?key)\b\s*[:=]\s*["'`]?)(?!\[REDACTED_)([^"'`\s<>&;,\\]{8,})/gi;
 
-const CATEGORY_DEFS = {
-  world: { name: "Мир" },
-  ru: { name: "Россия" },
-  business: { name: "Бизнес" },
-  tech: { name: "Технологии" },
-  ai: { name: "ИИ" },
-  science: { name: "Наука" },
-  health: { name: "Здоровье" },
-  sports: { name: "Спорт" },
-  culture: { name: "Культура" }
-};
-
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
@@ -182,47 +172,15 @@ function buildId(sourceId, url, publishedAt, title) {
   return `${sourceId}:${url || ""}:${publishedAt || ""}:${(title || "").slice(0, 40)}`;
 }
 
-function mapCategories(sourceId, itemCats, cfg) {
-  const map = cfg.categoryMap?.[sourceId] || {};
-  const out = new Set();
-
-  for (const c of itemCats) {
-    const v = map[c];
-    for (const id of toArray(v)) out.add(id);
-  }
-  for (const id of toArray(cfg.defaultCategoryForSource?.[sourceId])) out.add(id);
-
-  // Drop unknown
-  for (const id of Array.from(out)) {
-    if (!CATEGORY_DEFS[id]) out.delete(id);
-  }
-  return Array.from(out);
+function uniqueStrings(values) {
+  return Array.from(new Set(toArray(values).filter((x) => typeof x === "string" && x)));
 }
 
-function inferCategoriesByText(title, excerpt) {
-  const t = `${title || ""} ${excerpt || ""}`.toLowerCase();
-  const out = new Set();
-
-  // Artificial intelligence. Word boundaries around the Russian abbreviation
-  // are written explicitly because JavaScript's `\\b` is ASCII-oriented.
-  if (
-    /(?:искусственн(?:ый|ого|ому|ым|ом) интеллект|нейросет|нейронн(?:ая|ые|ой|ую) сет|генеративн(?:ый|ого|ому|ым|ом) ии|машинн(?:ое|ого|ому|ым|ом) обучен|больш(?:ая|ой|ую|ие|их) языков(?:ая|ой|ую|ые|ых) модел|(?:^|[^а-яёa-z0-9])ии(?:$|[^а-яёa-z0-9])|\bartificial intelligence\b|\bgenerative ai\b|\bmachine learning\b|\bdeep learning\b|\blarge language models?\b|\bllms?\b|\bchatgpt\b|\bopenai\b|\banthropic\b|\bclaude (?:ai|\d|model)\b|(?:модель|model)\s+claude\b|\bgoogle gemini\b|(?:модель|model)\s+gemini\b|\bgemini (?:ai|\d)\b|\bgpt-?\d)/i.test(
-      t,
-    )
-  ) {
-    out.add("ai");
-  }
-
-  // Health / medicine
-  if (
-    /(\bhealth\b|\bmedicine\b|здоров|медиц|врач|пациент|больниц|клиник|аптек|лекарств|препарат|вакцин|диабет|ожирен|онколог|инфекц|грипп|коронавирус|covid|фарма|психолог|психиатр|депресс|стресс)/i.test(
-      t,
-    )
-  ) {
-    out.add("health");
-  }
-
-  return Array.from(out);
+// Recompute categories from the source sections and text rules; items that
+// end up without any category are not part of the feed.
+function reclassify(items, cfg) {
+  for (const item of items) item.categoryIds = classifyItem(item, cfg);
+  return items.filter((item) => item.categoryIds.length > 0);
 }
 
 function extractArticleHtml(url, html) {
@@ -433,23 +391,24 @@ async function main() {
       const descHtml = safeText(it.description);
       const excerpt = stripHtmlToText(descHtml);
 
-      const mapped = mapCategories(source.id, catsRaw, cfg);
-      const inferred = inferCategoriesByText(title, excerpt);
-      const categoryIds = Array.from(new Set([...mapped, ...inferred]));
-      if (categoryIds.length === 0) continue;
-
-      items.push({
+      const item = {
         id: buildId(source.id, url, publishedAt, title),
         sourceId: source.id,
         sourceName: source.name,
         title,
         url,
         publishedAt,
-        categoryIds,
+        // Raw sections from the feed; categories are derived from them.
+        sourceCategories: uniqueStrings(catsRaw),
+        categoryIds: [],
         image,
         excerpt,
         contentHtml: ""
-      });
+      };
+      item.categoryIds = classifyItem(item, cfg);
+      if (item.categoryIds.length === 0) continue;
+
+      items.push(item);
     }
   }
 
@@ -462,23 +421,16 @@ async function main() {
       byUrl.set(it.url, it);
       continue;
     }
-    // Merge categories
-    const cats = new Set([...(prev.categoryIds || []), ...(it.categoryIds || [])]);
-    prev.categoryIds = Array.from(cats);
+    // Merge source sections (categories are recomputed from them below)
+    prev.sourceCategories = uniqueStrings([...(prev.sourceCategories || []), ...(it.sourceCategories || [])]);
     // Prefer image
     if (!prev.image && it.image) prev.image = it.image;
     // Prefer excerpt
     if ((prev.excerpt || "").length < (it.excerpt || "").length) prev.excerpt = it.excerpt;
   }
-  items = Array.from(byUrl.values());
-
-  // Reclassify carried history as well, so the AI section is populated on
-  // the first build after this category is introduced.
-  for (const item of items) {
-    const categories = new Set(item.categoryIds || []);
-    for (const id of inferCategoriesByText(item.title, item.excerpt)) categories.add(id);
-    item.categoryIds = Array.from(categories).filter((id) => CATEGORY_DEFS[id]);
-  }
+  items = reclassify(Array.from(byUrl.values()), cfg);
+  byUrl.clear();
+  for (const it of items) byUrl.set(it.url, it);
 
   // Merge with previous snapshot to simulate an "infinite" feed.
   try {
@@ -495,12 +447,8 @@ async function main() {
         if ((!existing.excerpt || existing.excerpt.length < 40) && typeof raw.excerpt === "string") existing.excerpt = raw.excerpt;
         if (!existing.image && typeof raw.image === "string") existing.image = raw.image;
         if (!existing.publishedAt && typeof raw.publishedAt === "string") existing.publishedAt = raw.publishedAt;
-        // Union categories
-        const cats = new Set([...(existing.categoryIds || [])]);
-        for (const c of Array.isArray(raw.categoryIds) ? raw.categoryIds : []) {
-          if (typeof c === "string" && CATEGORY_DEFS[c]) cats.add(c);
-        }
-        existing.categoryIds = Array.from(cats);
+        // Categories come from the fresh feed entry (its sections are
+        // authoritative), so the stored ones are intentionally not merged in.
       } else {
         // Carry forward an older item.
         const carried = {
@@ -510,15 +458,20 @@ async function main() {
           title: typeof raw.title === "string" ? raw.title : "",
           url,
           publishedAt: typeof raw.publishedAt === "string" ? raw.publishedAt : null,
-          categoryIds: Array.isArray(raw.categoryIds) ? raw.categoryIds.filter((x) => typeof x === "string" && CATEGORY_DEFS[x]) : [],
+          categoryIds: Array.isArray(raw.categoryIds) ? raw.categoryIds.filter(isKnownCategory) : [],
           image: typeof raw.image === "string" ? raw.image : "",
           excerpt: typeof raw.excerpt === "string" ? raw.excerpt : "",
           contentHtml: typeof raw.contentHtml === "string" ? raw.contentHtml : ""
         };
+        // Snapshots written before sections were stored have no
+        // `sourceCategories`; such items keep their stored categories.
+        if (Array.isArray(raw.sourceCategories)) carried.sourceCategories = uniqueStrings(raw.sourceCategories);
         byUrl.set(url, carried);
       }
     }
-    items = Array.from(byUrl.values());
+    // Carried items are mapped with the current rules too, so a mapping
+    // change applies to the whole history and not only to fresh entries.
+    items = reclassify(Array.from(byUrl.values()), cfg);
   } catch {
     // no previous snapshot
   }
@@ -582,12 +535,8 @@ async function main() {
   );
 
   // Article extraction can add a previously missing excerpt, so run the
-  // lightweight classification once more before writing the snapshot.
-  for (const item of items) {
-    const categories = new Set(item.categoryIds || []);
-    for (const id of inferCategoriesByText(item.title, item.excerpt)) categories.add(id);
-    item.categoryIds = Array.from(categories).filter((id) => CATEGORY_DEFS[id]);
-  }
+  // classification once more before writing the snapshot.
+  items = reclassify(items, cfg);
 
   const out = {
     generatedAt: new Date().toISOString(),
