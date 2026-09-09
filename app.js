@@ -740,9 +740,15 @@ function bindButtons() {
     renderChips();
     applyFilterAndReset("Все темы");
   });
-  elStateAction.addEventListener("click", () => {
-    if (stateActionMode === "retry") refreshData("Обновить");
-    else {
+  elStateAction.addEventListener("click", async () => {
+    if (stateActionMode === "retry") {
+      await refreshData("Обновить");
+      // Restore the retry flow only if the user has not moved to another control.
+      const focus = document.activeElement;
+      if (!elModal.classList.contains("isOpen") && (focus === document.body || focus === elStateAction)) {
+        (elFeedState.hidden ? elFeedTitle : elStateAction).focus({ preventScroll: true });
+      }
+    } else {
       elSelectAllBtn.click();
       elFeedTitle.focus();
     }

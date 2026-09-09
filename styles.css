@@ -33,7 +33,7 @@ svg { display: block; width: 20px; height: 20px; flex-shrink: 0; }
 .skip-link { position: fixed; z-index: 100; top: 12px; left: 12px; padding: 14px 20px; background: var(--ink); color: #fff; transform: translateY(-150%); }
 .skip-link:focus { transform: translateY(0); }
 .masthead { border-top: 4px solid var(--accent); border-bottom: 1px solid var(--line); background: var(--surface); }
-.masthead__inner { display: flex; align-items: center; gap: 32px; min-height: 104px; padding-block: 18px; }
+.masthead__inner { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 32px; min-height: 104px; padding-block: 18px; }
 .brand { display: inline-flex; align-items: center; gap: 25px; text-decoration: none; }
 .brand__title { font: 700 2.75rem/1 var(--serif); letter-spacing: -.075em; }
 .brand__point { color: var(--accent); }

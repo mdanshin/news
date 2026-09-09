@@ -123,11 +123,16 @@ test('failed initial request is retryable; failed or unchanged refresh keeps vis
   assert.equal(document.querySelector('#feedState').hidden, false);
   assert.match(document.querySelector('#stateTitle').textContent, /Не удалось/);
   assert.equal(document.querySelector('#endSpinner').hidden, true);
+  document.querySelector('#stateAction').focus();
+  document.querySelector('#stateAction').click();
+  await tick();
+  assert.equal(document.activeElement, document.querySelector('#stateAction'));
   state.fail = false;
   document.querySelector('#stateAction').click();
   await tick();
   const card = document.querySelector('#grid article');
   assert.ok(card);
+  assert.equal(document.activeElement, document.querySelector('#feedTitle'));
   document.querySelector('#refreshBtn').click();
   await tick();
   assert.equal(document.querySelector('#grid article'), card);
