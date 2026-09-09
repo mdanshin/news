@@ -144,3 +144,25 @@ test('companyPattern: aliases know how a company is named in the news', () => {
   assert.equal(MoexSnapshot.companyPattern('ZZZZ', 'Полюс Золото ао').source, 'Полюс Золото', 'без алиаса по имени бумаги');
   assert.equal(MoexSnapshot.companyPattern('ZZZZ', 'АО'), null, 'слишком короткое имя ничего не ищет');
 });
+
+test('buildSession and quotes: the exchange status wins, the calendar stands in, every priced share is quotable', () => {
+  const shares = {
+    securities: table(['SECID', 'SHORTNAME', 'PREVPRICE', 'ISSUECAPITALIZATION'], [['SBER', 'Сбербанк', 300, 7e12], ['TINY', 'Пустышка', 1, null]]),
+    marketdata: table(['SECID', 'LAST', 'VALTODAY', 'TRADINGSTATUS', 'SYSTIME'], [['SBER', 312, 9e9, 'T', '2026-09-09 18:39:12'], ['TINY', null, 0, 'N', '2026-09-09 18:39:12']])
+  };
+  assert.deepEqual(MoexSnapshot.buildSession(shares), { status: 'open', time: '2026-09-09 18:39:12', fromExchange: true });
+  const closed = { marketdata: table(['SECID', 'TRADINGSTATUS'], [['SBER', 'N']]) };
+  assert.equal(MoexSnapshot.buildSession(closed).status, 'closed');
+  assert.deepEqual(MoexSnapshot.buildSession({}, '2026-09-09T12:00:00Z'), { status: 'open', time: null, fromExchange: false }, 'без колонки статуса решает календарь');
+  assert.equal(MoexSnapshot.sessionByClock('2026-09-09T12:00:00Z'), 'open', '15:00 мск, будний день');
+  assert.equal(MoexSnapshot.sessionByClock('2026-09-09T15:55:00Z'), 'closed', '18:55 мск, между сессиями');
+  assert.equal(MoexSnapshot.sessionByClock('2026-09-09T20:00:00Z'), 'open', '23:00 мск, вечерняя сессия');
+  assert.equal(MoexSnapshot.sessionByClock('2026-09-12T12:00:00Z'), 'closed', 'суббота');
+  const quotes = MoexSnapshot.buildQuotes(shares);
+  assert.deepEqual(Object.keys(quotes), ['SBER', 'TINY'], 'без сделок цена закрытия, бумага без цены выпадает');
+  assert.equal(quotes.SBER.price, 312);
+  assert.equal(quotes.TINY.price, 1);
+  const snapshot = MoexSnapshot.build(shares, {});
+  assert.equal(snapshot.session.status, 'open');
+  assert.ok(snapshot.quotes.SBER);
+});

@@ -410,6 +410,35 @@ h1 { margin: 0; font: 400 clamp(2rem, 3vw, 2.875rem)/1.15 var(--serif); letter-s
 .heat__tip b { display: block; font-weight: 600; }
 .heat__tip span { color: var(--strong-muted); }
 
+/* Статус торгов и мои бумаги */
+.board__session { display: flex; align-items: center; gap: 7px; margin: 6px 0 0; font-size: .8125rem; color: var(--muted); }
+.board__sessionDot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.board__session.is-open .board__sessionDot { background: var(--up-ink); box-shadow: 0 0 0 3px color-mix(in srgb, var(--up-ink) 22%, transparent); }
+.watch { margin-bottom: 18px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 3px; }
+.watch__head { display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; }
+.watch__title { margin: 0; font: 500 .6875rem/1.3 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.watch__form { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.watch__input { width: 15em; min-height: 32px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 3px; background: var(--surface); color: var(--ink); font: inherit; font-size: .8125rem; text-transform: uppercase; }
+.watch__input::placeholder { text-transform: none; }
+.watch__add { min-height: 32px; padding: 4px 12px; border: 1px solid var(--line); border-radius: 3px; background: none; font: inherit; font-size: .8125rem; color: var(--ink); cursor: pointer; }
+.watch__add:hover { border-color: var(--ink); }
+.watch__note { font-size: .75rem; color: var(--muted); }
+.watch__empty { margin: 8px 0 0; font-size: .8125rem; color: var(--muted); }
+.watch__list { display: flex; gap: 8px; flex-wrap: wrap; list-style: none; margin: 10px 0 0; padding: 0; }
+.watch__item { display: inline-flex; align-items: stretch; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.watch__quote { display: inline-flex; align-items: baseline; gap: 8px; padding: 5px 4px 5px 12px; border: 0; background: none; font: inherit; font-size: .8125rem; color: inherit; cursor: pointer; font-variant-numeric: tabular-nums; }
+.watch__quote:hover:not(:disabled) { background: var(--soft); }
+.watch__quote:disabled { cursor: default; }
+.watch__ticker { font-weight: 600; }
+.watch__price { color: var(--muted); }
+.watch__change { font-weight: 500; }
+.watch__missing { font-size: .75rem; color: var(--muted); }
+.watch__remove { padding: 0 10px 0 6px; border: 0; background: none; font: inherit; font-size: 1rem; line-height: 1; color: var(--muted); cursor: pointer; }
+.watch__remove:hover { color: var(--down-ink); }
+.focus__actions { display: flex; flex: none; align-items: center; gap: 14px; }
+.focus__watch { margin: 0; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: none; font: inherit; font-size: .75rem; color: var(--ink); cursor: pointer; }
+.focus__watch[aria-pressed="true"] { background: var(--strong-bg); color: var(--strong-ink); border-color: var(--strong-bg); }
+
 /* График индекса и макроиндикаторы */
 .board__panel { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px 28px; margin-bottom: 18px; }
 .chart__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
@@ -483,7 +512,7 @@ h1 { margin: 0; font: 400 clamp(2rem, 3vw, 2.875rem)/1.15 var(--serif); letter-s
 .board--loading .chart__stats, .board--loading .chart__axis { display: none; }
 
 /* No quotes yet (or none at all): only the heading and the notice stay. */
-.board--empty .ticker, .board--empty .heat, .board--empty .board__legend, .board--empty .board__table, .board--empty .board__panel { display: none; }
+.board--empty .ticker, .board--empty .heat, .board--empty .board__legend, .board--empty .board__table, .board--empty .board__panel, .board--empty .watch { display: none; }
 .board--empty .board__foot { margin-top: 4px; }
 .board__retry { margin: 0; padding: 0; border: 0; background: none; font: inherit; color: var(--ink); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
 .board__foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 12px; }

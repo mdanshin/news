@@ -241,6 +241,45 @@
     };
   }
 
+  /** Every priced share by ticker, for the reader's own list. */
+  function buildQuotes(payload) {
+    const out = {};
+    for (const s of shareRows(payload)) out[s.ticker] = { name: s.name, price: s.price, change: s.change, turnover: s.turnover };
+    return out;
+  }
+
+  function moscowClock(now) {
+    const date = now ? new Date(now) : new Date();
+    const parts = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Moscow", weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(date);
+    const get = (type) => (parts.find((part) => part.type === type) || {}).value || "";
+    return { weekday: get("weekday"), minutes: Number(get("hour")) * 60 + Number(get("minute")) };
+  }
+
+  /**
+   * Trading calendar as a fallback: the main session runs 10:00–18:50 and the
+   * evening one 19:00–23:50 Moscow time on weekdays. Holidays are not known
+   * here, so the exchange's own status wins whenever it is present.
+   */
+  function sessionByClock(now) {
+    const { weekday, minutes } = moscowClock(now);
+    if (weekday === "Sat" || weekday === "Sun") return "closed";
+    const open = (minutes >= 10 * 60 && minutes < 18 * 60 + 50) || (minutes >= 19 * 60 && minutes < 23 * 60 + 50);
+    return open ? "open" : "closed";
+  }
+
+  /**
+   * Whether the market is trading and when the data was stamped, from the
+   * TRADINGSTATUS and SYSTIME columns of the share board.
+   */
+  function buildSession(payload, now) {
+    const list = rows(payload && payload.marketdata);
+    const withStatus = list.find((row) => row.TRADINGSTATUS) || null;
+    const stamped = list.find((row) => row.SYSTIME) || withStatus;
+    const status = withStatus ? (String(withStatus.TRADINGSTATUS).toUpperCase() === "T" ? "open" : "closed") : sessionByClock(now);
+    const time = stamped ? String(pick(stamped, ["SYSTIME"]) || "") : "";
+    return { status, time: time || null, fromExchange: Boolean(withStatus) };
+  }
+
   /**
    * Board snapshot from the two ISS answers, or null when the share board is
    * empty (an outage answers with an empty table rather than an error).
@@ -253,7 +292,9 @@
       source: "Московская биржа (ISS)",
       indices: buildIndices(indices),
       stocks,
-      movers: buildMovers(shares)
+      movers: buildMovers(shares),
+      quotes: buildQuotes(shares),
+      session: buildSession(shares)
     };
   }
 
@@ -350,7 +391,7 @@
   }
 
   return {
-    issUrl, requests, urls, build, buildStocks, buildIndices, buildMovers, buildSeries, buildMacro, brentContracts, companyPattern,
+    issUrl, requests, urls, build, buildStocks, buildIndices, buildMovers, buildQuotes, buildSession, sessionByClock, buildSeries, buildMacro, brentContracts, companyPattern,
     rows, pick, num, isoDate, SECTORS, RANGES, COMPANY_ALIASES, TILE_LIMIT, MOVERS_LIMIT, MOVERS_MIN_TURNOVER
   };
 });

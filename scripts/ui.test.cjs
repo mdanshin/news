@@ -30,7 +30,7 @@ function fixture() {
   };
 }
 
-async function setup(t, { news = fixture(), saved, savedTheme, hidden, moex = null, iss = null, systemDark = false, fail = false, observer = true, ai = false } = {}) {
+async function setup(t, { news = fixture(), saved, savedTheme, hidden, moex = null, iss = null, systemDark = false, fail = false, observer = true, ai = false, keepStorage = null } = {}) {
   const dom = new JSDOM(ai ? aiHtml : html, { url: `https://mdanshin.github.io/news/${ai ? 'ai.html' : ''}`, runScripts: 'outside-only', pretendToBeVisual: true });
   t.after(() => dom.window.close());
   const { window } = dom;
@@ -48,6 +48,7 @@ async function setup(t, { news = fixture(), saved, savedTheme, hidden, moex = nu
       themeListeners.forEach((listener) => listener({ matches: value }));
     }
   };
+  if (keepStorage) for (let i = 0; i < keepStorage.length; i += 1) { const key = keepStorage.key(i); window.localStorage.setItem(key, keepStorage.getItem(key)); }
   if (saved !== undefined) window.localStorage.setItem('news:selectedCats:v2', JSON.stringify(saved));
   if (savedTheme !== undefined) window.localStorage.setItem('news:theme:v1', savedTheme);
   if (hidden !== undefined) window.localStorage.setItem('news:hiddenSources:v1', JSON.stringify(hidden));
@@ -303,8 +304,8 @@ function issFixture() {
         data: [['SBER', 'Сбербанк', 306.9, 7e12], ['GAZP', 'Газпром', 132.3, 3e12], ['LKOH', 'Лукойл', 6797, 4.5e12], ['GMKN', 'Норникель', 148.8, 2.1e12], ['ZZZZ', 'Без торгов', null, null]]
       },
       marketdata: {
-        columns: ['SECID', 'LAST', 'LASTTOPREVPRICE', 'VALTODAY'],
-        data: [['SBER', 312.4, 1.8, 9.4e9], ['GAZP', 128.9, -2.6, 5.1e9], ['LKOH', 6800, 0.04, 4.2e9], ['GMKN', null, null, 2.8e9], ['ZZZZ', null, null, 0]]
+        columns: ['SECID', 'LAST', 'LASTTOPREVPRICE', 'VALTODAY', 'TRADINGSTATUS', 'SYSTIME'],
+        data: [['SBER', 312.4, 1.8, 9.4e9, 'T', '2026-09-09 18:39:12'], ['GAZP', 128.9, -2.6, 5.1e9, 'T', '2026-09-09 18:39:12'], ['LKOH', 6800, 0.04, 4.2e9, 'T', '2026-09-09 18:39:12'], ['GMKN', null, null, 2.8e9, 'T', '2026-09-09 18:39:12'], ['ZZZZ', null, null, 0, 'N', '2026-09-09 18:39:12']]
       }
     },
     indices: {
@@ -549,6 +550,62 @@ test('market board explains itself when no quotes are available at all', async (
   assert.ok(state.calls.length > before, 'повтор действительно запрашивает биржу');
   assert.equal(document.querySelectorAll('#boardHeat .heat__tile').length, 4);
   assert.equal(board.classList.contains('board--empty'), false);
+});
+
+test('watchlist: added from the company panel or by ticker, kept on the device, quoted from the whole board', async (t) => {
+  const { document, window } = await setup(t, { news: marketsOnly(), saved: ['markets'], iss: issFixture() });
+  await tick();
+  await tick();
+  await tick();
+
+  // Trading status comes from the exchange's own columns.
+  const session = document.querySelector('#boardSession');
+  assert.equal(session.hidden, false);
+  assert.ok(session.classList.contains('is-open'));
+  assert.equal(session.textContent, 'Торги идут · данные на 18:39 мск · задержка 15 минут');
+
+  const watch = document.querySelector('#boardWatch');
+  assert.equal(watch.hidden, false);
+  assert.match(watch.querySelector('.watch__empty').textContent, /Добавьте бумаги/);
+  assert.ok(document.querySelectorAll('#watchTickers option').length >= 4, 'подсказка знает все бумаги доски');
+
+  // From the company panel.
+  [...document.querySelectorAll('#boardHeat .heat__tile')].find((node) => node.dataset.ticker === 'GAZP').click();
+  const toggle = document.querySelector('#boardFocus .focus__watch');
+  assert.equal(toggle.textContent, 'В мои бумаги');
+  toggle.click();
+  assert.equal(toggle.textContent, 'Убрать из моих бумаг');
+  assert.equal(toggle.getAttribute('aria-pressed'), 'true');
+  assert.deepEqual(JSON.parse(window.localStorage.getItem('news:watchlist:v1')), ['GAZP']);
+  assert.deepEqual([...document.querySelectorAll('#boardWatch .watch__ticker')].map((n) => n.textContent), ['GAZP']);
+  assert.match(document.querySelector('#boardWatch .watch__item').textContent, /128,9 ₽.*−2,60%/);
+
+  // By ticker: unknown, then a real one that is not among the tiles.
+  const input = document.querySelector('#boardWatch .watch__input');
+  const form = document.querySelector('#boardWatch .watch__form');
+  input.value = 'nope';
+  form.dispatchEvent(new window.Event('submit', { cancelable: true }));
+  assert.match(document.querySelector('#boardWatch .watch__note').textContent, /Бумаги NOPE нет/);
+  assert.deepEqual([...document.querySelectorAll('#boardWatch .watch__ticker')].map((n) => n.textContent), ['GAZP']);
+  document.querySelector('#boardWatch .watch__input').value = 'lkoh';
+  document.querySelector('#boardWatch .watch__form').dispatchEvent(new window.Event('submit', { cancelable: true }));
+  assert.deepEqual([...document.querySelectorAll('#boardWatch .watch__ticker')].map((n) => n.textContent), ['GAZP', 'LKOH']);
+
+  // A chip opens the company panel; the cross removes the share.
+  document.querySelectorAll('#boardWatch .watch__quote')[1].click();
+  assert.match(document.querySelector('#boardFocus .focus__title').textContent, /Лукойл · LKOH/);
+  document.querySelector('#boardWatch .watch__remove').click();
+  assert.deepEqual(JSON.parse(window.localStorage.getItem('news:watchlist:v1')), ['LKOH']);
+
+  // Survives a reload; a ticker the board no longer quotes stays visible without numbers.
+  window.localStorage.setItem('news:watchlist:v1', JSON.stringify(['LKOH', 'GONE']));
+  const again = await setup(t, { news: marketsOnly(), saved: ['markets'], iss: issFixture(), keepStorage: window.localStorage });
+  await tick();
+  await tick();
+  await tick();
+  assert.deepEqual([...again.document.querySelectorAll('#boardWatch .watch__ticker')].map((n) => n.textContent), ['LKOH', 'GONE']);
+  assert.equal(again.document.querySelectorAll('#boardWatch .watch__missing').length, 1);
+  assert.equal(again.document.querySelectorAll('#boardWatch .watch__quote')[1].disabled, true);
 });
 
 test('cleared selection persists, explains the empty state and can be restored', async (t) => {
