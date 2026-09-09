@@ -757,6 +757,7 @@ let marketData = null;
 let marketRequest = null;
 let marketTimer = 0;
 let marketJsonpSeq = 0;
+let issPreferJsonp = false;
 let boardShown = false;
 
 const elMarketBoard = $("#marketBoard");
@@ -767,7 +768,11 @@ function boardActive() {
 
 async function fetchJsonFrom(url, init) {
   const response = await fetch(url, init);
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  if (!response.ok) {
+    const error = new Error(`HTTP ${response.status}`);
+    error.status = response.status;
+    throw error;
+  }
   return response.json();
 }
 
@@ -817,39 +822,49 @@ function describeMarketError(error) {
   return message || "неизвестная ошибка";
 }
 
+/** One ISS request: plain JSON first, JSONP when the browser blocks it. */
+async function issGet(request, reasons) {
+  await loadMoexModule();
+  if (!issPreferJsonp) {
+    try {
+      return await fetchJsonFrom(MoexSnapshot.issUrl(request.path, request.params, "json"), { cache: "no-store" });
+    } catch (error) {
+      if (reasons) reasons.push(`прямой запрос: ${describeMarketError(error)}`);
+      // An HTTP status is the exchange's answer and would repeat over JSONP;
+      // only a request that never got through is worth the second attempt.
+      if (error && error.status) throw error;
+    }
+  }
+  // Second attempt through JSONP: a blocked cross-origin request is the
+  // usual failure, and a script tag is not subject to it.
+  marketJsonpSeq += 1;
+  const callback = `moexCallback${marketJsonpSeq}`;
+  try {
+    const payload = await loadJsonp(MoexSnapshot.issUrl(request.path, request.params, "jsonp", callback), callback);
+    issPreferJsonp = true; // the plain request is known to fail here; skip it from now on
+    return payload;
+  } catch (jsonpError) {
+    if (reasons) reasons.push(`JSONP: ${describeMarketError(jsonpError)}`);
+    throw jsonpError;
+  }
+}
+
 /**
  * Live quotes straight from the exchange, as the reader's browser sees it.
  * `reasons` collects what each transport answered, for the notice.
  */
 async function loadLiveMarket(reasons) {
-  await loadMoexModule();
-  let shares;
-  let indices;
-  try {
-    const urls = MoexSnapshot.urls("json");
-    [shares, indices] = await Promise.all([fetchJsonFrom(urls.shares, { cache: "no-store" }), fetchJsonFrom(urls.indices, { cache: "no-store" })]);
-  } catch (error) {
-    reasons.push(`прямой запрос: ${describeMarketError(error)}`);
-    // Second attempt through JSONP: a blocked cross-origin request is the
-    // usual failure, and a script tag is not subject to it.
-    marketJsonpSeq += 1;
-    const sharesCallback = `moexShares${marketJsonpSeq}`;
-    const indicesCallback = `moexIndices${marketJsonpSeq}`;
-    try {
-      [shares, indices] = await Promise.all([
-        loadJsonp(MoexSnapshot.urls("jsonp", sharesCallback).shares, sharesCallback),
-        loadJsonp(MoexSnapshot.urls("jsonp", indicesCallback).indices, indicesCallback)
-      ]);
-    } catch (jsonpError) {
-      reasons.push(`JSONP: ${describeMarketError(jsonpError)}`);
-      throw jsonpError;
-    }
-  }
+  const requests = (await loadMoexModule(), MoexSnapshot.requests);
+  const [shares, indices] = await Promise.all([
+    issGet(requests.shares(), reasons),
+    issGet(requests.indices()).catch(() => null)
+  ]);
   const snapshot = MoexSnapshot.build(shares, indices);
   if (!snapshot) {
     reasons.push("биржа вернула пустой список бумаг");
     throw new Error("Биржа не вернула бумаг");
   }
+  marketIndicesPayload = indices;
   return snapshot;
 }
 
@@ -1014,6 +1029,15 @@ function renderBoardSkeleton() {
     }
   }
 
+  chartGhost();
+  for (const id of ["#boardMacro", "#boardMovers", "#boardFocus"]) {
+    const host = $(id);
+    if (host) {
+      host.replaceChildren();
+      host.hidden = true;
+    }
+  }
+
   const meta = $("#boardMeta");
   if (meta) meta.textContent = "Запрашиваем котировки Московской биржи…";
 }
@@ -1024,9 +1048,13 @@ function renderBoardEmpty(text, retryable) {
   elMarketBoard.setAttribute("aria-busy", "false");
   // The index placeholders of the skeleton are not hidden by the empty
   // state's styles, so clear them along with the rest.
-  for (const id of ["#boardIndices", "#boardTickerTrack", "#boardHeat"]) {
+  for (const id of ["#boardIndices", "#boardTickerTrack", "#boardHeat", "#boardChart", "#boardChartStats", "#boardChartAxis"]) {
     const host = $(id);
     if (host) host.replaceChildren();
+  }
+  for (const id of ["#boardMacro", "#boardMovers", "#boardFocus"]) {
+    const host = $(id);
+    if (host) host.hidden = true;
   }
   const meta = $("#boardMeta");
   if (!meta) return;
@@ -1050,6 +1078,15 @@ function renderBoard(parsed, live) {
   renderTicker(parsed.stocks);
   renderHeatmap(parsed.stocks);
   renderBoardTable(parsed.stocks);
+  renderMovers(parsed.movers);
+  if (live) {
+    updateIndexChart();
+    updateMacro();
+  } else {
+    // The committed file carries no candles or currencies: hide what it cannot fill.
+    renderIndexChart(null, chartRange);
+    renderMacro([]);
+  }
   const updated = toAbsTime(parsed.generatedAt);
   const freshness = live ? `котировки на ${updated}` : `срез от ${updated}, биржа сейчас не отвечает`;
   const basis = parsed.stocks.some((stock) => stock.weightBasis === "capitalisation") ? "площадь плитки — капитализация" : "площадь плитки — объём торгов";
@@ -1271,6 +1308,7 @@ function renderHeatTile(tile, cell) {
   // The tile always names itself; colour only speeds up scanning.
   button.setAttribute("aria-label", `${stock.name}, ${formatChange(stock.change)}, цена ${Number(stock.price).toLocaleString("ru-RU")} ₽`);
 
+  button.addEventListener("click", () => showCompanyFocus(stock, button));
   const show = () => showHeatTooltip(button, stock);
   button.addEventListener("mouseenter", show);
   button.addEventListener("focus", show);
@@ -1345,6 +1383,320 @@ function renderBoardTable(stocks) {
   }
   table.append(thead, body);
 }
+
+/* ── График индекса, макроиндикаторы, лидеры дня, новости компании ───────── */
+
+const SVG_NS = "http://www.w3.org/2000/svg";
+const CHART_W = 600;
+const CHART_H = 130;
+const CHART_PAD = 4;
+const FOCUS_NEWS_LIMIT = 6;
+
+let chartRange = "day";
+/** @type {Map<string, {series: any, fetchedAt: number}>} */
+const chartCache = new Map();
+let chartRequest = null;
+/** @type {{items: any[], fetchedAt: number} | null} */
+let macroData = null;
+let macroRequest = null;
+let marketIndicesPayload = null;
+
+function renderRangeButtons() {
+  const host = $("#boardRanges");
+  if (!host || host.childElementCount > 0) return;
+  for (const [key, spec] of Object.entries(MoexSnapshot.RANGES)) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "chart__range";
+    button.dataset.range = key;
+    button.textContent = spec.label;
+    button.setAttribute("aria-pressed", String(key === chartRange));
+    button.addEventListener("click", () => {
+      if (chartRange === key) return;
+      chartRange = key;
+      for (const node of host.querySelectorAll(".chart__range")) node.setAttribute("aria-pressed", String(node.dataset.range === key));
+      updateIndexChart();
+    });
+    host.appendChild(button);
+  }
+}
+
+function chartGhost() {
+  const host = $("#boardChart");
+  if (!host) return;
+  const ghost = document.createElement("span");
+  ghost.className = "ghost chart__ghost";
+  host.replaceChildren(ghost);
+}
+
+/** Fetches the candles of the chosen range (cached for the refresh period) and draws them. */
+function updateIndexChart() {
+  if (typeof MoexSnapshot === "undefined" || !$("#boardChart")) return;
+  renderRangeButtons();
+  const range = chartRange;
+  const cached = chartCache.get(range);
+  if (cached && Date.now() - cached.fetchedAt < MARKET_TTL_MS) {
+    renderIndexChart(cached.series, range);
+    return;
+  }
+  chartGhost();
+  const request = issGet(MoexSnapshot.requests.candles(range))
+    .then((payload) => MoexSnapshot.buildSeries(payload, range))
+    .catch(() => null)
+    .then((series) => {
+      chartCache.set(range, { series, fetchedAt: Date.now() });
+      // The reader may have switched range while this one was loading.
+      if (chartRange === range && boardActive()) renderIndexChart(series, range);
+    });
+  chartRequest = request;
+}
+
+function chartTimeLabel(t, range) {
+  const text = String(t || "");
+  if (range === "day") return text.slice(11, 16);
+  const date = new Date(text.replace(" ", "T"));
+  return Number.isNaN(date.getTime()) ? text.slice(0, 10) : date.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+}
+
+function svgElement(name, attrs) {
+  const node = document.createElementNS(SVG_NS, name);
+  for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value));
+  return node;
+}
+
+function renderIndexChart(series, range) {
+  const host = $("#boardChart");
+  const stats = $("#boardChartStats");
+  const axis = $("#boardChartAxis");
+  if (!host) return;
+  host.replaceChildren();
+  if (stats) stats.replaceChildren();
+  if (axis) axis.replaceChildren();
+  if (!series || series.points.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "chart__empty";
+    empty.textContent = "Биржа не отдала свечи за этот период.";
+    host.appendChild(empty);
+    host.removeAttribute("aria-label");
+    return;
+  }
+
+  const n = series.points.length;
+  const span = series.max - series.min || Math.abs(series.max) * 0.001 || 1;
+  const x = (i) => CHART_PAD + (n > 1 ? (i / (n - 1)) * (CHART_W - 2 * CHART_PAD) : (CHART_W - 2 * CHART_PAD) / 2);
+  const y = (v) => CHART_PAD + (1 - (v - series.min) / span) * (CHART_H - 2 * CHART_PAD);
+  const line = series.points.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(p.v).toFixed(1)}`).join(" ");
+  const up = (series.change === null ? series.last - series.first : series.change) >= 0;
+
+  const svg = svgElement("svg", { viewBox: `0 0 ${CHART_W} ${CHART_H}`, preserveAspectRatio: "none", "aria-hidden": "true" });
+  svg.classList.add("chart__svg", up ? "is-up" : "is-down");
+  svg.appendChild(svgElement("path", { class: "chart__area", d: `${line} L${x(n - 1).toFixed(1)} ${CHART_H} L${x(0).toFixed(1)} ${CHART_H} Z` }));
+  if (series.baseline !== null && series.baseline >= series.min && series.baseline <= series.max) {
+    svg.appendChild(svgElement("line", { class: "chart__baseline", x1: 0, x2: CHART_W, y1: y(series.baseline).toFixed(1), y2: y(series.baseline).toFixed(1) }));
+  }
+  svg.appendChild(svgElement("path", { class: "chart__line", d: line }));
+  host.appendChild(svg);
+
+  const fmt = (v) => Number(v).toLocaleString("ru-RU", { maximumFractionDigits: 2 });
+  const changeText = series.change === null ? "" : formatChange(series.change);
+  const rangeLabel = (MoexSnapshot.RANGES[range] || {}).label || "";
+  host.setAttribute("aria-label", `Индекс МосБиржи, ${rangeLabel.toLowerCase()}: от ${fmt(series.first)} до ${fmt(series.last)}${changeText ? `, ${changeText}` : ""}`);
+
+  if (stats) {
+    const value = document.createElement("span");
+    value.className = "chart__value";
+    value.textContent = fmt(series.last);
+    const change = document.createElement("span");
+    change.className = `chart__change ${changeClass(series.change === null ? series.last - series.first : series.change)}`.trim();
+    change.textContent = changeText;
+    const minmax = document.createElement("span");
+    minmax.className = "chart__minmax";
+    minmax.textContent = `мин. ${fmt(series.min)} · макс. ${fmt(series.max)}`;
+    stats.append(value, change, minmax);
+  }
+  if (axis) {
+    const start = document.createElement("span");
+    start.textContent = chartTimeLabel(series.points[0].t, range);
+    const end = document.createElement("span");
+    end.textContent = chartTimeLabel(series.points[n - 1].t, range);
+    axis.append(start, end);
+  }
+}
+
+/** Currencies, the bond index and Brent: each source optional, refreshed with the board. */
+function updateMacro() {
+  if (typeof MoexSnapshot === "undefined" || !$("#boardMacro")) return;
+  if (macroData && Date.now() - macroData.fetchedAt < MARKET_TTL_MS) {
+    renderMacro(macroData.items);
+    return;
+  }
+  if (macroRequest) return;
+  const requests = MoexSnapshot.requests;
+  const quiet = (request) => issGet(request).catch(() => null);
+  macroRequest = Promise.all([
+    quiet(requests.currency()),
+    quiet(requests.fixing()),
+    Promise.all(MoexSnapshot.brentContracts().map((contract) => quiet(requests.future(contract))))
+  ])
+    .then(([currency, fixing, futures]) => MoexSnapshot.buildMacro({ indices: marketIndicesPayload, currency, fixing, futures }))
+    .catch(() => [])
+    .then((items) => {
+      macroData = { items, fetchedAt: Date.now() };
+      if (boardActive()) renderMacro(items);
+    })
+    .finally(() => {
+      macroRequest = null;
+    });
+}
+
+function renderMacro(items) {
+  const host = $("#boardMacro");
+  if (!host) return;
+  host.replaceChildren();
+  host.hidden = !items || items.length === 0;
+  for (const item of items || []) {
+    const row = document.createElement("div");
+    row.className = "macro__row";
+    const name = document.createElement("span");
+    name.className = "macro__name";
+    name.textContent = item.name;
+    const value = document.createElement("span");
+    value.className = "macro__value";
+    value.textContent = `${Number(item.value).toLocaleString("ru-RU", { maximumFractionDigits: 2 })}${item.unit ? ` ${item.unit}` : ""}`;
+    const change = document.createElement("span");
+    change.className = `macro__change ${changeClass(item.change || 0)}`.trim();
+    change.textContent = item.change === null || item.change === undefined ? "" : formatChange(item.change);
+    row.append(name, value, change);
+    host.appendChild(row);
+  }
+}
+
+function renderMovers(movers) {
+  const host = $("#boardMovers");
+  if (!host) return;
+  host.replaceChildren();
+  const groups = [["up", "Рост дня"], ["down", "Падение дня"], ["turnover", "Оборот дня"]];
+  const any = movers && groups.some(([key]) => Array.isArray(movers[key]) && movers[key].length > 0);
+  host.hidden = !any;
+  if (!any) return;
+  for (const [key, title] of groups) {
+    const list = Array.isArray(movers[key]) ? movers[key] : [];
+    if (list.length === 0) continue;
+    const column = document.createElement("div");
+    column.className = "movers__col";
+    const heading = document.createElement("h3");
+    heading.className = "movers__title";
+    heading.textContent = title;
+    const ol = document.createElement("ol");
+    ol.className = "movers__list";
+    for (const stock of list) {
+      const li = document.createElement("li");
+      const row = document.createElement("button");
+      row.type = "button";
+      row.className = "movers__row";
+      row.dataset.ticker = stock.ticker;
+      const ticker = document.createElement("span");
+      ticker.className = "movers__ticker";
+      ticker.textContent = stock.ticker;
+      const name = document.createElement("span");
+      name.className = "movers__name";
+      name.textContent = stock.name;
+      const value = document.createElement("span");
+      value.className = `movers__value ${key === "turnover" ? "" : changeClass(stock.change)}`.trim();
+      value.textContent = key === "turnover" ? formatMoney(stock.turnover) : formatChange(stock.change);
+      row.append(ticker, name, value);
+      row.setAttribute("aria-label", `${stock.name}, ${formatChange(stock.change)}, оборот ${formatMoney(stock.turnover)}. Показать новости компании`);
+      row.addEventListener("click", () => showCompanyFocus(stock, row));
+      li.appendChild(row);
+      ol.appendChild(li);
+    }
+    column.append(heading, ol);
+    host.appendChild(column);
+  }
+}
+
+/** News of the feed about one company, newest first. */
+function companyNews(stock) {
+  const pattern = MoexSnapshot.companyPattern(stock.ticker, stock.name);
+  if (!pattern) return [];
+  return data.items
+    .filter((item) => isSourceVisible(item) && pattern.test(`${item.title} ${item.excerpt}`))
+    .sort((a, b) => Date.parse(b.publishedAt || 0) - Date.parse(a.publishedAt || 0))
+    .slice(0, FOCUS_NEWS_LIMIT);
+}
+
+function hideCompanyFocus(returnTo) {
+  const host = $("#boardFocus");
+  if (!host) return;
+  host.hidden = true;
+  host.replaceChildren();
+  for (const node of elMarketBoard.querySelectorAll('.heat__tile[aria-pressed="true"]')) node.removeAttribute("aria-pressed");
+  if (returnTo && typeof returnTo.focus === "function") returnTo.focus();
+}
+
+/** Panel under the map: the company's numbers and what the feed says about it. */
+function showCompanyFocus(stock, trigger) {
+  const host = $("#boardFocus");
+  if (!host) return;
+  for (const node of elMarketBoard.querySelectorAll('.heat__tile[aria-pressed="true"]')) node.removeAttribute("aria-pressed");
+  if (trigger && trigger.classList.contains("heat__tile")) trigger.setAttribute("aria-pressed", "true");
+  host.replaceChildren();
+  host.hidden = false;
+
+  const head = document.createElement("div");
+  head.className = "focus__head";
+  const titles = document.createElement("div");
+  const title = document.createElement("h3");
+  title.className = "focus__title";
+  title.textContent = `${stock.name} · ${stock.ticker}`;
+  const meta = document.createElement("p");
+  meta.className = "focus__meta";
+  const change = document.createElement("span");
+  change.className = changeClass(stock.change);
+  change.textContent = formatChange(stock.change);
+  meta.append(`${Number(stock.price).toLocaleString("ru-RU", { maximumFractionDigits: 2 })} ₽ · `, change, ` · оборот ${formatMoney(Number(stock.turnover) || 0)}${stock.sector ? ` · ${stock.sector}` : ""}`);
+  titles.append(title, meta);
+  const close = document.createElement("button");
+  close.type = "button";
+  close.className = "focus__close";
+  close.textContent = "Закрыть";
+  close.setAttribute("aria-label", `Закрыть панель ${stock.name}`);
+  close.addEventListener("click", () => hideCompanyFocus(trigger));
+  head.append(titles, close);
+  host.appendChild(head);
+
+  const news = companyNews(stock);
+  if (news.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "focus__empty";
+    empty.textContent = "В ленте пока нет новостей об этой компании.";
+    host.appendChild(empty);
+  } else {
+    const list = document.createElement("ul");
+    list.className = "focus__list";
+    for (const item of news) {
+      const li = document.createElement("li");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "focus__item";
+      const itemTitle = document.createElement("span");
+      itemTitle.className = "focus__itemTitle";
+      itemTitle.textContent = item.title;
+      const itemMeta = document.createElement("span");
+      itemMeta.className = "focus__itemMeta";
+      itemMeta.textContent = [item.sourceName, toAbsTime(item.publishedAt)].filter(Boolean).join(" · ");
+      button.append(itemTitle, itemMeta);
+      button.addEventListener("click", () => openModal(item.id, button));
+      li.appendChild(button);
+      list.appendChild(li);
+    }
+    host.appendChild(list);
+  }
+  if (typeof host.scrollIntoView === "function" && !trigger?.classList.contains("heat__tile")) host.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  const closeButton = host.querySelector(".focus__close");
+  if (closeButton && !trigger?.classList.contains("heat__tile")) closeButton.focus();
+}
+
 
 function applyFilterAndReset(reason) {
   const wanted = new Set(selectedIds());

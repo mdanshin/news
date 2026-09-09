@@ -83,11 +83,24 @@
               </div>
               <div class="board__indices" id="boardIndices"></div>
             </div>
+            <div class="board__panel">
+              <section class="chart" aria-labelledby="chartTitle">
+                <div class="chart__head">
+                  <h3 class="chart__title" id="chartTitle">Индекс МосБиржи</h3>
+                  <div class="chart__ranges" id="boardRanges" role="group" aria-label="Период графика"></div>
+                </div>
+                <div class="chart__stats" id="boardChartStats"></div>
+                <div class="chart__plot" id="boardChart" role="img"></div>
+                <div class="chart__axis" id="boardChartAxis" aria-hidden="true"></div>
+              </section>
+              <section class="macro" id="boardMacro" aria-label="Валюты, облигации и нефть" hidden></section>
+            </div>
             <div class="ticker" id="boardTicker">
               <div class="ticker__track" id="boardTickerTrack" aria-hidden="true"></div>
               <span class="visually-hidden" id="boardTickerText"></span>
             </div>
             <div class="heat" id="boardHeat"></div>
+            <section class="focus" id="boardFocus" aria-live="polite" hidden></section>
             <div class="board__foot">
               <p class="board__legend" aria-hidden="true">
                 <span>Падение</span>
@@ -96,6 +109,7 @@
               </p>
               <p class="board__meta" id="boardMeta"></p>
             </div>
+            <section class="movers" id="boardMovers" aria-label="Лидеры дня" hidden></section>
             <details class="board__table">
               <summary>Показать таблицей</summary>
               <div class="board__tableWrap"><table id="boardTable"><caption class="visually-hidden">Котировки Московской биржи</caption></table></div>
