@@ -409,6 +409,19 @@ h1 { margin: 0; font: 400 clamp(2rem, 3vw, 2.875rem)/1.15 var(--serif); letter-s
 .heat__tip b { display: block; font-weight: 600; }
 .heat__tip span { color: var(--strong-muted); }
 
+/* Skeleton while the first quotes are on their way: same shapes, no numbers.
+   (`.skeleton` belongs to the feed placeholders, hence the separate name.) */
+.ghost { display: inline-block; border-radius: 3px; background: linear-gradient(90deg, var(--ghost) 0%, var(--ghost-shine) 45%, var(--ghost) 90%) 0 0 / 200% 100%; background-color: var(--ghost); animation: ghost-shine 1.6s ease-in-out infinite; --ghost: #e8e6e1; --ghost-shine: #f4f3f0; }
+:root[data-theme="dark"] .ghost { --ghost: #22262c; --ghost-shine: #2e333a; }
+@keyframes ghost-shine { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+.ghost--label { height: .75rem; }
+.ghost--value { height: 1.0625rem; }
+.ghost--text { height: .875rem; vertical-align: middle; }
+.heat__ghost { position: absolute; }
+.board--loading .ticker { mask-image: none; }
+.board--loading .ticker__track { animation: none; }
+.board--loading .board__table { display: none; }
+
 /* No quotes yet (or none at all): only the heading and the notice stay. */
 .board--empty .ticker, .board--empty .heat, .board--empty .board__legend, .board--empty .board__table { display: none; }
 .board--empty .board__foot { margin-top: 4px; }

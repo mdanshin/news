@@ -876,7 +876,7 @@ function updateMarketBoard() {
     return;
   }
   elMarketBoard.hidden = false;
-  if (!marketData) renderBoardEmpty("Запрашиваем котировки Московской биржи…");
+  if (!marketData) renderBoardSkeleton();
   ensureMarketData().then((snapshot) => {
     if (!boardActive()) return;
     if (snapshot) renderBoard(snapshot, marketData.live);
@@ -913,14 +913,82 @@ function heatStep(change) {
   return `${change > 0 ? "u" : "d"}${level}`;
 }
 
+// Placeholder layout of the heat map while the first quotes are on their way:
+// a treemap-looking arrangement in percentages of the board, three columns of
+// unequal blocks, so the page does not jump when the real tiles replace it.
+const HEAT_GHOSTS = [
+  [0, 0, 38, 55], [0, 55, 20, 45], [20, 55, 18, 45],
+  [38, 0, 34, 40], [38, 40, 17, 30], [55, 40, 17, 30], [38, 70, 34, 30],
+  [72, 0, 28, 30], [72, 30, 14, 35], [86, 30, 14, 35], [72, 65, 28, 35]
+];
+
+function skeletonBar(className, width) {
+  const bar = document.createElement("span");
+  bar.className = `ghost ${className}`.trim();
+  if (width) bar.style.width = width;
+  return bar;
+}
+
+/** Shapes of the board shown until the first answer of the exchange. */
+function renderBoardSkeleton() {
+  elMarketBoard.classList.remove("board--empty");
+  elMarketBoard.classList.add("board--loading");
+  elMarketBoard.setAttribute("aria-busy", "true");
+
+  const indices = $("#boardIndices");
+  if (indices) {
+    indices.replaceChildren();
+    for (const width of ["7.5em", "5em", "8em"]) {
+      const wrap = document.createElement("div");
+      wrap.className = "board__index";
+      wrap.setAttribute("aria-hidden", "true");
+      wrap.append(skeletonBar("ghost--label", width), skeletonBar("ghost--value", "4.5em"));
+      indices.appendChild(wrap);
+    }
+  }
+
+  const track = $("#boardTickerTrack");
+  if (track) {
+    track.replaceChildren();
+    for (let i = 0; i < 16; i += 1) {
+      const quote = document.createElement("span");
+      quote.className = "quote";
+      quote.append(skeletonBar("ghost--text", `${3 + (i % 3)}em`), skeletonBar("ghost--text", "3.5em"));
+      track.appendChild(quote);
+    }
+  }
+  const tickerText = $("#boardTickerText");
+  if (tickerText) tickerText.textContent = "";
+
+  const heat = $("#boardHeat");
+  if (heat) {
+    heat.replaceChildren();
+    for (const [x, y, w, h] of HEAT_GHOSTS) {
+      const ghost = document.createElement("span");
+      ghost.className = "ghost heat__ghost";
+      ghost.style.left = `${x}%`;
+      ghost.style.top = `${y}%`;
+      ghost.style.width = `calc(${w}% - var(--heat-gap))`;
+      ghost.style.height = `calc(${h}% - var(--heat-gap))`;
+      heat.appendChild(ghost);
+    }
+  }
+
+  const meta = $("#boardMeta");
+  if (meta) meta.textContent = "Запрашиваем котировки Московской биржи…";
+}
+
 function renderBoardEmpty(text) {
+  elMarketBoard.classList.remove("board--loading");
   elMarketBoard.classList.add("board--empty");
+  elMarketBoard.setAttribute("aria-busy", "false");
   const meta = $("#boardMeta");
   if (meta) meta.textContent = text;
 }
 
 function renderBoard(parsed, live) {
-  elMarketBoard.classList.remove("board--empty");
+  elMarketBoard.classList.remove("board--empty", "board--loading");
+  elMarketBoard.setAttribute("aria-busy", "false");
   renderBoardIndices(parsed.indices || []);
   renderTicker(parsed.stocks);
   renderHeatmap(parsed.stocks);

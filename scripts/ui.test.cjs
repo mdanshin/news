@@ -325,6 +325,16 @@ test('market board falls back to JSONP when the plain request to the exchange is
   const { document, window, state } = await setup(t, { news: marketsOnly(), saved: ['markets'], iss: 'network' });
   await tick();
   await tick();
+  // While the exchange is still answering, the board keeps its shape.
+  const board = document.querySelector('#marketBoard');
+  assert.equal(board.hidden, false);
+  assert.ok(board.classList.contains('board--loading'));
+  assert.equal(board.getAttribute('aria-busy'), 'true');
+  assert.ok(document.querySelectorAll('#boardHeat .heat__ghost').length >= 8, 'скелетон карты на месте');
+  assert.ok(document.querySelectorAll('#boardIndices .ghost').length >= 3);
+  assert.ok(document.querySelectorAll('#boardTickerTrack .ghost').length >= 16);
+  assert.match(document.querySelector('#boardMeta').textContent, /Запрашиваем/);
+
   const scripts = [...document.head.querySelectorAll('script[src*="iss.moex.com"]')];
   assert.equal(scripts.length, 2, 'после сетевой ошибки оба запроса уходят через script');
   const raw = issFixture();
@@ -338,6 +348,9 @@ test('market board falls back to JSONP when the plain request to the exchange is
   await tick();
   await tick();
   assert.equal(document.querySelectorAll('#boardHeat .heat__tile').length, 4);
+  assert.equal(document.querySelectorAll('#boardHeat .heat__ghost').length, 0, 'скелетон ушёл вместе с ответом');
+  assert.equal(board.classList.contains('board--loading'), false);
+  assert.equal(board.getAttribute('aria-busy'), 'false');
   assert.equal(document.head.querySelectorAll('script[src*="iss.moex.com"]').length, 0, 'временные script убраны');
   assert.ok(!state.calls.includes('data/moex.json'));
 });
