@@ -9,6 +9,7 @@
     "test:classify": "node --test scripts/classify.test.mjs",
     "test:secrets": "node --test scripts/secrets.test.mjs",
     "build:data": "node scripts/build-data.mjs",
+    "build:moex": "node scripts/build-moex.mjs",
     "check:data-secrets": "node scripts/check-data-secrets.mjs"
   },
   "dependencies": {
