@@ -7,6 +7,7 @@ import { JSDOM } from "jsdom";
 import { Readability } from "@mozilla/readability";
 
 import { classifyItem, isKnownCategory } from "./classify.mjs";
+import { redactSensitiveContent } from "./secrets.mjs";
 
 const ROOT = process.cwd();
 const FEEDS_PATH = path.join(ROOT, "data", "feeds.json");
@@ -30,77 +31,6 @@ const HISTORY_MAX_DAYS = 7;
 // Fourteen sources produce well over 1500 items a day, so a lower cap would
 // squeeze small sources out before the seven-day window is used up.
 const HISTORY_MAX_ITEMS = 4000;
-
-const REDACTED_SECRET = "[REDACTED_SECRET]";
-const REDACTED_PRIVATE_KEY = "[REDACTED_PRIVATE_KEY]";
-
-const SECRET_REDACTIONS = [
-  {
-    pattern: /-----BEGIN [^-]{0,80}PRIVATE KEY-----[\s\S]*?-----END [^-]{0,80}PRIVATE KEY-----/g,
-    replacement: REDACTED_PRIVATE_KEY
-  },
-  {
-    pattern: /-----BEGIN (?:RSA |DSA |EC |OPENSSH |PGP )?PRIVATE KEY-----/g,
-    replacement: REDACTED_PRIVATE_KEY
-  },
-  {
-    pattern: /-----END (?:RSA |DSA |EC |OPENSSH |PGP )?PRIVATE KEY-----/g,
-    replacement: REDACTED_PRIVATE_KEY
-  },
-  {
-    pattern: /\b(?:AKIA|ASIA)[0-9A-Z]{16}\b/g,
-    replacement: REDACTED_SECRET
-  },
-  {
-    pattern: /\bghp_[A-Za-z0-9_]{20,}\b/g,
-    replacement: REDACTED_SECRET
-  },
-  {
-    pattern: /\bgithub_pat_[A-Za-z0-9_]+\b/g,
-    replacement: REDACTED_SECRET
-  },
-  {
-    pattern: /\bglpat-[A-Za-z0-9_-]{20,}\b/g,
-    replacement: REDACTED_SECRET
-  },
-  {
-    pattern: /\bnpm_[A-Za-z0-9]{36}\b/g,
-    replacement: REDACTED_SECRET
-  },
-  {
-    pattern: /\bsk-(?:proj|svcacct)-[A-Za-z0-9_-]{20,}\b/g,
-    replacement: REDACTED_SECRET
-  },
-  {
-    pattern: /\bsk-[A-Za-z0-9]{32,}\b/g,
-    replacement: REDACTED_SECRET
-  },
-  {
-    pattern: /\bxox[baprs]-[A-Za-z0-9-]+\b/g,
-    replacement: REDACTED_SECRET
-  },
-  {
-    pattern: /\bAIza[0-9A-Za-z_-]{35}\b/g,
-    replacement: REDACTED_SECRET
-  },
-  {
-    pattern: /\b[0-9]{6,10}:[A-Za-z0-9_-]{35,}\b/g,
-    replacement: REDACTED_SECRET
-  },
-  {
-    pattern: /\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b/g,
-    replacement: REDACTED_SECRET
-  },
-  {
-    pattern: /\b(?:sk_live|rk_live|pk_live)_[A-Za-z0-9]{20,}\b/g,
-    replacement: REDACTED_SECRET
-  }
-];
-
-const URL_CREDENTIAL_PATTERN = /(https?:\/\/[^/\s:@"'<>]+:)(?!\[REDACTED_)([^@\s"'<>]+)(@)/gi;
-const AUTH_HEADER_PATTERN = /(\bAuthorization\s*[:=]\s*["']?(?:Bearer|Basic)\s+)(?!\[REDACTED_)[A-Za-z0-9._~+/=-]{8,}/gi;
-const SENSITIVE_QUERY_PATTERN = /([?&](?:access_token|refresh_token|token|api_key|apikey|key|signature|x-amz-signature|x-amz-credential|awsaccesskeyid)=)(?!\[REDACTED_)[^&#\s"'<>]{8,}/gi;
-const SENSITIVE_ASSIGNMENT_PATTERN = /(\b(?:password|passwd|pwd|secret|token|api[_-]?key|client[_-]?secret|access[_-]?token|refresh[_-]?token|jwt[_-]?secret|private[_-]?key)\b\s*[:=]\s*["'`]?)(?!\[REDACTED_)([^"'`\s<>&;,\\]{8,})/gi;
 
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
@@ -435,23 +365,6 @@ function escapeHtml(s) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
-}
-
-function redactSensitiveContent(value) {
-  if (typeof value !== "string" || value.length === 0) return value || "";
-
-  let out = value;
-  for (const { pattern, replacement } of SECRET_REDACTIONS) {
-    out = out.replace(pattern, replacement);
-  }
-
-  out = out
-    .replace(URL_CREDENTIAL_PATTERN, `$1${REDACTED_SECRET}$3`)
-    .replace(AUTH_HEADER_PATTERN, `$1${REDACTED_SECRET}`)
-    .replace(SENSITIVE_QUERY_PATTERN, `$1${REDACTED_SECRET}`)
-    .replace(SENSITIVE_ASSIGNMENT_PATTERN, `$1${REDACTED_SECRET}`);
-
-  return out;
 }
 
 function redactItemSensitiveContent(item) {

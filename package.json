@@ -4,9 +4,10 @@
   "scripts": {
     "dev": "node dev-server.js",
     "dev:live": "node scripts/dev-live.mjs",
-    "test": "npm run test:ui && npm run test:classify",
+    "test": "npm run test:ui && npm run test:classify && npm run test:secrets",
     "test:ui": "node --test scripts/ui.test.cjs",
     "test:classify": "node --test scripts/classify.test.mjs",
+    "test:secrets": "node --test scripts/secrets.test.mjs",
     "build:data": "node scripts/build-data.mjs",
     "check:data-secrets": "node scripts/check-data-secrets.mjs"
   },
