@@ -731,15 +731,401 @@ function normalizeItem(it) {
   };
 }
 
+/* ── Биржевой блок: бегущая строка и тепловая карта ───────────────────────
+   Показывается, когда единственная выбранная тема — «Фондовый рынок».
+   Данные готовит scripts/build-moex.mjs; страница только рисует. */
+
+const MOEX_URL = "data/moex.json";
+const HEAT_LABEL_HEIGHT = 17;
+// A sector smaller than this share of the board cannot hold a readable label
+// and a tile, so the tail is merged into one "Прочие" group.
+const HEAT_MIN_SECTOR_SHARE = 0.02;
+const HEAT_LABEL_MIN_WIDTH = 92;
+const HEAT_LABEL_MIN_HEIGHT = 46;
+const HEAT_TEXT_MIN_WIDTH = 44;
+const HEAT_TEXT_MIN_HEIGHT = 26;
+const TICKER_QUOTES = 28;
+
+let marketData = null;
+let marketRequest = null;
+let boardShown = false;
+
+const elMarketBoard = $("#marketBoard");
+
+function boardActive() {
+  return Boolean(elMarketBoard) && !IS_AI_SECTION && selected.size === 1 && selected.has("markets");
+}
+
+function ensureMarketData() {
+  if (marketData) return Promise.resolve(marketData);
+  if (!marketRequest) {
+    marketRequest = fetch(MOEX_URL, { cache: "no-cache" })
+      .then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      })
+      .then((parsed) => {
+        if (!parsed || !Array.isArray(parsed.stocks) || parsed.stocks.length === 0) throw new Error("Пустой срез");
+        marketData = parsed;
+        return parsed;
+      })
+      .catch(() => {
+        // Let a later switch back to the section try again.
+        marketRequest = null;
+        return null;
+      });
+  }
+  return marketRequest;
+}
+
+function updateMarketBoard() {
+  if (!elMarketBoard) return;
+  if (!boardActive()) {
+    elMarketBoard.hidden = true;
+    return;
+  }
+  ensureMarketData().then((parsed) => {
+    if (!parsed || !boardActive()) return;
+    elMarketBoard.hidden = false;
+    renderBoard(parsed);
+  });
+}
+
+function formatMoney(value) {
+  const abs = Math.abs(value);
+  if (abs >= 1e9) return `${(value / 1e9).toLocaleString("ru-RU", { maximumFractionDigits: 1 })} млрд ₽`;
+  if (abs >= 1e6) return `${(value / 1e6).toLocaleString("ru-RU", { maximumFractionDigits: 1 })} млн ₽`;
+  return `${Math.round(value).toLocaleString("ru-RU")} ₽`;
+}
+
+function formatChange(change) {
+  const value = Number(change) || 0;
+  return `${value > 0 ? "+" : value < 0 ? "−" : ""}${Math.abs(value).toFixed(2).replace(".", ",")}%`;
+}
+
+function changeClass(change) {
+  return change > 0 ? "is-up" : change < 0 ? "is-down" : "";
+}
+
+/** Step of the diverging scale for a percentage change. */
+function heatStep(change) {
+  const size = Math.abs(change);
+  if (size < 0.1) return "zero";
+  const level = size < 0.5 ? 1 : size < 1.2 ? 2 : size < 2.5 ? 3 : size < 4 ? 4 : 5;
+  return `${change > 0 ? "u" : "d"}${level}`;
+}
+
+function renderBoard(parsed) {
+  renderBoardIndices(parsed.indices || []);
+  renderTicker(parsed.stocks);
+  renderHeatmap(parsed.stocks);
+  renderBoardTable(parsed.stocks);
+  const updated = toAbsTime(parsed.generatedAt);
+  const basis = parsed.stocks.some((stock) => stock.weightBasis === "capitalisation") ? "площадь плитки — капитализация" : "площадь плитки — объём торгов";
+  const meta = $("#boardMeta");
+  if (meta) meta.textContent = [parsed.source || "Московская биржа", updated && `обновлено ${updated}`, basis].filter(Boolean).join(" · ");
+}
+
+function renderBoardIndices(indices) {
+  const host = $("#boardIndices");
+  if (!host) return;
+  host.replaceChildren();
+  for (const index of indices) {
+    const wrap = document.createElement("div");
+    wrap.className = "board__index";
+    const name = document.createElement("span");
+    name.className = "board__indexName";
+    name.textContent = index.name || index.ticker;
+    const value = document.createElement("span");
+    value.className = "board__indexValue";
+    value.textContent = Number(index.value).toLocaleString("ru-RU", { maximumFractionDigits: 2 });
+    const change = document.createElement("span");
+    change.className = `board__indexChange ${changeClass(index.change)}`.trim();
+    change.textContent = index.change === null || index.change === undefined ? "" : formatChange(index.change);
+    wrap.append(name, value, change);
+    host.appendChild(wrap);
+  }
+}
+
+function renderTicker(stocks) {
+  const track = $("#boardTickerTrack");
+  if (!track) return;
+  const quotes = stocks.slice().sort((a, b) => (b.turnover || 0) - (a.turnover || 0)).slice(0, TICKER_QUOTES);
+  track.replaceChildren();
+  // The track holds the list twice so the loop wraps without a visible seam.
+  for (let copy = 0; copy < 2; copy += 1) {
+    for (const stock of quotes) {
+      const quote = document.createElement("span");
+      quote.className = "quote";
+      const ticker = document.createElement("span");
+      ticker.className = "quote__ticker";
+      ticker.textContent = stock.ticker;
+      const price = document.createElement("span");
+      price.className = "quote__price";
+      price.textContent = Number(stock.price).toLocaleString("ru-RU", { maximumFractionDigits: 2 });
+      const change = document.createElement("span");
+      change.className = `quote__change ${changeClass(stock.change)}`.trim();
+      change.textContent = formatChange(stock.change);
+      quote.append(ticker, price, change);
+      track.appendChild(quote);
+    }
+  }
+  // Constant reading speed regardless of how many quotes are in the loop.
+  track.style.animationDuration = `${Math.max(40, quotes.length * 2.6)}s`;
+  const text = $("#boardTickerText");
+  if (text) text.textContent = quotes.map((stock) => `${stock.ticker} ${formatChange(stock.change)}`).join(", ");
+}
+
+/**
+ * Squarified treemap: lays items out in rows along the shorter side, keeping
+ * tiles as close to square as possible. Values must be positive and sorted
+ * from large to small.
+ */
+function squarify(nodes, box) {
+  const placed = [];
+  const queue = nodes.slice();
+  const rect = { ...box };
+  let remaining = queue.reduce((sum, node) => sum + node.value, 0);
+
+  const worstRatio = (values, rowSum, side) => {
+    const area = rect.w * rect.h;
+    const thickness = ((rowSum / remaining) * area) / side;
+    let worst = 0;
+    for (const value of values) {
+      const length = (value / rowSum) * side;
+      if (!length || !thickness) return Infinity;
+      worst = Math.max(worst, thickness / length, length / thickness);
+    }
+    return worst;
+  };
+
+  while (queue.length && remaining > 0 && rect.w > 0 && rect.h > 0) {
+    const vertical = rect.w >= rect.h;
+    const side = vertical ? rect.h : rect.w;
+    const row = [];
+    let rowSum = 0;
+    let best = Infinity;
+
+    while (queue.length) {
+      const candidate = row.concat(queue[0]);
+      const ratio = worstRatio(candidate.map((node) => node.value), rowSum + queue[0].value, side);
+      if (row.length && ratio > best) break;
+      row.push(queue.shift());
+      rowSum += row[row.length - 1].value;
+      best = ratio;
+    }
+
+    const thickness = ((rowSum / remaining) * rect.w * rect.h) / side;
+    let offset = vertical ? rect.y : rect.x;
+    for (const node of row) {
+      const length = (node.value / rowSum) * side;
+      placed.push(
+        vertical
+          ? { node, x: rect.x, y: offset, w: thickness, h: length }
+          : { node, x: offset, y: rect.y, w: length, h: thickness },
+      );
+      offset += length;
+    }
+
+    if (vertical) {
+      rect.x += thickness;
+      rect.w -= thickness;
+    } else {
+      rect.y += thickness;
+      rect.h -= thickness;
+    }
+    remaining -= rowSum;
+  }
+  return placed;
+}
+
+function heatBox() {
+  const host = $("#boardHeat");
+  const rect = host ? host.getBoundingClientRect() : null;
+  // jsdom and a hidden container report zeroes; a nominal box keeps the
+  // layout deterministic instead of collapsing to nothing.
+  const w = rect && rect.width > 0 ? rect.width : 960;
+  const h = rect && rect.height > 0 ? rect.height : 340;
+  return { x: 0, y: 0, w, h };
+}
+
+function renderHeatmap(stocks) {
+  const host = $("#boardHeat");
+  if (!host) return;
+  host.replaceChildren();
+
+  const bySector = new Map();
+  for (const stock of stocks) {
+    const sector = stock.sector || "Прочие";
+    if (!bySector.has(sector)) bySector.set(sector, []);
+    bySector.get(sector).push(stock);
+  }
+
+  let sectors = [...bySector.entries()]
+    .map(([name, members]) => ({
+      name,
+      value: members.reduce((sum, stock) => sum + (Number(stock.weight) || 0), 0),
+      members: members.slice().sort((a, b) => (Number(b.weight) || 0) - (Number(a.weight) || 0))
+    }))
+    .filter((sector) => sector.value > 0)
+    .sort((a, b) => b.value - a.value);
+
+  const total = sectors.reduce((sum, sector) => sum + sector.value, 0);
+  const small = sectors.filter((sector) => sector.value / total < HEAT_MIN_SECTOR_SHARE);
+  if (small.length > 1) {
+    sectors = sectors.filter((sector) => !small.includes(sector));
+    sectors.push({
+      name: "Прочие",
+      value: small.reduce((sum, sector) => sum + sector.value, 0),
+      members: small.flatMap((sector) => sector.members).sort((a, b) => (Number(b.weight) || 0) - (Number(a.weight) || 0))
+    });
+    sectors.sort((a, b) => b.value - a.value);
+  }
+
+  const box = heatBox();
+  const frag = document.createDocumentFragment();
+
+  for (const cell of squarify(sectors, box)) {
+    const group = document.createElement("div");
+    group.className = "heat__group";
+    group.style.left = `${(cell.x / box.w) * 100}%`;
+    group.style.top = `${(cell.y / box.h) * 100}%`;
+    group.style.width = `${(cell.w / box.w) * 100}%`;
+    group.style.height = `${(cell.h / box.h) * 100}%`;
+
+    // A label needs room; a narrow column gives its space to the tiles.
+    const labelled = cell.w >= HEAT_LABEL_MIN_WIDTH && cell.h >= HEAT_LABEL_MIN_HEIGHT;
+    if (labelled) {
+      const label = document.createElement("span");
+      label.className = "heat__groupName";
+      label.textContent = cell.node.name;
+      group.appendChild(label);
+    }
+
+    const top = labelled ? HEAT_LABEL_HEIGHT : 0;
+    const inner = { x: 0, y: top, w: cell.w, h: Math.max(cell.h - top, 1) };
+    for (const tile of squarify(cell.node.members.map((stock) => ({ value: Number(stock.weight) || 0, stock })), inner)) {
+      group.appendChild(renderHeatTile(tile, cell));
+    }
+    frag.appendChild(group);
+  }
+
+  host.appendChild(frag);
+  host.appendChild(createHeatTooltip());
+}
+
+function renderHeatTile(tile, cell) {
+  const stock = tile.node.stock;
+  const step = heatStep(Number(stock.change) || 0);
+  const button = document.createElement("button");
+  button.type = "button";
+  const tiny = tile.w < HEAT_TEXT_MIN_WIDTH || tile.h < HEAT_TEXT_MIN_HEIGHT;
+  const small = tile.w < 62 || tile.h < 34;
+  button.className = `heat__tile${tiny ? " heat__tile--tiny" : small ? " heat__tile--sm" : ""}`;
+  button.style.left = `${(tile.x / cell.w) * 100}%`;
+  button.style.top = `${(tile.y / cell.h) * 100}%`;
+  button.style.width = `calc(${(tile.w / cell.w) * 100}% - var(--heat-gap))`;
+  button.style.height = `calc(${(tile.h / cell.h) * 100}% - var(--heat-gap))`;
+  button.style.setProperty("--fill", `var(--heat-${step})`);
+  button.style.setProperty("--ink", `var(--heat-${step}-ink)`);
+  button.dataset.ticker = stock.ticker;
+
+  const ticker = document.createElement("span");
+  ticker.className = "heat__ticker";
+  ticker.textContent = stock.ticker;
+  const change = document.createElement("span");
+  change.className = "heat__change";
+  change.textContent = formatChange(stock.change);
+  button.append(ticker, change);
+  // The tile always names itself; colour only speeds up scanning.
+  button.setAttribute("aria-label", `${stock.name}, ${formatChange(stock.change)}, цена ${Number(stock.price).toLocaleString("ru-RU")} ₽`);
+
+  const show = () => showHeatTooltip(button, stock);
+  button.addEventListener("mouseenter", show);
+  button.addEventListener("focus", show);
+  button.addEventListener("mouseleave", hideHeatTooltip);
+  button.addEventListener("blur", hideHeatTooltip);
+  return button;
+}
+
+function createHeatTooltip() {
+  const tip = document.createElement("div");
+  tip.className = "heat__tip";
+  tip.id = "heatTip";
+  tip.hidden = true;
+  return tip;
+}
+
+function showHeatTooltip(tile, stock) {
+  const host = $("#boardHeat");
+  const tip = $("#heatTip");
+  if (!host || !tip) return;
+  tip.replaceChildren();
+  const name = document.createElement("b");
+  name.textContent = `${stock.ticker} · ${stock.name}`;
+  const price = document.createElement("div");
+  price.textContent = `${Number(stock.price).toLocaleString("ru-RU", { maximumFractionDigits: 2 })} ₽ · ${formatChange(stock.change)}`;
+  const turnover = document.createElement("span");
+  turnover.textContent = `Оборот: ${formatMoney(Number(stock.turnover) || 0)}`;
+  tip.append(name, price, turnover);
+  tip.hidden = false;
+
+  const hostBox = host.getBoundingClientRect();
+  const tileBox = tile.getBoundingClientRect();
+  const left = Math.min(Math.max(tileBox.left - hostBox.left, 0), Math.max(hostBox.width - tip.offsetWidth, 0));
+  const above = tileBox.top - hostBox.top > tip.offsetHeight + 8;
+  tip.style.left = `${left}px`;
+  tip.style.top = `${above ? tileBox.top - hostBox.top - tip.offsetHeight - 8 : tileBox.bottom - hostBox.top + 8}px`;
+}
+
+function hideHeatTooltip() {
+  const tip = $("#heatTip");
+  if (tip) tip.hidden = true;
+}
+
+function renderBoardTable(stocks) {
+  const table = $("#boardTable");
+  if (!table) return;
+  const caption = table.querySelector("caption");
+  table.replaceChildren();
+  if (caption) table.appendChild(caption);
+
+  const head = document.createElement("tr");
+  for (const title of ["Тикер", "Бумага", "Цена, ₽", "Изменение", "Оборот"]) {
+    const cell = document.createElement("th");
+    cell.scope = "col";
+    cell.textContent = title;
+    head.appendChild(cell);
+  }
+  const thead = document.createElement("thead");
+  thead.appendChild(head);
+  const body = document.createElement("tbody");
+  for (const stock of stocks) {
+    const row = document.createElement("tr");
+    const cells = [stock.ticker, stock.name, Number(stock.price).toLocaleString("ru-RU", { maximumFractionDigits: 2 }), formatChange(stock.change), formatMoney(Number(stock.turnover) || 0)];
+    cells.forEach((text, index) => {
+      const cell = document.createElement(index === 0 ? "th" : "td");
+      if (index === 0) cell.scope = "row";
+      if (index === 3) cell.className = changeClass(stock.change);
+      cell.textContent = text;
+      row.appendChild(cell);
+    });
+    body.appendChild(row);
+  }
+  table.append(thead, body);
+}
+
 function applyFilterAndReset(reason) {
   const wanted = new Set(selectedIds());
   filtered = data.items
     .filter((item) => isSourceVisible(item) && item.categoryIds.some((id) => wanted.has(id)))
     .sort((a, b) => (Date.parse(b.publishedAt) || 0) - (Date.parse(a.publishedAt) || 0));
-  promoteLead(filtered);
+  boardShown = boardActive();
+  if (!boardShown) promoteLead(filtered);
   resetFeed();
   renderNextBatch();
   if (reason !== "Фильтр" && reason !== "Источники") renderSources();
+  updateMarketBoard();
   updateOverview();
   const generated = toAbsTime(data.generatedAt);
   if (loadError) {
@@ -793,7 +1179,7 @@ function renderNextBatch() {
 
 function renderCard(item, index) {
   const card = document.createElement("article");
-  card.className = `card${index === 0 ? " card--lead" : index < 3 ? " card--brief" : ""}`;
+  card.className = `card${index === 0 && !boardShown ? " card--lead" : index < 3 ? " card--brief" : ""}`;
   card.dataset.id = item.id;
   if (item.image) {
     const media = document.createElement("div");

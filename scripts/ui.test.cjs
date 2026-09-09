@@ -29,7 +29,7 @@ function fixture() {
   };
 }
 
-async function setup(t, { news = fixture(), saved, savedTheme, hidden, systemDark = false, fail = false, observer = true, ai = false } = {}) {
+async function setup(t, { news = fixture(), saved, savedTheme, hidden, moex = null, systemDark = false, fail = false, observer = true, ai = false } = {}) {
   const dom = new JSDOM(ai ? aiHtml : html, { url: `https://mdanshin.github.io/news/${ai ? 'ai.html' : ''}`, runScripts: 'outside-only', pretendToBeVisual: true });
   t.after(() => dom.window.close());
   const { window } = dom;
@@ -41,7 +41,7 @@ async function setup(t, { news = fixture(), saved, savedTheme, hidden, systemDar
   };
   window.matchMedia = () => media;
   const state = {
-    news, fail, calls: [], deferred: null, intersect: null, articles: {},
+    news, fail, calls: [], deferred: null, intersect: null, articles: {}, moex,
     setSystemDark(value) {
       media.matches = value;
       themeListeners.forEach((listener) => listener({ matches: value }));
@@ -54,6 +54,10 @@ async function setup(t, { news = fixture(), saved, savedTheme, hidden, systemDar
     state.calls.push(url);
     if (state.deferred) await state.deferred;
     if (state.fail) throw new Error('Offline');
+    if (url === 'data/moex.json') {
+      if (!state.moex) return { ok: false, status: 404, json: async () => ({}) };
+      return { ok: true, json: async () => structuredClone(state.moex) };
+    }
     if (url.startsWith('data/articles/')) {
       const article = state.articles[decodeURIComponent(url.slice('data/articles/'.length, -'.json'.length))];
       if (!article) return { ok: false, status: 404, json: async () => ({}) };
@@ -230,6 +234,59 @@ test('cyber security section collects security stories from any source until the
   assert.equal(document.querySelector('#feedTitle').textContent, 'Кибербезопасность');
   assert.deepEqual([...document.querySelectorAll('.tag')].map((node) => node.textContent), ['Кибербезопасность', 'Кибербезопасность', 'Кибербезопасность', 'Кибербезопасность']);
   assert.equal(document.querySelector('#count-security').textContent, '4');
+});
+
+function moexFixture() {
+  return {
+    generatedAt: '2026-09-09T10:12:00Z',
+    source: 'Московская биржа (ISS)',
+    indices: [{ ticker: 'IMOEX', name: 'Индекс МосБиржи', value: 2841.55, change: -0.34 }],
+    stocks: [
+      { ticker: 'SBER', name: 'Сбербанк', sector: 'Финансы', price: 312.4, change: 1.8, turnover: 9.4e9, weight: 7e12, weightBasis: 'capitalisation' },
+      { ticker: 'GAZP', name: 'Газпром', sector: 'Нефть и газ', price: 128.9, change: -2.6, turnover: 5.1e9, weight: 3e12, weightBasis: 'capitalisation' },
+      { ticker: 'LKOH', name: 'Лукойл', sector: 'Нефть и газ', price: 6800, change: 0.04, turnover: 4.2e9, weight: 4.5e12, weightBasis: 'capitalisation' },
+      { ticker: 'GMKN', name: 'Норникель', sector: 'Металлы', price: 141.2, change: -5.1, turnover: 2.8e9, weight: 2.1e12, weightBasis: 'capitalisation' }
+    ]
+  };
+}
+
+test('market board replaces the lead card in the stock section and stays out of other sections', async (t) => {
+  const news = fixture();
+  for (const item of news.items) item.categoryIds = ['markets', 'business'];
+  const { document } = await setup(t, { news, saved: ['markets'], moex: moexFixture() });
+  await tick();
+  await tick();
+
+  assert.equal(document.querySelector('#marketBoard').hidden, false);
+  assert.equal(document.querySelector('#grid .card--lead'), null, 'большая карточка уступает место карте рынка');
+  assert.equal(document.querySelectorAll('#boardHeat .heat__tile').length, 4);
+  assert.deepEqual([...document.querySelectorAll('#boardHeat .heat__ticker')].map((n) => n.textContent).sort(), ['GAZP', 'GMKN', 'LKOH', 'SBER']);
+  // Colour is never the only channel: every tile names itself and its change.
+  const tile = [...document.querySelectorAll('#boardHeat .heat__tile')].find((node) => node.dataset.ticker === 'SBER');
+  assert.match(tile.getAttribute('aria-label'), /Сбербанк, \+1,80%/);
+  assert.equal(tile.style.getPropertyValue('--fill'), 'var(--heat-u3)');
+  assert.equal([...document.querySelectorAll('#boardHeat .heat__tile')].find((node) => node.dataset.ticker === 'LKOH').style.getPropertyValue('--fill'), 'var(--heat-zero)');
+  assert.equal(document.querySelectorAll('#boardTable tbody tr').length, 4);
+  // The quote line repeats the list so the loop has no seam.
+  assert.equal(document.querySelectorAll('#boardTickerTrack .quote').length, 8);
+  assert.match(document.querySelector('#boardIndices').textContent, /Индекс МосБиржи/);
+  assert.match(document.querySelector('#boardMeta').textContent, /капитализация/);
+
+  // Adding a second topic is no longer "the stock section": the board goes
+  // away and the usual lead card comes back.
+  document.querySelector('#cat-tech').click();
+  assert.equal(document.querySelector('#marketBoard').hidden, true);
+  assert.ok(document.querySelector('#grid .card--lead'), 'вне раздела крупная карточка возвращается');
+});
+
+test('market board stays hidden when its data is unavailable', async (t) => {
+  const news = fixture();
+  for (const item of news.items) item.categoryIds = ['markets'];
+  const { document } = await setup(t, { news, saved: ['markets'] });
+  await tick();
+  await tick();
+  assert.equal(document.querySelector('#marketBoard').hidden, true);
+  assert.ok(ids(document).length > 0, 'лента продолжает работать без биржевых данных');
 });
 
 test('cleared selection persists, explains the empty state and can be restored', async (t) => {

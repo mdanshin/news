@@ -768,7 +768,56 @@ async function main() {
   // classification once more before writing the snapshot.
   items = reclassify(items, cfg);
 
+  dropUnhelpfulImages(items, cfg);
+
   await writeSnapshot(items);
+}
+
+// How many items must share one image before it is treated as a site-wide
+// placeholder. Kept high on purpose: agencies legitimately reuse one archive
+// photo across a handful of related stories.
+const SHARED_IMAGE_LIMIT = 8;
+
+/**
+ * Remove images that illustrate nothing: a site-wide placeholder or logo
+ * reused by dozens of stories, and the auto-generated "social cards" some
+ * sites return as og:image, which are just the headline drawn on a canvas —
+ * the card then repeats the headline twice and the crop cuts the text.
+ * Denied URL fragments per source live in `imageDeny` in data/feeds.json.
+ */
+function dropUnhelpfulImages(items, cfg) {
+  const deny = cfg?.imageDeny || {};
+  const dropped = new Map();
+  const note = (sourceId, reason) => {
+    const key = `${sourceId}: ${reason}`;
+    dropped.set(key, (dropped.get(key) || 0) + 1);
+  };
+
+  for (const item of items) {
+    if (!item.image) continue;
+    for (const fragment of toArray(deny[item.sourceId])) {
+      if (item.image.includes(fragment)) {
+        item.image = "";
+        note(item.sourceId, `шаблон ${fragment}`);
+        break;
+      }
+    }
+  }
+
+  const uses = new Map();
+  for (const item of items) {
+    if (item.image) uses.set(item.image, (uses.get(item.image) || 0) + 1);
+  }
+  for (const item of items) {
+    if (item.image && uses.get(item.image) >= SHARED_IMAGE_LIMIT) {
+      note(item.sourceId, `общая картинка (${uses.get(item.image)} новостей)`);
+      item.image = "";
+    }
+  }
+
+  for (const [key, count] of [...dropped.entries()].sort()) {
+    console.log(`[images] убрано ${count}: ${key}`);
+  }
 }
 
 // Write the index and one article file per item with reader text, and

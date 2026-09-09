@@ -75,6 +75,32 @@
             <div><p class="eyebrow feed__eyebrow">Последние публикации</p><h1 id="feedTitle" tabindex="-1">Ваша лента</h1></div>
             <div class="feed__info"><span id="resultCount"></span><span class="feed__order">Сначала новые</span></div>
           </div>
+          <section class="board" id="marketBoard" aria-labelledby="boardTitle" hidden>
+            <div class="board__head">
+              <div>
+                <p class="eyebrow board__eyebrow">Московская биржа</p>
+                <h2 class="board__title" id="boardTitle">Карта рынка</h2>
+              </div>
+              <div class="board__indices" id="boardIndices"></div>
+            </div>
+            <div class="ticker" id="boardTicker">
+              <div class="ticker__track" id="boardTickerTrack" aria-hidden="true"></div>
+              <span class="visually-hidden" id="boardTickerText"></span>
+            </div>
+            <div class="heat" id="boardHeat"></div>
+            <div class="board__foot">
+              <p class="board__legend" aria-hidden="true">
+                <span>Падение</span>
+                <span class="board__scale"><i class="d5"></i><i class="d4"></i><i class="d3"></i><i class="d2"></i><i class="d1"></i><i class="z"></i><i class="u1"></i><i class="u2"></i><i class="u3"></i><i class="u4"></i><i class="u5"></i></span>
+                <span>Рост</span>
+              </p>
+              <p class="board__meta" id="boardMeta"></p>
+            </div>
+            <details class="board__table">
+              <summary>Показать таблицей</summary>
+              <div class="board__tableWrap"><table id="boardTable"><caption class="visually-hidden">Котировки Московской биржи</caption></table></div>
+            </details>
+          </section>
           <div class="feed__status" id="status" role="status" aria-live="polite">Загружаем новости…</div>
           <div class="feed-state" id="feedState" hidden>
             <span class="feed-state__mark" aria-hidden="true">Л.</span>
