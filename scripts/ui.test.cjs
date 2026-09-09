@@ -389,6 +389,7 @@ test('market board explains itself when no quotes are available at all', async (
   // The notice names what every path answered, so a reader can report it.
   assert.match(meta.textContent, /недоступны \(прямой запрос: HTTP 403; JSONP: Скрипт не загрузился; резерв: HTTP 404\)/);
   assert.equal(document.querySelectorAll('#boardHeat .heat__tile').length, 0);
+  assert.equal(document.querySelectorAll('#marketBoard .ghost').length, 0, 'скелетон не остаётся под сообщением');
   assert.ok(ids(document).length > 0, 'лента продолжает работать без биржевых данных');
 
   // "Повторить" asks again without a reload; this time the exchange answers.

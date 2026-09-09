@@ -1022,6 +1022,12 @@ function renderBoardEmpty(text, retryable) {
   elMarketBoard.classList.remove("board--loading");
   elMarketBoard.classList.add("board--empty");
   elMarketBoard.setAttribute("aria-busy", "false");
+  // The index placeholders of the skeleton are not hidden by the empty
+  // state's styles, so clear them along with the rest.
+  for (const id of ["#boardIndices", "#boardTickerTrack", "#boardHeat"]) {
+    const host = $(id);
+    if (host) host.replaceChildren();
+  }
   const meta = $("#boardMeta");
   if (!meta) return;
   meta.textContent = text;
