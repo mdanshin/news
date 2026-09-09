@@ -11,23 +11,35 @@
 */
 
 const CATEGORY_DEFS = [
-  { id: "world", name: "Мир", color: "var(--accent2)" },
-  { id: "ru", name: "Россия", color: "var(--accent)" },
-  { id: "business", name: "Бизнес", color: "#a8ffcb" },
-  { id: "tech", name: "Технологии", color: "#b6c7ff" },
-  { id: "science", name: "Наука", color: "#ffd1f1" },
-  { id: "health", name: "Здоровье", color: "#ffd28a" },
-  { id: "sports", name: "Спорт", color: "#9bf0ff" },
-  { id: "culture", name: "Культура", color: "#ffb3b3" }
+  { id: "world", name: "Мир" },
+  { id: "ru", name: "Россия" },
+  { id: "business", name: "Бизнес" },
+  { id: "tech", name: "Технологии" },
+  { id: "science", name: "Наука" },
+  { id: "health", name: "Здоровье" },
+  { id: "sports", name: "Спорт" },
+  { id: "culture", name: "Культура" }
 ];
+
+// Local interface icons: no additional runtime or external icon requests.
+const TOPIC_ICONS = {
+  world: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c5 5 5 13 0 18-5-5-5-13 0-18Z"/>',
+  ru: '<path d="m3 9 9-6 9 6H3Zm2 3v6m5-6v6m4-6v6m5-6v6M3 21h18"/>',
+  business: '<rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V3h8v4M3 12c5 3 13 3 18 0M12 12v4"/>',
+  tech: '<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 1v5m6-5v5M9 18v5m6-5v5M1 9h5m-5 6h5m12-6h5m-5 6h5M10 10h4v4h-4z"/>',
+  science: '<path d="M9 3h6M10 3v7L4 19a1 1 0 0 0 1 2h14a1 1 0 0 0 1-2l-6-9V3M7 15h10"/>',
+  health: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>',
+  sports: '<path d="M8 3h8v7a4 4 0 0 1-8 0V3ZM8 5H3v3a4 4 0 0 0 5 4m8-7h5v3a4 4 0 0 1-5 4m-4 2v7m-5 0h10"/>',
+  culture: '<path d="M12 5C8 2 5 3 3 4v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-2-1-5-2-9 1Zm0 0v15"/>'
+};
 
 const DATA_URL = "data/news.json";
 const BATCH_SIZE = 12;
 const STORAGE_KEY = "news:selectedCats:v2";
 const READER_FONT_KEY = "news:readerFontPx:v1";
-const READER_FONT_DEFAULT = 16;
-const READER_FONT_MIN = 13;
-const READER_FONT_MAX = 22;
+const READER_FONT_DEFAULT = 18;
+const READER_FONT_MIN = 14;
+const READER_FONT_MAX = 26;
 const READER_FONT_STEP = 1;
 
 const LOCAL_REBUILD_PATH = "/__rebuild";
@@ -53,6 +65,14 @@ const elModalLink = $("#modalLink");
 const elFontDownBtn = $("#fontDownBtn");
 const elFontUpBtn = $("#fontUpBtn");
 const elFontResetBtn = $("#fontResetBtn");
+const elPageShell = $("#pageShell");
+const elModalCard = $(".modal__card");
+const elModalClose = $("#modalClose");
+const elFeedTitle = $("#feedTitle");
+const elFeedState = $("#feedState");
+const elStateAction = $("#stateAction");
+const elSkeletons = $("#skeletons");
+const elEndSpinner = $("#endSpinner");
 
 /** @type {Set<string>} */
 let selected = new Set(["tech"]);
@@ -63,7 +83,10 @@ let data = { generatedAt: "", items: [] };
 /** @type {Array<any>} */
 let filtered = [];
 let rendered = 0;
-let modalItemId = "";
+let lastFocusedElement = null;
+let isLoading = false;
+let loadError = false;
+let stateActionMode = "all";
 
 let readerFontPx = READER_FONT_DEFAULT;
 
@@ -74,8 +97,94 @@ function isLocalHost() {
   return h === "localhost" || h === "127.0.0.1" || h === "::1";
 }
 
-function setStatus(text) {
+function setStatus(text, error = false) {
   elStatus.textContent = text;
+  elStatus.classList.toggle("is-error", error);
+}
+
+function setLoading(active) {
+  isLoading = active;
+  elRefreshBtn.disabled = active;
+  elRefreshBtn.classList.toggle("is-loading", active);
+  elGrid.setAttribute("aria-busy", String(active));
+  elEndSpinner.hidden = !active;
+  elSkeletons.hidden = !active || data.items.length > 0;
+  if (active && !data.items.length) elFeedState.hidden = true;
+}
+
+function plural(n, forms) {
+  const v = Math.abs(n) % 100;
+  return forms[v > 10 && v < 20 ? 2 : v % 10 === 1 ? 0 : v % 10 >= 2 && v % 10 <= 4 ? 1 : 2];
+}
+
+function compactTime(iso) {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "";
+  const time = new Intl.DateTimeFormat("ru-RU", { hour: "2-digit", minute: "2-digit" }).format(date);
+  const today = new Date();
+  if (date.toDateString() === today.toDateString()) return `Сегодня, ${time}`;
+  const day = new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "short", ...(date.getFullYear() !== today.getFullYear() ? { year: "numeric" } : {}) }).format(date);
+  return `${day}, ${time}`;
+}
+
+function safeHttpUrl(value) {
+  if (typeof value !== "string") return "";
+  try {
+    const url = new URL(value);
+    return ["https:", "http:"].includes(url.protocol) ? url.href : "";
+  } catch {
+    return "";
+  }
+}
+
+function updateOverview() {
+  const ids = selectedIds();
+  const allSelected = ids.length === CATEGORY_DEFS.length;
+  const title = allSelected ? "Все новости" : ids.length === 1 ? categoryById(ids[0]).name : "Ваша лента";
+  elFeedTitle.textContent = title;
+  document.title = `${title} — Лента`;
+  elSelectAllBtn.setAttribute("aria-pressed", String(allSelected));
+  elClearBtn.disabled = ids.length === 0;
+  $("#resultCount").textContent = `${filtered.length.toLocaleString("ru-RU")} ${plural(filtered.length, ["материал", "материала", "материалов"])}`;
+  const allowed = new Set(CATEGORY_DEFS.map((c) => c.id));
+  $("#allCount").textContent = data.items.filter((item) => item.categoryIds.some((id) => allowed.has(id))).length.toLocaleString("ru-RU");
+  for (const category of CATEGORY_DEFS) {
+    const count = data.items.filter((item) => item.categoryIds.includes(category.id)).length;
+    const element = document.getElementById(`count-${category.id}`);
+    if (element) element.textContent = count.toLocaleString("ru-RU");
+  }
+  const generatedAt = toAbsTime(data.generatedAt);
+  const updated = $("#updatedAt");
+  updated.textContent = generatedAt || "—";
+  if (generatedAt) updated.dateTime = data.generatedAt;
+  else updated.removeAttribute("datetime");
+  const sources = new Set(data.items.map((item) => item.sourceName).filter(Boolean)).size;
+  $("#sourceSummary").textContent = sources ? `${sources} ${plural(sources, ["источник", "источника", "источников"])} в общей ленте` : "Новости из разных источников";
+}
+
+function updateEmptyState() {
+  elFeedState.hidden = isLoading || filtered.length > 0;
+  if (elFeedState.hidden) return;
+  let title, description;
+  stateActionMode = "all";
+  if (loadError && !data.items.length) {
+    title = "Не удалось загрузить новости";
+    description = "Проверьте подключение к интернету и попробуйте ещё раз.";
+    stateActionMode = "retry";
+  } else if (!selected.size) {
+    title = "Что вам интересно?";
+    description = "Выберите темы в меню или откройте общую ленту новостей.";
+  } else if (!data.items.length) {
+    title = "Новости скоро появятся";
+    description = "Здесь будут новые публикации. Попробуйте обновить ленту чуть позже.";
+    stateActionMode = "retry";
+  } else {
+    title = "В этих темах пока тихо";
+    description = "Выберите другие темы или посмотрите все последние новости.";
+  }
+  $("#stateTitle").textContent = title;
+  $("#stateText").textContent = description;
+  elStateAction.textContent = stateActionMode === "retry" ? "Попробовать ещё раз" : "Показать все новости";
 }
 
 function formatDate(d) {
@@ -111,7 +220,9 @@ function clampInt(n, min, max) {
 }
 
 function applyReaderFont() {
-  document.documentElement.style.setProperty("--reader-font-size", `${readerFontPx}px`);
+  document.documentElement.style.setProperty("--reader-font-size", `${readerFontPx / 16}rem`);
+  elFontDownBtn.disabled = readerFontPx <= READER_FONT_MIN;
+  elFontUpBtn.disabled = readerFontPx >= READER_FONT_MAX;
 }
 
 function loadReaderFont() {
@@ -188,6 +299,8 @@ function sanitizeHtml(html) {
     if (node.tagName === "A") {
       keep.add("href");
       keep.add("title");
+      keep.add("target");
+      keep.add("rel");
       node.setAttribute("target", "_blank");
       node.setAttribute("rel", "noreferrer noopener");
     }
@@ -195,6 +308,8 @@ function sanitizeHtml(html) {
       keep.add("src");
       keep.add("alt");
       keep.add("title");
+      keep.add("referrerpolicy");
+      keep.add("loading");
       node.setAttribute("referrerpolicy", "no-referrer");
       node.setAttribute("loading", "lazy");
     }
@@ -264,7 +379,7 @@ async function rebuildDataLocally(reason) {
 
   const prev = elRefreshBtn.disabled;
   elRefreshBtn.disabled = true;
-  setStatus(`${reason}: собираю данные…`);
+  setStatus("Обновляем новости…");
   elEndText.textContent = "Собираю новости…";
   try {
     const res = await fetch(`${LOCAL_REBUILD_PATH}?t=${Date.now()}`, { method: "POST", cache: "no-store" });
@@ -325,7 +440,7 @@ function loadSelection() {
     if (!Array.isArray(arr)) return;
     const allowed = new Set(CATEGORY_DEFS.map((c) => c.id));
     const next = arr.filter((x) => typeof x === "string" && allowed.has(x));
-    if (next.length > 0) selected = new Set(next);
+    selected = new Set(next);
   } catch {
     // ignore
   }
@@ -336,44 +451,48 @@ function selectedIds() {
 }
 
 function renderChips() {
-  elChips.innerHTML = "";
+  elChips.replaceChildren();
   const frag = document.createDocumentFragment();
-
-  for (const c of CATEGORY_DEFS) {
+  for (const category of CATEGORY_DEFS) {
     const wrap = document.createElement("div");
     wrap.className = "chip";
-
     const input = document.createElement("input");
     input.type = "checkbox";
-    input.id = `cat-${c.id}`;
-    input.checked = selected.has(c.id);
-
+    input.id = `cat-${category.id}`;
+    input.checked = selected.has(category.id);
     const label = document.createElement("label");
     label.htmlFor = input.id;
-
-    const dot = document.createElement("span");
-    dot.className = "chip__dot";
-    dot.style.background = c.color;
-
+    const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    icon.setAttribute("viewBox", "0 0 24 24");
+    icon.setAttribute("fill", "none");
+    icon.setAttribute("stroke", "currentColor");
+    icon.setAttribute("stroke-width", "1.5");
+    icon.setAttribute("stroke-linecap", "round");
+    icon.setAttribute("stroke-linejoin", "round");
+    icon.setAttribute("aria-hidden", "true");
+    icon.innerHTML = TOPIC_ICONS[category.id];
     const name = document.createElement("span");
     name.className = "chip__name";
-    name.textContent = c.name;
-
-    label.appendChild(dot);
-    label.appendChild(name);
-
+    name.textContent = category.name;
+    const count = document.createElement("span");
+    count.className = "topic-count";
+    count.id = `count-${category.id}`;
+    count.setAttribute("aria-hidden", "true");
+    const check = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    check.setAttribute("viewBox", "0 0 16 16");
+    check.setAttribute("class", "chip__check");
+    check.setAttribute("aria-hidden", "true");
+    check.innerHTML = '<path d="m3 8 3 3 7-7" fill="none" stroke="currentColor" stroke-width="1.5"/>';
+    label.append(icon, name, count, check);
     input.addEventListener("change", () => {
-      if (input.checked) selected.add(c.id);
-      else selected.delete(c.id);
+      if (input.checked) selected.add(category.id);
+      else selected.delete(category.id);
       saveSelection();
       applyFilterAndReset("Фильтр");
     });
-
-    wrap.appendChild(input);
-    wrap.appendChild(label);
+    wrap.append(input, label);
     frag.appendChild(wrap);
   }
-
   elChips.appendChild(frag);
 }
 
@@ -382,11 +501,12 @@ function categoryById(id) {
 }
 
 function normalizeItem(it) {
+  it = it && typeof it === "object" ? it : {};
   const publishedAt = typeof it.publishedAt === "string" ? it.publishedAt : "";
-  const url = typeof it.url === "string" ? it.url : "";
+  const url = safeHttpUrl(it.url);
   const title = typeof it.title === "string" ? it.title : "";
   const excerpt = typeof it.excerpt === "string" ? it.excerpt : "";
-  const image = typeof it.image === "string" ? it.image : "";
+  const image = safeHttpUrl(it.image);
   const sourceName = typeof it.sourceName === "string" ? it.sourceName : "";
   const contentHtml = typeof it.contentHtml === "string" ? it.contentHtml : "";
   const contentTruncated = Boolean(it.contentTruncated);
@@ -410,31 +530,22 @@ function normalizeItem(it) {
 }
 
 function applyFilterAndReset(reason) {
-  const ids = selectedIds();
-  if (ids.length === 0) {
-    filtered = [];
-    resetFeed();
-    elEndText.textContent = "Выберите хотя бы одну категорию";
-    setStatus("Ничего не выбрано");
-    return;
-  }
-
-  const wanted = new Set(ids);
-  const all = Array.isArray(data.items) ? data.items.map(normalizeItem) : [];
-
-  filtered = all
-    .filter((x) => x.categoryIds.some((c) => wanted.has(c)))
-    .sort((a, b) => {
-      const ta = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
-      const tb = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
-      return tb - ta;
-    });
-
+  const wanted = new Set(selectedIds());
+  filtered = data.items
+    .filter((item) => item.categoryIds.some((id) => wanted.has(id)))
+    .sort((a, b) => (Date.parse(b.publishedAt) || 0) - (Date.parse(a.publishedAt) || 0));
   resetFeed();
   renderNextBatch();
-
-  const gen = data.generatedAt ? ` • срез: ${toAbsTime(data.generatedAt)}` : "";
-  setStatus(`${reason}: ${filtered.length}${gen}`);
+  updateOverview();
+  const generated = toAbsTime(data.generatedAt);
+  if (loadError) {
+    setStatus("Не удалось обновить новости. Показываем загруженные материалы.", true);
+  } else if (!selected.size) {
+    setStatus("Выберите темы для своей ленты");
+  } else {
+    const prefix = reason === "Без изменений" ? "Новых публикаций пока нет" : "Лента обновлена";
+    setStatus(generated ? `${prefix} · ${generated}` : "Новости по выбранным темам");
+  }
   updateEndText();
 }
 
@@ -444,225 +555,203 @@ function resetFeed() {
 }
 
 function updateEndText() {
-  if (!data.items || data.items.length === 0) {
-    elEndText.textContent = isLocalHost()
-      ? "Данных пока нет. Локально запустите сборщик: npm run build:data (или npm run dev:live)."
-      : "Данных пока нет. Запустите генератор или дождитесь GitHub Action.";
-    updateEndPoll();
-    return;
-  }
-  if (filtered.length === 0) {
-    elEndText.textContent = "Нет новостей по выбранным категориям";
-    updateEndPoll();
-    return;
-  }
-  if (rendered < filtered.length) {
-    elEndText.textContent = `Показано ${rendered} из ${filtered.length} — листайте дальше`;
-    updateEndPoll();
-    return;
-  }
-  const gen = data.generatedAt ? toAbsTime(data.generatedAt) : "";
-  if (isLocalHost()) {
-    elEndText.textContent = gen
-      ? `Конец текущего среза (обновлён: ${gen}). Нажмите «Обновить» — пересоберу данные локально.`
-      : "Конец текущего среза. Нажмите «Обновить» — пересоберу данные локально.";
+  elEndSpinner.hidden = !isLoading;
+  if (isLoading) {
+    elEndText.textContent = "Загружаем новости…";
+  } else if (!filtered.length) {
+    elEndText.textContent = "";
+  } else if (rendered < filtered.length) {
+    elEndText.textContent = `Показано ${rendered} из ${filtered.length.toLocaleString("ru-RU")} · Листайте дальше`;
   } else {
-    elEndText.textContent = gen
-      ? `Конец текущего среза (обновлён: ${gen}). Новые появятся после обновления данных — нажмите «Обновить» или подождите (проверяю каждые ~3 минуты).`
-      : "Конец текущего среза. Новые появятся после обновления данных — нажмите «Обновить» или подождите (проверяю каждые ~3 минуты).";
+    elEndText.textContent = "Все новости загружены. Проверим новые публикации автоматически.";
   }
+  updateEmptyState();
   updateEndPoll();
 }
 
 function renderNextBatch() {
   const slice = filtered.slice(rendered, rendered + BATCH_SIZE);
-  if (slice.length === 0) return 0;
-
+  if (!slice.length) return 0;
   const frag = document.createDocumentFragment();
-  for (const it of slice) frag.appendChild(renderCard(it));
+  slice.forEach((item, index) => frag.appendChild(renderCard(item, rendered + index)));
   elGrid.appendChild(frag);
   rendered += slice.length;
   return slice.length;
 }
 
-function renderCard(it) {
-  const el = document.createElement("article");
-  el.className = "card";
-  el.tabIndex = 0;
-  el.setAttribute("role", "button");
-  el.setAttribute("aria-label", `Открыть: ${it.title}`);
-  el.dataset.id = it.id;
-
-  const media = document.createElement("div");
-  media.className = "card__media";
-  if (it.image) {
+function renderCard(item, index) {
+  const card = document.createElement("article");
+  card.className = `card${index === 0 ? " card--lead" : index < 3 ? " card--brief" : ""}`;
+  card.dataset.id = item.id;
+  if (item.image) {
+    const media = document.createElement("div");
+    media.className = "card__media";
     const img = document.createElement("img");
-    img.src = it.image;
+    img.src = item.image;
     img.alt = "";
-    img.loading = "lazy";
+    img.loading = index < 3 ? "eager" : "lazy";
+    img.decoding = "async";
+    if (index === 0) img.fetchPriority = "high";
     img.referrerPolicy = "no-referrer";
     img.addEventListener("error", () => {
-      img.remove();
-      const ph = document.createElement("div");
-      ph.className = "ph";
-      ph.textContent = "NEWS";
-      media.appendChild(ph);
-    });
+      media.remove();
+      card.classList.add("card--text");
+    }, { once: true });
     media.appendChild(img);
+    card.appendChild(media);
   } else {
-    const ph = document.createElement("div");
-    ph.className = "ph";
-    ph.textContent = "NEWS";
-    media.appendChild(ph);
+    card.classList.add("card--text");
   }
-
   const body = document.createElement("div");
   body.className = "card__body";
-
   const meta = document.createElement("div");
   meta.className = "card__meta";
-
-  const catId = it.categoryIds[0] || "";
-  const cat = categoryById(catId);
-  if (cat) {
+  const category = categoryById(item.categoryIds.find((id) => selected.has(id)) || item.categoryIds[0]);
+  if (category) {
     const tag = document.createElement("span");
     tag.className = "tag";
-    const dot = document.createElement("span");
-    dot.className = "tag__dot";
-    dot.style.background = cat.color;
-    tag.appendChild(dot);
-    tag.appendChild(document.createTextNode(cat.name));
+    tag.textContent = category.name;
     meta.appendChild(tag);
   }
-
-  const when = document.createElement("span");
-  when.textContent = it.publishedAt ? toAbsTime(it.publishedAt) : "";
-  if (when.textContent) meta.appendChild(when);
-
-  const src = document.createElement("span");
-  src.textContent = it.sourceName ? `• ${it.sourceName}` : "";
-  if (src.textContent) meta.appendChild(src);
-
-  const title = document.createElement("h3");
+  const title = document.createElement("h2");
   title.className = "card__title";
-  title.textContent = it.title;
-
-  const desc = document.createElement("p");
-  desc.className = "card__desc";
-  desc.textContent = it.excerpt || "";
-
-  body.appendChild(meta);
-  body.appendChild(title);
-  if (desc.textContent) body.appendChild(desc);
-
-  el.appendChild(media);
-  el.appendChild(body);
-
-  el.addEventListener("click", () => openModal(it.id));
-  el.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      openModal(it.id);
-    }
+  const open = document.createElement("button");
+  open.type = "button";
+  open.setAttribute("aria-haspopup", "dialog");
+  open.textContent = item.title || "Без заголовка";
+  title.appendChild(open);
+  body.append(meta, title);
+  if (item.excerpt) {
+    const description = document.createElement("p");
+    description.className = "card__desc";
+    description.textContent = item.excerpt;
+    body.appendChild(description);
+  }
+  const footer = document.createElement("div");
+  footer.className = "card__footer";
+  if (item.sourceName) {
+    const source = document.createElement("span");
+    source.className = "card__source";
+    source.textContent = item.sourceName;
+    footer.appendChild(source);
+  }
+  const formatted = compactTime(item.publishedAt);
+  if (formatted) {
+    const time = document.createElement("time");
+    time.className = "card__time";
+    time.dateTime = item.publishedAt;
+    time.textContent = formatted;
+    time.title = toAbsTime(item.publishedAt);
+    footer.appendChild(time);
+  }
+  body.appendChild(footer);
+  card.appendChild(body);
+  open.addEventListener("click", () => openModal(item.id, open));
+  card.addEventListener("click", (event) => {
+    if (event.target.closest("button") || window.getSelection()?.toString()) return;
+    openModal(item.id, open);
   });
-
-  // Stagger reveal
-  el.style.opacity = "0";
-  el.style.transform = "translateY(8px)";
-  requestAnimationFrame(() => {
-    el.style.transition = "opacity 220ms ease, transform 220ms ease";
-    el.style.opacity = "1";
-    el.style.transform = "translateY(0)";
-  });
-
-  return el;
+  return card;
 }
 
-function openModal(id) {
-  const it = filtered.find((x) => x.id === id) || (Array.isArray(data.items) ? data.items.map(normalizeItem).find((x) => x.id === id) : null);
-  if (!it) return;
-
-  modalItemId = id;
-  elModalTitle.textContent = it.title;
-  const meta = [it.publishedAt ? toAbsTime(it.publishedAt) : "", it.sourceName].filter(Boolean).join(" • ");
-  elModalMeta.textContent = meta;
-  elModalLink.href = it.url || "#";
-
-  const html = it.contentHtml ? sanitizeHtml(it.contentHtml) : "";
-  const fallback = it.excerpt ? `<p>${escapeHtml(it.excerpt)}</p>` : "";
-
-  let hint = "";
-  if (it.contentTruncated) {
-    hint =
-      "<p><em>Примечание: текст может быть сокращён сборщиком (ограничение на размер). Откройте первоисточник для полного текста.</em></p>";
-  }
-
-  elModalBody.innerHTML = html ? `${hint}${html}` : (fallback || "<p>Для этой новости в текущем срезе нет текста. Откройте первоисточник.</p>");
-
-  // Apply syntax highlighting after HTML is in DOM.
+function openModal(id, trigger = document.activeElement) {
+  const item = filtered.find((entry) => entry.id === id) || data.items.find((entry) => entry.id === id);
+  if (!item) return;
+  if (!elModal.classList.contains("isOpen")) lastFocusedElement = trigger;
+  elModalTitle.textContent = item.title || "Без заголовка";
+  const category = categoryById(item.categoryIds.find((value) => selected.has(value)) || item.categoryIds[0]);
+  elModalMeta.textContent = [category?.name, item.sourceName, toAbsTime(item.publishedAt)].filter(Boolean).join(" · ");
+  elModalLink.hidden = !item.url;
+  if (item.url) elModalLink.href = item.url;
+  else elModalLink.removeAttribute("href");
+  const html = item.contentHtml ? sanitizeHtml(item.contentHtml) : "";
+  const fallback = item.excerpt ? `<p>${escapeHtml(item.excerpt)}</p>` : "";
+  const note = item.contentTruncated ? '<p class="reader-note">Это сокращённая версия. Полный материал доступен в источнике.</p>' : "";
+  const missingText = item.url ? "Полный текст этой публикации доступен в источнике." : "Текст этой публикации пока недоступен.";
+  elModalBody.innerHTML = html ? `${note}${html}` : `${fallback}<p class="reader-note">${missingText}</p>`;
   highlightModalCode();
-
   elModal.classList.add("isOpen");
   elModal.setAttribute("aria-hidden", "false");
+  elPageShell.inert = true;
   document.body.style.overflow = "hidden";
+  elModalCard.scrollTop = 0;
+  elModalClose.focus({ preventScroll: true });
 }
 
 function closeModal() {
   elModal.classList.remove("isOpen");
   elModal.setAttribute("aria-hidden", "true");
+  elPageShell.inert = false;
   document.body.style.overflow = "";
-  modalItemId = "";
+  if (lastFocusedElement?.isConnected) lastFocusedElement.focus({ preventScroll: true });
+  else elFeedTitle.focus({ preventScroll: true });
+  lastFocusedElement = null;
 }
 
 function bindModal() {
-  elModal.addEventListener("click", (e) => {
-    const t = /** @type {HTMLElement} */ (e.target);
-    if (t?.dataset?.close) closeModal();
+  elModal.addEventListener("click", (event) => {
+    if (event.target.closest("[data-close]")) closeModal();
   });
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && elModal.classList.contains("isOpen")) closeModal();
-
-    // Reader-like zoom controls when modal is open.
+  window.addEventListener("keydown", (event) => {
     if (!elModal.classList.contains("isOpen")) return;
-    const ctrl = e.ctrlKey || e.metaKey;
-    if (!ctrl) return;
-
-    if (e.key === "+" || e.key === "=") {
-      e.preventDefault();
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeModal();
+      return;
+    }
+    if (event.key === "Tab") {
+      const focusable = Array.from(elModalCard.querySelectorAll('button:not(:disabled), a[href], [tabindex="0"]')).filter((element) => !element.hidden);
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === elModalCard)) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    }
+    if (!(event.ctrlKey || event.metaKey)) return;
+    if (event.key === "+" || event.key === "=") {
+      event.preventDefault();
       bumpReaderFont(READER_FONT_STEP);
-    } else if (e.key === "-" || e.key === "_") {
-      e.preventDefault();
+    } else if (event.key === "-" || event.key === "_") {
+      event.preventDefault();
       bumpReaderFont(-READER_FONT_STEP);
-    } else if (e.key === "0") {
-      e.preventDefault();
+    } else if (event.key === "0") {
+      event.preventDefault();
       resetReaderFont();
     }
   });
 }
 
 function bindButtons() {
-  elRefreshBtn.addEventListener("click", async () => {
-    if (isLocalHost()) {
-      try {
-        await rebuildDataLocally("Обновить");
-      } catch (e) {
-        const msg = e instanceof Error ? e.message : String(e);
-        setStatus(`Обновить: не удалось собрать данные (${msg})`);
-      }
-    }
-    await refreshData("Обновить");
-  });
+  elRefreshBtn.addEventListener("click", () => refreshData("Обновить"));
   elClearBtn.addEventListener("click", () => {
     selected = new Set();
     saveSelection();
     renderChips();
     applyFilterAndReset("Сброс");
+    (elFeedState.hidden ? elSelectAllBtn : elStateAction).focus({ preventScroll: true });
   });
   elSelectAllBtn.addEventListener("click", () => {
-    selected = new Set(CATEGORY_DEFS.map((c) => c.id));
+    selected = new Set(CATEGORY_DEFS.map((category) => category.id));
     saveSelection();
     renderChips();
     applyFilterAndReset("Все темы");
+  });
+  elStateAction.addEventListener("click", async () => {
+    if (stateActionMode === "retry") {
+      await refreshData("Обновить");
+      // Restore the retry flow only if the user has not moved to another control.
+      const focus = document.activeElement;
+      if (!elModal.classList.contains("isOpen") && (focus === document.body || focus === elStateAction)) {
+        (elFeedState.hidden ? elFeedTitle : elStateAction).focus({ preventScroll: true });
+      }
+    } else {
+      elSelectAllBtn.click();
+      elFeedTitle.focus();
+    }
   });
 }
 
@@ -681,6 +770,7 @@ function bindInfinite() {
   }
 
   function maybeRenderMore() {
+    if (isLoading || elModal.classList.contains("isOpen")) return;
     // Some browsers won't re-fire IntersectionObserver while the sentinel
     // remains intersecting. Render in a small loop while the end is still near.
     let safety = 0;
@@ -696,15 +786,15 @@ function bindInfinite() {
     if (rendered >= filtered.length) maybeAutoRefresh();
   }
 
-  const io = new IntersectionObserver(
+  const io = typeof IntersectionObserver === "function" ? new IntersectionObserver(
     (entries) => {
       const hit = entries.some((e) => e.isIntersecting);
       if (!hit) return;
       maybeRenderMore();
     },
     { root: null, rootMargin: `${margin}px 0px`, threshold: 0.01 },
-  );
-  io.observe(elEnd);
+  ) : null;
+  io?.observe(elEnd);
 
   // Fallback for cases where IO is flaky.
   let raf = 0;
@@ -722,71 +812,62 @@ function bindInfinite() {
 }
 
 async function maybeAutoRefresh() {
-  if (elModal.classList.contains("isOpen")) return;
+  if (isLoading || !selected.size || document.hidden || elModal.classList.contains("isOpen")) return;
   if (filtered.length > 0 && rendered < filtered.length) return;
-  const now = Date.now();
-  if (now - lastAutoRefreshAttemptAt < AUTO_REFRESH_MS) return;
-  lastAutoRefreshAttemptAt = now;
-
-  const prevGen = typeof data.generatedAt === "string" ? data.generatedAt : "";
-  setStatus("Проверяю обновления…");
-
-  if (isLocalHost()) {
-    try {
-      await rebuildDataLocally("Авто");
-    } catch {
-      // ignore
-    }
-  }
-  try {
-    const res = await fetch(`${DATA_URL}?t=${Date.now()}`, { cache: "no-store" });
-    if (!res.ok) return;
-    const next = await res.json();
-    if (!next || typeof next !== "object") return;
-    if (!Array.isArray(next.items)) return;
-    const nextGen = typeof next.generatedAt === "string" ? next.generatedAt : "";
-    if (nextGen && prevGen && nextGen === prevGen) {
-      const gen = nextGen ? ` • срез: ${toAbsTime(nextGen)}` : "";
-      setStatus(`Без изменений${gen}`);
-      return;
-    }
-    // Swap data and re-filter; keep already rendered cards if possible.
-    data = next;
-    applyFilterAndReset("Обновлено");
-  } catch {
-    // ignore
-  }
+  if (Date.now() - lastAutoRefreshAttemptAt < AUTO_REFRESH_MS) return;
+  await refreshData("Авто");
 }
 
 async function refreshData(reason) {
-  const prevGen = typeof data.generatedAt === "string" ? data.generatedAt : "";
-  setStatus(`${reason}: загружаю…`);
-  elEndText.textContent = "Загружаю…";
+  if (isLoading) return;
+  const previous = data.generatedAt || "";
+  lastAutoRefreshAttemptAt = Date.now();
+  setLoading(true);
+  setStatus(data.items.length ? "Проверяем обновления…" : "Загружаем новости…");
+  updateEndText();
+  let rebuildFailed = false;
   try {
-    const res = await fetch(`${DATA_URL}?t=${Date.now()}`, { cache: "no-store" });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    data = await res.json();
-    if (!data || typeof data !== "object") data = { generatedAt: "", items: [] };
-    if (!Array.isArray(data.items)) data.items = [];
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e);
-    setStatus(`Ошибка данных: ${msg}`);
-    elEndText.textContent = "Не удалось загрузить data/news.json";
-    return;
+    if (isLocalHost() && reason !== "Старт") {
+      try {
+        await rebuildDataLocally(reason);
+      } catch {
+        rebuildFailed = true;
+      }
+    }
+    const response = await fetch(`${DATA_URL}?t=${Date.now()}`, { cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const next = await response.json();
+    if (!next || !Array.isArray(next.items)) throw new Error("Invalid news data");
+    const generatedAt = typeof next.generatedAt === "string" ? next.generatedAt : "";
+    const unchanged = Boolean(previous && generatedAt && previous === generatedAt);
+    loadError = false;
+    if (!unchanged) {
+      data = { generatedAt, items: next.items.filter((item) => item && typeof item === "object").map(normalizeItem) };
+      applyFilterAndReset(reason);
+    } else {
+      updateOverview();
+      setStatus(`Новых публикаций пока нет · ${toAbsTime(generatedAt)}`);
+    }
+    if (rebuildFailed) setStatus("Не удалось обновить источники. Показываем последние доступные новости.", true);
+  } catch {
+    loadError = true;
+    setStatus(data.items.length ? "Не удалось обновить новости. Показываем загруженные материалы." : "Новости временно недоступны. Попробуйте ещё раз.", true);
+  } finally {
+    setLoading(false);
+    updateEndText();
   }
-
-  const nextGen = typeof data.generatedAt === "string" ? data.generatedAt : "";
-  const unchanged = Boolean(prevGen && nextGen && prevGen === nextGen);
-  const label = unchanged && reason === "Обновить" ? "Без изменений" : reason;
-  applyFilterAndReset(label);
 }
 
 function init() {
+  const now = new Date();
+  const today = $("#today");
+  today.dateTime = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  today.textContent = new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "long", year: "numeric" }).format(now);
   loadReaderFont();
   applyReaderFont();
-
   loadSelection();
   renderChips();
+  updateOverview();
   bindButtons();
   bindInfinite();
   bindModal();
