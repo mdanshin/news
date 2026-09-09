@@ -124,12 +124,15 @@ function toArray(v) {
   return Array.isArray(v) ? v : [v];
 }
 
+// Text of a parsed node. The parser represents CDATA as nested `#text`
+// nodes (`{"#text": [{"#text": "…"}], "@_type": "html"}`), so text is
+// collected recursively and adjacent fragments are joined.
 function safeText(x) {
   if (!x) return "";
-  if (Array.isArray(x)) return safeText(x[0]);
+  if (Array.isArray(x)) return x.map(safeText).join("").trim();
   if (typeof x === "string") return x.trim();
   if (typeof x === "number") return String(x);
-  if (typeof x === "object" && typeof x["#text"] === "string") return x["#text"].trim();
+  if (typeof x === "object" && "#text" in x) return safeText(x["#text"]);
   return "";
 }
 
@@ -166,6 +169,37 @@ function normalizeUrl(item) {
   const guid = safeText(item.guid);
   const u = link || guid;
   return u;
+}
+
+/**
+ * Items of a parsed feed in RSS 2.0 item shape. Atom feeds are converted:
+ * `<link href>` becomes `link`, `published`/`updated` become `pubDate`,
+ * `summary`/`content` become `description` and `<category term>` becomes
+ * a plain category string.
+ */
+function parseFeedItems(obj) {
+  const channel = obj?.rss?.channel;
+  if (channel) return toArray(channel.item);
+
+  const feed = obj?.feed;
+  if (!feed) return [];
+  return toArray(feed.entry).map((entry) => {
+    const links = toArray(entry.link);
+    const pick = (rel) => links.find((l) => l && typeof l === "object" && (l["@_rel"] || "alternate") === rel);
+    const alternate = pick("alternate") || links.find((l) => typeof l === "string");
+    const enclosure = pick("enclosure");
+    const link = typeof alternate === "string" ? alternate : alternate?.["@_href"] || "";
+    const categories = toArray(entry.category).map((c) => (c && typeof c === "object" ? c["@_term"] || c["@_label"] || safeText(c) : safeText(c)));
+    return {
+      title: entry.title,
+      link,
+      guid: safeText(entry.id),
+      pubDate: safeText(entry.published) || safeText(entry.updated),
+      description: entry.summary ?? entry.content,
+      category: categories.filter(Boolean),
+      enclosure: enclosure ? { "@_url": enclosure["@_href"] } : undefined
+    };
+  });
 }
 
 function buildId(sourceId, url, publishedAt, title) {
@@ -364,10 +398,17 @@ async function main() {
 
   const sources = toArray(cfg.sources);
 
+  // One unreachable or broken feed must not fail the whole build: the other
+  // sources are still collected and the failure is only logged.
   const fetched = await withPool(
     sources.map((s) => async () => {
-      const xml = await fetchText(s.feedUrl);
-      return { source: s, xml };
+      try {
+        const xml = await fetchText(s.feedUrl);
+        return { source: s, xml };
+      } catch (e) {
+        console.error(`[feed] ${s.id}: fetch failed: ${e?.message || e}`);
+        return { source: s, xml: "" };
+      }
     }),
     3,
   );
@@ -377,9 +418,16 @@ async function main() {
 
   for (const row of fetched) {
     const source = row.source;
-    const obj = parser.parse(row.xml);
-    const channel = obj?.rss?.channel;
-    const rssItems = toArray(channel?.item).slice(0, MAX_ITEMS_PER_SOURCE);
+    if (!row.xml) continue;
+    let feedItems;
+    try {
+      feedItems = parseFeedItems(parser.parse(row.xml));
+    } catch (e) {
+      console.error(`[feed] ${source.id}: parse failed: ${e?.message || e}`);
+      continue;
+    }
+    if (feedItems.length === 0) console.error(`[feed] ${source.id}: no items found`);
+    const rssItems = feedItems.slice(0, MAX_ITEMS_PER_SOURCE);
 
     for (const it of rssItems) {
       const title = safeText(it.title);

@@ -16,6 +16,7 @@ export const CATEGORY_DEFS = {
   business: { name: "Бизнес" },
   tech: { name: "Технологии" },
   ai: { name: "ИИ" },
+  security: { name: "Кибербезопасность" },
   science: { name: "Наука" },
   health: { name: "Здоровье" },
   sports: { name: "Спорт" },
@@ -95,6 +96,17 @@ export function inferCategoriesByText(title, excerpt) {
     )
   ) {
     out.add("health");
+  }
+
+  // Cyber security: attacks, malware, vulnerabilities, leaks, hacking.
+  // "кибер" deliberately excludes e-sports; "утечка" is only counted when it
+  // is a data leak, not a gas or oil leak.
+  if (
+    /(?:кибер(?!спорт)|хакер|взлом|уязвимост|вредонос|шифровальщик|фишинг|эксплойт|ботнет|троян|бэкдор|антивирус|пентест|инфобез|даркнет|информационн(?:ая|ой|ую) безопасност|утечк[а-я]* (?:данных|персональн|баз|информац|парол)|\bddos\b|\bmalware\b|\bransomware\b|\bphishing\b|\bvulnerabilit|\bcve-\d{4}-\d+|\bexploit|\bzero-day\b|\b0-day\b|\binfostealer|\bdata breach|\bcyber ?(?:attack|security|crime|threat)|\bhackers?\b|\bhacked\b|\bbotnet\b|\bbackdoor\b|\bdark ?web\b)/i.test(
+      t,
+    )
+  ) {
+    out.add("security");
   }
 
   return Array.from(out);

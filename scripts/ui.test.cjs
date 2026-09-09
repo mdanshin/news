@@ -9,7 +9,7 @@ const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const aiHtml = fs.readFileSync(path.join(root, 'ai.html'), 'utf8');
 const script = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
 const snapshot = JSON.parse(fs.readFileSync(path.join(root, 'data/news.json'), 'utf8'));
-const categoryIds = ['world', 'ru', 'business', 'tech', 'ai', 'science', 'health', 'sports', 'culture'];
+const categoryIds = ['world', 'ru', 'business', 'tech', 'ai', 'security', 'science', 'health', 'sports', 'culture'];
 const tick = () => new Promise((resolve) => setImmediate(resolve));
 
 function fixture() {
@@ -29,7 +29,7 @@ function fixture() {
   };
 }
 
-async function setup(t, { news = fixture(), saved, savedTheme, systemDark = false, fail = false, observer = true, ai = false } = {}) {
+async function setup(t, { news = fixture(), saved, savedTheme, hidden, systemDark = false, fail = false, observer = true, ai = false } = {}) {
   const dom = new JSDOM(ai ? aiHtml : html, { url: `https://mdanshin.github.io/news/${ai ? 'ai.html' : ''}`, runScripts: 'outside-only', pretendToBeVisual: true });
   t.after(() => dom.window.close());
   const { window } = dom;
@@ -49,6 +49,7 @@ async function setup(t, { news = fixture(), saved, savedTheme, systemDark = fals
   };
   if (saved !== undefined) window.localStorage.setItem('news:selectedCats:v2', JSON.stringify(saved));
   if (savedTheme !== undefined) window.localStorage.setItem('news:theme:v1', savedTheme);
+  if (hidden !== undefined) window.localStorage.setItem('news:hiddenSources:v1', JSON.stringify(hidden));
   window.fetch = async (url) => {
     state.calls.push(url);
     if (state.deferred) await state.deferred;
@@ -128,6 +129,72 @@ test('dedicated AI section contains only AI stories and ignores the main feed se
   assert.equal(document.querySelector('#resultCount').textContent, '2 материала');
   assert.equal(document.querySelector('.section-nav__link[aria-current="page"]').getAttribute('href'), 'ai.html');
   assert.deepEqual([...document.querySelectorAll('.tag')].map((node) => node.textContent), ['ИИ', 'ИИ']);
+});
+
+test('source filter hides sources, persists, keeps counts honest and can be restored', async (t) => {
+  const news = {
+    generatedAt: '2026-09-09T10:00:00Z',
+    items: [
+      { id: 'a1', title: 'Первая от А', categoryIds: ['tech'], publishedAt: '2026-09-09T09:00:00Z', sourceId: 'a', sourceName: 'Альфа', url: 'https://a.example/1' },
+      { id: 'b1', title: 'Первая от Б', categoryIds: ['tech'], publishedAt: '2026-09-09T08:00:00Z', sourceId: 'b', sourceName: 'Бета', url: 'https://b.example/1' },
+      { id: 'a2', title: 'Вторая от А', categoryIds: ['science'], publishedAt: '2026-09-09T07:00:00Z', sourceId: 'a', sourceName: 'Альфа', url: 'https://a.example/2' },
+      { id: 'legacy', title: 'Без идентификатора источника', categoryIds: ['tech'], publishedAt: '2026-09-09T06:00:00Z', sourceName: 'Гамма', url: 'https://c.example/1' }
+    ]
+  };
+  const { document, window } = await setup(t, { news });
+  assert.equal(document.querySelector('#sourcesBlock').hidden, false);
+  assert.deepEqual([...document.querySelectorAll('#sources .chip__name')].map((node) => node.textContent), ['Альфа', 'Бета', 'Гамма']);
+  assert.equal(document.querySelector('#count-src-a').textContent, '2');
+  assert.deepEqual(ids(document), ['a1', 'b1', 'legacy']);
+  assert.equal(document.querySelector('#sourcesAllBtn').disabled, true);
+
+  document.querySelector('#src-a').click();
+  assert.deepEqual(ids(document), ['b1', 'legacy']);
+  assert.equal(window.localStorage.getItem('news:hiddenSources:v1'), '["a"]');
+  assert.equal(document.querySelector('#count-tech').textContent, '2');
+  assert.equal(document.querySelector('#allCount').textContent, '2');
+  assert.equal(document.querySelector('#sourceSummary').textContent, '2 из 3 источников в ленте');
+  assert.equal(document.querySelector('#sourcesAllBtn').disabled, false);
+
+  document.querySelector('#src-b').click();
+  document.querySelector('#src-Гамма').click();
+  assert.deepEqual(ids(document), []);
+  assert.equal(document.querySelector('#feedState').hidden, false);
+  assert.match(document.querySelector('#stateTitle').textContent, /источники выключены/);
+  document.querySelector('#stateAction').click();
+  assert.deepEqual(ids(document), ['a1', 'b1', 'legacy']);
+  assert.equal(window.localStorage.getItem('news:hiddenSources:v1'), '[]');
+
+  const restored = await setup(t, { news, saved: ['tech', 'science'] });
+  assert.deepEqual(ids(restored.document), ['a1', 'b1', 'a2', 'legacy']);
+  const reloaded = await setup(t, { news, saved: ['tech', 'science'], hidden: ['b', 'stale'] });
+  assert.deepEqual(ids(reloaded.document), ['a1', 'a2', 'legacy']);
+  assert.equal(reloaded.document.querySelector('#src-b').checked, false);
+  assert.equal(reloaded.document.querySelector('#src-a').checked, true);
+  assert.equal(reloaded.document.querySelector('#sourceSummary').textContent, '2 из 3 источников в ленте');
+
+  const ai = await setup(t, { news: { ...news, items: news.items.map((item) => ({ ...item, title: `${item.title} про нейросети` })) }, ai: true });
+  assert.equal(ai.document.querySelector('#sourcesBlock').hidden, false);
+  ai.document.querySelector('#src-a').click();
+  assert.deepEqual(ids(ai.document), ['b1', 'legacy']);
+});
+
+test('cyber security section collects security stories from any source until the next build', async (t) => {
+  const news = {
+    generatedAt: '2026-09-09T10:00:00Z',
+    items: [
+      { id: 'leak', title: 'Хакеры взломали крупный банк', excerpt: 'Утечка данных клиентов', categoryIds: ['ru'], publishedAt: '2026-09-09T09:00:00Z', sourceName: 'Источник' },
+      { id: 'cve', title: 'Critical vulnerability CVE-2026-1234 exploited in the wild', excerpt: '', categoryIds: ['tech'], publishedAt: '2026-09-09T08:00:00Z', sourceName: 'Источник' },
+      { id: 'esports', title: 'Киберспортсмены выиграли турнир', excerpt: 'Финал прошёл в Москве', categoryIds: ['sports'], publishedAt: '2026-09-09T07:00:00Z', sourceName: 'Источник' },
+      { id: 'gas', title: 'Утечка газа в жилом доме', excerpt: '', categoryIds: ['ru'], publishedAt: '2026-09-09T06:00:00Z', sourceName: 'Источник' },
+      { id: 'built', title: 'Обзор новых средств защиты', excerpt: '', categoryIds: ['security'], publishedAt: '2026-09-09T05:00:00Z', sourceName: 'Источник' }
+    ]
+  };
+  const { document } = await setup(t, { news, saved: ['security'] });
+  assert.deepEqual(ids(document), ['leak', 'cve', 'built']);
+  assert.equal(document.querySelector('#feedTitle').textContent, 'Кибербезопасность');
+  assert.deepEqual([...document.querySelectorAll('.tag')].map((node) => node.textContent), ['Кибербезопасность', 'Кибербезопасность', 'Кибербезопасность']);
+  assert.equal(document.querySelector('#count-security').textContent, '3');
 });
 
 test('cleared selection persists, explains the empty state and can be restored', async (t) => {
