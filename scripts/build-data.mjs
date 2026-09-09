@@ -41,7 +41,21 @@ function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-async function fetchText(url, { timeoutMs = TIMEOUT_MS, retries = 2 } = {}) {
+const FEED_HEADERS = {
+  "user-agent": "news-aggregator-pages/1.0 (+https://github.com/)"
+};
+
+// Article pages are requested the way a browser would: several sites answer
+// an unknown user agent with 403 or an empty shell.
+const PAGE_HEADERS = {
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+  accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+  "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+  "cache-control": "no-cache",
+  pragma: "no-cache"
+};
+
+async function fetchText(url, { timeoutMs = TIMEOUT_MS, retries = 2, headers = FEED_HEADERS } = {}) {
   let last = null;
   for (let i = 0; i <= retries; i += 1) {
     const ctrl = new AbortController();
@@ -50,9 +64,7 @@ async function fetchText(url, { timeoutMs = TIMEOUT_MS, retries = 2 } = {}) {
       const res = await fetch(url, {
         signal: ctrl.signal,
         redirect: "follow",
-        headers: {
-          "user-agent": "news-aggregator-pages/1.0 (+https://github.com/)"
-        }
+        headers
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return await res.text();
@@ -384,6 +396,29 @@ function redactItemSensitiveContent(item) {
   };
 }
 
+// Round-robin over sources, keeping each source's own order.
+function interleaveBySource(list) {
+  const queues = new Map();
+  for (const x of list) {
+    const key = x.sourceId || "";
+    if (!queues.has(key)) queues.set(key, []);
+    queues.get(key).push(x);
+  }
+  const out = [];
+  const iterators = [...queues.values()].map((q) => q[Symbol.iterator]());
+  let active = iterators.length;
+  while (active > 0) {
+    active = 0;
+    for (const it of iterators) {
+      const next = it.next();
+      if (next.done) continue;
+      active += 1;
+      out.push(next.value);
+    }
+  }
+  return out;
+}
+
 async function withPool(tasks, limit) {
   const out = [];
   let i = 0;
@@ -582,15 +617,26 @@ async function main() {
   // usable picture; don't ask again. Older items are left alone as well.
   const imageCutoff = Date.now() - IMAGE_LOOKUP_MAX_AGE_MS;
   const needsImage = (x) => !x.image && !hasHtml(x) && canRetry(x) && x.publishedAt && new Date(x.publishedAt).getTime() >= imageCutoff;
-  const needText = items.filter(needsText);
-  const needImage = items.filter((x) => !needsText(x) && needsImage(x));
+  // The budget is shared fairly between sources (round-robin, newest first
+  // within a source), so one high-volume source cannot starve the others.
+  const needText = interleaveBySource(items.filter(needsText));
+  const needImage = interleaveBySource(items.filter((x) => !needsText(x) && needsImage(x)));
   const need = [...needText, ...needImage].slice(0, ARTICLE_FETCH_LIMIT);
+
+  /** @type {Map<string, {ok: number, empty: number, failed: number, reasons: Map<string, number>}>} */
+  const fetchStats = new Map();
+  const stat = (sourceId) => {
+    let s = fetchStats.get(sourceId);
+    if (!s) fetchStats.set(sourceId, (s = { ok: 0, empty: 0, failed: 0, reasons: new Map() }));
+    return s;
+  };
 
   await withPool(
     need.map((x) => async () => {
       x.contentTries = (x.contentTries || 0) + 1;
+      const s = stat(x.sourceId);
       try {
-        const html = await fetchText(x.url);
+        const html = await fetchText(x.url, { headers: PAGE_HEADERS });
         const parsed = extractArticleHtml(x.url, html);
         const cleaned = sanitizeReadabilityHtml(parsed.content);
         if (cleaned.html) {
@@ -598,6 +644,9 @@ async function main() {
           // Done: no need to remember attempts once the text is in hand
           // (Habr keeps counting while its rebuild rule still applies).
           if (x.sourceId !== "habr" || cleaned.html.length >= 8000) delete x.contentTries;
+          s.ok += 1;
+        } else {
+          s.empty += 1;
         }
         x.contentTruncated = Boolean(cleaned.truncated);
         x.contentMeta = {
@@ -607,12 +656,20 @@ async function main() {
         if (!x.image && parsed.image) x.image = parsed.image;
         if (!x.excerpt && parsed.text) x.excerpt = parsed.text.slice(0, 240);
         if (!x.title && parsed.title) x.title = parsed.title;
-      } catch {
-        // ignore
+      } catch (e) {
+        s.failed += 1;
+        const reason = e?.name === "AbortError" ? "timeout" : String(e?.message || e).slice(0, 60);
+        s.reasons.set(reason, (s.reasons.get(reason) || 0) + 1);
       }
     }),
     CONCURRENCY,
   );
+
+  // One line per source in the workflow log: how article pages went.
+  for (const [sourceId, s] of [...fetchStats.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+    const reasons = [...s.reasons.entries()].map(([r, n]) => `${r} ×${n}`).join(", ");
+    console.log(`[pages] ${sourceId}: text ${s.ok}, no text ${s.empty}, failed ${s.failed}${reasons ? ` (${reasons})` : ""}`);
+  }
 
   // Article extraction can add a previously missing excerpt, so run the
   // classification once more before writing the snapshot.
