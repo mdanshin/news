@@ -37,6 +37,7 @@ const DATA_URL = "data/news.json";
 const BATCH_SIZE = 12;
 const STORAGE_KEY = "news:selectedCats:v2";
 const READER_FONT_KEY = "news:readerFontPx:v1";
+const THEME_KEY = "news:theme:v1";
 const READER_FONT_DEFAULT = 18;
 const READER_FONT_MIN = 14;
 const READER_FONT_MAX = 26;
@@ -73,6 +74,8 @@ const elFeedState = $("#feedState");
 const elStateAction = $("#stateAction");
 const elSkeletons = $("#skeletons");
 const elEndSpinner = $("#endSpinner");
+const elThemeToggle = $("#themeToggle");
+const elThemeColor = $("#themeColor");
 
 /** @type {Set<string>} */
 let selected = new Set(["tech"]);
@@ -91,6 +94,48 @@ let stateActionMode = "all";
 let readerFontPx = READER_FONT_DEFAULT;
 
 let endPollTimer = 0;
+
+function savedTheme() {
+  try {
+    const value = localStorage.getItem(THEME_KEY);
+    return value === "dark" || value === "light" ? value : "";
+  } catch {
+    return "";
+  }
+}
+
+function systemTheme() {
+  return typeof window.matchMedia === "function" && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+function applyTheme(theme) {
+  const dark = theme === "dark";
+  document.documentElement.dataset.theme = dark ? "dark" : "light";
+  elThemeColor.content = dark ? "#0e1013" : "#fafafa";
+  elThemeToggle.setAttribute("aria-pressed", String(dark));
+  elThemeToggle.setAttribute("aria-label", dark ? "Включить светлую тему" : "Включить тёмную тему");
+  elThemeToggle.title = dark ? "Светлая тема" : "Тёмная тема";
+}
+
+function initTheme() {
+  applyTheme(savedTheme() || systemTheme());
+  elThemeToggle.addEventListener("click", () => {
+    const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    try {
+      localStorage.setItem(THEME_KEY, next);
+    } catch {
+      // The selected theme still applies for the current page.
+    }
+    applyTheme(next);
+  });
+  if (typeof window.matchMedia !== "function") return;
+  const media = window.matchMedia("(prefers-color-scheme: dark)");
+  const syncWithSystem = () => {
+    if (!savedTheme()) applyTheme(media.matches ? "dark" : "light");
+  };
+  if (typeof media.addEventListener === "function") media.addEventListener("change", syncWithSystem);
+  else if (typeof media.addListener === "function") media.addListener(syncWithSystem);
+}
 
 function isLocalHost() {
   const h = window.location.hostname;
@@ -859,6 +904,7 @@ async function refreshData(reason) {
 }
 
 function init() {
+  initTheme();
   const now = new Date();
   const today = $("#today");
   today.dateTime = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
