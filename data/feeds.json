@@ -21,13 +21,65 @@
       "feedUrl": "https://www.kommersant.ru/RSS/main.xml"
     },
     {
+      "id": "rbc",
+      "name": "РБК",
+      "feedUrl": "https://rssexport.rbc.ru/rbcnews/news/30/full.rss"
+    },
+    {
+      "id": "vedomosti",
+      "name": "Ведомости",
+      "feedUrl": "https://www.vedomosti.ru/rss/news"
+    },
+    {
       "id": "habr",
       "name": "Хабр",
       "feedUrl": "https://habr.com/ru/rss/all/all/?fl=ru"
+    },
+    {
+      "id": "3dnews",
+      "name": "3DNews",
+      "feedUrl": "https://3dnews.ru/news/rss/"
+    },
+    {
+      "id": "cnews",
+      "name": "CNews",
+      "feedUrl": "https://www.cnews.ru/inc/rss/news.xml"
+    },
+    {
+      "id": "nplus1",
+      "name": "N + 1",
+      "feedUrl": "https://nplus1.ru/rss"
+    },
+    {
+      "id": "xakep",
+      "name": "Хакер",
+      "feedUrl": "https://xakep.ru/feed/"
+    },
+    {
+      "id": "securitylab",
+      "name": "SecurityLab",
+      "feedUrl": "https://www.securitylab.ru/_services/export/rss/"
+    },
+    {
+      "id": "bleepingcomputer",
+      "name": "BleepingComputer",
+      "feedUrl": "https://www.bleepingcomputer.com/feed/"
+    },
+    {
+      "id": "thehackernews",
+      "name": "The Hacker News",
+      "feedUrl": "https://feeds.feedburner.com/TheHackersNews"
     }
   ],
   "defaultCategoryForSource": {
-    "habr": ["tech"]
+    "habr": ["tech"],
+    "3dnews": ["tech"],
+    "cnews": ["tech"],
+    "nplus1": ["science"],
+    "xakep": ["security"],
+    "securitylab": ["security"],
+    "bleepingcomputer": ["security"],
+    "thehackernews": ["security"]
   },
   "categoryMap": {
     "lenta": {
@@ -110,6 +162,45 @@
       "Hi-Tech": ["tech"],
       "Наука": ["science"],
       "Здоровье": ["health"]
+    },
+    "rbc": {
+      "/politics": ["ru"],
+      "/society": ["ru"],
+      "/economics": ["business"],
+      "/business": ["business"],
+      "/finances": ["business"],
+      "/technology_and_media": ["tech"],
+      "Политика": ["ru"],
+      "Общество": ["ru"],
+      "Экономика": ["business"],
+      "Бизнес": ["business"],
+      "Финансы": ["business"],
+      "Недвижимость": ["business"],
+      "Свое дело": ["business"],
+      "Технологии и медиа": ["tech"],
+      "Спорт": ["sports"]
+    },
+    "vedomosti": {
+      "/politics": ["ru"],
+      "/society": ["ru"],
+      "/economics": ["business"],
+      "/business": ["business"],
+      "/finance": ["business"],
+      "/technology": ["tech"],
+      "/sport": ["sports"],
+      "Политика": ["ru"],
+      "Общество": ["ru"],
+      "Экономика": ["business"],
+      "Бизнес": ["business"],
+      "Финансы": ["business"],
+      "Технологии": ["tech"],
+      "Спорт": ["sports"]
+    },
+    "habr": {
+      "Информационная безопасность": ["security"],
+      "Искусственный интеллект": ["ai"],
+      "Машинное обучение": ["ai"],
+      "Natural Language Processing": ["ai"]
     }
   }
 }

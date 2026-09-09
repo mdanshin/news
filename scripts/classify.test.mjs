@@ -26,7 +26,35 @@ test("feeds.json only references known categories and known sources", () => {
     assert.ok(sourceIds.has(sourceId));
     for (const id of ids) assert.ok(isKnownCategory(id));
   }
-  assert.deepEqual(Object.keys(CATEGORY_DEFS), ["world", "ru", "business", "tech", "ai", "science", "health", "sports", "culture"]);
+  assert.deepEqual(Object.keys(CATEGORY_DEFS), ["world", "ru", "business", "tech", "ai", "security", "science", "health", "sports", "culture"]);
+  const ids = new Set(cfg.sources.map((s) => s.id));
+  assert.equal(ids.size, cfg.sources.length, "source ids must be unique");
+  for (const s of cfg.sources) assert.match(s.feedUrl, /^https:\/\//);
+});
+
+test("security sources and Habr security hub land in the security section", () => {
+  for (const id of ["xakep", "securitylab", "bleepingcomputer", "thehackernews"]) {
+    assert.deepEqual(mapCategories(id, [], `https://example.com/${id}/1`, cfg), ["security"], id);
+  }
+  assert.deepEqual(mapCategories("habr", ["Информационная безопасность", "Kubernetes"], "https://habr.com/ru/articles/1/", cfg), ["security", "tech"]);
+  assert.deepEqual(mapCategories("habr", ["Машинное обучение"], "https://habr.com/ru/articles/1/", cfg), ["ai", "tech"]);
+  assert.deepEqual(mapCategories("nplus1", ["Физика"], "https://nplus1.ru/news/2026/09/09/x", cfg), ["science"]);
+  assert.deepEqual(mapCategories("3dnews", [], "https://3dnews.ru/1", cfg), ["tech"]);
+  assert.deepEqual(mapCategories("rbc", ["Политика"], "https://www.rbc.ru/rbcfreenews/1", cfg), ["ru"]);
+  assert.deepEqual(mapCategories("rbc", ["Общество"], "https://www.rbc.ru/technology_and_media/09/09/2026/1", cfg), ["tech"]);
+  assert.deepEqual(mapCategories("vedomosti", ["Мнения"], "https://www.vedomosti.ru/opinion/articles/2026/09/09/x", cfg), []);
+  assert.deepEqual(mapCategories("vedomosti", ["Технологии"], "https://www.vedomosti.ru/technology/news/2026/09/09/x", cfg), ["tech"]);
+});
+
+test("security text rules catch attacks, malware and data leaks but not e-sports or gas leaks", () => {
+  assert.deepEqual(inferCategoriesByText("Хакеры взломали крупный банк", "утечка данных клиентов"), ["security"]);
+  assert.deepEqual(inferCategoriesByText("Critical vulnerability CVE-2026-1234 exploited in the wild", ""), ["security"]);
+  assert.deepEqual(inferCategoriesByText("Новый шифровальщик атакует больницы", ""), ["health", "security"]);
+  assert.deepEqual(inferCategoriesByText("Нейросеть научили искать уязвимости", ""), ["ai", "security"]);
+  assert.deepEqual(inferCategoriesByText("Ransomware gang leaks data", "dark web forum"), ["security"]);
+  assert.deepEqual(inferCategoriesByText("Киберспортсмены выиграли турнир", ""), []);
+  assert.deepEqual(inferCategoriesByText("Утечка газа в жилом доме", ""), []);
+  assert.deepEqual(inferCategoriesByText("Хакатон собрал студентов", ""), []);
 });
 
 test("source sections without a matching site category are not forced into one", () => {

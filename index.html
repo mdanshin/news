@@ -6,7 +6,7 @@
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" id="themeColor" content="#fafafa" />
     <title>Лента — новости по вашим темам</title>
-    <meta name="description" content="Новости мира, бизнеса, технологий и культуры в одной ленте. Выбирайте темы и читайте материалы из разных источников." />
+    <meta name="description" content="Новости мира, бизнеса, технологий, кибербезопасности и культуры в одной ленте. Выбирайте темы и источники, читайте материалы в одном месте." />
     <script>
       (() => {
         try {
@@ -59,6 +59,10 @@
           </button>
           <div class="chips" id="chips" role="group" aria-label="Выберите одну или несколько тем"></div>
           <p class="sidebar__hint">Выберите несколько тем,<br class="desktop-break" /> чтобы собрать свою ленту.</p>
+          <div class="sources" id="sourcesBlock" hidden>
+            <div class="sidebar__head sources__head"><h2 class="eyebrow">Источники</h2><button class="text-btn" id="sourcesAllBtn" type="button">Все</button></div>
+            <div class="chips chips--sources" id="sources" role="group" aria-label="Выберите источники новостей"></div>
+          </div>
           <div class="edition">
             <span class="edition__rule" aria-hidden="true"></span>
             <p class="eyebrow">Последнее обновление</p>

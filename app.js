@@ -16,6 +16,9 @@ const CATEGORY_DEFS = [
   { id: "business", name: "Бизнес" },
   { id: "tech", name: "Технологии" },
   { id: "ai", name: "ИИ" },
+  // `chipName` carries a soft hyphen so the narrow sidebar breaks the word
+  // at a syllable instead of mid-word.
+  { id: "security", name: "Кибербезопасность", chipName: "Кибер­безопасность" },
   { id: "science", name: "Наука" },
   { id: "health", name: "Здоровье" },
   { id: "sports", name: "Спорт" },
@@ -29,6 +32,7 @@ const TOPIC_ICONS = {
   business: '<rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V3h8v4M3 12c5 3 13 3 18 0M12 12v4"/>',
   tech: '<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 1v5m6-5v5M9 18v5m6-5v5M1 9h5m-5 6h5m12-6h5m-5 6h5M10 10h4v4h-4z"/>',
   ai: '<path d="M8 4.5A3.5 3.5 0 0 1 14.2 3a3.5 3.5 0 0 1 4.3 4.3A3.5 3.5 0 0 1 20 13.5a3.5 3.5 0 0 1-4.3 4.3A3.5 3.5 0 0 1 9.5 19a3.5 3.5 0 0 1-4.3-4.3A3.5 3.5 0 0 1 4 8.5 3.5 3.5 0 0 1 8 4.5Z"/><path d="M9 9v6m6-6v6M7.5 12h3m3 0h3"/>',
+  security: '<path d="M12 3 4 6v6c0 5 3.4 8.6 8 9.5 4.6-.9 8-4.5 8-9.5V6l-8-3Z"/><path d="m9 12 2 2 4-4"/>',
   science: '<path d="M9 3h6M10 3v7L4 19a1 1 0 0 0 1 2h14a1 1 0 0 0 1-2l-6-9V3M7 15h10"/>',
   health: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>',
   sports: '<path d="M8 3h8v7a4 4 0 0 1-8 0V3ZM8 5H3v3a4 4 0 0 0 5 4m8-7h5v3a4 4 0 0 1-5 4m-4 2v7m-5 0h10"/>',
@@ -38,6 +42,9 @@ const TOPIC_ICONS = {
 const DATA_URL = "data/news.json";
 const BATCH_SIZE = 12;
 const STORAGE_KEY = "news:selectedCats:v2";
+// Sources are stored as an exclusion list so that a source added later is
+// visible by default.
+const HIDDEN_SOURCES_KEY = "news:hiddenSources:v1";
 const READER_FONT_KEY = "news:readerFontPx:v1";
 const THEME_KEY = "news:theme:v1";
 const READER_FONT_DEFAULT = 18;
@@ -55,6 +62,9 @@ let lastAutoRefreshAttemptAt = 0;
 const $ = (sel) => document.querySelector(sel);
 const elGrid = $("#grid");
 const elChips = $("#chips");
+const elSources = $("#sources");
+const elSourcesBlock = $("#sourcesBlock");
+const elSourcesAllBtn = $("#sourcesAllBtn");
 const elStatus = $("#status");
 const elEndText = $("#endText");
 const elEnd = $("#end");
@@ -82,6 +92,9 @@ const elThemeColor = $("#themeColor");
 
 /** @type {Set<string>} */
 let selected = new Set(IS_AI_SECTION ? ["ai"] : ["tech"]);
+
+/** Source ids the reader switched off. @type {Set<string>} */
+let hiddenSources = new Set();
 
 /** @type {{generatedAt?: string, items?: any[]}} */
 let data = { generatedAt: "", items: [] };
@@ -190,6 +203,25 @@ function isAiNews(title, excerpt) {
   return /(?:искусственн(?:ый|ого|ому|ым|ом) интеллект|нейросет|нейронн(?:ая|ые|ой|ую) сет|генеративн(?:ый|ого|ому|ым|ом) ии|машинн(?:ое|ого|ому|ым|ом) обучен|больш(?:ая|ой|ую|ие|их) языков(?:ая|ой|ую|ые|ых) модел|(?:^|[^а-яёa-z0-9])ии(?:$|[^а-яёa-z0-9])|\bartificial intelligence\b|\bgenerative ai\b|\bmachine learning\b|\bdeep learning\b|\blarge language models?\b|\bllms?\b|\bchatgpt\b|\bopenai\b|\banthropic\b|\bclaude (?:ai|\d|model)\b|(?:модель|model)\s+claude\b|\bgoogle gemini\b|(?:модель|model)\s+gemini\b|\bgemini (?:ai|\d)\b|\bgpt-?\d)/i.test(text);
 }
 
+function isSecurityNews(title, excerpt) {
+  const text = `${title || ""} ${excerpt || ""}`.toLowerCase();
+  return /(?:кибер(?!спорт)|хакер|взлом|уязвимост|вредонос|шифровальщик|фишинг|эксплойт|ботнет|троян|бэкдор|антивирус|пентест|инфобез|даркнет|информационн(?:ая|ой|ую) безопасност|утечк[а-я]* (?:данных|персональн|баз|информац|парол)|\bddos\b|\bmalware\b|\bransomware\b|\bphishing\b|\bvulnerabilit|\bcve-\d{4}-\d+|\bexploit|\bzero-day\b|\b0-day\b|\binfostealer|\bdata breach|\bcyber ?(?:attack|security|crime|threat)|\bhackers?\b|\bhacked\b|\bbotnet\b|\bbackdoor\b|\bdark ?web\b)/i.test(text);
+}
+
+/** Sources present in the loaded snapshot, alphabetically by name. */
+function knownSources() {
+  const byId = new Map();
+  for (const item of data.items) {
+    if (!item.sourceId || byId.has(item.sourceId)) continue;
+    byId.set(item.sourceId, { id: item.sourceId, name: item.sourceName || item.sourceId });
+  }
+  return Array.from(byId.values()).sort((a, b) => a.name.localeCompare(b.name, "ru"));
+}
+
+function isSourceVisible(item) {
+  return !item.sourceId || !hiddenSources.has(item.sourceId);
+}
+
 function updateOverview() {
   const ids = selectedIds();
   const allSelected = ids.length === CATEGORY_DEFS.length;
@@ -200,20 +232,32 @@ function updateOverview() {
   elClearBtn.disabled = ids.length === 0;
   $("#resultCount").textContent = `${filtered.length.toLocaleString("ru-RU")} ${plural(filtered.length, ["материал", "материала", "материалов"])}`;
   const allowed = new Set(CATEGORY_DEFS.map((c) => c.id));
-  $("#allCount").textContent = data.items.filter((item) => item.categoryIds.some((id) => allowed.has(id))).length.toLocaleString("ru-RU");
+  const visible = data.items.filter(isSourceVisible);
+  $("#allCount").textContent = visible.filter((item) => item.categoryIds.some((id) => allowed.has(id))).length.toLocaleString("ru-RU");
   for (const category of CATEGORY_DEFS) {
-    const count = data.items.filter((item) => item.categoryIds.includes(category.id)).length;
+    const count = visible.filter((item) => item.categoryIds.includes(category.id)).length;
     const element = document.getElementById(`count-${category.id}`);
     if (element) element.textContent = count.toLocaleString("ru-RU");
   }
+  const sourceScope = IS_AI_SECTION ? data.items.filter((item) => item.categoryIds.includes("ai")) : data.items;
+  for (const source of knownSources()) {
+    const element = document.getElementById(`count-src-${source.id}`);
+    if (element) element.textContent = sourceScope.filter((item) => item.sourceId === source.id).length.toLocaleString("ru-RU");
+  }
+  if (elSourcesAllBtn) elSourcesAllBtn.disabled = hiddenSources.size === 0;
   const generatedAt = toAbsTime(data.generatedAt);
   const updated = $("#updatedAt");
   updated.textContent = generatedAt || "—";
   if (generatedAt) updated.dateTime = data.generatedAt;
   else updated.removeAttribute("datetime");
-  const sourceItems = IS_AI_SECTION ? filtered : data.items;
-  const sources = new Set(sourceItems.map((item) => item.sourceName).filter(Boolean)).size;
-  $("#sourceSummary").textContent = sources ? `${sources} ${plural(sources, ["источник", "источника", "источников"])} в общей ленте` : "Новости из разных источников";
+  const total = new Set(sourceScope.map((item) => item.sourceId || item.sourceName).filter(Boolean)).size;
+  const shown = new Set(sourceScope.filter(isSourceVisible).map((item) => item.sourceId || item.sourceName).filter(Boolean)).size;
+  const summary = !total
+    ? "Новости из разных источников"
+    : shown === total
+      ? `${total} ${plural(total, ["источник", "источника", "источников"])} в общей ленте`
+      : `${shown} из ${total} ${plural(total, ["источника", "источников", "источников"])} в ленте`;
+  $("#sourceSummary").textContent = summary;
 }
 
 function updateEmptyState() {
@@ -236,13 +280,17 @@ function updateEmptyState() {
     title = "Новости скоро появятся";
     description = "Здесь будут новые публикации. Попробуйте обновить ленту чуть позже.";
     stateActionMode = "retry";
+  } else if (hiddenSources.size && !data.items.some(isSourceVisible)) {
+    title = "Все источники выключены";
+    description = "Включите хотя бы один источник в меню, чтобы увидеть новости.";
+    stateActionMode = "sources";
   } else {
     title = "В этих темах пока тихо";
     description = "Выберите другие темы или посмотрите все последние новости.";
   }
   $("#stateTitle").textContent = title;
   $("#stateText").textContent = description;
-  elStateAction.textContent = stateActionMode === "retry" ? "Попробовать ещё раз" : "Показать все новости";
+  elStateAction.textContent = stateActionMode === "retry" ? "Попробовать ещё раз" : stateActionMode === "sources" ? "Включить все источники" : "Показать все новости";
 }
 
 function formatDate(d) {
@@ -510,6 +558,68 @@ function selectedIds() {
   return CATEGORY_DEFS.filter((c) => selected.has(c.id)).map((c) => c.id);
 }
 
+function saveHiddenSources() {
+  try {
+    localStorage.setItem(HIDDEN_SOURCES_KEY, JSON.stringify(Array.from(hiddenSources)));
+  } catch {
+    // ignore
+  }
+}
+
+function loadHiddenSources() {
+  try {
+    const raw = localStorage.getItem(HIDDEN_SOURCES_KEY);
+    if (!raw) return;
+    const arr = JSON.parse(raw);
+    if (!Array.isArray(arr)) return;
+    hiddenSources = new Set(arr.filter((x) => typeof x === "string" && x));
+  } catch {
+    // ignore
+  }
+}
+
+function renderSources() {
+  if (!elSources) return;
+  const sources = knownSources();
+  // Ids that are no longer in the snapshot are dropped so the stored list
+  // cannot grow forever, but a source that merely has no items today is kept.
+  elSources.replaceChildren();
+  if (elSourcesBlock) elSourcesBlock.hidden = sources.length < 2;
+  const frag = document.createDocumentFragment();
+  for (const source of sources) {
+    const wrap = document.createElement("div");
+    wrap.className = "chip chip--source";
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.id = `src-${source.id}`;
+    input.checked = !hiddenSources.has(source.id);
+    const label = document.createElement("label");
+    label.htmlFor = input.id;
+    const name = document.createElement("span");
+    name.className = "chip__name";
+    name.textContent = source.name;
+    const count = document.createElement("span");
+    count.className = "topic-count";
+    count.id = `count-src-${source.id}`;
+    count.setAttribute("aria-hidden", "true");
+    const check = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    check.setAttribute("viewBox", "0 0 16 16");
+    check.setAttribute("class", "chip__check");
+    check.setAttribute("aria-hidden", "true");
+    check.innerHTML = '<path d="m3 8 3 3 7-7" fill="none" stroke="currentColor" stroke-width="1.5"/>';
+    label.append(name, count, check);
+    input.addEventListener("change", () => {
+      if (input.checked) hiddenSources.delete(source.id);
+      else hiddenSources.add(source.id);
+      saveHiddenSources();
+      applyFilterAndReset("Источники");
+    });
+    wrap.append(input, label);
+    frag.appendChild(wrap);
+  }
+  elSources.appendChild(frag);
+}
+
 function renderChips() {
   elChips.replaceChildren();
   const frag = document.createDocumentFragment();
@@ -533,7 +643,7 @@ function renderChips() {
     icon.innerHTML = TOPIC_ICONS[category.id];
     const name = document.createElement("span");
     name.className = "chip__name";
-    name.textContent = category.name;
+    name.textContent = category.chipName || category.name;
     const count = document.createElement("span");
     count.className = "topic-count";
     count.id = `count-${category.id}`;
@@ -568,12 +678,14 @@ function normalizeItem(it) {
   const excerpt = typeof it.excerpt === "string" ? it.excerpt : "";
   const image = safeHttpUrl(it.image);
   const sourceName = typeof it.sourceName === "string" ? it.sourceName : "";
+  const sourceId = typeof it.sourceId === "string" && it.sourceId ? it.sourceId : sourceName;
   const contentHtml = typeof it.contentHtml === "string" ? it.contentHtml : "";
   const contentTruncated = Boolean(it.contentTruncated);
   const contentMeta = it && typeof it.contentMeta === "object" ? it.contentMeta : null;
   const id = typeof it.id === "string" ? it.id : `${url}:${publishedAt}`;
   const categoryIds = new Set(Array.isArray(it.categoryIds) ? it.categoryIds.filter((x) => typeof x === "string") : []);
   if (isAiNews(title, excerpt)) categoryIds.add("ai");
+  if (isSecurityNews(title, excerpt)) categoryIds.add("security");
 
   return {
     id,
@@ -581,6 +693,7 @@ function normalizeItem(it) {
     title,
     excerpt,
     image,
+    sourceId,
     sourceName,
     publishedAt,
     categoryIds: Array.from(categoryIds),
@@ -593,10 +706,11 @@ function normalizeItem(it) {
 function applyFilterAndReset(reason) {
   const wanted = new Set(selectedIds());
   filtered = data.items
-    .filter((item) => item.categoryIds.some((id) => wanted.has(id)))
+    .filter((item) => isSourceVisible(item) && item.categoryIds.some((id) => wanted.has(id)))
     .sort((a, b) => (Date.parse(b.publishedAt) || 0) - (Date.parse(a.publishedAt) || 0));
   resetFeed();
   renderNextBatch();
+  if (reason !== "Фильтр" && reason !== "Источники") renderSources();
   updateOverview();
   const generated = toAbsTime(data.generatedAt);
   if (loadError) {
@@ -801,8 +915,17 @@ function bindButtons() {
     renderChips();
     applyFilterAndReset("Все темы");
   });
+  elSourcesAllBtn?.addEventListener("click", () => {
+    hiddenSources = new Set();
+    saveHiddenSources();
+    renderSources();
+    applyFilterAndReset("Источники");
+  });
   elStateAction.addEventListener("click", async () => {
-    if (stateActionMode === "retry") {
+    if (stateActionMode === "sources") {
+      elSourcesAllBtn?.click();
+      elFeedTitle.focus();
+    } else if (stateActionMode === "retry") {
       await refreshData("Обновить");
       // Restore the retry flow only if the user has not moved to another control.
       const focus = document.activeElement;
@@ -928,7 +1051,9 @@ function init() {
   loadReaderFont();
   applyReaderFont();
   loadSelection();
+  loadHiddenSources();
   renderChips();
+  renderSources();
   updateOverview();
   bindButtons();
   bindInfinite();
