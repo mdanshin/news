@@ -28,12 +28,26 @@ function fixture() {
   };
 }
 
-async function setup(t, { news = fixture(), saved, fail = false, observer = true } = {}) {
+async function setup(t, { news = fixture(), saved, savedTheme, systemDark = false, fail = false, observer = true } = {}) {
   const dom = new JSDOM(html, { url: 'https://mdanshin.github.io/news/', runScripts: 'outside-only', pretendToBeVisual: true });
   t.after(() => dom.window.close());
   const { window } = dom;
-  const state = { news, fail, calls: [], deferred: null, intersect: null };
+  const themeListeners = [];
+  const media = {
+    matches: systemDark,
+    addEventListener(event, listener) { if (event === 'change') themeListeners.push(listener); },
+    addListener(listener) { themeListeners.push(listener); }
+  };
+  window.matchMedia = () => media;
+  const state = {
+    news, fail, calls: [], deferred: null, intersect: null,
+    setSystemDark(value) {
+      media.matches = value;
+      themeListeners.forEach((listener) => listener({ matches: value }));
+    }
+  };
   if (saved !== undefined) window.localStorage.setItem('news:selectedCats:v2', JSON.stringify(saved));
+  if (savedTheme !== undefined) window.localStorage.setItem('news:theme:v1', savedTheme);
   window.fetch = async (url) => {
     state.calls.push(url);
     if (state.deferred) await state.deferred;
@@ -77,6 +91,24 @@ test('real snapshot: selection, combined topics, chronological batches and sourc
   assert.deepEqual(rendered, all.slice(0, rendered.length).map((item) => item.id));
   assert.match(document.querySelector('#resultCount').textContent.replace(/\s/g, ''), new RegExp(`^${all.length}`));
   assert.ok(state.calls.every((url) => url.startsWith('data/news.json?')));
+});
+
+test('theme follows the system until a manual choice is saved', async (t) => {
+  const { document, window, state } = await setup(t, { systemDark: true });
+  const toggle = document.querySelector('#themeToggle');
+  assert.equal(document.documentElement.dataset.theme, 'dark');
+  assert.equal(document.querySelector('#themeColor').content, '#0e1013');
+  assert.equal(toggle.getAttribute('aria-pressed'), 'true');
+  assert.equal(toggle.getAttribute('aria-label'), 'Включить светлую тему');
+  toggle.click();
+  assert.equal(document.documentElement.dataset.theme, 'light');
+  assert.equal(window.localStorage.getItem('news:theme:v1'), 'light');
+  assert.equal(toggle.getAttribute('aria-label'), 'Включить тёмную тему');
+  state.setSystemDark(false);
+  state.setSystemDark(true);
+  assert.equal(document.documentElement.dataset.theme, 'light');
+  const restored = await setup(t, { savedTheme: 'dark', systemDark: false });
+  assert.equal(restored.document.documentElement.dataset.theme, 'dark');
 });
 
 test('cleared selection persists, explains the empty state and can be restored', async (t) => {
