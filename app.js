@@ -100,8 +100,8 @@ let selected = new Set(IS_AI_SECTION ? ["ai"] : ["tech"]);
 /** Source ids the reader switched off. @type {Set<string>} */
 let hiddenSources = new Set();
 
-/** @type {{generatedAt?: string, items?: any[]}} */
-let data = { generatedAt: "", items: [] };
+/** @type {{generatedAt?: string, items?: any[], stories?: any[]}} */
+let data = { generatedAt: "", items: [], stories: [] };
 
 /** @type {Array<any>} */
 let filtered = [];
@@ -1931,13 +1931,232 @@ function renderSession(session, live, generatedAt) {
 }
 
 
+/* ── Сюжеты: сколько источников пишут об одном событии ────────────────────
+   Сборщик склеивает похожие публикации в сюжеты (scripts/stories.mjs) и
+   кладёт в индекс те, что есть в нескольких источниках. Число источников
+   это единственный доступный сигнал популярности: счётчиков просмотров у
+   статического сайта нет. */
+
+const SORT_KEY = "news:sort:v1";
+const RANK_HALF_LIFE_HOURS = 24;
+const TOP_STORIES_LIMIT = 5;
+const TOP_STORIES_MAX_AGE_MS = 36 * 60 * 60 * 1000;
+
+/** @type {"time" | "rank"} */
+let sortMode = "time";
+/** @type {Map<string, {id: string, title: string, sources: number, publishedAt: string, itemIds: string[]}>} */
+let storyByItem = new Map();
+
+function normalizeStories(list) {
+  if (!Array.isArray(list)) return [];
+  return list
+    .filter((story) => story && typeof story === "object" && typeof story.id === "string" && Array.isArray(story.itemIds))
+    .map((story) => ({
+      id: story.id,
+      title: typeof story.title === "string" ? story.title : "",
+      sources: Number.isFinite(story.sources) ? story.sources : 1,
+      publishedAt: typeof story.publishedAt === "string" ? story.publishedAt : "",
+      itemIds: story.itemIds.filter((id) => typeof id === "string")
+    }));
+}
+
+function indexStories() {
+  storyByItem = new Map();
+  for (const story of data.stories || []) {
+    for (const id of story.itemIds) storyByItem.set(id, story);
+  }
+}
+
+function storyOf(item) {
+  return (item && storyByItem.get(item.id)) || null;
+}
+
+function plural(n, forms) {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return forms[0];
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return forms[1];
+  return forms[2];
+}
+
+function sourcesLabel(n) {
+  return `${n} ${plural(n, ["источник", "источника", "источников"])}`;
+}
+
+/** Coverage weighed against age: a six-outlet story from yesterday still beats a two-outlet one from now. */
+function rankScore(item, now = Date.now()) {
+  const story = storyOf(item);
+  const sources = story ? story.sources : 1;
+  const ageHours = Math.max(0, now - (Date.parse(item.publishedAt) || now)) / 3600000;
+  return sources * Math.exp(-ageHours / RANK_HALF_LIFE_HOURS);
+}
+
+function loadSortMode() {
+  try {
+    sortMode = localStorage.getItem(SORT_KEY) === "rank" ? "rank" : "time";
+  } catch {
+    sortMode = "time";
+  }
+  renderSortToggle();
+}
+
+function renderSortToggle() {
+  const toggle = $("#sortToggle");
+  if (!toggle) return;
+  toggle.textContent = sortMode === "rank" ? "Сначала важные" : "Сначала новые";
+  toggle.setAttribute("aria-pressed", String(sortMode === "rank"));
+  toggle.title = sortMode === "rank" ? "Сейчас выше то, о чём пишут больше источников. Нажмите, чтобы вернуть хронологию" : "Сейчас лента по времени. Нажмите, чтобы поднять то, о чём пишут больше источников";
+}
+
+function setSortMode(mode) {
+  sortMode = mode === "rank" ? "rank" : "time";
+  try {
+    localStorage.setItem(SORT_KEY, sortMode);
+  } catch {
+    // Storage may be unavailable; the choice still applies to this page view.
+  }
+  renderSortToggle();
+  applyFilterAndReset("Сортировка");
+}
+
+/**
+ * Feed order for the current mode. By rank, a story that several outlets
+ * cover is one card (its most representative member that passed the
+ * filter), so the top of the feed is not six headlines of the same event.
+ */
+function orderFeed(list) {
+  const byTime = (a, b) => (Date.parse(b.publishedAt) || 0) - (Date.parse(a.publishedAt) || 0);
+  if (sortMode !== "rank") return list.sort(byTime);
+  const now = Date.now();
+  const seen = new Set();
+  const collapsed = [];
+  for (const item of list.slice().sort(byTime)) {
+    const story = storyOf(item);
+    if (!story) {
+      collapsed.push(item);
+      continue;
+    }
+    if (seen.has(story.id)) continue;
+    seen.add(story.id);
+    // Prefer the story's own headline when it is in the feed.
+    const lead = story.id !== item.id ? list.find((entry) => entry.id === story.id) : null;
+    collapsed.push(lead || item);
+  }
+  return collapsed.sort((a, b) => rankScore(b, now) - rankScore(a, now) || byTime(a, b));
+}
+
+/** The block above the feed: the most covered events of the last day and a half. */
+function renderTopStories() {
+  const host = $("#topStories");
+  if (!host) return;
+  host.replaceChildren();
+  if (sortMode === "rank" || boardShown || !selected.size) {
+    host.hidden = true;
+    return;
+  }
+  const now = Date.now();
+  const visible = new Map(filtered.map((item) => [item.id, item]));
+  const stories = (data.stories || [])
+    .filter((story) => story.sources >= 2 && now - (Date.parse(story.publishedAt) || 0) <= TOP_STORIES_MAX_AGE_MS)
+    .map((story) => ({ story, members: story.itemIds.map((id) => visible.get(id)).filter(Boolean) }))
+    .filter(({ members }) => members.length > 0)
+    .sort((a, b) => rankScore(a.members[0], now) - rankScore(b.members[0], now) || 0)
+    .reverse()
+    .slice(0, TOP_STORIES_LIMIT);
+  host.hidden = stories.length === 0;
+  if (stories.length === 0) return;
+
+  const eyebrow = document.createElement("p");
+  eyebrow.className = "eyebrow top__eyebrow";
+  eyebrow.id = "topTitle";
+  eyebrow.textContent = "Главное сейчас";
+  const list = document.createElement("ol");
+  list.className = "top__list";
+  for (const { story, members } of stories) {
+    const lead = members.find((item) => item.id === story.id) || members[0];
+    const li = document.createElement("li");
+    li.className = "top__item";
+    const title = document.createElement("button");
+    title.type = "button";
+    title.className = "top__title";
+    title.textContent = lead.title;
+    title.addEventListener("click", () => openModal(lead.id, title));
+    const meta = document.createElement("p");
+    meta.className = "top__meta";
+    const count = document.createElement("span");
+    count.className = "top__count";
+    count.textContent = sourcesLabel(story.sources);
+    meta.appendChild(count);
+    // One link per outlet: a running story ("ПВО сбили N дронов") can have
+    // several members from the same wire, and the newest speaks for it.
+    const perOutlet = new Map();
+    for (const item of members) {
+      if (item.id === lead.id) continue;
+      const key = item.sourceId || item.sourceName;
+      if (key !== (lead.sourceId || lead.sourceName) && !perOutlet.has(key)) perOutlet.set(key, item);
+    }
+    for (const item of perOutlet.values()) {
+      const link = document.createElement("button");
+      link.type = "button";
+      link.className = "top__source";
+      link.textContent = item.sourceName || item.sourceId;
+      link.title = item.title;
+      link.setAttribute("aria-label", `${item.sourceName || item.sourceId}: ${item.title}`);
+      link.addEventListener("click", () => openModal(item.id, link));
+      meta.append(" · ", link);
+    }
+    li.append(title, meta);
+    list.appendChild(li);
+  }
+  host.append(eyebrow, list);
+}
+
+/** In the reader: the same event as other outlets tell it. */
+function appendStoryLinks(item) {
+  const story = storyOf(item);
+  if (!story || !elModalBody) return;
+  const perOutlet = new Map();
+  for (const id of story.itemIds) {
+    if (id === item.id) continue;
+    const entry = data.items.find((other) => other.id === id);
+    if (!entry || !isSourceVisible(entry)) continue;
+    const key = entry.sourceId || entry.sourceName;
+    if (key !== (item.sourceId || item.sourceName) && !perOutlet.has(key)) perOutlet.set(key, entry);
+  }
+  const others = [...perOutlet.values()];
+  if (others.length === 0) return;
+  const block = document.createElement("aside");
+  block.className = "reader-story";
+  const heading = document.createElement("p");
+  heading.className = "reader-story__title";
+  heading.textContent = `Об этом также пишут (${sourcesLabel(story.sources)})`;
+  const list = document.createElement("ul");
+  list.className = "reader-story__list";
+  for (const entry of others) {
+    const li = document.createElement("li");
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "reader-story__link";
+    const source = document.createElement("b");
+    source.textContent = entry.sourceName || entry.sourceId;
+    button.append(source, `: ${entry.title}`);
+    button.addEventListener("click", () => openModal(entry.id, button));
+    li.appendChild(button);
+    list.appendChild(li);
+  }
+  block.append(heading, list);
+  elModalBody.appendChild(block);
+}
+
+
 function applyFilterAndReset(reason) {
   const wanted = new Set(selectedIds());
-  filtered = data.items
-    .filter((item) => isSourceVisible(item) && item.categoryIds.some((id) => wanted.has(id)))
-    .sort((a, b) => (Date.parse(b.publishedAt) || 0) - (Date.parse(a.publishedAt) || 0));
+  filtered = orderFeed(data.items.filter((item) => isSourceVisible(item) && item.categoryIds.some((id) => wanted.has(id))));
   boardShown = boardActive();
-  if (!boardShown) promoteLead(filtered);
+  // By rank the lead is the most covered story whatever its picture; by
+  // time it is the newest illustrated one of the first batch.
+  if (!boardShown && sortMode !== "rank") promoteLead(filtered);
+  renderTopStories();
   resetFeed();
   renderNextBatch();
   if (reason !== "Фильтр" && reason !== "Источники") renderSources();
@@ -2027,6 +2246,14 @@ function renderCard(item, index) {
     tag.textContent = category.name;
     meta.appendChild(tag);
   }
+  const story = storyOf(item);
+  if (story && story.sources >= 2) {
+    const coverage = document.createElement("span");
+    coverage.className = "card__story";
+    coverage.textContent = sourcesLabel(story.sources);
+    coverage.title = "Столько изданий пишут об этом событии";
+    meta.appendChild(coverage);
+  }
   const title = document.createElement("h2");
   title.className = "card__title";
   const open = document.createElement("button");
@@ -2096,6 +2323,7 @@ function renderModalBody(item, article, state) {
     html = `${fallback}<p class="reader-note">${missingText}</p>`;
   }
   elModalBody.innerHTML = html;
+  appendStoryLinks(item);
   highlightModalCode();
 }
 
@@ -2310,7 +2538,8 @@ async function refreshData(reason) {
     const unchanged = Boolean(previous && generatedAt && previous === generatedAt);
     loadError = false;
     if (!unchanged) {
-      data = { generatedAt, items: next.items.filter((item) => item && typeof item === "object").map(normalizeItem) };
+      data = { generatedAt, items: next.items.filter((item) => item && typeof item === "object").map(normalizeItem), stories: normalizeStories(next.stories) };
+      indexStories();
       applyFilterAndReset(reason);
     } else {
       updateOverview();
@@ -2337,6 +2566,8 @@ function init() {
   loadSelection();
   loadHiddenSources();
   loadWatchlist();
+  loadSortMode();
+  $("#sortToggle")?.addEventListener("click", () => setSortMode(sortMode === "rank" ? "time" : "rank"));
   renderChips();
   renderSources();
   updateOverview();

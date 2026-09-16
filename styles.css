@@ -161,6 +161,30 @@ svg { display: block; width: 20px; height: 20px; flex-shrink: 0; }
 h1 { margin: 0; font: 400 clamp(2rem, 3vw, 2.875rem)/1.15 var(--serif); letter-spacing: -.035em; scroll-margin-top: 30px; overflow-wrap: anywhere; }
 .feed__info { display: flex; align-items: center; gap: 15px; color: var(--muted); padding-bottom: 4px; font-size: .8125rem; }
 .feed__order { padding-left: 15px; border-left: 1px solid var(--line); }
+button.feed__order { margin: 0; padding-block: 0; border-block: 0; border-right: 0; background: none; font: inherit; color: inherit; cursor: pointer; }
+button.feed__order:hover, button.feed__order[aria-pressed="true"] { color: var(--ink); }
+button.feed__order[aria-pressed="true"] { font-weight: 500; }
+
+/* Главное сейчас: сюжеты, о которых пишут несколько источников */
+.top { margin-bottom: 26px; padding: 16px 18px 6px; border: 1px solid var(--line); border-radius: 3px; background: var(--surface); }
+.top__eyebrow { margin-bottom: 6px; }
+.top__list { margin: 0; padding: 0; list-style: none; counter-reset: top; }
+.top__item { padding: 10px 0 12px 34px; position: relative; border-bottom: 1px solid var(--line); counter-increment: top; }
+.top__item:last-child { border-bottom: 0; }
+.top__item::before { content: counter(top); position: absolute; left: 2px; top: 8px; font: 700 1.25rem/1.4 var(--serif); color: var(--muted); }
+.top__title { margin: 0; padding: 0; border: 0; background: none; font: 500 1.0625rem/1.35 var(--serif); color: var(--ink); text-align: left; cursor: pointer; }
+.top__title:hover, .top__title:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+.top__meta { margin: 4px 0 0; font-size: .75rem; color: var(--muted); }
+.top__count { font-weight: 500; color: var(--ink); }
+.top__source { margin: 0; padding: 0; border: 0; background: none; font: inherit; color: var(--muted); cursor: pointer; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 2px; }
+.top__source:hover, .top__source:focus-visible { color: var(--ink); text-decoration-color: currentColor; }
+.card__story { font-size: .6875rem; color: var(--muted); }
+.reader-story { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--line); }
+.reader-story__title { margin: 0 0 8px; font: 500 .75rem/1.5 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.reader-story__list { margin: 0; padding: 0; list-style: none; }
+.reader-story__link { margin: 0; padding: 6px 0; border: 0; background: none; font: inherit; font-size: .9375rem; line-height: 1.4; color: var(--ink); text-align: left; cursor: pointer; }
+.reader-story__link:hover, .reader-story__link:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+.reader-story__link b { font-weight: 500; color: var(--muted); }
 .feed__status { min-height: 41px; padding-block: 12px; color: var(--muted); font-size: .75rem; line-height: 1.4; }
 .feed__status.is-error { color: var(--accent); }
 .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px 24px; }

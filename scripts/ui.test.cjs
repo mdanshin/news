@@ -608,6 +608,87 @@ test('watchlist: added from the company panel or by ticker, kept on the device, 
   assert.equal(again.document.querySelectorAll('#boardWatch .watch__quote')[1].disabled, true);
 });
 
+/** A feed where two events are covered by several outlets. */
+function storiesFixture() {
+  const news = fixture();
+  const items = news.items;
+  // items are newest first: 31, 30, 29, ...
+  const set = (index, patch) => Object.assign(items.find((item) => item.id === `article-${index}`), patch);
+  // Freshness matters to the block and the order, so the dates are relative to now.
+  const ago = (hours) => new Date(Date.now() - hours * 3600e3).toISOString();
+  items.forEach((item, index) => { item.publishedAt = ago(index + 1); });
+  set(31, { title: 'Истребитель НАТО сбил дрон над Литвой', sourceId: 'lenta', sourceName: 'Lenta.ru', categoryIds: ['world'] });
+  set(30, { title: 'Истребители НАТО сбили беспилотник в Литве', sourceId: 'rbc', sourceName: 'РБК', categoryIds: ['world'] });
+  set(29, { title: 'Истребитель НАТО сбил беспилотник над Литвой', sourceId: 'tass', sourceName: 'ТАСС', categoryIds: ['world'] });
+  set(28, { title: 'ВТБ повысил ставки по вкладам', sourceId: 'tass', sourceName: 'ТАСС', categoryIds: ['business'] });
+  set(27, { title: 'ВТБ повышает ставки по вкладам до 13,9%', sourceId: 'vedomosti', sourceName: 'Ведомости', categoryIds: ['business'] });
+  // An old story: three outlets, but two and a half days ago.
+  set(3, { title: 'Старый сюжет', sourceId: 'lenta', sourceName: 'Lenta.ru', categoryIds: ['world'], publishedAt: ago(60) });
+  set(2, { title: 'Старый сюжет в другом издании', sourceId: 'rbc', sourceName: 'РБК', categoryIds: ['world'], publishedAt: ago(61) });
+  set(1, { title: 'Старый сюжет в третьем', sourceId: 'tass', sourceName: 'ТАСС', categoryIds: ['world'], publishedAt: ago(62) });
+  news.stories = [
+    { id: 'article-30', title: 'Истребители НАТО сбили беспилотник в Литве', sources: 3, publishedAt: items[0].publishedAt, itemIds: ['article-31', 'article-30', 'article-29'] },
+    { id: 'article-27', title: 'ВТБ повышает ставки по вкладам до 13,9%', sources: 2, publishedAt: items[3].publishedAt, itemIds: ['article-28', 'article-27'] },
+    { id: 'article-3', title: 'Старый сюжет', sources: 3, publishedAt: ago(60), itemIds: ['article-3', 'article-2', 'article-1'] }
+  ];
+  return news;
+}
+
+test('stories: the top block, coverage badges, reader links and the popularity order', async (t) => {
+  const news = storiesFixture();
+  const { document, window, state } = await setup(t, { news, saved: ['world', 'business', 'tech'] });
+
+  // The block lists the most covered fresh events; the old one is out.
+  const top = document.querySelector('#topStories');
+  assert.equal(top.hidden, false);
+  assert.deepEqual([...top.querySelectorAll('.top__title')].map((n) => n.textContent), ['Истребители НАТО сбили беспилотник в Литве', 'ВТБ повышает ставки по вкладам до 13,9%']);
+  assert.deepEqual([...top.querySelectorAll('.top__count')].map((n) => n.textContent), ['3 источника', '2 источника']);
+  assert.deepEqual([...top.querySelectorAll('.top__item')[0].querySelectorAll('.top__source')].map((n) => n.textContent), ['Lenta.ru', 'ТАСС']);
+  // Chronology is untouched: every member keeps its card, with the badge.
+  assert.deepEqual(ids(document).slice(0, 5), ['article-31', 'article-30', 'article-29', 'article-28', 'article-27']);
+  assert.equal(document.querySelector('#grid [data-id="article-31"] .card__story').textContent, '3 источника');
+  assert.equal(document.querySelector('#grid [data-id="article-26"] .card__story'), null);
+
+  // A source link in the block opens that outlet's version in the reader,
+  // which in turn points at the other outlets.
+  top.querySelectorAll('.top__source')[1].click();
+  assert.equal(document.querySelector('#modalTitle').textContent, 'Истребитель НАТО сбил беспилотник над Литвой');
+  assert.deepEqual([...document.querySelectorAll('#modalBody .reader-story__link b')].map((n) => n.textContent), ['Lenta.ru', 'РБК']);
+  document.querySelector('#modalBody .reader-story__link').click();
+  assert.equal(document.querySelector('#modalTitle').textContent, 'Истребитель НАТО сбил дрон над Литвой');
+  document.querySelector('#modalClose').click();
+
+  // Filtering out a topic drops its story from the block.
+  document.querySelector('#cat-business').click();
+  assert.deepEqual([...top.querySelectorAll('.top__title')].map((n) => n.textContent), ['Истребители НАТО сбили беспилотник в Литве']);
+  document.querySelector('#cat-business').click();
+
+  // Popularity order: one card per story, the most covered first, the rest by time; the block steps aside.
+  const toggle = document.querySelector('#sortToggle');
+  assert.equal(toggle.textContent, 'Сначала новые');
+  toggle.click();
+  assert.equal(toggle.textContent, 'Сначала важные');
+  assert.equal(toggle.getAttribute('aria-pressed'), 'true');
+  assert.equal(window.localStorage.getItem('news:sort:v1'), 'rank');
+  assert.equal(top.hidden, true);
+  const ranked = ids(document);
+  assert.equal(ranked[0], 'article-30', 'сюжет представлен своим заголовком');
+  assert.equal(ranked[1], 'article-27');
+  assert.ok(!ranked.includes('article-31') && !ranked.includes('article-29') && !ranked.includes('article-28'), 'остальные участники сюжета свёрнуты');
+  assert.equal(ranked[2], 'article-26', 'дальше хронология');
+  for (let i = 0; i < 4; i += 1) state.intersect();
+  const all = ids(document);
+  assert.ok(all.includes('article-3') && all.indexOf('article-3') > all.indexOf('article-1'), 'старый сюжет с тремя источниками проигрывает даже старым одиночкам: рейтинг затухает вдвое за сутки');
+
+  // The choice survives a reload.
+  const again = await setup(t, { news, saved: ['world', 'business', 'tech'], keepStorage: window.localStorage });
+  assert.equal(again.document.querySelector('#sortToggle').textContent, 'Сначала важные');
+  assert.equal(ids(again.document)[0], 'article-30');
+  again.document.querySelector('#sortToggle').click();
+  assert.equal(ids(again.document)[0], 'article-31');
+  assert.equal(again.document.querySelector('#topStories').hidden, false);
+});
+
 test('cleared selection persists, explains the empty state and can be restored', async (t) => {
   const { document, window } = await setup(t);
   document.querySelector('#clearBtn').click();
