@@ -73,7 +73,7 @@
         <main class="feed" aria-labelledby="feedTitle">
           <div class="feed__heading">
             <div><p class="eyebrow feed__eyebrow">Последние публикации</p><h1 id="feedTitle" tabindex="-1">Ваша лента</h1></div>
-            <div class="feed__info"><span id="resultCount"></span><span class="feed__order">Сначала новые</span></div>
+            <div class="feed__info"><span id="resultCount"></span><button class="feed__order" id="sortToggle" type="button" aria-pressed="false">Сначала новые</button></div>
           </div>
           <section class="board" id="marketBoard" aria-labelledby="boardTitle" hidden>
             <div class="board__head">
@@ -118,6 +118,7 @@
             </details>
           </section>
           <div class="feed__status" id="status" role="status" aria-live="polite">Загружаем новости…</div>
+          <section class="top" id="topStories" aria-labelledby="topTitle" hidden></section>
           <div class="feed-state" id="feedState" hidden>
             <span class="feed-state__mark" aria-hidden="true">Л.</span>
             <h2 id="stateTitle"></h2><p id="stateText"></p>

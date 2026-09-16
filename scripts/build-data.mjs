@@ -8,6 +8,7 @@ import { Readability } from "@mozilla/readability";
 
 import { classifyItem, isKnownCategory } from "./classify.mjs";
 import { redactSensitiveContent } from "./secrets.mjs";
+import { topStories } from "./stories.mjs";
 
 const ROOT = process.cwd();
 const FEEDS_PATH = path.join(ROOT, "data", "feeds.json");
@@ -28,6 +29,7 @@ const MAX_ITEMS_PER_SOURCE = 120;
 // (timeouts, temporary errors) and then left alone.
 const ARTICLE_FETCH_LIMIT = 400; // total pages to parse per run (keeps runtime bounded)
 const MAX_CONTENT_TRIES = 3;
+const STORIES_LIMIT = 200; // multi-source stories kept in the index
 const IMAGE_LOOKUP_MAX_AGE_MS = 24 * 60 * 60 * 1000; // look up page images only for recent items
 const CONCURRENCY = 8;
 const TIMEOUT_MS = 25_000;
@@ -938,7 +940,11 @@ async function writeSnapshot(items) {
     if (!articles.has(name.slice(0, -".json".length))) await fs.unlink(path.join(ARTICLES_DIR, name));
   }
 
-  const out = { generatedAt: new Date().toISOString(), items: index };
+  // Events several outlets cover, for the "Главное сейчас" block and the
+  // popularity order; every member keeps its own card.
+  const stories = topStories(items, { minSources: 2, limit: STORIES_LIMIT });
+  if (stories.length > 0) console.log(`[stories] сюжетов в нескольких источниках: ${stories.length}; крупнейший: «${stories[0].title}» (${stories[0].sources} ист.)`);
+  const out = { generatedAt: new Date().toISOString(), items: index, stories };
   await fs.writeFile(OUT_PATH, JSON.stringify(out, null, 2) + "\n", "utf8");
 }
 
