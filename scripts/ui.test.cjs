@@ -589,6 +589,30 @@ test('heat map: the label is chosen by ticker length, and a narrow map keeps few
   assert.equal(document.querySelectorAll('#boardTable tbody tr').length, 30, 'в таблице по-прежнему все');
 });
 
+test('heat map: a tile that cannot be labelled is dropped, not left blank', async (t) => {
+  const iss = issFixture();
+  // Forty minutes into a session the exchange has no capitalisation yet and
+  // the area goes by turnover, which runs hundreds of times apart.
+  const rows = Array.from({ length: 40 }, (_, i) => [`TT${i}`, `Бумага ${i}`, 100, null]);
+  iss.shares.securities = { columns: ['SECID', 'SHORTNAME', 'PREVPRICE', 'ISSUECAPITALIZATION'], data: rows };
+  iss.shares.marketdata = { columns: ['SECID', 'LAST', 'LASTTOPREVPRICE', 'VALTODAY'], data: rows.map((row, i) => [row[0], 100, 1.5, Math.round(2.4e9 / (i + 1) ** 1.7)]) };
+  const { document } = await setup(t, { news: marketsOnly(), saved: ['markets'], iss });
+  await tick();
+  await tick();
+  await tick();
+
+  const tiles = [...document.querySelectorAll('#boardHeat .heat__tile')];
+  assert.equal(tiles.filter((node) => node.classList.contains('heat__tile--tiny')).length, 0, 'безымянных плиток не остаётся');
+  assert.ok(tiles.length < 40, 'хвост, который не подписать ничем, с карты убран');
+  assert.ok(tiles.length >= 12, 'но карта остаётся картой');
+  // What left the map is still in the table, and подпись говорит об этом.
+  assert.equal(document.querySelectorAll('#boardTable tbody tr').length, 40);
+  assert.match(document.querySelector('#boardMeta').textContent, new RegExp(`на карте ${tiles.length} крупнейших, остальные в таблице`));
+  // The biggest names are the ones that stayed.
+  assert.ok(tiles.some((node) => node.dataset.ticker === 'TT0'));
+  assert.equal(tiles.some((node) => node.dataset.ticker === 'TT39'), false);
+});
+
 test('index chart: a session with one candle keeps the value and drops the empty plot', async (t) => {
   const iss = issFixture();
   // Trading has just opened: the day range holds a single candle.

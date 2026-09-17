@@ -789,6 +789,12 @@ const HEAT_TEXT_STEPS = [
 // names stay on it and the rest keep their row in the table below.
 const HEAT_NARROW_WIDTH = 520;
 const HEAT_NARROW_TILES = 24;
+// Early in a session the area is weighed by turnover, which runs hundreds of
+// times apart between the first name and the fortieth, so a fixed count still
+// leaves unreadable crumbs. Tiles that cannot be labelled are dropped and the
+// rest laid out again, down to a map that is still worth calling a map.
+const HEAT_MIN_TILES = 12;
+const HEAT_FIT_PASSES = 4;
 const TICKER_QUOTES = 28;
 
 /** @type {{snapshot: any, live: boolean, fetchedAt: number, reasons: string[]} | null} */
@@ -1277,17 +1283,10 @@ function heatTextStep(tile, ticker, changeText) {
   return "heat__tile--tiny";
 }
 
-function renderHeatmap(stocks) {
-  const host = $("#boardHeat");
-  if (!host) return;
-  host.replaceChildren();
-
-  const box = heatBox();
-  const shown = box.w < HEAT_NARROW_WIDTH ? stocks.slice().sort((a, b) => (Number(b.weight) || 0) - (Number(a.weight) || 0)).slice(0, HEAT_NARROW_TILES) : stocks;
-  heatTileCount = shown.length;
-
+/** Sector cells with their tiles and the label each tile can hold; no DOM. */
+function heatLayout(stocks, box) {
   const bySector = new Map();
-  for (const stock of shown) {
+  for (const stock of stocks) {
     const sector = stock.sector || "Прочие";
     if (!bySector.has(sector)) bySector.set(sector, []);
     bySector.get(sector).push(stock);
@@ -1314,30 +1313,59 @@ function renderHeatmap(stocks) {
     sectors.sort((a, b) => b.value - a.value);
   }
 
-  const frag = document.createDocumentFragment();
+  return squarify(sectors, box).map((cell) => {
+    // A sector label needs room; a narrow column gives its space to the tiles.
+    const labelled = cell.w >= HEAT_LABEL_MIN_WIDTH && cell.h >= HEAT_LABEL_MIN_HEIGHT;
+    const top = labelled ? HEAT_LABEL_HEIGHT : 0;
+    const inner = { x: 0, y: top, w: cell.w, h: Math.max(cell.h - top, 1) };
+    const tiles = squarify(cell.node.members.map((stock) => ({ value: Number(stock.weight) || 0, stock })), inner).map((tile) => {
+      const stock = tile.node.stock;
+      return { tile, stock, fit: heatTextStep(tile, String(stock.ticker || ""), formatChange(stock.change)) };
+    });
+    return { cell, labelled, tiles };
+  });
+}
 
-  for (const cell of squarify(sectors, box)) {
+function renderHeatmap(stocks) {
+  const host = $("#boardHeat");
+  if (!host) return;
+  host.replaceChildren();
+
+  const box = heatBox();
+  let shown = stocks.slice().sort((a, b) => (Number(b.weight) || 0) - (Number(a.weight) || 0));
+  if (box.w < HEAT_NARROW_WIDTH) shown = shown.slice(0, HEAT_NARROW_TILES);
+  let cells = heatLayout(shown, box);
+
+  // A tile nobody can read says less than one tile fewer: drop the crumbs,
+  // smallest first, and lay the rest out again in the space they leave.
+  for (let pass = 0; pass < HEAT_FIT_PASSES; pass += 1) {
+    const crumbs = cells
+      .flatMap((entry) => entry.tiles)
+      .filter((entry) => entry.fit === "heat__tile--tiny")
+      .map((entry) => entry.stock)
+      .sort((a, b) => (Number(a.weight) || 0) - (Number(b.weight) || 0));
+    const drop = new Set(crumbs.slice(0, Math.max(0, shown.length - HEAT_MIN_TILES)));
+    if (drop.size === 0) break;
+    shown = shown.filter((stock) => !drop.has(stock));
+    cells = heatLayout(shown, box);
+  }
+  heatTileCount = shown.length;
+
+  const frag = document.createDocumentFragment();
+  for (const { cell, labelled, tiles } of cells) {
     const group = document.createElement("div");
     group.className = "heat__group";
     group.style.left = `${(cell.x / box.w) * 100}%`;
     group.style.top = `${(cell.y / box.h) * 100}%`;
     group.style.width = `${(cell.w / box.w) * 100}%`;
     group.style.height = `${(cell.h / box.h) * 100}%`;
-
-    // A label needs room; a narrow column gives its space to the tiles.
-    const labelled = cell.w >= HEAT_LABEL_MIN_WIDTH && cell.h >= HEAT_LABEL_MIN_HEIGHT;
     if (labelled) {
       const label = document.createElement("span");
       label.className = "heat__groupName";
       label.textContent = cell.node.name;
       group.appendChild(label);
     }
-
-    const top = labelled ? HEAT_LABEL_HEIGHT : 0;
-    const inner = { x: 0, y: top, w: cell.w, h: Math.max(cell.h - top, 1) };
-    for (const tile of squarify(cell.node.members.map((stock) => ({ value: Number(stock.weight) || 0, stock })), inner)) {
-      group.appendChild(renderHeatTile(tile, cell));
-    }
+    for (const entry of tiles) group.appendChild(renderHeatTile(entry, cell));
     frag.appendChild(group);
   }
 
@@ -1345,13 +1373,12 @@ function renderHeatmap(stocks) {
   host.appendChild(createHeatTooltip());
 }
 
-function renderHeatTile(tile, cell) {
-  const stock = tile.node.stock;
+function renderHeatTile(entry, cell) {
+  const { tile, stock, fit } = entry;
   const step = heatStep(Number(stock.change) || 0);
   const button = document.createElement("button");
   button.type = "button";
   const changeText = formatChange(stock.change);
-  const fit = heatTextStep(tile, String(stock.ticker || ""), changeText);
   button.className = `heat__tile${fit ? ` ${fit}` : ""}`;
   button.style.left = `${(tile.x / cell.w) * 100}%`;
   button.style.top = `${(tile.y / cell.h) * 100}%`;
