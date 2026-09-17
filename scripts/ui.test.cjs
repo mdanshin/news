@@ -552,6 +552,43 @@ test('market board explains itself when no quotes are available at all', async (
   assert.equal(board.classList.contains('board--empty'), false);
 });
 
+test('heat map: the label is chosen by ticker length, and a narrow map keeps fewer, bigger tiles', async (t) => {
+  const iss = issFixture();
+  // Thirty names, each lighter than the one before it.
+  const rows = Array.from({ length: 30 }, (_, i) => [`TT${i}`, `Бумага ${i}`, 100, 5e12 / (i + 1)]);
+  iss.shares.securities = { columns: ['SECID', 'SHORTNAME', 'PREVPRICE', 'ISSUECAPITALIZATION'], data: rows };
+  iss.shares.marketdata = { columns: ['SECID', 'LAST', 'LASTTOPREVPRICE', 'VALTODAY'], data: rows.map((row) => [row[0], 100, 1.5, 1e9]) };
+  const { document, window } = await setup(t, { news: marketsOnly(), saved: ['markets'], iss });
+  await tick();
+  await tick();
+  await tick();
+
+  // A tile fits the ticker and the change, the ticker alone, a smaller
+  // ticker, or nothing at all.
+  const step = (w, h, ticker) => window.heatTextStep({ w, h }, ticker, '−0,38%');
+  assert.equal(step(60, 40, 'SBER'), '');
+  assert.equal(step(50, 40, 'SBER'), 'heat__tile--sm', 'проценту не хватает ширины, тикеру хватает');
+  assert.equal(step(34, 20, 'SBER'), 'heat__tile--micro');
+  assert.equal(step(28, 20, 'SBER'), 'heat__tile--tiny');
+  // The same tile holds a short ticker but not a long one.
+  assert.equal(step(30, 20, 'T'), 'heat__tile--sm');
+  assert.equal(step(30, 20, 'SNGSP'), 'heat__tile--tiny');
+
+  assert.equal(document.querySelectorAll('#boardHeat .heat__tile').length, 30, 'на широкой карте все бумаги');
+
+  // On a phone-width map only the biggest names stay, and the caption says so.
+  const heat = document.querySelector('#boardHeat');
+  heat.getBoundingClientRect = () => ({ x: 0, y: 0, width: 340, height: 520, top: 0, left: 0, right: 340, bottom: 520 });
+  document.dispatchEvent(new window.Event('visibilitychange'));
+  await tick();
+  await tick();
+  const narrow = [...document.querySelectorAll('#boardHeat .heat__tile')];
+  assert.equal(narrow.length, 24);
+  assert.deepEqual(narrow.map((node) => node.dataset.ticker).sort(), rows.slice(0, 24).map((row) => row[0]).sort(), 'остались самые крупные');
+  assert.match(document.querySelector('#boardMeta').textContent, /на карте 24 крупнейших, остальные в таблице/);
+  assert.equal(document.querySelectorAll('#boardTable tbody tr').length, 30, 'в таблице по-прежнему все');
+});
+
 test('index chart: a session with one candle keeps the value and drops the empty plot', async (t) => {
   const iss = issFixture();
   // Trading has just opened: the day range holds a single candle.

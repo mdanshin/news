@@ -429,6 +429,8 @@ button.feed__order[aria-pressed="true"] { font-weight: 500; }
 .heat__change { font: 500 .75rem/1.15 var(--sans); font-variant-numeric: tabular-nums; opacity: .92; }
 .heat__tile--sm .heat__ticker { font-size: .6875rem; }
 .heat__tile--sm .heat__change { display: none; }
+.heat__tile--micro .heat__ticker { font-size: .5625rem; letter-spacing: 0; }
+.heat__tile--micro .heat__change { display: none; }
 .heat__tile--tiny .heat__ticker, .heat__tile--tiny .heat__change { display: none; }
 .heat__tip { position: absolute; z-index: 5; min-width: 168px; padding: 9px 11px; border-radius: 4px; background: var(--strong-bg); color: var(--strong-ink); box-shadow: 0 8px 24px rgba(0, 0, 0, .22); pointer-events: none; font-size: .8125rem; line-height: 1.45; }
 .heat__tip b { display: block; font-weight: 600; }
@@ -564,6 +566,6 @@ button.feed__order[aria-pressed="true"] { font-weight: 500; }
 .board__table th:first-child, .board__table td:first-child, .board__table th:nth-child(2), .board__table td:nth-child(2) { text-align: left; }
 
 @media (max-width: 900px) {
-  .heat { height: 460px; }
+  .heat { height: 520px; }
   .board__title { font-size: 1.5rem; }
 }

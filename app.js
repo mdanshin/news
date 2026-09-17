@@ -774,8 +774,21 @@ const HEAT_LABEL_HEIGHT = 17;
 const HEAT_MIN_SECTOR_SHARE = 0.02;
 const HEAT_LABEL_MIN_WIDTH = 92;
 const HEAT_LABEL_MIN_HEIGHT = 46;
-const HEAT_TEXT_MIN_WIDTH = 44;
-const HEAT_TEXT_MIN_HEIGHT = 26;
+// Whether a label fits depends on the label: "T" and "SNGSP" need very
+// different room, so the step is chosen from the character count rather than
+// from one width threshold. The multiplier is the average glyph width of the
+// bold uppercase sans, and the slack keeps text off the tile edges.
+const HEAT_CHAR_EM = 0.66;
+const HEAT_TEXT_SLACK = 8;
+const HEAT_TEXT_STEPS = [
+  { className: "", font: 13, changeFont: 12 },
+  { className: "heat__tile--sm", font: 11, changeFont: 0 },
+  { className: "heat__tile--micro", font: 9, changeFont: 0 }
+];
+// A map this narrow cannot label forty tiles whatever the font; the biggest
+// names stay on it and the rest keep their row in the table below.
+const HEAT_NARROW_WIDTH = 520;
+const HEAT_NARROW_TILES = 24;
 const TICKER_QUOTES = 28;
 
 /** @type {{snapshot: any, live: boolean, fetchedAt: number, reasons: string[]} | null} */
@@ -785,6 +798,7 @@ let marketTimer = 0;
 let marketJsonpSeq = 0;
 let issPreferJsonp = false;
 let boardShown = false;
+let heatTileCount = 0;
 
 const elMarketBoard = $("#marketBoard");
 
@@ -1119,8 +1133,9 @@ function renderBoard(parsed, live) {
   const updated = toAbsTime(parsed.generatedAt);
   const freshness = live ? `котировки на ${updated}` : `срез от ${updated}, биржа сейчас не отвечает`;
   const basis = parsed.stocks.some((stock) => stock.weightBasis === "capitalisation") ? "площадь плитки — капитализация" : "площадь плитки — объём торгов";
+  const trimmed = heatTileCount && heatTileCount < parsed.stocks.length ? `на карте ${heatTileCount} крупнейших, остальные в таблице` : "";
   const meta = $("#boardMeta");
-  if (meta) meta.textContent = [parsed.source || "Московская биржа", updated && freshness, basis].filter(Boolean).join(" · ");
+  if (meta) meta.textContent = [parsed.source || "Московская биржа", updated && freshness, basis, trimmed].filter(Boolean).join(" · ");
 }
 
 function renderBoardIndices(indices, live) {
@@ -1250,13 +1265,29 @@ function heatBox() {
   return { x: 0, y: 0, w, h };
 }
 
+/** Largest label that fits the tile, as a class; "" is ticker and change. */
+function heatTextStep(tile, ticker, changeText) {
+  for (const step of HEAT_TEXT_STEPS) {
+    const twoLines = step.changeFont > 0;
+    const wide = twoLines && changeText.length > ticker.length;
+    const width = (wide ? changeText.length * step.changeFont : ticker.length * step.font) * HEAT_CHAR_EM + HEAT_TEXT_SLACK;
+    const height = (twoLines ? step.font * 1.15 + step.changeFont * 1.15 + 5 : step.font * 1.15 + 6);
+    if (tile.w >= width && tile.h >= height) return step.className;
+  }
+  return "heat__tile--tiny";
+}
+
 function renderHeatmap(stocks) {
   const host = $("#boardHeat");
   if (!host) return;
   host.replaceChildren();
 
+  const box = heatBox();
+  const shown = box.w < HEAT_NARROW_WIDTH ? stocks.slice().sort((a, b) => (Number(b.weight) || 0) - (Number(a.weight) || 0)).slice(0, HEAT_NARROW_TILES) : stocks;
+  heatTileCount = shown.length;
+
   const bySector = new Map();
-  for (const stock of stocks) {
+  for (const stock of shown) {
     const sector = stock.sector || "Прочие";
     if (!bySector.has(sector)) bySector.set(sector, []);
     bySector.get(sector).push(stock);
@@ -1283,7 +1314,6 @@ function renderHeatmap(stocks) {
     sectors.sort((a, b) => b.value - a.value);
   }
 
-  const box = heatBox();
   const frag = document.createDocumentFragment();
 
   for (const cell of squarify(sectors, box)) {
@@ -1320,9 +1350,9 @@ function renderHeatTile(tile, cell) {
   const step = heatStep(Number(stock.change) || 0);
   const button = document.createElement("button");
   button.type = "button";
-  const tiny = tile.w < HEAT_TEXT_MIN_WIDTH || tile.h < HEAT_TEXT_MIN_HEIGHT;
-  const small = tile.w < 62 || tile.h < 34;
-  button.className = `heat__tile${tiny ? " heat__tile--tiny" : small ? " heat__tile--sm" : ""}`;
+  const changeText = formatChange(stock.change);
+  const fit = heatTextStep(tile, String(stock.ticker || ""), changeText);
+  button.className = `heat__tile${fit ? ` ${fit}` : ""}`;
   button.style.left = `${(tile.x / cell.w) * 100}%`;
   button.style.top = `${(tile.y / cell.h) * 100}%`;
   button.style.width = `calc(${(tile.w / cell.w) * 100}% - var(--heat-gap))`;
@@ -1336,7 +1366,7 @@ function renderHeatTile(tile, cell) {
   ticker.textContent = stock.ticker;
   const change = document.createElement("span");
   change.className = "heat__change";
-  change.textContent = formatChange(stock.change);
+  change.textContent = changeText;
   button.append(ticker, change);
   // The tile always names itself; colour only speeds up scanning.
   button.setAttribute("aria-label", `${stock.name}, ${formatChange(stock.change)}, цена ${Number(stock.price).toLocaleString("ru-RU")} ₽`);
