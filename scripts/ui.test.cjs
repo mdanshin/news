@@ -397,7 +397,7 @@ test('market board asks the exchange itself, replaces the lead card and stays ou
   // The quote line repeats the list so the loop has no seam.
   assert.equal(document.querySelectorAll('#boardTickerTrack .quote').length, 8);
   const indices = [...document.querySelectorAll('#boardIndices .board__indexName')].map((n) => n.textContent);
-  assert.deepEqual(indices, ['Индекс МосБиржи', 'Индекс РТС'], 'индексы в устоявшемся порядке, лишние не показываются');
+  assert.deepEqual(indices, ['Индекс РТС'], 'МосБиржа живёт в графике, в строке только остальные индексы; лишние не показываются');
   assert.match(document.querySelector('#boardMeta').textContent, /котировки на .+капитализация/);
 
   // Adding a second topic is no longer "the stock section": the board goes
@@ -552,6 +552,110 @@ test('market board explains itself when no quotes are available at all', async (
   assert.equal(board.classList.contains('board--empty'), false);
 });
 
+test('heat map: the label is chosen by ticker length, and a narrow map keeps fewer, bigger tiles', async (t) => {
+  const iss = issFixture();
+  // Thirty names, each lighter than the one before it.
+  const rows = Array.from({ length: 30 }, (_, i) => [`TT${i}`, `Бумага ${i}`, 100, 5e12 / (i + 1)]);
+  iss.shares.securities = { columns: ['SECID', 'SHORTNAME', 'PREVPRICE', 'ISSUECAPITALIZATION'], data: rows };
+  iss.shares.marketdata = { columns: ['SECID', 'LAST', 'LASTTOPREVPRICE', 'VALTODAY'], data: rows.map((row) => [row[0], 100, 1.5, 1e9]) };
+  const { document, window } = await setup(t, { news: marketsOnly(), saved: ['markets'], iss });
+  await tick();
+  await tick();
+  await tick();
+
+  // A tile fits the ticker and the change, the ticker alone, a smaller
+  // ticker, or nothing at all.
+  const step = (w, h, ticker) => window.heatTextStep({ w, h }, ticker, '−0,38%');
+  assert.equal(step(60, 40, 'SBER'), '');
+  assert.equal(step(50, 40, 'SBER'), 'heat__tile--sm', 'проценту не хватает ширины, тикеру хватает');
+  assert.equal(step(34, 20, 'SBER'), 'heat__tile--micro');
+  assert.equal(step(28, 20, 'SBER'), 'heat__tile--tiny');
+  // The same tile holds a short ticker but not a long one.
+  assert.equal(step(30, 20, 'T'), 'heat__tile--sm');
+  assert.equal(step(30, 20, 'SNGSP'), 'heat__tile--tiny');
+
+  assert.equal(document.querySelectorAll('#boardHeat .heat__tile').length, 30, 'на широкой карте все бумаги');
+
+  // On a phone-width map only the biggest names stay, and the caption says so.
+  const heat = document.querySelector('#boardHeat');
+  heat.getBoundingClientRect = () => ({ x: 0, y: 0, width: 340, height: 520, top: 0, left: 0, right: 340, bottom: 520 });
+  document.dispatchEvent(new window.Event('visibilitychange'));
+  await tick();
+  await tick();
+  const narrow = [...document.querySelectorAll('#boardHeat .heat__tile')];
+  assert.equal(narrow.length, 24);
+  assert.deepEqual(narrow.map((node) => node.dataset.ticker).sort(), rows.slice(0, 24).map((row) => row[0]).sort(), 'остались самые крупные');
+  assert.match(document.querySelector('#boardMeta').textContent, /на карте 24 крупнейших, остальные в таблице/);
+  assert.equal(document.querySelectorAll('#boardTable tbody tr').length, 30, 'в таблице по-прежнему все');
+});
+
+test('heat map: a tile that cannot be labelled is dropped, not left blank', async (t) => {
+  const iss = issFixture();
+  // Forty minutes into a session the exchange has no capitalisation yet and
+  // the area goes by turnover, which runs hundreds of times apart.
+  const rows = Array.from({ length: 40 }, (_, i) => [`TT${i}`, `Бумага ${i}`, 100, null]);
+  iss.shares.securities = { columns: ['SECID', 'SHORTNAME', 'PREVPRICE', 'ISSUECAPITALIZATION'], data: rows };
+  iss.shares.marketdata = { columns: ['SECID', 'LAST', 'LASTTOPREVPRICE', 'VALTODAY'], data: rows.map((row, i) => [row[0], 100, 1.5, Math.round(2.4e9 / (i + 1) ** 1.7)]) };
+  const { document } = await setup(t, { news: marketsOnly(), saved: ['markets'], iss });
+  await tick();
+  await tick();
+  await tick();
+
+  const tiles = [...document.querySelectorAll('#boardHeat .heat__tile')];
+  assert.equal(tiles.filter((node) => node.classList.contains('heat__tile--tiny')).length, 0, 'безымянных плиток не остаётся');
+  assert.ok(tiles.length < 40, 'хвост, который не подписать ничем, с карты убран');
+  assert.ok(tiles.length >= 12, 'но карта остаётся картой');
+  // What left the map is still in the table, and подпись говорит об этом.
+  assert.equal(document.querySelectorAll('#boardTable tbody tr').length, 40);
+  assert.match(document.querySelector('#boardMeta').textContent, new RegExp(`на карте ${tiles.length} крупнейших, остальные в таблице`));
+  // The biggest names are the ones that stayed.
+  assert.ok(tiles.some((node) => node.dataset.ticker === 'TT0'));
+  assert.equal(tiles.some((node) => node.dataset.ticker === 'TT39'), false);
+});
+
+test('index chart: a session with one candle keeps the value and drops the empty plot', async (t) => {
+  const iss = issFixture();
+  // Trading has just opened: the day range holds a single candle.
+  iss.candles[10].candles.data = [['2026-09-09 10:00:00', '', 2261.33, 2261.33, 2261.33, 2261.33]];
+  const { document } = await setup(t, { news: marketsOnly(), saved: ['markets'], iss });
+  await tick();
+  await tick();
+  await tick();
+
+  const plot = document.querySelector('#boardChart');
+  assert.equal(plot.querySelector('svg'), null, 'линию рисовать не из чего');
+  assert.ok(plot.classList.contains('chart__plot--bare'), 'пустая рамка в высоту графика схлопывается');
+  assert.match(plot.querySelector('.chart__empty').textContent, /Торги только начались/);
+  assert.equal(plot.hasAttribute('aria-label'), false);
+  // The value still stands, without a low and high that repeat it.
+  assert.match(document.querySelector('#boardChartStats .chart__value').textContent, /^2\s261,33$/);
+  assert.equal(document.querySelectorAll('#boardChartStats .chart__minmax').length, 0);
+  assert.equal(document.querySelector('#boardChartAxis').textContent, '', 'ось из одного и того же времени дважды не нужна');
+
+  // With only the charted index on the board, the row above disappears
+  // instead of printing the same number a second time.
+  assert.equal(document.querySelector('#boardIndices').hidden, false);
+  iss.indices.marketdata.data = [['IMOEX', 2261.56, -1.02]];
+  const only = await setup(t, { news: marketsOnly(), saved: ['markets'], iss });
+  await tick();
+  await tick();
+  await tick();
+  assert.equal(only.document.querySelector('#boardIndices').hidden, true);
+  assert.match(only.document.querySelector('#boardChartStats .chart__value').textContent, /^2\s261,33$/);
+});
+
+test('macro strip: a rate the exchange gave without a change shows a dash, not a hole', async (t) => {
+  const iss = issFixture();
+  delete iss.fixing.securities;
+  const { document } = await setup(t, { news: marketsOnly(), saved: ['markets'], iss });
+  await tick();
+  await tick();
+  await tick();
+  const usd = [...document.querySelectorAll('#boardMacro .macro__row')].find((row) => row.textContent.includes('Доллар'));
+  assert.equal(usd.querySelector('.macro__change').textContent, '—');
+  assert.ok(usd.querySelector('.macro__change').classList.contains('is-missing'));
+});
+
 test('watchlist: added from the company panel or by ticker, kept on the device, quoted from the whole board', async (t) => {
   const { document, window } = await setup(t, { news: marketsOnly(), saved: ['markets'], iss: issFixture() });
   await tick();
@@ -566,7 +670,7 @@ test('watchlist: added from the company panel or by ticker, kept on the device, 
 
   const watch = document.querySelector('#boardWatch');
   assert.equal(watch.hidden, false);
-  assert.match(watch.querySelector('.watch__empty').textContent, /Добавьте бумаги/);
+  assert.match(watch.querySelector('.watch__empty').textContent, /Добавьте тикер/);
   assert.ok(document.querySelectorAll('#watchTickers option').length >= 4, 'подсказка знает все бумаги доски');
 
   // From the company panel.

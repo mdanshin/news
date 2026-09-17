@@ -774,8 +774,27 @@ const HEAT_LABEL_HEIGHT = 17;
 const HEAT_MIN_SECTOR_SHARE = 0.02;
 const HEAT_LABEL_MIN_WIDTH = 92;
 const HEAT_LABEL_MIN_HEIGHT = 46;
-const HEAT_TEXT_MIN_WIDTH = 44;
-const HEAT_TEXT_MIN_HEIGHT = 26;
+// Whether a label fits depends on the label: "T" and "SNGSP" need very
+// different room, so the step is chosen from the character count rather than
+// from one width threshold. The multiplier is the average glyph width of the
+// bold uppercase sans, and the slack keeps text off the tile edges.
+const HEAT_CHAR_EM = 0.66;
+const HEAT_TEXT_SLACK = 8;
+const HEAT_TEXT_STEPS = [
+  { className: "", font: 13, changeFont: 12 },
+  { className: "heat__tile--sm", font: 11, changeFont: 0 },
+  { className: "heat__tile--micro", font: 9, changeFont: 0 }
+];
+// A map this narrow cannot label forty tiles whatever the font; the biggest
+// names stay on it and the rest keep their row in the table below.
+const HEAT_NARROW_WIDTH = 520;
+const HEAT_NARROW_TILES = 24;
+// Early in a session the area is weighed by turnover, which runs hundreds of
+// times apart between the first name and the fortieth, so a fixed count still
+// leaves unreadable crumbs. Tiles that cannot be labelled are dropped and the
+// rest laid out again, down to a map that is still worth calling a map.
+const HEAT_MIN_TILES = 12;
+const HEAT_FIT_PASSES = 4;
 const TICKER_QUOTES = 28;
 
 /** @type {{snapshot: any, live: boolean, fetchedAt: number, reasons: string[]} | null} */
@@ -785,6 +804,7 @@ let marketTimer = 0;
 let marketJsonpSeq = 0;
 let issPreferJsonp = false;
 let boardShown = false;
+let heatTileCount = 0;
 
 const elMarketBoard = $("#marketBoard");
 
@@ -1100,7 +1120,7 @@ function renderBoardEmpty(text, retryable) {
 function renderBoard(parsed, live) {
   elMarketBoard.classList.remove("board--empty", "board--loading");
   elMarketBoard.setAttribute("aria-busy", "false");
-  renderBoardIndices(parsed.indices || []);
+  renderBoardIndices(parsed.indices || [], live);
   renderTicker(parsed.stocks);
   renderHeatmap(parsed.stocks);
   renderBoardTable(parsed.stocks);
@@ -1119,15 +1139,20 @@ function renderBoard(parsed, live) {
   const updated = toAbsTime(parsed.generatedAt);
   const freshness = live ? `котировки на ${updated}` : `срез от ${updated}, биржа сейчас не отвечает`;
   const basis = parsed.stocks.some((stock) => stock.weightBasis === "capitalisation") ? "площадь плитки — капитализация" : "площадь плитки — объём торгов";
+  const trimmed = heatTileCount && heatTileCount < parsed.stocks.length ? `на карте ${heatTileCount} крупнейших, остальные в таблице` : "";
   const meta = $("#boardMeta");
-  if (meta) meta.textContent = [parsed.source || "Московская биржа", updated && freshness, basis].filter(Boolean).join(" · ");
+  if (meta) meta.textContent = [parsed.source || "Московская биржа", updated && freshness, basis, trimmed].filter(Boolean).join(" · ");
 }
 
-function renderBoardIndices(indices) {
+function renderBoardIndices(indices, live) {
   const host = $("#boardIndices");
   if (!host) return;
   host.replaceChildren();
-  for (const index of indices) {
+  // The chart below prints the same index with its own period, and the two
+  // numbers differ by the candle lag; one of them has to go.
+  const rest = live ? indices.filter((index) => index.ticker !== CHART_INDEX) : indices;
+  host.hidden = rest.length === 0;
+  for (const index of rest) {
     const wrap = document.createElement("div");
     wrap.className = "board__index";
     const name = document.createElement("span");
@@ -1246,11 +1271,20 @@ function heatBox() {
   return { x: 0, y: 0, w, h };
 }
 
-function renderHeatmap(stocks) {
-  const host = $("#boardHeat");
-  if (!host) return;
-  host.replaceChildren();
+/** Largest label that fits the tile, as a class; "" is ticker and change. */
+function heatTextStep(tile, ticker, changeText) {
+  for (const step of HEAT_TEXT_STEPS) {
+    const twoLines = step.changeFont > 0;
+    const wide = twoLines && changeText.length > ticker.length;
+    const width = (wide ? changeText.length * step.changeFont : ticker.length * step.font) * HEAT_CHAR_EM + HEAT_TEXT_SLACK;
+    const height = (twoLines ? step.font * 1.15 + step.changeFont * 1.15 + 5 : step.font * 1.15 + 6);
+    if (tile.w >= width && tile.h >= height) return step.className;
+  }
+  return "heat__tile--tiny";
+}
 
+/** Sector cells with their tiles and the label each tile can hold; no DOM. */
+function heatLayout(stocks, box) {
   const bySector = new Map();
   for (const stock of stocks) {
     const sector = stock.sector || "Прочие";
@@ -1279,31 +1313,59 @@ function renderHeatmap(stocks) {
     sectors.sort((a, b) => b.value - a.value);
   }
 
-  const box = heatBox();
-  const frag = document.createDocumentFragment();
+  return squarify(sectors, box).map((cell) => {
+    // A sector label needs room; a narrow column gives its space to the tiles.
+    const labelled = cell.w >= HEAT_LABEL_MIN_WIDTH && cell.h >= HEAT_LABEL_MIN_HEIGHT;
+    const top = labelled ? HEAT_LABEL_HEIGHT : 0;
+    const inner = { x: 0, y: top, w: cell.w, h: Math.max(cell.h - top, 1) };
+    const tiles = squarify(cell.node.members.map((stock) => ({ value: Number(stock.weight) || 0, stock })), inner).map((tile) => {
+      const stock = tile.node.stock;
+      return { tile, stock, fit: heatTextStep(tile, String(stock.ticker || ""), formatChange(stock.change)) };
+    });
+    return { cell, labelled, tiles };
+  });
+}
 
-  for (const cell of squarify(sectors, box)) {
+function renderHeatmap(stocks) {
+  const host = $("#boardHeat");
+  if (!host) return;
+  host.replaceChildren();
+
+  const box = heatBox();
+  let shown = stocks.slice().sort((a, b) => (Number(b.weight) || 0) - (Number(a.weight) || 0));
+  if (box.w < HEAT_NARROW_WIDTH) shown = shown.slice(0, HEAT_NARROW_TILES);
+  let cells = heatLayout(shown, box);
+
+  // A tile nobody can read says less than one tile fewer: drop the crumbs,
+  // smallest first, and lay the rest out again in the space they leave.
+  for (let pass = 0; pass < HEAT_FIT_PASSES; pass += 1) {
+    const crumbs = cells
+      .flatMap((entry) => entry.tiles)
+      .filter((entry) => entry.fit === "heat__tile--tiny")
+      .map((entry) => entry.stock)
+      .sort((a, b) => (Number(a.weight) || 0) - (Number(b.weight) || 0));
+    const drop = new Set(crumbs.slice(0, Math.max(0, shown.length - HEAT_MIN_TILES)));
+    if (drop.size === 0) break;
+    shown = shown.filter((stock) => !drop.has(stock));
+    cells = heatLayout(shown, box);
+  }
+  heatTileCount = shown.length;
+
+  const frag = document.createDocumentFragment();
+  for (const { cell, labelled, tiles } of cells) {
     const group = document.createElement("div");
     group.className = "heat__group";
     group.style.left = `${(cell.x / box.w) * 100}%`;
     group.style.top = `${(cell.y / box.h) * 100}%`;
     group.style.width = `${(cell.w / box.w) * 100}%`;
     group.style.height = `${(cell.h / box.h) * 100}%`;
-
-    // A label needs room; a narrow column gives its space to the tiles.
-    const labelled = cell.w >= HEAT_LABEL_MIN_WIDTH && cell.h >= HEAT_LABEL_MIN_HEIGHT;
     if (labelled) {
       const label = document.createElement("span");
       label.className = "heat__groupName";
       label.textContent = cell.node.name;
       group.appendChild(label);
     }
-
-    const top = labelled ? HEAT_LABEL_HEIGHT : 0;
-    const inner = { x: 0, y: top, w: cell.w, h: Math.max(cell.h - top, 1) };
-    for (const tile of squarify(cell.node.members.map((stock) => ({ value: Number(stock.weight) || 0, stock })), inner)) {
-      group.appendChild(renderHeatTile(tile, cell));
-    }
+    for (const entry of tiles) group.appendChild(renderHeatTile(entry, cell));
     frag.appendChild(group);
   }
 
@@ -1311,14 +1373,13 @@ function renderHeatmap(stocks) {
   host.appendChild(createHeatTooltip());
 }
 
-function renderHeatTile(tile, cell) {
-  const stock = tile.node.stock;
+function renderHeatTile(entry, cell) {
+  const { tile, stock, fit } = entry;
   const step = heatStep(Number(stock.change) || 0);
   const button = document.createElement("button");
   button.type = "button";
-  const tiny = tile.w < HEAT_TEXT_MIN_WIDTH || tile.h < HEAT_TEXT_MIN_HEIGHT;
-  const small = tile.w < 62 || tile.h < 34;
-  button.className = `heat__tile${tiny ? " heat__tile--tiny" : small ? " heat__tile--sm" : ""}`;
+  const changeText = formatChange(stock.change);
+  button.className = `heat__tile${fit ? ` ${fit}` : ""}`;
   button.style.left = `${(tile.x / cell.w) * 100}%`;
   button.style.top = `${(tile.y / cell.h) * 100}%`;
   button.style.width = `calc(${(tile.w / cell.w) * 100}% - var(--heat-gap))`;
@@ -1332,7 +1393,7 @@ function renderHeatTile(tile, cell) {
   ticker.textContent = stock.ticker;
   const change = document.createElement("span");
   change.className = "heat__change";
-  change.textContent = formatChange(stock.change);
+  change.textContent = changeText;
   button.append(ticker, change);
   // The tile always names itself; colour only speeds up scanning.
   button.setAttribute("aria-label", `${stock.name}, ${formatChange(stock.change)}, цена ${Number(stock.price).toLocaleString("ru-RU")} ₽`);
@@ -1421,6 +1482,8 @@ const CHART_H = 130;
 const CHART_PAD = 4;
 const FOCUS_NEWS_LIMIT = 6;
 
+const CHART_INDEX = "IMOEX";
+
 let chartRange = "day";
 /** @type {Map<string, {series: any, fetchedAt: number}>} */
 const chartCache = new Map();
@@ -1453,6 +1516,7 @@ function renderRangeButtons() {
 function chartGhost() {
   const host = $("#boardChart");
   if (!host) return;
+  host.classList.remove("chart__plot--bare");
   const ghost = document.createElement("span");
   ghost.className = "ghost chart__ghost";
   host.replaceChildren(ghost);
@@ -1493,26 +1557,74 @@ function svgElement(name, attrs) {
   return node;
 }
 
+/** The index as the board reports it right now, for a chart with nothing to draw. */
+function boardIndexValue(ticker) {
+  return (((lastBoardSnapshot && lastBoardSnapshot.indices) || []).find((index) => index.ticker === ticker)) || null;
+}
+
+function renderChartStats(value, change, extra) {
+  const stats = $("#boardChartStats");
+  if (!stats) return;
+  stats.replaceChildren();
+  if (value === null || value === undefined) return;
+  const number = document.createElement("span");
+  number.className = "chart__value";
+  number.textContent = Number(value).toLocaleString("ru-RU", { maximumFractionDigits: 2 });
+  stats.appendChild(number);
+  if (change !== null && change !== undefined) {
+    const delta = document.createElement("span");
+    delta.className = `chart__change ${changeClass(change)}`.trim();
+    delta.textContent = formatChange(change);
+    stats.appendChild(delta);
+  }
+  if (extra) {
+    const note = document.createElement("span");
+    note.className = "chart__minmax";
+    note.textContent = extra;
+    stats.appendChild(note);
+  }
+}
+
+/**
+ * The value stays, the plot only appears when there is a line to draw: a
+ * session that just opened has one candle, and an empty box of chart height
+ * is worse than a sentence saying why.
+ */
+function renderChartNote(text) {
+  const host = $("#boardChart");
+  const axis = $("#boardChartAxis");
+  if (axis) axis.replaceChildren();
+  if (!host) return;
+  host.replaceChildren();
+  host.classList.add("chart__plot--bare");
+  host.removeAttribute("aria-label");
+  const note = document.createElement("p");
+  note.className = "chart__empty";
+  note.textContent = text;
+  host.appendChild(note);
+}
+
 function renderIndexChart(series, range) {
   const host = $("#boardChart");
-  const stats = $("#boardChartStats");
   const axis = $("#boardChartAxis");
   if (!host) return;
   host.replaceChildren();
-  if (stats) stats.replaceChildren();
+  host.classList.remove("chart__plot--bare");
   if (axis) axis.replaceChildren();
-  if (!series || series.points.length === 0) {
-    const empty = document.createElement("p");
-    empty.className = "chart__empty";
-    empty.textContent = "Биржа не отдала свечи за этот период.";
-    host.appendChild(empty);
-    host.removeAttribute("aria-label");
+
+  // Nothing from the exchange, or a single candle: keep the index value and
+  // say why there is no line instead of leaving an empty box.
+  if (!series || series.points.length < 2) {
+    const current = boardIndexValue(CHART_INDEX);
+    if (series && series.points.length === 1) renderChartStats(series.last, series.change, null);
+    else renderChartStats(current && current.value, current && current.change, null);
+    renderChartNote(series && series.points.length === 1 ? "Торги только начались: для графика нужно несколько свечей." : "Биржа не отдала свечи за этот период.");
     return;
   }
 
   const n = series.points.length;
   const span = series.max - series.min || Math.abs(series.max) * 0.001 || 1;
-  const x = (i) => CHART_PAD + (n > 1 ? (i / (n - 1)) * (CHART_W - 2 * CHART_PAD) : (CHART_W - 2 * CHART_PAD) / 2);
+  const x = (i) => CHART_PAD + (i / (n - 1)) * (CHART_W - 2 * CHART_PAD);
   const y = (v) => CHART_PAD + (1 - (v - series.min) / span) * (CHART_H - 2 * CHART_PAD);
   const line = series.points.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(p.v).toFixed(1)}`).join(" ");
   const up = (series.change === null ? series.last - series.first : series.change) >= 0;
@@ -1530,25 +1642,19 @@ function renderIndexChart(series, range) {
   const changeText = series.change === null ? "" : formatChange(series.change);
   const rangeLabel = (MoexSnapshot.RANGES[range] || {}).label || "";
   host.setAttribute("aria-label", `Индекс МосБиржи, ${rangeLabel.toLowerCase()}: от ${fmt(series.first)} до ${fmt(series.last)}${changeText ? `, ${changeText}` : ""}`);
+  // A range that never moved has no useful low and high to print.
+  renderChartStats(series.last, series.change === null ? series.last - series.first : series.change, series.max > series.min ? `мин. ${fmt(series.min)} · макс. ${fmt(series.max)}` : null);
 
-  if (stats) {
-    const value = document.createElement("span");
-    value.className = "chart__value";
-    value.textContent = fmt(series.last);
-    const change = document.createElement("span");
-    change.className = `chart__change ${changeClass(series.change === null ? series.last - series.first : series.change)}`.trim();
-    change.textContent = changeText;
-    const minmax = document.createElement("span");
-    minmax.className = "chart__minmax";
-    minmax.textContent = `мин. ${fmt(series.min)} · макс. ${fmt(series.max)}`;
-    stats.append(value, change, minmax);
-  }
   if (axis) {
-    const start = document.createElement("span");
-    start.textContent = chartTimeLabel(series.points[0].t, range);
-    const end = document.createElement("span");
-    end.textContent = chartTimeLabel(series.points[n - 1].t, range);
-    axis.append(start, end);
+    const from = chartTimeLabel(series.points[0].t, range);
+    const to = chartTimeLabel(series.points[n - 1].t, range);
+    if (from !== to) {
+      const start = document.createElement("span");
+      start.textContent = from;
+      const end = document.createElement("span");
+      end.textContent = to;
+      axis.append(start, end);
+    }
   }
 }
 
@@ -1593,8 +1699,9 @@ function renderMacro(items) {
     value.className = "macro__value";
     value.textContent = `${Number(item.value).toLocaleString("ru-RU", { maximumFractionDigits: 2 })}${item.unit ? ` ${item.unit}` : ""}`;
     const change = document.createElement("span");
-    change.className = `macro__change ${changeClass(item.change || 0)}`.trim();
-    change.textContent = item.change === null || item.change === undefined ? "" : formatChange(item.change);
+    const missing = item.change === null || item.change === undefined;
+    change.className = `macro__change ${missing ? "is-missing" : changeClass(item.change)}`.trim();
+    change.textContent = missing ? "—" : formatChange(item.change);
     row.append(name, value, change);
     host.appendChild(row);
   }
@@ -1890,7 +1997,7 @@ function renderWatchlist(snapshot) {
   if (watchlist.length === 0) {
     const empty = document.createElement("p");
     empty.className = "watch__empty";
-    empty.textContent = "Добавьте бумаги, за которыми следите: тикером выше или кнопкой в панели компании. Список хранится на этом устройстве.";
+    empty.textContent = "Добавьте тикер или нажмите «В мои бумаги» в панели компании.";
     host.appendChild(empty);
     return;
   }
@@ -1922,7 +2029,7 @@ function renderSession(session, live, generatedAt) {
   const dot = document.createElement("span");
   dot.className = "board__sessionDot";
   dot.setAttribute("aria-hidden", "true");
-  const stamp = moscowTimeLabel(session.time) || (generatedAt ? toAbsTime(generatedAt) : "");
+  const stamp = moscowTimeLabel(session.time) || (generatedAt ? compactTime(generatedAt) : "");
   const parts = [open ? "Торги идут" : "Торги закрыты"];
   if (stamp) parts.push(open ? `данные на ${stamp}` : `последние данные ${stamp}`);
   if (live && open) parts.push("задержка 15 минут");
@@ -1969,14 +2076,6 @@ function indexStories() {
 
 function storyOf(item) {
   return (item && storyByItem.get(item.id)) || null;
-}
-
-function plural(n, forms) {
-  const mod10 = n % 10;
-  const mod100 = n % 100;
-  if (mod10 === 1 && mod100 !== 11) return forms[0];
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return forms[1];
-  return forms[2];
 }
 
 function sourcesLabel(n) {
