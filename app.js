@@ -1100,7 +1100,7 @@ function renderBoardEmpty(text, retryable) {
 function renderBoard(parsed, live) {
   elMarketBoard.classList.remove("board--empty", "board--loading");
   elMarketBoard.setAttribute("aria-busy", "false");
-  renderBoardIndices(parsed.indices || []);
+  renderBoardIndices(parsed.indices || [], live);
   renderTicker(parsed.stocks);
   renderHeatmap(parsed.stocks);
   renderBoardTable(parsed.stocks);
@@ -1123,11 +1123,15 @@ function renderBoard(parsed, live) {
   if (meta) meta.textContent = [parsed.source || "Московская биржа", updated && freshness, basis].filter(Boolean).join(" · ");
 }
 
-function renderBoardIndices(indices) {
+function renderBoardIndices(indices, live) {
   const host = $("#boardIndices");
   if (!host) return;
   host.replaceChildren();
-  for (const index of indices) {
+  // The chart below prints the same index with its own period, and the two
+  // numbers differ by the candle lag; one of them has to go.
+  const rest = live ? indices.filter((index) => index.ticker !== CHART_INDEX) : indices;
+  host.hidden = rest.length === 0;
+  for (const index of rest) {
     const wrap = document.createElement("div");
     wrap.className = "board__index";
     const name = document.createElement("span");
@@ -1421,6 +1425,8 @@ const CHART_H = 130;
 const CHART_PAD = 4;
 const FOCUS_NEWS_LIMIT = 6;
 
+const CHART_INDEX = "IMOEX";
+
 let chartRange = "day";
 /** @type {Map<string, {series: any, fetchedAt: number}>} */
 const chartCache = new Map();
@@ -1453,6 +1459,7 @@ function renderRangeButtons() {
 function chartGhost() {
   const host = $("#boardChart");
   if (!host) return;
+  host.classList.remove("chart__plot--bare");
   const ghost = document.createElement("span");
   ghost.className = "ghost chart__ghost";
   host.replaceChildren(ghost);
@@ -1493,26 +1500,74 @@ function svgElement(name, attrs) {
   return node;
 }
 
+/** The index as the board reports it right now, for a chart with nothing to draw. */
+function boardIndexValue(ticker) {
+  return (((lastBoardSnapshot && lastBoardSnapshot.indices) || []).find((index) => index.ticker === ticker)) || null;
+}
+
+function renderChartStats(value, change, extra) {
+  const stats = $("#boardChartStats");
+  if (!stats) return;
+  stats.replaceChildren();
+  if (value === null || value === undefined) return;
+  const number = document.createElement("span");
+  number.className = "chart__value";
+  number.textContent = Number(value).toLocaleString("ru-RU", { maximumFractionDigits: 2 });
+  stats.appendChild(number);
+  if (change !== null && change !== undefined) {
+    const delta = document.createElement("span");
+    delta.className = `chart__change ${changeClass(change)}`.trim();
+    delta.textContent = formatChange(change);
+    stats.appendChild(delta);
+  }
+  if (extra) {
+    const note = document.createElement("span");
+    note.className = "chart__minmax";
+    note.textContent = extra;
+    stats.appendChild(note);
+  }
+}
+
+/**
+ * The value stays, the plot only appears when there is a line to draw: a
+ * session that just opened has one candle, and an empty box of chart height
+ * is worse than a sentence saying why.
+ */
+function renderChartNote(text) {
+  const host = $("#boardChart");
+  const axis = $("#boardChartAxis");
+  if (axis) axis.replaceChildren();
+  if (!host) return;
+  host.replaceChildren();
+  host.classList.add("chart__plot--bare");
+  host.removeAttribute("aria-label");
+  const note = document.createElement("p");
+  note.className = "chart__empty";
+  note.textContent = text;
+  host.appendChild(note);
+}
+
 function renderIndexChart(series, range) {
   const host = $("#boardChart");
-  const stats = $("#boardChartStats");
   const axis = $("#boardChartAxis");
   if (!host) return;
   host.replaceChildren();
-  if (stats) stats.replaceChildren();
+  host.classList.remove("chart__plot--bare");
   if (axis) axis.replaceChildren();
-  if (!series || series.points.length === 0) {
-    const empty = document.createElement("p");
-    empty.className = "chart__empty";
-    empty.textContent = "Биржа не отдала свечи за этот период.";
-    host.appendChild(empty);
-    host.removeAttribute("aria-label");
+
+  // Nothing from the exchange, or a single candle: keep the index value and
+  // say why there is no line instead of leaving an empty box.
+  if (!series || series.points.length < 2) {
+    const current = boardIndexValue(CHART_INDEX);
+    if (series && series.points.length === 1) renderChartStats(series.last, series.change, null);
+    else renderChartStats(current && current.value, current && current.change, null);
+    renderChartNote(series && series.points.length === 1 ? "Торги только начались: для графика нужно несколько свечей." : "Биржа не отдала свечи за этот период.");
     return;
   }
 
   const n = series.points.length;
   const span = series.max - series.min || Math.abs(series.max) * 0.001 || 1;
-  const x = (i) => CHART_PAD + (n > 1 ? (i / (n - 1)) * (CHART_W - 2 * CHART_PAD) : (CHART_W - 2 * CHART_PAD) / 2);
+  const x = (i) => CHART_PAD + (i / (n - 1)) * (CHART_W - 2 * CHART_PAD);
   const y = (v) => CHART_PAD + (1 - (v - series.min) / span) * (CHART_H - 2 * CHART_PAD);
   const line = series.points.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(p.v).toFixed(1)}`).join(" ");
   const up = (series.change === null ? series.last - series.first : series.change) >= 0;
@@ -1530,25 +1585,19 @@ function renderIndexChart(series, range) {
   const changeText = series.change === null ? "" : formatChange(series.change);
   const rangeLabel = (MoexSnapshot.RANGES[range] || {}).label || "";
   host.setAttribute("aria-label", `Индекс МосБиржи, ${rangeLabel.toLowerCase()}: от ${fmt(series.first)} до ${fmt(series.last)}${changeText ? `, ${changeText}` : ""}`);
+  // A range that never moved has no useful low and high to print.
+  renderChartStats(series.last, series.change === null ? series.last - series.first : series.change, series.max > series.min ? `мин. ${fmt(series.min)} · макс. ${fmt(series.max)}` : null);
 
-  if (stats) {
-    const value = document.createElement("span");
-    value.className = "chart__value";
-    value.textContent = fmt(series.last);
-    const change = document.createElement("span");
-    change.className = `chart__change ${changeClass(series.change === null ? series.last - series.first : series.change)}`.trim();
-    change.textContent = changeText;
-    const minmax = document.createElement("span");
-    minmax.className = "chart__minmax";
-    minmax.textContent = `мин. ${fmt(series.min)} · макс. ${fmt(series.max)}`;
-    stats.append(value, change, minmax);
-  }
   if (axis) {
-    const start = document.createElement("span");
-    start.textContent = chartTimeLabel(series.points[0].t, range);
-    const end = document.createElement("span");
-    end.textContent = chartTimeLabel(series.points[n - 1].t, range);
-    axis.append(start, end);
+    const from = chartTimeLabel(series.points[0].t, range);
+    const to = chartTimeLabel(series.points[n - 1].t, range);
+    if (from !== to) {
+      const start = document.createElement("span");
+      start.textContent = from;
+      const end = document.createElement("span");
+      end.textContent = to;
+      axis.append(start, end);
+    }
   }
 }
 
@@ -1593,8 +1642,9 @@ function renderMacro(items) {
     value.className = "macro__value";
     value.textContent = `${Number(item.value).toLocaleString("ru-RU", { maximumFractionDigits: 2 })}${item.unit ? ` ${item.unit}` : ""}`;
     const change = document.createElement("span");
-    change.className = `macro__change ${changeClass(item.change || 0)}`.trim();
-    change.textContent = item.change === null || item.change === undefined ? "" : formatChange(item.change);
+    const missing = item.change === null || item.change === undefined;
+    change.className = `macro__change ${missing ? "is-missing" : changeClass(item.change)}`.trim();
+    change.textContent = missing ? "—" : formatChange(item.change);
     row.append(name, value, change);
     host.appendChild(row);
   }
@@ -1890,7 +1940,7 @@ function renderWatchlist(snapshot) {
   if (watchlist.length === 0) {
     const empty = document.createElement("p");
     empty.className = "watch__empty";
-    empty.textContent = "Добавьте бумаги, за которыми следите: тикером выше или кнопкой в панели компании. Список хранится на этом устройстве.";
+    empty.textContent = "Добавьте тикер или нажмите «В мои бумаги» в панели компании.";
     host.appendChild(empty);
     return;
   }
@@ -1922,7 +1972,7 @@ function renderSession(session, live, generatedAt) {
   const dot = document.createElement("span");
   dot.className = "board__sessionDot";
   dot.setAttribute("aria-hidden", "true");
-  const stamp = moscowTimeLabel(session.time) || (generatedAt ? toAbsTime(generatedAt) : "");
+  const stamp = moscowTimeLabel(session.time) || (generatedAt ? compactTime(generatedAt) : "");
   const parts = [open ? "Торги идут" : "Торги закрыты"];
   if (stamp) parts.push(open ? `данные на ${stamp}` : `последние данные ${stamp}`);
   if (live && open) parts.push("задержка 15 минут");
@@ -1969,14 +2019,6 @@ function indexStories() {
 
 function storyOf(item) {
   return (item && storyByItem.get(item.id)) || null;
-}
-
-function plural(n, forms) {
-  const mod10 = n % 10;
-  const mod100 = n % 100;
-  if (mod10 === 1 && mod100 !== 11) return forms[0];
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return forms[1];
-  return forms[2];
 }
 
 function sourcesLabel(n) {
