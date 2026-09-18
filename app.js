@@ -24,7 +24,13 @@ const CATEGORY_DEFS = [
   { id: "health", name: "Здоровье" },
   { id: "sports", name: "Спорт" },
   { id: "culture", name: "Культура" },
-  { id: "ibs", name: "IBS" }
+  {
+    id: "ibs",
+    name: "IBS",
+    // A company section is empty most days; say so instead of letting it
+    // look broken.
+    emptyText: "Раздел собирает упоминания ИТ-интегратора IBS во всех источниках. Как только о компании напишут, новости появятся здесь."
+  }
 ];
 
 // Local interface icons: no additional runtime or external icon requests.
@@ -331,6 +337,12 @@ function updateEmptyState() {
     title = "Все источники выключены";
     description = "Включите хотя бы один источник в меню, чтобы увидеть новости.";
     stateActionMode = "sources";
+  } else if (selected.size === 1) {
+    // One topic and nothing in it: name the topic, and let a narrow section
+    // explain what it collects.
+    const only = categoryById([...selected][0]);
+    title = only ? `В разделе «${only.name}» пока тихо` : "В этой теме пока тихо";
+    description = (only && only.emptyText) || "Выберите другие темы или посмотрите все последние новости.";
   } else {
     title = "В этих темах пока тихо";
     description = "Выберите другие темы или посмотрите все последние новости.";
@@ -924,6 +936,17 @@ async function loadLiveMarket(reasons) {
 async function loadFallbackMarket() {
   const parsed = await fetchJsonFrom(MOEX_FALLBACK_URL, { cache: "no-cache" });
   if (!parsed || !Array.isArray(parsed.stocks) || parsed.stocks.length === 0) throw new Error("Пустой срез");
+  // A file written before funds were ruled out still carries them; the map
+  // should look the same whatever the age of the snapshot.
+  await loadMoexModule();
+  const notFund = (stock) => !MoexSnapshot.isFund(stock && stock.name);
+  parsed.stocks = parsed.stocks.filter(notFund);
+  if (parsed.movers) {
+    for (const key of ["up", "down", "turnover"]) {
+      if (Array.isArray(parsed.movers[key])) parsed.movers[key] = parsed.movers[key].filter(notFund);
+    }
+  }
+  if (parsed.stocks.length === 0) throw new Error("Пустой срез");
   return parsed;
 }
 
