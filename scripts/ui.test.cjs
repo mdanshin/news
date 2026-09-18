@@ -10,7 +10,7 @@ const aiHtml = fs.readFileSync(path.join(root, 'ai.html'), 'utf8');
 const script = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
 const moexScript = fs.readFileSync(path.join(root, 'moex-snapshot.js'), 'utf8');
 const snapshot = JSON.parse(fs.readFileSync(path.join(root, 'data/news.json'), 'utf8'));
-const categoryIds = ['world', 'ru', 'business', 'markets', 'tech', 'ai', 'security', 'science', 'health', 'sports', 'culture'];
+const categoryIds = ['world', 'ru', 'business', 'markets', 'tech', 'ai', 'security', 'science', 'health', 'sports', 'culture', 'ibs'];
 const tick = () => new Promise((resolve) => setImmediate(resolve));
 
 function fixture() {
@@ -105,8 +105,15 @@ function ids(document) {
 }
 
 function wanted(news, categories) {
+  // The feed keeps one card per headline, the newest of the repeats.
+  const seen = new Set();
   const list = news.items.filter((item) => item.categoryIds.some((id) => categories.includes(id)))
-    .sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
+    .sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt))
+    .filter((item) => {
+      const key = String(item.title || '').toLowerCase().replace(/ё/g, 'е').replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+      if (!key || !seen.has(key)) { seen.add(key); return true; }
+      return false;
+    });
   // The newest story with a picture in the first batch leads the feed.
   const lead = list.slice(0, 12).findIndex((item) => item.image);
   if (lead > 0) list.unshift(list.splice(lead, 1)[0]);
@@ -791,6 +798,30 @@ test('stories: the top block, coverage badges, reader links and the popularity o
   again.document.querySelector('#sortToggle').click();
   assert.equal(ids(again.document)[0], 'article-31');
   assert.equal(again.document.querySelector('#topStories').hidden, false);
+});
+
+test('feed: the same headline appears once, newest first, and comes back when its source is hidden', async (t) => {
+  const hour = 3600e3;
+  const at = (h) => new Date(Date.now() - h * hour).toISOString();
+  const news = {
+    generatedAt: new Date().toISOString(),
+    items: [
+      // A wire repeats a routine headline day after day.
+      { id: 'new', title: 'Аэропорт Внуково обслуживает рейсы по согласованию', categoryIds: ['ru'], publishedAt: at(1), sourceId: 'tass', sourceName: 'ТАСС', url: 'https://tass.ru/1' },
+      { id: 'old', title: 'Аэропорт «Внуково» обслуживает рейсы по согласованию!', categoryIds: ['ru'], publishedAt: at(2), sourceId: 'tass', sourceName: 'ТАСС', url: 'https://tass.ru/2' },
+      { id: 'other', title: 'Совсем другая новость', categoryIds: ['ru'], publishedAt: at(3), sourceId: 'tass', sourceName: 'ТАСС', url: 'https://tass.ru/3' },
+      // Two outlets file the same wording.
+      { id: 'lenta', title: 'ЦСКА победил «Динамо» в матче РПЛ', categoryIds: ['ru'], publishedAt: at(4), sourceId: 'lenta', sourceName: 'Lenta.ru', url: 'https://lenta.ru/1' },
+      { id: 'rbc', title: 'ЦСКА победил «Динамо» в матче РПЛ', categoryIds: ['ru'], publishedAt: at(5), sourceId: 'rbc', sourceName: 'РБК', url: 'https://rbc.ru/1' }
+    ]
+  };
+  const { document } = await setup(t, { news, saved: ['ru'] });
+  // Punctuation and quotes do not hide a repeat; the newest copy stays.
+  assert.deepEqual(ids(document), ['new', 'other', 'lenta']);
+
+  // Hiding the outlet whose copy is shown brings the other one back.
+  document.querySelector('#src-lenta').click();
+  assert.deepEqual(ids(document), ['new', 'other', 'rbc']);
 });
 
 test('cleared selection persists, explains the empty state and can be restored', async (t) => {

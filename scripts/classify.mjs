@@ -21,7 +21,8 @@ export const CATEGORY_DEFS = {
   science: { name: "Наука" },
   health: { name: "Здоровье" },
   sports: { name: "Спорт" },
-  culture: { name: "Культура" }
+  culture: { name: "Культура" },
+  ibs: { name: "IBS" }
 };
 
 export function isKnownCategory(id) {
@@ -133,6 +134,8 @@ export function inferCategoriesByText(title, excerpt) {
     // Market news is business news; the section is a narrower view of it.
     out.add("business");
   }
+
+  if (isIbsText(t)) out.add("ibs");
 
   return Array.from(out);
 }
@@ -318,4 +321,67 @@ export function classifyItem(item, cfg) {
       mapCategories(item.sourceId, [], item.url, cfg);
   const inferred = inferCategoriesByText(item.title, item.excerpt);
   return Array.from(new Set([...fromSource, ...inferred]));
+}
+
+// One company: IBS, the Russian IT integrator. Its name is a trap in both
+// alphabets — «ИБС» is the usual Russian abbreviation for ischaemic heart
+// disease and "IBS" the English one for irritable bowel syndrome — so the
+// company's own forms count on their own, a bare token needs IT or business
+// context, and a medical word anywhere rules the story out.
+const IBS_TOKEN = `(?:ibs|ибс)${RIGHT}`;
+export const IBS_STRONG = anchored([
+  `(?:гк|группа компаний|групп${RU}|компани${RU}|холдинг${RU}|интегратор${RU})\\s+«?${IBS_TOKEN}`,
+  `${IBS_TOKEN}\\s+(?:group|груп|холдинг|россия|экспертиза|софт)`,
+  "ibs\\.ru"
+]);
+export const IBS_WEAK = anchored([IBS_TOKEN]);
+const IBS_CONTEXT = anchored([
+  "ит-",
+  word("ит"),
+  "айти",
+  "интегратор",
+  "аутсорсинг",
+  "консалтинг",
+  "импортозамещ",
+  "цифровизац",
+  "цифров",
+  `разработ${RU}`,
+  "программн",
+  "софт",
+  "систем",
+  "сервис",
+  "заказчик",
+  "внедрен",
+  "подрядчик",
+  "выручк",
+  "прибыл",
+  word("ipo"),
+  "сотрудник",
+  "инженер",
+  "software",
+  "integrator",
+  "outsourcing",
+  "consulting"
+]);
+const IBS_EXCLUDE = anchored([
+  "ишемическ",
+  "кардиолог",
+  "стенокард",
+  `болезн${RU} сердца`,
+  "инфаркт",
+  "кишечник",
+  "гастроэнтеролог",
+  "ischemic",
+  "ischaemic",
+  "irritable bowel",
+  "bowel",
+  "cardiac",
+  "heart disease"
+]);
+
+function isIbsText(t) {
+  // Medicine wins: a heart or gut story is never a company story.
+  if (IBS_EXCLUDE.test(t)) return false;
+  if (IBS_STRONG.test(t)) return true;
+  return IBS_WEAK.test(t) && IBS_CONTEXT.test(t);
 }
