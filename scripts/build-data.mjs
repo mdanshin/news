@@ -132,7 +132,7 @@ function isRefusal(error) {
  */
 async function fetchArticlePage(url) {
   const host = hostOf(url);
-  if (hostGaveUp(host)) throw new Error(`${host} не отвечает, пропуск до следующего запуска`);
+  if (hostGaveUp(host)) throw Object.assign(new Error(`${host} не отвечает, пропуск до следующего запуска`), { hostSkipped: true });
 
   let lastError = null;
   let lastEmpty = null;
@@ -819,7 +819,8 @@ async function main() {
 
   await withPool(
     need.map((x) => async () => {
-      x.contentTries = (x.contentTries || 0) + 1;
+      const triesBefore = x.contentTries || 0;
+      x.contentTries = triesBefore + 1;
       const s = stat(x.sourceId);
       try {
         const { parsed, cleaned, profile } = await fetchArticlePage(x.url);
@@ -844,6 +845,9 @@ async function main() {
         if (!x.title && parsed.title) x.title = parsed.title;
       } catch (e) {
         s.failed += 1;
+        // A page skipped because its host went silent was never asked, so it
+        // keeps its attempts for the next run.
+        if (e?.hostSkipped) x.contentTries = triesBefore;
         const cause = e?.cause;
         const reason = e?.name === "AbortError" ? "timeout" : String(cause?.code || cause?.message || e?.message || e).slice(0, 60);
         s.reasons.set(reason, (s.reasons.get(reason) || 0) + 1);
