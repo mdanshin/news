@@ -375,6 +375,7 @@ button.feed__order[aria-pressed="true"] { font-weight: 500; }
   --heat-d4: #d95757; --heat-d4-ink: #0b0b0b;
   --heat-d5: #ab2f2f; --heat-d5-ink: #ffffff;
   --heat-gap: 2px;
+  --heat-group-gap: 5px;
   margin-bottom: 34px;
 }
 :root[data-theme="dark"] .board {
@@ -422,6 +423,7 @@ button.feed__order[aria-pressed="true"] { font-weight: 500; }
 .heat { position: relative; width: 100%; height: 420px; }
 .heat__group { position: absolute; }
 .heat__groupName { position: absolute; inset: 0 0 auto 0; height: 17px; padding: 0 6px; font-size: .6875rem; line-height: 17px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.heat__groupName.heat__groupName--down { inset: 0 auto 0 0; width: 17px; height: auto; padding: 6px 0; writing-mode: vertical-rl; }
 .heat__tile { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; overflow: hidden; border: 0; border-radius: 3px; padding: 2px; background: var(--fill); color: var(--ink); box-shadow: inset 0 0 0 1px rgba(11, 11, 11, .10); cursor: pointer; text-align: center; }
 :root[data-theme="dark"] .heat__tile { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .10); }
 .heat__tile:hover, .heat__tile:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }

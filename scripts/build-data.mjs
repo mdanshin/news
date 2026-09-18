@@ -81,13 +81,34 @@ const MIN_ARTICLE_CHARS = 120;
 /** @type {Map<string, Promise<unknown>>} */
 const hostQueues = new Map();
 
-function politely(url, task) {
-  let host = "";
+// Requests to one host go one after another, so a host that keeps timing out
+// spends the whole run on its own queue: twenty seconds per attempt, two
+// profiles, a retry each. After this many failures in a row the host is left
+// alone until the next run; its pages keep their retry counter and come back.
+const HOST_GIVE_UP_AFTER = 5;
+/** @type {Map<string, number>} */
+const hostFailures = new Map();
+
+function hostOf(url) {
   try {
-    host = new URL(url).hostname;
+    return new URL(url).hostname;
   } catch {
-    return task();
+    return "";
   }
+}
+
+function noteHostResult(host, ok) {
+  if (!host) return;
+  hostFailures.set(host, ok ? 0 : (hostFailures.get(host) || 0) + 1);
+}
+
+function hostGaveUp(host) {
+  return Boolean(host) && (hostFailures.get(host) || 0) >= HOST_GIVE_UP_AFTER;
+}
+
+function politely(url, task) {
+  const host = hostOf(url);
+  if (!host) return task();
   const previous = hostQueues.get(host) || Promise.resolve();
   const run = previous.then(async () => {
     try {
@@ -110,6 +131,9 @@ function isRefusal(error) {
  * would not change with another identity.
  */
 async function fetchArticlePage(url) {
+  const host = hostOf(url);
+  if (hostGaveUp(host)) throw new Error(`${host} не отвечает, пропуск до следующего запуска`);
+
   let lastError = null;
   let lastEmpty = null;
   for (const profile of PAGE_PROFILES) {
@@ -118,9 +142,13 @@ async function fetchArticlePage(url) {
       html = await politely(url, () => fetchText(url, { headers: profile.headers, retries: 1 }));
     } catch (error) {
       lastError = error;
+      // A refusal is an answer: the host is alive and the next profile may
+      // get through. Anything else (timeout, reset) counts against the host.
       if (isRefusal(error)) continue;
+      noteHostResult(host, false);
       break;
     }
+    noteHostResult(host, true);
     const parsed = extractArticleHtml(url, html);
     const cleaned = sanitizeReadabilityHtml(parsed.content);
     if (cleaned.html && parsed.text.length >= MIN_ARTICLE_CHARS) return { parsed, cleaned, profile: profile.name };

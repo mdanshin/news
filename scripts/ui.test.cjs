@@ -393,7 +393,7 @@ test('market board asks the exchange itself, replaces the lead card and stays ou
   assert.deepEqual([...document.querySelectorAll('#boardHeat .heat__ticker')].map((n) => n.textContent).sort(), ['GAZP', 'GMKN', 'LKOH', 'SBER']);
   // Colour is never the only channel: every tile names itself and its change.
   const tile = [...document.querySelectorAll('#boardHeat .heat__tile')].find((node) => node.dataset.ticker === 'SBER');
-  assert.match(tile.getAttribute('aria-label'), /Сбербанк, \+1,80%/);
+  assert.match(tile.getAttribute('aria-label'), /Сбербанк, Финансы, \+1,80%/, 'плитка называет свой сектор: соседняя группа может стоять вплотную');
   assert.equal(tile.style.getPropertyValue('--fill'), 'var(--heat-u3)');
   assert.equal([...document.querySelectorAll('#boardHeat .heat__tile')].find((node) => node.dataset.ticker === 'LKOH').style.getPropertyValue('--fill'), 'var(--heat-zero)');
   // No trade yet today: the previous close stands in, with no change.
@@ -594,6 +594,53 @@ test('heat map: the label is chosen by ticker length, and a narrow map keeps few
   assert.deepEqual(narrow.map((node) => node.dataset.ticker).sort(), rows.slice(0, 24).map((row) => row[0]).sort(), 'остались самые крупные');
   assert.match(document.querySelector('#boardMeta').textContent, /на карте 24 крупнейших, остальные в таблице/);
   assert.equal(document.querySelectorAll('#boardTable tbody tr').length, 30, 'в таблице по-прежнему все');
+});
+
+test('heat map: every tile belongs to a named sector, and «Прочие» is one group', async (t) => {
+  const iss = issFixture();
+  // The shape of a real session: a few big sectors, one narrow sector of its
+  // own (МТС in «Связь») and two tiny ones next to a large «Прочие» of funds.
+  const board = [
+    ['LKOH', 30e9], ['ROSN', 12e9], ['GAZP', 10e9], ['NVTK', 8e9],
+    ['SBER', 22e9], ['VTBR', 9e9], ['MOEX', 5e9],
+    ['AKMM', 14e9], ['LQDT', 12e9], ['SBMM', 6e9],
+    ['SMLT', 13e9],
+    ['PLZL', 7e9], ['GMKN', 6e9], ['MAGN', 4e9],
+    ['OZON', 6e9], ['YDEX', 5e9],
+    ['MTSS', 9e9],
+    ['X5', 2.2e9],
+    ['PHOR', 1.2e9]
+  ];
+  iss.shares.securities = { columns: ['SECID', 'SHORTNAME', 'PREVPRICE', 'ISSUECAPITALIZATION'], data: board.map(([id]) => [id, `${id} ао`, 100, null]) };
+  iss.shares.marketdata = { columns: ['SECID', 'LAST', 'LASTTOPREVPRICE', 'VALTODAY'], data: board.map(([id, value]) => [id, 100, -4.65, value]) };
+  const { document, window } = await setup(t, { news: marketsOnly(), saved: ['markets'], iss });
+  await tick();
+  await tick();
+  await tick();
+
+  const groupOf = (ticker) => document.querySelector(`#boardHeat .heat__tile[data-ticker="${ticker}"]`).closest('.heat__group');
+  const nameOf = (group) => (group.querySelector('.heat__groupName') || {}).textContent || group.title;
+
+  // The complaint: МТС sat next to the metals and read as one of them.
+  assert.equal(nameOf(groupOf('MTSS')), 'Связь');
+  assert.notEqual(groupOf('MTSS'), groupOf('GMKN'));
+  assert.equal(nameOf(groupOf('GMKN')), 'Металлы');
+  // Every group says what it is, on screen or in its tooltip.
+  const groups = [...document.querySelectorAll('#boardHeat .heat__group')];
+  for (const group of groups) assert.ok(nameOf(group), 'у группы есть имя');
+  // A narrow tall column carries its name down the side instead of losing it.
+  const sectors = { MTSS: 'Связь', LKOH: 'Нефть и газ', ROSN: 'Нефть и газ', GAZP: 'Нефть и газ', NVTK: 'Нефть и газ', SBER: 'Финансы', VTBR: 'Финансы', MOEX: 'Финансы' };
+  const stocks = board.map(([ticker, value]) => ({ ticker, name: ticker, sector: sectors[ticker] || 'Прочие', weight: value, change: -1, price: 100, turnover: value }));
+  const narrow = window.heatLayout(stocks, { x: 0, y: 0, w: 320, h: 560 });
+  assert.ok(narrow.some((entry) => entry.labelled === 'down'), 'у высокой узкой ячейки имя идёт вдоль неё');
+  assert.ok(narrow.every((entry) => entry.tiles.every((tile) => tile.tile.w > 0 && tile.tile.h > 0)), 'подпись не съедает плитки');
+
+  // The tiny sectors join the funds instead of starting a second «Прочие».
+  const names = groups.map(nameOf);
+  assert.equal(new Set(names).size, names.length, `секторы не повторяются: ${names.join(', ')}`);
+  assert.equal(nameOf(groupOf('X5')), 'Прочие');
+  assert.equal(nameOf(groupOf('PHOR')), 'Прочие');
+  assert.equal(groupOf('X5'), groupOf('AKMM'));
 });
 
 test('heat map: a tile that cannot be labelled is dropped, not left blank', async (t) => {
