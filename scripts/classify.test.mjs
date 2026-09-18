@@ -26,7 +26,7 @@ test("feeds.json only references known categories and known sources", () => {
     assert.ok(sourceIds.has(sourceId));
     for (const id of ids) assert.ok(isKnownCategory(id));
   }
-  assert.deepEqual(Object.keys(CATEGORY_DEFS), ["world", "ru", "business", "markets", "tech", "ai", "security", "science", "health", "sports", "culture"]);
+  assert.deepEqual(Object.keys(CATEGORY_DEFS), ["world", "ru", "business", "markets", "tech", "ai", "security", "science", "health", "sports", "culture", "ibs"]);
   const ids = new Set(cfg.sources.map((s) => s.id));
   assert.equal(ids.size, cfg.sources.length, "source ids must be unique");
   for (const s of cfg.sources) assert.match(s.feedUrl, /^https:\/\//);
@@ -235,4 +235,35 @@ test("classifyItem does not trust stored sections of items without source rubric
   assert.deepEqual(classifyItem(lentaHealth, cfg), ["health"]);
   const legacyFalsePositive = item({ title: "Вышел киберпанковый шутер", url: "https://lenta.ru/news/2026/09/08/z/", categoryIds: ["tech", "security", "ai"] });
   assert.deepEqual(classifyItem(legacyFalsePositive, cfg), []);
+});
+
+test("раздел IBS: формы компании засчитываются сами, голый токен требует контекста, медицина исключается", () => {
+  const ibs = (title, excerpt = "") => inferCategoriesByText(title, excerpt).includes("ibs");
+
+  // The company names itself in several ways.
+  assert.equal(ibs("ГК IBS вышла на биржу"), true);
+  assert.equal(ibs("Группа компаний IBS купила интегратора"), true);
+  assert.equal(ibs("IBS Group объявила о слиянии"), true);
+  assert.equal(ibs("Компания «ИБС» внедрила систему в банке"), true);
+  assert.equal(ibs("Вакансии опубликованы на ibs.ru"), true);
+
+  // A bare token counts next to IT or business context.
+  assert.equal(ibs("IBS запустила платформу для разработчиков"), true);
+  assert.equal(ibs("ИБС наняла тысячу инженеров"), true);
+  assert.equal(ibs("IBS провела IPO на Мосбирже"), true);
+  assert.equal(ibs("Просто IBS"), false, "без контекста не засчитывается");
+
+  // Both alphabets carry a medical meaning of the same letters.
+  assert.equal(ibs("Ишемическая болезнь сердца (ИБС) у молодых"), false);
+  assert.equal(ibs("ИБС: кардиолог назвал первые признаки"), false);
+  assert.equal(ibs("IBS symptoms: irritable bowel syndrome explained"), false);
+  assert.equal(ibs("Ученые изучили IBS и микробиом кишечника"), false);
+
+  // The letters inside another word are not the company.
+  assert.equal(ibs("Компания Ibsen открыла офис в Москве"), false);
+  assert.equal(ibs("Театр поставил пьесу Ибсена"), false);
+
+  // The section is cross-cutting: the story keeps its own topics too.
+  const both = inferCategoriesByText("IBS провела IPO на Мосбирже", "");
+  assert.ok(both.includes("markets") && both.includes("ibs"));
 });
