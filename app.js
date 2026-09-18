@@ -776,6 +776,10 @@ const HEAT_LABEL_HEIGHT = 17;
 const HEAT_MIN_SECTOR_SHARE = 0.02;
 const HEAT_LABEL_MIN_WIDTH = 92;
 const HEAT_LABEL_MIN_HEIGHT = 46;
+// A tall narrow sector gets its name down the side instead of across the top:
+// without it the column reads as part of the sector next to it.
+const HEAT_VLABEL_MIN_HEIGHT = 92;
+const HEAT_VLABEL_MIN_WIDTH = 40;
 // Whether a label fits depends on the label: "T" and "SNGSP" need very
 // different room, so the step is chosen from the character count rather than
 // from one width threshold. The multiplier is the average glyph width of the
@@ -1304,22 +1308,27 @@ function heatLayout(stocks, box) {
     .sort((a, b) => b.value - a.value);
 
   const total = sectors.reduce((sum, sector) => sum + sector.value, 0);
-  const small = sectors.filter((sector) => sector.value / total < HEAT_MIN_SECTOR_SHARE);
+  const small = sectors.filter((sector) => sector.value / total < HEAT_MIN_SECTOR_SHARE && sector.name !== "Прочие");
   if (small.length > 1) {
     sectors = sectors.filter((sector) => !small.includes(sector));
-    sectors.push({
-      name: "Прочие",
-      value: small.reduce((sum, sector) => sum + sector.value, 0),
-      members: small.flatMap((sector) => sector.members).sort((a, b) => (Number(b.weight) || 0) - (Number(a.weight) || 0))
-    });
+    // "Прочие" may already be on the map; a second group of the same name
+    // would print the same heading twice.
+    const rest = sectors.find((sector) => sector.name === "Прочие") || { name: "Прочие", value: 0, members: [] };
+    if (!sectors.includes(rest)) sectors.push(rest);
+    rest.value += small.reduce((sum, sector) => sum + sector.value, 0);
+    rest.members = rest.members.concat(small.flatMap((sector) => sector.members)).sort((a, b) => (Number(b.weight) || 0) - (Number(a.weight) || 0));
     sectors.sort((a, b) => b.value - a.value);
   }
 
   return squarify(sectors, box).map((cell) => {
-    // A sector label needs room; a narrow column gives its space to the tiles.
-    const labelled = cell.w >= HEAT_LABEL_MIN_WIDTH && cell.h >= HEAT_LABEL_MIN_HEIGHT;
-    const top = labelled ? HEAT_LABEL_HEIGHT : 0;
-    const inner = { x: 0, y: top, w: cell.w, h: Math.max(cell.h - top, 1) };
+    // A sector name goes across the top where there is room, down the side of
+    // a tall narrow column otherwise, and nowhere when neither fits.
+    const across = cell.w >= HEAT_LABEL_MIN_WIDTH && cell.h >= HEAT_LABEL_MIN_HEIGHT;
+    const down = !across && cell.h >= HEAT_VLABEL_MIN_HEIGHT && cell.w >= HEAT_VLABEL_MIN_WIDTH;
+    const labelled = across ? "across" : down ? "down" : "";
+    const top = across ? HEAT_LABEL_HEIGHT : 0;
+    const left = down ? HEAT_LABEL_HEIGHT : 0;
+    const inner = { x: left, y: top, w: Math.max(cell.w - left, 1), h: Math.max(cell.h - top, 1) };
     const tiles = squarify(cell.node.members.map((stock) => ({ value: Number(stock.weight) || 0, stock })), inner).map((tile) => {
       const stock = tile.node.stock;
       return { tile, stock, fit: heatTextStep(tile, String(stock.ticker || ""), formatChange(stock.change)) };
@@ -1359,13 +1368,16 @@ function renderHeatmap(stocks) {
     group.className = "heat__group";
     group.style.left = `${(cell.x / box.w) * 100}%`;
     group.style.top = `${(cell.y / box.h) * 100}%`;
-    group.style.width = `${(cell.w / box.w) * 100}%`;
-    group.style.height = `${(cell.h / box.h) * 100}%`;
+    group.style.width = `calc(${(cell.w / box.w) * 100}% - var(--heat-group-gap))`;
+    group.style.height = `calc(${(cell.h / box.h) * 100}% - var(--heat-group-gap))`;
     if (labelled) {
       const label = document.createElement("span");
-      label.className = "heat__groupName";
+      label.className = `heat__groupName${labelled === "down" ? " heat__groupName--down" : ""}`;
       label.textContent = cell.node.name;
       group.appendChild(label);
+    } else {
+      // Nameless on screen, but the group is still a sector of its own.
+      group.title = cell.node.name;
     }
     for (const entry of tiles) group.appendChild(renderHeatTile(entry, cell));
     frag.appendChild(group);
@@ -1398,7 +1410,7 @@ function renderHeatTile(entry, cell) {
   change.textContent = changeText;
   button.append(ticker, change);
   // The tile always names itself; colour only speeds up scanning.
-  button.setAttribute("aria-label", `${stock.name}, ${formatChange(stock.change)}, цена ${Number(stock.price).toLocaleString("ru-RU")} ₽`);
+  button.setAttribute("aria-label", `${stock.name}, ${stock.sector || "Прочие"}, ${formatChange(stock.change)}, цена ${Number(stock.price).toLocaleString("ru-RU")} ₽`);
 
   button.addEventListener("click", () => showCompanyFocus(stock, button));
   const show = () => showHeatTooltip(button, stock);
@@ -1427,7 +1439,7 @@ function showHeatTooltip(tile, stock) {
   const price = document.createElement("div");
   price.textContent = `${Number(stock.price).toLocaleString("ru-RU", { maximumFractionDigits: 2 })} ₽ · ${formatChange(stock.change)}`;
   const turnover = document.createElement("span");
-  turnover.textContent = `Оборот: ${formatMoney(Number(stock.turnover) || 0)}`;
+  turnover.textContent = `${stock.sector || "Прочие"} · оборот ${formatMoney(Number(stock.turnover) || 0)}`;
   tip.append(name, price, turnover);
   tip.hidden = false;
 
