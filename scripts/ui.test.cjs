@@ -871,6 +871,20 @@ test('feed: the same headline appears once, newest first, and comes back when it
   assert.deepEqual(ids(document), ['new', 'other', 'rbc']);
 });
 
+test('empty single topic names itself, and a company section says what it collects', async (t) => {
+  const news = fixture();
+  for (const item of news.items) item.categoryIds = ['tech'];
+  const { document } = await setup(t, { news, saved: ['ibs'] });
+  assert.equal(document.querySelector('#feedState').hidden, false);
+  assert.equal(document.querySelector('#stateTitle').textContent, 'В разделе «IBS» пока тихо');
+  assert.match(document.querySelector('#stateText').textContent, /собирает упоминания ИТ-интегратора IBS/);
+
+  // A plain topic names itself too, without an explanation it does not need.
+  const other = await setup(t, { news, saved: ['sports'] });
+  assert.equal(other.document.querySelector('#stateTitle').textContent, 'В разделе «Спорт» пока тихо');
+  assert.match(other.document.querySelector('#stateText').textContent, /Выберите другие темы/);
+});
+
 test('cleared selection persists, explains the empty state and can be restored', async (t) => {
   const { document, window } = await setup(t);
   document.querySelector('#clearBtn').click();

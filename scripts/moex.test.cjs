@@ -166,3 +166,31 @@ test('buildSession and quotes: the exchange status wins, the calendar stands in,
   assert.equal(snapshot.session.status, 'open');
   assert.ok(snapshot.quotes.SBER);
 });
+
+test('фонды денежного рынка не попадают на карту, но остаются в котировках', () => {
+  const rows = [
+    ['SBER', 'Сбербанк', 300, null],
+    ['LQDT', 'LQDT ETF', 1.5, null],
+    ['AKMM', 'AKMM ETF', 1.3, null],
+    ['GAZP', 'Газпром', 130, null],
+    ['TSTF', 'БПИФ Тест', 10, null]
+  ];
+  const shares = {
+    securities: table(['SECID', 'SHORTNAME', 'PREVPRICE', 'ISSUECAPITALIZATION'], rows),
+    marketdata: table(['SECID', 'LAST', 'LASTTOPREVPRICE', 'VALTODAY'], [
+      ['SBER', 312, 1.8, 9e9], ['LQDT', 1.5, 0.04, 12e9], ['AKMM', 1.3, 0.05, 14e9], ['GAZP', 128, -2.6, 5e9], ['TSTF', 10, 0.02, 8e9]
+    ])
+  };
+  // Их оборот больше, чем у компаний, и без правила они заняли бы карту.
+  assert.deepEqual(MoexSnapshot.buildStocks(shares).map((s) => s.ticker), ['SBER', 'GAZP']);
+  assert.deepEqual(MoexSnapshot.buildMovers(shares).turnover.map((s) => s.ticker), ['SBER', 'GAZP'], 'и в лидерах дня их тоже нет');
+  // В «Мои бумаги» фонд добавить можно: котировки остаются полными.
+  assert.deepEqual(Object.keys(MoexSnapshot.buildQuotes(shares)).sort(), ['AKMM', 'GAZP', 'LQDT', 'SBER', 'TSTF']);
+  // Плитка не носит служебный признак.
+  assert.equal('fund' in MoexSnapshot.buildStocks(shares)[0], false);
+  // Признак берётся из имени, которое даёт биржа.
+  assert.equal(MoexSnapshot.isFund('LQDT ETF'), true);
+  assert.equal(MoexSnapshot.isFund('БПИФ Ликвидность'), true);
+  assert.equal(MoexSnapshot.isFund('МКПАО "ВК"'), false, 'ПАО это не ПИФ');
+  assert.equal(MoexSnapshot.isFund('Самолет ао'), false);
+});

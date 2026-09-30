@@ -46,6 +46,17 @@
     Строительство: ["PIKK", "LSRG", "SMLT", "ETLN"]
   };
 
+  // The exchange marks a fund in the security's own short name ("LQDT ETF",
+  // "БПИФ ..."). Money-market funds trade on the same board and their
+  // turnover beats many companies, but their price moves hundredths of a per
+  // cent by construction: on a market map they are a grey block that pushes
+  // companies out. They stay quotable, so the reader can still watch one.
+  const FUND_NAME = /(?:^|[\s"«(])(?:etf|бпиф|пиф|fund)(?:$|[\s"»)])/i;
+
+  function isFund(name) {
+    return FUND_NAME.test(String(name || ""));
+  }
+
   const SECTOR_BY_TICKER = new Map();
   for (const [sector, tickers] of Object.entries(SECTORS)) {
     for (const ticker of tickers) SECTOR_BY_TICKER.set(ticker, sector);
@@ -210,9 +221,11 @@
       const byCap = Boolean(capitalisation && capitalisation > 0);
       const weight = byCap ? capitalisation : turnover;
 
+      const name = String(pick(security, ["SHORTNAME", "SECNAME", "NAME"]) || row.SECID);
       out.push({
         ticker: row.SECID,
-        name: String(pick(security, ["SHORTNAME", "SECNAME", "NAME"]) || row.SECID),
+        name,
+        fund: isFund(name),
         sector: SECTOR_BY_TICKER.get(row.SECID) || "Прочие",
         price,
         change: change === null ? 0 : Number(change.toFixed(2)),
@@ -227,12 +240,16 @@
   function buildStocks(payload) {
     // A board where nothing traded today would size every tile by a stale
     // capitalisation; keep the most valuable names either way.
-    return shareRows(payload).filter((s) => s.weight).sort((a, b) => b.weight - a.weight).slice(0, TILE_LIMIT);
+    return shareRows(payload)
+      .filter((s) => s.weight && !s.fund)
+      .sort((a, b) => b.weight - a.weight)
+      .slice(0, TILE_LIMIT)
+      .map(({ fund, ...stock }) => stock);
   }
 
   /** The day's leaders among names that actually trade: up, down, turnover. */
   function buildMovers(payload) {
-    const liquid = shareRows(payload).filter((s) => s.turnover >= MOVERS_MIN_TURNOVER);
+    const liquid = shareRows(payload).filter((s) => s.turnover >= MOVERS_MIN_TURNOVER && !s.fund);
     const brief = (s) => ({ ticker: s.ticker, name: s.name, price: s.price, change: s.change, turnover: s.turnover });
     return {
       up: liquid.filter((s) => s.change > 0).sort((a, b) => b.change - a.change).slice(0, MOVERS_LIMIT).map(brief),
@@ -244,6 +261,7 @@
   /** Every priced share by ticker, for the reader's own list. */
   function buildQuotes(payload) {
     const out = {};
+    // Funds included: the reader may well want one in their own list.
     for (const s of shareRows(payload)) out[s.ticker] = { name: s.name, price: s.price, change: s.change, turnover: s.turnover };
     return out;
   }
@@ -391,7 +409,7 @@
   }
 
   return {
-    issUrl, requests, urls, build, buildStocks, buildIndices, buildMovers, buildQuotes, buildSession, sessionByClock, buildSeries, buildMacro, brentContracts, companyPattern,
+    issUrl, requests, urls, build, buildStocks, buildIndices, buildMovers, buildQuotes, buildSession, sessionByClock, buildSeries, buildMacro, brentContracts, companyPattern, isFund,
     rows, pick, num, isoDate, SECTORS, RANGES, COMPANY_ALIASES, TILE_LIMIT, MOVERS_LIMIT, MOVERS_MIN_TURNOVER
   };
 });
