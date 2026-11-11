@@ -1,673 +1,673 @@
 {
-  "generatedAt": "2026-11-10T23:41:04.809Z",
+  "generatedAt": "2026-11-11T11:39:58.477Z",
   "source": "Московская биржа (ISS)",
   "indices": [
     {
       "ticker": "IMOEX",
       "name": "Индекс МосБиржи",
-      "value": 2445.6,
-      "change": -1.11
+      "value": 2447.34,
+      "change": 0.13
     }
   ],
   "stocks": [
     {
-      "ticker": "SMLT",
-      "name": "Самолет ао",
-      "sector": "Строительство",
-      "price": 299,
-      "change": -8.7,
-      "turnover": 8272728803,
-      "weight": 8272728803,
-      "weightBasis": "turnover"
-    },
-    {
-      "ticker": "T",
-      "name": "Т-Техно ао",
-      "sector": "Финансы",
-      "price": 274.88,
-      "change": 1.28,
-      "turnover": 6674779687,
-      "weight": 6674779687,
-      "weightBasis": "turnover"
-    },
-    {
       "ticker": "GAZP",
       "name": "ГАЗПРОМ ао",
       "sector": "Нефть и газ",
-      "price": 112.64,
-      "change": -1.31,
-      "turnover": 5056349971,
-      "weight": 5056349971,
+      "price": 112.27,
+      "change": -0.33,
+      "turnover": 4717485271,
+      "weight": 4717485271,
       "weightBasis": "turnover"
     },
     {
       "ticker": "SBER",
       "name": "Сбербанк",
       "sector": "Финансы",
-      "price": 293.1,
-      "change": -0.73,
-      "turnover": 4761978119,
-      "weight": 4761978119,
+      "price": 293.17,
+      "change": 0.02,
+      "turnover": 3301703837,
+      "weight": 3301703837,
+      "weightBasis": "turnover"
+    },
+    {
+      "ticker": "T",
+      "name": "Т-Техно ао",
+      "sector": "Финансы",
+      "price": 274.02,
+      "change": -0.31,
+      "turnover": 3298503571,
+      "weight": 3298503571,
       "weightBasis": "turnover"
     },
     {
       "ticker": "LKOH",
       "name": "ЛУКОЙЛ",
       "sector": "Нефть и газ",
-      "price": 5924.5,
-      "change": -1.22,
-      "turnover": 4669535925,
-      "weight": 4669535925,
-      "weightBasis": "turnover"
-    },
-    {
-      "ticker": "MGNT",
-      "name": "Магнит ао",
-      "sector": "Потребительский",
-      "price": 2028,
-      "change": 2.53,
-      "turnover": 4625267018,
-      "weight": 4625267018,
-      "weightBasis": "turnover"
-    },
-    {
-      "ticker": "AKMM",
-      "name": "AKMM ETF",
-      "sector": "Прочие",
-      "price": 181.27,
-      "change": 0.06,
-      "turnover": 4485145178,
-      "weight": 4485145178,
-      "weightBasis": "turnover"
-    },
-    {
-      "ticker": "PLZL",
-      "name": "Полюс",
-      "sector": "Металлы",
-      "price": 1107.6,
-      "change": -3.2,
-      "turnover": 4058586449,
-      "weight": 4058586449,
+      "price": 5933,
+      "change": 0.14,
+      "turnover": 3293703696,
+      "weight": 3293703696,
       "weightBasis": "turnover"
     },
     {
       "ticker": "VTBR",
       "name": "ВТБ ао",
       "sector": "Финансы",
-      "price": 57.95,
-      "change": 0.8,
-      "turnover": 3976640515,
-      "weight": 3976640515,
+      "price": 57.26,
+      "change": -1.19,
+      "turnover": 3006498770,
+      "weight": 3006498770,
       "weightBasis": "turnover"
     },
     {
-      "ticker": "SBFR",
-      "name": "SBFR ETF",
-      "sector": "Прочие",
-      "price": 15.83,
-      "change": 0.16,
-      "turnover": 3575757142,
-      "weight": 3575757142,
-      "weightBasis": "turnover"
-    },
-    {
-      "ticker": "GMKN",
-      "name": "ГМКНорНик",
-      "sector": "Металлы",
-      "price": 119.38,
-      "change": 2.24,
-      "turnover": 3380603935,
-      "weight": 3380603935,
-      "weightBasis": "turnover"
-    },
-    {
-      "ticker": "SBMM",
-      "name": "SBMM ETF",
-      "sector": "Прочие",
-      "price": 19.815,
-      "change": 0.04,
-      "turnover": 3359887546,
-      "weight": 3359887546,
-      "weightBasis": "turnover"
-    },
-    {
-      "ticker": "LQDT",
-      "name": "LQDT ETF",
-      "sector": "Прочие",
-      "price": 2.13,
-      "change": 0.04,
-      "turnover": 3304893201,
-      "weight": 3304893201,
-      "weightBasis": "turnover"
-    },
-    {
-      "ticker": "ROSN",
-      "name": "Роснефть",
-      "sector": "Нефть и газ",
-      "price": 347.85,
-      "change": -1.74,
-      "turnover": 3278684407,
-      "weight": 3278684407,
-      "weightBasis": "turnover"
-    },
-    {
-      "ticker": "VKCO",
-      "name": "iМКПАО ВК",
-      "sector": "Технологии",
-      "price": 220.1,
-      "change": -3.51,
-      "turnover": 3259319444,
-      "weight": 3259319444,
-      "weightBasis": "turnover"
-    },
-    {
-      "ticker": "YDEX",
-      "name": "ЯНДЕКС",
-      "sector": "Технологии",
-      "price": 3397.5,
-      "change": -0.01,
-      "turnover": 2775505377,
-      "weight": 2775505377,
-      "weightBasis": "turnover"
-    },
-    {
-      "ticker": "POSI",
-      "name": "iПозитив",
-      "sector": "Технологии",
-      "price": 1309.2,
-      "change": 0.32,
-      "turnover": 2504070392,
-      "weight": 2504070392,
-      "weightBasis": "turnover"
-    },
-    {
-      "ticker": "TATN",
-      "name": "Татнфт 3ао",
-      "sector": "Нефть и газ",
-      "price": 581,
-      "change": -3.28,
-      "turnover": 2427212734,
-      "weight": 2427212734,
-      "weightBasis": "turnover"
-    },
-    {
-      "ticker": "OZON",
-      "name": "Озон",
-      "sector": "Технологии",
-      "price": 3743.5,
-      "change": -0.85,
-      "turnover": 2297119703,
-      "weight": 2297119703,
+      "ticker": "SMLT",
+      "name": "Самолет ао",
+      "sector": "Строительство",
+      "price": 305.2,
+      "change": 2.07,
+      "turnover": 2751604566,
+      "weight": 2751604566,
       "weightBasis": "turnover"
     },
     {
       "ticker": "NVTK",
       "name": "Новатэк ао",
       "sector": "Нефть и газ",
-      "price": 1104.5,
-      "change": -1.42,
-      "turnover": 1944853163,
-      "weight": 1944853163,
+      "price": 1098.2,
+      "change": -0.57,
+      "turnover": 2743625179,
+      "weight": 2743625179,
       "weightBasis": "turnover"
     },
     {
-      "ticker": "SAFE",
-      "name": "SAFE ETF",
-      "sector": "Прочие",
-      "price": 18.83,
-      "change": 0.03,
-      "turnover": 1826464309,
-      "weight": 1826464309,
-      "weightBasis": "turnover"
-    },
-    {
-      "ticker": "ALRS",
-      "name": "АЛРОСА ао",
+      "ticker": "PLZL",
+      "name": "Полюс",
       "sector": "Металлы",
-      "price": 23.23,
-      "change": 0.65,
-      "turnover": 1781103616,
-      "weight": 1781103616,
+      "price": 1110.6,
+      "change": 0.27,
+      "turnover": 2630967982,
+      "weight": 2630967982,
       "weightBasis": "turnover"
     },
     {
-      "ticker": "CNRU",
-      "name": "iЦиан",
+      "ticker": "VKCO",
+      "name": "iМКПАО ВК",
+      "sector": "Технологии",
+      "price": 219.3,
+      "change": -0.36,
+      "turnover": 2506403554,
+      "weight": 2506403554,
+      "weightBasis": "turnover"
+    },
+    {
+      "ticker": "YDEX",
+      "name": "ЯНДЕКС",
+      "sector": "Технологии",
+      "price": 3390.5,
+      "change": -0.21,
+      "turnover": 2089276832,
+      "weight": 2089276832,
+      "weightBasis": "turnover"
+    },
+    {
+      "ticker": "FIXR",
+      "name": "Фикс Прайс",
       "sector": "Прочие",
-      "price": 914.8,
-      "change": -0.39,
-      "turnover": 1303321538,
-      "weight": 1303321538,
+      "price": 0.5796,
+      "change": 6.76,
+      "turnover": 2015108657,
+      "weight": 2015108657,
       "weightBasis": "turnover"
     },
     {
-      "ticker": "X5",
-      "name": "КЦ ИКС 5",
+      "ticker": "MGNT",
+      "name": "Магнит ао",
       "sector": "Потребительский",
-      "price": 2329,
-      "change": -0.34,
-      "turnover": 1280639705,
-      "weight": 1280639705,
+      "price": 1974,
+      "change": -2.66,
+      "turnover": 1921473133,
+      "weight": 1921473133,
       "weightBasis": "turnover"
     },
     {
-      "ticker": "AFKS",
-      "name": "Система ао",
-      "sector": "Финансы",
-      "price": 8.621,
-      "change": -2.18,
-      "turnover": 1156154662,
-      "weight": 1156154662,
+      "ticker": "OZON",
+      "name": "Озон",
+      "sector": "Технологии",
+      "price": 3708.5,
+      "change": -0.93,
+      "turnover": 1613318039,
+      "weight": 1613318039,
       "weightBasis": "turnover"
     },
     {
-      "ticker": "SNGSP",
-      "name": "Сургнфгз-п",
+      "ticker": "TATN",
+      "name": "Татнфт 3ао",
       "sector": "Нефть и газ",
-      "price": 42.905,
-      "change": -0.89,
-      "turnover": 1145380470,
-      "weight": 1145380470,
+      "price": 580,
+      "change": -0.17,
+      "turnover": 1419114797,
+      "weight": 1419114797,
+      "weightBasis": "turnover"
+    },
+    {
+      "ticker": "AKMM",
+      "name": "AKMM ETF",
+      "sector": "Прочие",
+      "price": 181.32,
+      "change": 0.03,
+      "turnover": 1323254581,
+      "weight": 1323254581,
+      "weightBasis": "turnover"
+    },
+    {
+      "ticker": "ROSN",
+      "name": "Роснефть",
+      "sector": "Нефть и газ",
+      "price": 350.7,
+      "change": 0.82,
+      "turnover": 1303624275,
+      "weight": 1303624275,
+      "weightBasis": "turnover"
+    },
+    {
+      "ticker": "SBFR",
+      "name": "SBFR ETF",
+      "sector": "Прочие",
+      "price": 15.816,
+      "change": -0.09,
+      "turnover": 1299452493,
+      "weight": 1299452493,
+      "weightBasis": "turnover"
+    },
+    {
+      "ticker": "LQDT",
+      "name": "LQDT ETF",
+      "sector": "Прочие",
+      "price": 2.1307,
+      "change": 0.03,
+      "turnover": 1218338622,
+      "weight": 1218338622,
+      "weightBasis": "turnover"
+    },
+    {
+      "ticker": "GMKN",
+      "name": "ГМКНорНик",
+      "sector": "Металлы",
+      "price": 118.94,
+      "change": -0.37,
+      "turnover": 1185622475,
+      "weight": 1185622475,
+      "weightBasis": "turnover"
+    },
+    {
+      "ticker": "SBMM",
+      "name": "SBMM ETF",
+      "sector": "Прочие",
+      "price": 19.8225,
+      "change": 0.04,
+      "turnover": 1032792183,
+      "weight": 1032792183,
       "weightBasis": "turnover"
     },
     {
       "ticker": "SECR",
       "name": "SECR ETF",
       "sector": "Прочие",
-      "price": 10.07,
-      "change": 0.12,
-      "turnover": 1048516816,
-      "weight": 1048516816,
+      "price": 10.076,
+      "change": 0.06,
+      "turnover": 798453150,
+      "weight": 798453150,
       "weightBasis": "turnover"
     },
     {
-      "ticker": "MAGN",
-      "name": "ММК",
-      "sector": "Металлы",
-      "price": 22.39,
-      "change": -2.38,
-      "turnover": 833106960,
-      "weight": 833106960,
+      "ticker": "X5",
+      "name": "КЦ ИКС 5",
+      "sector": "Потребительский",
+      "price": 2332,
+      "change": 0.13,
+      "turnover": 755389480,
+      "weight": 755389480,
       "weightBasis": "turnover"
     },
     {
-      "ticker": "NLMK",
-      "name": "НЛМК ао",
+      "ticker": "ASTR",
+      "name": "iАстра ао",
+      "sector": "Технологии",
+      "price": 218.7,
+      "change": 0.21,
+      "turnover": 755111255,
+      "weight": 755111255,
+      "weightBasis": "turnover"
+    },
+    {
+      "ticker": "ALRS",
+      "name": "АЛРОСА ао",
       "sector": "Металлы",
-      "price": 75.8,
-      "change": -2.82,
-      "turnover": 773091329,
-      "weight": 773091329,
+      "price": 22.99,
+      "change": -1.03,
+      "turnover": 697565705,
+      "weight": 697565705,
+      "weightBasis": "turnover"
+    },
+    {
+      "ticker": "POSI",
+      "name": "iПозитив",
+      "sector": "Технологии",
+      "price": 1301.4,
+      "change": -0.6,
+      "turnover": 693993410,
+      "weight": 693993410,
+      "weightBasis": "turnover"
+    },
+    {
+      "ticker": "SAFE",
+      "name": "SAFE ETF",
+      "sector": "Прочие",
+      "price": 18.835,
+      "change": 0.03,
+      "turnover": 683788871,
+      "weight": 683788871,
       "weightBasis": "turnover"
     },
     {
       "ticker": "CHMF",
       "name": "СевСт-ао",
       "sector": "Металлы",
-      "price": 699.2,
-      "change": -1.63,
-      "turnover": 759123708,
-      "weight": 759123708,
+      "price": 687.6,
+      "change": -1.66,
+      "turnover": 625373010,
+      "weight": 625373010,
       "weightBasis": "turnover"
     },
     {
-      "ticker": "MTLR",
-      "name": "Мечел ао",
-      "sector": "Металлы",
-      "price": 43.78,
-      "change": -1.49,
-      "turnover": 742994191,
-      "weight": 742994191,
-      "weightBasis": "turnover"
-    },
-    {
-      "ticker": "AKFB",
-      "name": "AKFB ETF",
-      "sector": "Прочие",
-      "price": 144.03,
-      "change": 0.06,
-      "turnover": 722903072,
-      "weight": 722903072,
-      "weightBasis": "turnover"
-    },
-    {
-      "ticker": "RUAL",
-      "name": "РУСАЛ ао",
-      "sector": "Металлы",
-      "price": 24.35,
-      "change": -1.12,
-      "turnover": 688506440,
-      "weight": 688506440,
+      "ticker": "SNGSP",
+      "name": "Сургнфгз-п",
+      "sector": "Нефть и газ",
+      "price": 42.5,
+      "change": -0.94,
+      "turnover": 580782981,
+      "weight": 580782981,
       "weightBasis": "turnover"
     },
     {
       "ticker": "MOEX",
       "name": "МосБиржа",
       "sector": "Финансы",
-      "price": 159.56,
-      "change": -1.28,
-      "turnover": 676490311,
-      "weight": 676490311,
+      "price": 161.22,
+      "change": 1.04,
+      "turnover": 536092082,
+      "weight": 536092082,
       "weightBasis": "turnover"
     },
     {
-      "ticker": "AFLT",
-      "name": "Аэрофлот",
-      "sector": "Транспорт",
-      "price": 37.55,
-      "change": -2.16,
-      "turnover": 673619288,
-      "weight": 673619288,
+      "ticker": "SPBE",
+      "name": "СПБ Биржа",
+      "sector": "Прочие",
+      "price": 172.6,
+      "change": 0.12,
+      "turnover": 522149944,
+      "weight": 522149944,
+      "weightBasis": "turnover"
+    },
+    {
+      "ticker": "MAGN",
+      "name": "ММК",
+      "sector": "Металлы",
+      "price": 22.215,
+      "change": -0.78,
+      "turnover": 490974672,
+      "weight": 490974672,
+      "weightBasis": "turnover"
+    },
+    {
+      "ticker": "AFKS",
+      "name": "Система ао",
+      "sector": "Финансы",
+      "price": 8.584,
+      "change": -0.43,
+      "turnover": 482668638,
+      "weight": 482668638,
       "weightBasis": "turnover"
     },
     {
       "ticker": "RTKM",
       "name": "Ростел -ао",
       "sector": "Связь",
-      "price": 46.56,
-      "change": -1.27,
-      "turnover": 635832581,
-      "weight": 635832581,
+      "price": 45.22,
+      "change": -2.88,
+      "turnover": 448389849,
+      "weight": 448389849,
+      "weightBasis": "turnover"
+    },
+    {
+      "ticker": "RUAL",
+      "name": "РУСАЛ ао",
+      "sector": "Металлы",
+      "price": 23.925,
+      "change": -1.75,
+      "turnover": 436278253,
+      "weight": 436278253,
+      "weightBasis": "turnover"
+    },
+    {
+      "ticker": "AFLT",
+      "name": "Аэрофлот",
+      "sector": "Транспорт",
+      "price": 37.21,
+      "change": -0.91,
+      "turnover": 391236747,
+      "weight": 391236747,
       "weightBasis": "turnover"
     },
     {
       "ticker": "TATNP",
       "name": "Татнфт 3ап",
       "sector": "Нефть и газ",
-      "price": 565,
-      "change": -2.97,
-      "turnover": 630102018,
-      "weight": 630102018,
+      "price": 564.7,
+      "change": -0.05,
+      "turnover": 386243747,
+      "weight": 386243747,
       "weightBasis": "turnover"
     },
     {
-      "ticker": "BCSD",
-      "name": "BCSD ETF",
-      "sector": "Прочие",
-      "price": 14.668,
-      "change": 0.05,
-      "turnover": 599756862,
-      "weight": 599756862,
+      "ticker": "NLMK",
+      "name": "НЛМК ао",
+      "sector": "Металлы",
+      "price": 75.26,
+      "change": -0.71,
+      "turnover": 375540667,
+      "weight": 375540667,
       "weightBasis": "turnover"
     },
     {
-      "ticker": "AKMP",
-      "name": "AKMP ETF",
-      "sector": "Прочие",
-      "price": 1.2908,
-      "change": 0.04,
-      "turnover": 590185396,
-      "weight": 590185396,
-      "weightBasis": "turnover"
-    },
-    {
-      "ticker": "SVCB",
-      "name": "Совкомбанк",
+      "ticker": "SFIN",
+      "name": "ЭсЭфАй ао",
       "sector": "Финансы",
-      "price": 10.53,
-      "change": 0.29,
-      "turnover": 576421590,
-      "weight": 576421590,
+      "price": 604,
+      "change": -5.09,
+      "turnover": 370235705,
+      "weight": 370235705,
+      "weightBasis": "turnover"
+    },
+    {
+      "ticker": "HYDR",
+      "name": "РусГидро",
+      "sector": "Энергетика",
+      "price": 0.5226,
+      "change": 2.33,
+      "turnover": 355971496,
+      "weight": 355971496,
+      "weightBasis": "turnover"
+    },
+    {
+      "ticker": "SBERP",
+      "name": "Сбербанк-п",
+      "sector": "Финансы",
+      "price": 293.13,
+      "change": -0.05,
+      "turnover": 338657884,
+      "weight": 338657884,
       "weightBasis": "turnover"
     }
   ],
   "movers": {
     "up": [
       {
-        "ticker": "USBN",
-        "name": "УралСиб ао",
-        "price": 0.1801,
-        "change": 3.74,
-        "turnover": 38520408
+        "ticker": "MGKL",
+        "name": "МГКЛ",
+        "price": 0.458,
+        "change": 10.36,
+        "turnover": 86034993
       },
       {
-        "ticker": "MGNT",
-        "name": "Магнит ао",
-        "price": 2028,
-        "change": 2.53,
-        "turnover": 4625267018
+        "ticker": "FIXR",
+        "name": "Фикс Прайс",
+        "price": 0.5796,
+        "change": 6.76,
+        "turnover": 2015108657
       },
       {
-        "ticker": "VSEH",
-        "name": "ВИ.ру",
-        "price": 91.24,
-        "change": 2.39,
-        "turnover": 188081023
+        "ticker": "HYDR",
+        "name": "РусГидро",
+        "price": 0.5226,
+        "change": 2.33,
+        "turnover": 355971496
       },
       {
-        "ticker": "GMKN",
-        "name": "ГМКНорНик",
-        "price": 119.38,
-        "change": 2.24,
-        "turnover": 3380603935
+        "ticker": "UWGN",
+        "name": "ОВК ао",
+        "price": 24.72,
+        "change": 2.23,
+        "turnover": 74724842
       },
       {
-        "ticker": "BAZA",
-        "name": "iБАЗИС",
-        "price": 148.3,
-        "change": 1.53,
-        "turnover": 108610835
+        "ticker": "TGKA",
+        "name": "ТГК-1",
+        "price": 0.004942,
+        "change": 2.15,
+        "turnover": 81867443
       }
     ],
     "down": [
       {
-        "ticker": "MGKL",
-        "name": "МГКЛ",
-        "price": 0.415,
-        "change": -21.1,
-        "turnover": 94572633
-      },
-      {
-        "ticker": "EUTR",
-        "name": "ЕвроТранс",
-        "price": 15.15,
-        "change": -10.09,
-        "turnover": 68147198
-      },
-      {
-        "ticker": "SMLT",
-        "name": "Самолет ао",
-        "price": 299,
-        "change": -8.7,
-        "turnover": 8272728803
-      },
-      {
-        "ticker": "WUSH",
-        "name": "iВУШХолднг",
-        "price": 38.27,
-        "change": -8.23,
-        "turnover": 368898373
+        "ticker": "SFIN",
+        "name": "ЭсЭфАй ао",
+        "price": 604,
+        "change": -5.09,
+        "turnover": 370235705
       },
       {
         "ticker": "MVID",
         "name": "М.видео",
-        "price": 52.8,
-        "change": -4.52,
-        "turnover": 115374869
+        "price": 51.05,
+        "change": -3.31,
+        "turnover": 38455870
+      },
+      {
+        "ticker": "RTKM",
+        "name": "Ростел -ао",
+        "price": 45.22,
+        "change": -2.88,
+        "turnover": 448389849
+      },
+      {
+        "ticker": "FLOT",
+        "name": "Совкомфлот",
+        "price": 79.48,
+        "change": -2.73,
+        "turnover": 329738187
+      },
+      {
+        "ticker": "MGNT",
+        "name": "Магнит ао",
+        "price": 1974,
+        "change": -2.66,
+        "turnover": 1921473133
       }
     ],
     "turnover": [
       {
-        "ticker": "SMLT",
-        "name": "Самолет ао",
-        "price": 299,
-        "change": -8.7,
-        "turnover": 8272728803
-      },
-      {
-        "ticker": "T",
-        "name": "Т-Техно ао",
-        "price": 274.88,
-        "change": 1.28,
-        "turnover": 6674779687
-      },
-      {
         "ticker": "GAZP",
         "name": "ГАЗПРОМ ао",
-        "price": 112.64,
-        "change": -1.31,
-        "turnover": 5056349971
+        "price": 112.27,
+        "change": -0.33,
+        "turnover": 4717485271
       },
       {
         "ticker": "SBER",
         "name": "Сбербанк",
-        "price": 293.1,
-        "change": -0.73,
-        "turnover": 4761978119
+        "price": 293.17,
+        "change": 0.02,
+        "turnover": 3301703837
+      },
+      {
+        "ticker": "T",
+        "name": "Т-Техно ао",
+        "price": 274.02,
+        "change": -0.31,
+        "turnover": 3298503571
       },
       {
         "ticker": "LKOH",
         "name": "ЛУКОЙЛ",
-        "price": 5924.5,
-        "change": -1.22,
-        "turnover": 4669535925
+        "price": 5933,
+        "change": 0.14,
+        "turnover": 3293703696
+      },
+      {
+        "ticker": "VTBR",
+        "name": "ВТБ ао",
+        "price": 57.26,
+        "change": -1.19,
+        "turnover": 3006498770
       }
     ]
   },
   "quotes": {
     "ABIO": {
       "name": "iАРТГЕН ао",
-      "price": 47.28,
-      "change": -3.15,
-      "turnover": 13776164
+      "price": 47.64,
+      "change": 0.76,
+      "turnover": 10890390
     },
     "ABRD": {
       "name": "АбрауДюрсо",
-      "price": 127.6,
-      "change": -1.24,
-      "turnover": 2500158
+      "price": 127.8,
+      "change": 0.16,
+      "turnover": 3861762
     },
     "AFKS": {
       "name": "Система ао",
-      "price": 8.621,
-      "change": -2.18,
-      "turnover": 1156154662
+      "price": 8.584,
+      "change": -0.43,
+      "turnover": 482668638
     },
     "AFLT": {
       "name": "Аэрофлот",
-      "price": 37.55,
-      "change": -2.16,
-      "turnover": 673619288
+      "price": 37.21,
+      "change": -0.91,
+      "turnover": 391236747
     },
     "AIIQ": {
       "name": "AIIQ ETF",
-      "price": 11.349,
-      "change": -0.88,
-      "turnover": 3470105
+      "price": 11.298,
+      "change": -0.45,
+      "turnover": 20657159
     },
     "AKAI": {
       "name": "AKAI ETF",
-      "price": 100.39,
-      "change": -0.08,
-      "turnover": 138331
+      "price": 99.8,
+      "change": -0.59,
+      "turnover": 16799
     },
     "AKBC": {
       "name": "AKBC ETF",
-      "price": 95,
-      "change": -0.84,
-      "turnover": 2962589
+      "price": 94.4,
+      "change": -0.63,
+      "turnover": 4149628
     },
     "AKCN": {
       "name": "AKCN ETF",
-      "price": 83.3,
-      "change": 0.97,
-      "turnover": 18016
+      "price": 82.8,
+      "change": -0.6,
+      "turnover": 5143
     },
     "AKFB": {
       "name": "AKFB ETF",
-      "price": 144.03,
-      "change": 0.06,
-      "turnover": 722903072
+      "price": 144.05,
+      "change": 0.01,
+      "turnover": 126193568
     },
     "AKFN": {
       "name": "AKFN ETF",
-      "price": 100.6,
-      "change": 0.4,
-      "turnover": 18641
+      "price": 98.9,
+      "change": -1.69,
+      "turnover": 28643
     },
     "AKGD": {
       "name": "AKGD ETF",
-      "price": 239.59,
-      "change": -2.06,
-      "turnover": 39671291
+      "price": 239.63,
+      "change": 0.02,
+      "turnover": 63119728
     },
     "AKGP": {
       "name": "AKGP ETF",
-      "price": 1.178,
-      "change": 0.77,
-      "turnover": 1213692
+      "price": 1.175,
+      "change": -0.25,
+      "turnover": 7673356
     },
     "AKHT": {
       "name": "AKHT ETF",
-      "price": 102.41,
-      "change": -1.74,
-      "turnover": 238064
+      "price": 102.19,
+      "change": -0.21,
+      "turnover": 539073
     },
     "AKIE": {
       "name": "ETF AKIE",
-      "price": 925.66,
-      "change": -0.62,
-      "turnover": 526606
+      "price": 920.41,
+      "change": -0.57,
+      "turnover": 79434
     },
     "AKMB": {
       "name": "ETF AKMB",
-      "price": 2.0014,
-      "change": -0.1,
-      "turnover": 58617510
+      "price": 2.0012,
+      "change": -0.01,
+      "turnover": 33373281
     },
     "AKMC": {
       "name": "AKMC ETF",
-      "price": 1312.72,
-      "change": 0.3,
-      "turnover": 1871124
+      "price": 1313.39,
+      "change": 0.05,
+      "turnover": 9622714
     },
     "AKME": {
       "name": "ETF AKME",
-      "price": 184.76,
-      "change": -1.14,
-      "turnover": 16859790
+      "price": 183.92,
+      "change": -0.45,
+      "turnover": 23240406
     },
     "AKMM": {
       "name": "AKMM ETF",
-      "price": 181.27,
-      "change": 0.06,
-      "turnover": 4485145178
+      "price": 181.32,
+      "change": 0.03,
+      "turnover": 1323254581
     },
     "AKMP": {
       "name": "AKMP ETF",
-      "price": 1.2908,
-      "change": 0.04,
-      "turnover": 590185396
+      "price": 1.291,
+      "change": 0.02,
+      "turnover": 238477360
     },
     "AKPP": {
       "name": "AKPP ETF",
-      "price": 117.4,
-      "change": 0.2,
-      "turnover": 2814009
+      "price": 120.97,
+      "change": 3.04,
+      "turnover": 4551591
     },
     "AKQU": {
       "name": "AKQU ETF",
-      "price": 69.6,
-      "change": -0.14,
-      "turnover": 200124
+      "price": 68.83,
+      "change": -1.11,
+      "turnover": 687329
     },
     "AKRN": {
       "name": "Акрон",
-      "price": 17210,
-      "change": -1.88,
-      "turnover": 6088450
+      "price": 17150,
+      "change": -0.35,
+      "turnover": 4049535
     },
     "AKUP": {
       "name": "AKUP ETF",
-      "price": 12.64,
-      "change": -0.47,
-      "turnover": 538457
+      "price": 12.61,
+      "change": -0.24,
+      "turnover": 701947
     },
     "ALRS": {
       "name": "АЛРОСА ао",
-      "price": 23.23,
-      "change": 0.65,
-      "turnover": 1781103616
+      "price": 22.99,
+      "change": -1.03,
+      "turnover": 697565705
     },
     "AMEZ": {
       "name": "АшинскийМЗ",
@@ -678,476 +678,476 @@
     "AMFL": {
       "name": "AMFL ETF",
       "price": 144.3,
-      "change": 0.07,
-      "turnover": 133002126
+      "change": 0,
+      "turnover": 10194730
     },
     "AMGB": {
       "name": "AMGB ETF",
       "price": 128.2,
       "change": 0,
-      "turnover": 154575
+      "turnover": 32450
     },
     "AMGL": {
       "name": "AMGL ETF",
-      "price": 128.7,
-      "change": -2.13,
-      "turnover": 1854006
+      "price": 128.6,
+      "change": -0.08,
+      "turnover": 6430669
     },
     "AMIX": {
       "name": "AMIX ETF",
-      "price": 103,
-      "change": -0.58,
-      "turnover": 2793430
+      "price": 101.5,
+      "change": -1.46,
+      "turnover": 310372
     },
     "AMNR": {
       "name": "AMNR ETF",
-      "price": 160.088,
-      "change": 0.04,
-      "turnover": 289059001
+      "price": 160.142,
+      "change": 0.03,
+      "turnover": 13222749
     },
     "AMNY": {
       "name": "AMNY ETF",
-      "price": 1330.08,
-      "change": 0.45,
-      "turnover": 289282357
+      "price": 1328.22,
+      "change": -0.14,
+      "turnover": 75649
     },
     "AMRE": {
       "name": "AMRE ETF",
-      "price": 108.7,
-      "change": -0.82,
-      "turnover": 481552
+      "price": 108.1,
+      "change": -0.55,
+      "turnover": 149738
     },
     "AMRH": {
       "name": "AMRH ETF",
-      "price": 167.9,
+      "price": 168.1,
       "change": 0.12,
-      "turnover": 112423
+      "turnover": 87025
     },
     "AMVD": {
       "name": "AMVD ETF",
       "price": 809,
-      "change": -0.12,
-      "turnover": 42111678
+      "change": 0,
+      "turnover": 203068
     },
     "AMVY": {
       "name": "AMVY ETF",
-      "price": 1241,
-      "change": -0.16,
-      "turnover": 36421793
+      "price": 1249,
+      "change": 0.64,
+      "turnover": 244804
     },
     "APRI": {
       "name": "АПРИ",
-      "price": 15.27,
-      "change": -2.05,
-      "turnover": 708373
+      "price": 15.24,
+      "change": -0.2,
+      "turnover": 11586
     },
     "APTK": {
       "name": "Аптеки36и6",
-      "price": 6.674,
-      "change": -0.98,
-      "turnover": 5039275
+      "price": 6.71,
+      "change": 0.54,
+      "turnover": 2627411
     },
     "AQUA": {
       "name": "ИНАРКТИКА",
-      "price": 325.2,
-      "change": -0.06,
-      "turnover": 30965909
+      "price": 323,
+      "change": -0.68,
+      "turnover": 10932464
     },
     "ARSA": {
       "name": "Арсагера",
-      "price": 7.07,
-      "change": -0.84,
-      "turnover": 60692
+      "price": 7.05,
+      "change": -0.28,
+      "turnover": 32974
     },
     "ASSB": {
       "name": "АстрЭнСб",
-      "price": 2.795,
-      "change": -2.95,
-      "turnover": 2312055
+      "price": 2.77,
+      "change": -0.89,
+      "turnover": 343590
     },
     "ASTR": {
       "name": "iАстра ао",
-      "price": 218.25,
-      "change": -1.07,
-      "turnover": 251215463
+      "price": 218.7,
+      "change": 0.21,
+      "turnover": 755111255
     },
     "AVAN": {
       "name": "Авангрд-ао",
-      "price": 537,
-      "change": -0.19,
-      "turnover": 2290212
+      "price": 538,
+      "change": 0.19,
+      "turnover": 232920
     },
     "BANE": {
       "name": "Башнефт ао",
-      "price": 1264,
-      "change": -0.67,
-      "turnover": 9445220
+      "price": 1262,
+      "change": -0.16,
+      "turnover": 4008954
     },
     "BANEP": {
       "name": "Башнефт ап",
-      "price": 789.5,
-      "change": -0.19,
-      "turnover": 25191164
+      "price": 791,
+      "change": 0.19,
+      "turnover": 14940116
     },
     "BAZA": {
       "name": "iБАЗИС",
-      "price": 148.3,
-      "change": 1.53,
-      "turnover": 108610835
+      "price": 149.94,
+      "change": 1.11,
+      "turnover": 43015534
     },
     "BCSB": {
       "name": "BCSB ETF",
-      "price": 16.672,
-      "change": 0.17,
-      "turnover": 1126707
+      "price": 16.66,
+      "change": -0.07,
+      "turnover": 11269542
     },
     "BCSD": {
       "name": "BCSD ETF",
-      "price": 14.668,
-      "change": 0.05,
-      "turnover": 599756862
+      "price": 14.669,
+      "change": 0.01,
+      "turnover": 251162524
     },
     "BCSE": {
       "name": "BCSE ETF",
-      "price": 945.5,
-      "change": -0.05,
-      "turnover": 998905
+      "price": 949,
+      "change": 0.37,
+      "turnover": 1014939
     },
     "BCSG": {
       "name": "BCSG ETF",
-      "price": 12.96,
-      "change": -0.08,
-      "turnover": 2663567
+      "price": 12.84,
+      "change": -0.93,
+      "turnover": 1121732
     },
     "BCSR": {
       "name": "BCSR ETF",
-      "price": 10.76,
-      "change": -0.74,
-      "turnover": 3856915
+      "price": 10.65,
+      "change": -1.02,
+      "turnover": 714794
     },
     "BCSW": {
       "name": "BCSW ETF",
-      "price": 11.14,
-      "change": -0.45,
-      "turnover": 747824
+      "price": 11.16,
+      "change": 0.18,
+      "turnover": 742364
     },
     "BELU": {
       "name": "НоваБев ао",
-      "price": 268.6,
-      "change": 0,
-      "turnover": 44680060
+      "price": 269.2,
+      "change": 0.22,
+      "turnover": 33557965
     },
     "BISVP": {
       "name": "БашИнСв ап",
-      "price": 10.53,
-      "change": 2.13,
-      "turnover": 622503
+      "price": 10.48,
+      "change": -0.47,
+      "turnover": 173962
     },
     "BLNG": {
       "name": "Белон ао",
-      "price": 8.69,
-      "change": -1.92,
-      "turnover": 480231
+      "price": 8.6,
+      "change": -1.04,
+      "turnover": 428010
     },
     "BNDA": {
       "name": "BNDA ETF",
-      "price": 1267,
-      "change": 0.61,
-      "turnover": 73429
+      "price": 1268.5,
+      "change": 0.12,
+      "turnover": 43098
     },
     "BNDB": {
       "name": "BNDB ETF",
-      "price": 1342.6,
-      "change": -0.41,
-      "turnover": 291691
+      "price": 1350.7,
+      "change": 0.6,
+      "turnover": 52605
     },
     "BNDC": {
       "name": "BNDC ETF",
-      "price": 1309.9,
-      "change": 0.18,
-      "turnover": 49770
+      "price": 1311.6,
+      "change": 0.13,
+      "turnover": 32804
     },
     "BOND": {
       "name": "BOND ETF",
-      "price": 1700,
-      "change": -0.01,
-      "turnover": 2455070
+      "price": 1700.4,
+      "change": 0.02,
+      "turnover": 474773
     },
     "BRZL": {
       "name": "БурЗолото",
-      "price": 1198,
-      "change": -3.7,
-      "turnover": 2084268
+      "price": 1202,
+      "change": 0.33,
+      "turnover": 857354
     },
     "BSPB": {
       "name": "БСП ао",
-      "price": 252.68,
-      "change": -0.65,
-      "turnover": 63060416
+      "price": 252.01,
+      "change": -0.27,
+      "turnover": 53713820
     },
     "BSPBP": {
       "name": "БСП ап",
-      "price": 34.7,
-      "change": 0.58,
-      "turnover": 6864450
+      "price": 34.65,
+      "change": -0.14,
+      "turnover": 1378065
     },
     "BTBR": {
       "name": "iВ2В-РТС",
-      "price": 141.43,
-      "change": 0.58,
-      "turnover": 41646472
+      "price": 140.54,
+      "change": -0.63,
+      "turnover": 19236423
     },
     "CARM": {
       "name": "СТГ",
-      "price": 0.7745,
-      "change": 0.32,
-      "turnover": 1009232
+      "price": 0.7685,
+      "change": -0.77,
+      "turnover": 588042
     },
     "CASH": {
       "name": "CASH ETF",
-      "price": 13.976,
-      "change": 0.02,
-      "turnover": 111346597
+      "price": 13.983,
+      "change": 0.05,
+      "turnover": 140294823
     },
     "CBOM": {
       "name": "МКБ ао",
-      "price": 10.801,
-      "change": -3.99,
-      "turnover": 62729567
+      "price": 10.541,
+      "change": -2.41,
+      "turnover": 84842003
     },
     "CHGZ": {
       "name": "РН-ЗапСиб",
-      "price": 108,
-      "change": -2.35,
-      "turnover": 2387992
+      "price": 108.2,
+      "change": 0.19,
+      "turnover": 417056
     },
     "CHKZ": {
       "name": "ЧКПЗ ао",
       "price": 14300,
-      "change": -2.05,
-      "turnover": 996200
+      "change": 0,
+      "turnover": 71600
     },
     "CHMF": {
       "name": "СевСт-ао",
-      "price": 699.2,
-      "change": -1.63,
-      "turnover": 759123708
+      "price": 687.6,
+      "change": -1.66,
+      "turnover": 625373010
     },
     "CHMK": {
       "name": "ЧМК ао",
-      "price": 3900,
-      "change": 10.48,
-      "turnover": 9797140
+      "price": 3670,
+      "change": -5.9,
+      "turnover": 9209730
     },
     "CNRU": {
       "name": "iЦиан",
-      "price": 914.8,
-      "change": -0.39,
-      "turnover": 1303321538
+      "price": 903,
+      "change": -1.29,
+      "turnover": 323587393
     },
     "CNTL": {
       "name": "Телеграф",
-      "price": 8.38,
-      "change": 0.48,
-      "turnover": 524098
+      "price": 8.3,
+      "change": -0.95,
+      "turnover": 189766
     },
     "CNTLP": {
       "name": "Телеграф-п",
-      "price": 4.37,
-      "change": 0,
-      "turnover": 746699
+      "price": 4.35,
+      "change": -0.46,
+      "turnover": 120947
     },
     "CNYM": {
       "name": "CNYM ETF",
-      "price": 141.27,
-      "change": 0.2,
-      "turnover": 43459614
+      "price": 141.39,
+      "change": 0.08,
+      "turnover": 7734816
     },
     "CORP": {
       "name": "CORP ETF",
-      "price": 104.66,
-      "change": -0.02,
-      "turnover": 435448
+      "price": 104.61,
+      "change": -0.05,
+      "turnover": 65389
     },
     "DATA": {
       "name": "iАренадата",
-      "price": 99.72,
+      "price": 99.44,
       "change": -0.28,
-      "turnover": 47958997
+      "turnover": 21324590
     },
     "DELI": {
       "name": "iКаршеринг",
-      "price": 43.9,
-      "change": 0.57,
-      "turnover": 8344750
+      "price": 43.35,
+      "change": -1.25,
+      "turnover": 6256310
     },
     "DIAS": {
       "name": "iДиасофт",
-      "price": 1253,
-      "change": -0.36,
-      "turnover": 84767875
+      "price": 1247,
+      "change": -0.48,
+      "turnover": 6639601
     },
     "DIOD": {
       "name": "ЗаводДИОД",
-      "price": 8.44,
-      "change": 0.84,
-      "turnover": 393350
+      "price": 8.11,
+      "change": -3.91,
+      "turnover": 437281
     },
     "DIVD": {
       "name": "ETF DIVD",
-      "price": 1126.8,
-      "change": -0.6,
-      "turnover": 1585242
+      "price": 1123.4,
+      "change": -0.3,
+      "turnover": 4062008
     },
     "DOMRF": {
       "name": "ДОМ.РФ",
-      "price": 2127.9,
-      "change": -0.61,
-      "turnover": 508539773
+      "price": 2115.8,
+      "change": -0.57,
+      "turnover": 149825789
     },
     "DVEC": {
       "name": "ДЭК ао",
-      "price": 1.631,
-      "change": -0.85,
-      "turnover": 308584
+      "price": 1.628,
+      "change": -0.18,
+      "turnover": 119355
     },
     "DZRD": {
       "name": "ДонскЗР",
-      "price": 1190,
-      "change": -1.24,
-      "turnover": 3061595
+      "price": 1185,
+      "change": -0.42,
+      "turnover": 1716940
     },
     "DZRDP": {
       "name": "ДонскЗР п",
-      "price": 1480,
-      "change": -5.13,
-      "turnover": 2654380
+      "price": 1460,
+      "change": -1.35,
+      "turnover": 512230
     },
     "EELT": {
       "name": "ЕвроЭлтех",
       "price": 8,
-      "change": -3.61,
-      "turnover": 2248163
+      "change": 0,
+      "turnover": 391369
     },
     "ELFV": {
       "name": "ЭЛ5Энер ао",
-      "price": 0.377,
-      "change": -2.68,
-      "turnover": 12729958
+      "price": 0.3726,
+      "change": -1.17,
+      "turnover": 1878110
     },
     "ELMT": {
       "name": "iЭлемент",
-      "price": 0.10035,
-      "change": -0.35,
-      "turnover": 2725964
+      "price": 0.1004,
+      "change": 0.05,
+      "turnover": 1806421
     },
     "ENPG": {
       "name": "ЭН+ГРУП ао",
-      "price": 323.95,
-      "change": -0.84,
-      "turnover": 92659881
+      "price": 320.25,
+      "change": -1.14,
+      "turnover": 82642174
     },
     "EQMX": {
       "name": "EQMX ETF",
-      "price": 134.7,
-      "change": -1.32,
-      "turnover": 154524124
+      "price": 134.45,
+      "change": -0.19,
+      "turnover": 196472646
     },
     "ESGE": {
       "name": "ESGE ETF",
-      "price": 72.03,
-      "change": -0.58,
-      "turnover": 192107
+      "price": 71.4,
+      "change": -0.87,
+      "turnover": 106984
     },
     "ESGR": {
       "name": "ESGR ETF",
-      "price": 1077.5,
-      "change": -0.74,
-      "turnover": 47410
+      "price": 1070.5,
+      "change": -0.65,
+      "turnover": 14987
     },
     "ETLN": {
       "name": "ЭталонГруп",
-      "price": 23.98,
-      "change": -2.76,
-      "turnover": 157662387
+      "price": 23.5,
+      "change": -2,
+      "turnover": 76083180
     },
     "EUTR": {
       "name": "ЕвроТранс",
-      "price": 15.15,
-      "change": -10.09,
-      "turnover": 68147198
+      "price": 13.65,
+      "change": -9.9,
+      "turnover": 12341683
     },
     "EVRZ": {
       "name": "ЕВРАЗ",
-      "price": 47.1,
-      "change": -0.32,
-      "turnover": 1236748
+      "price": 47.15,
+      "change": 0.11,
+      "turnover": 1960357
     },
     "FEES": {
       "name": "Россети",
-      "price": 0.068,
-      "change": -0.99,
-      "turnover": 377976407
+      "price": 0.06814,
+      "change": 0.21,
+      "turnover": 122266737
     },
     "FESH": {
       "name": "ДВМП ао",
-      "price": 75.98,
-      "change": -0.16,
-      "turnover": 96861455
+      "price": 74.47,
+      "change": -1.99,
+      "turnover": 85605898
     },
     "FINC": {
       "name": "FINC ETF",
-      "price": 1451.4,
-      "change": -0.03,
-      "turnover": 27575
+      "price": 1452.9,
+      "change": 0.1,
+      "turnover": 8721
     },
     "FIXR": {
       "name": "Фикс Прайс",
-      "price": 0.5429,
-      "change": 1.17,
-      "turnover": 270999596
+      "price": 0.5796,
+      "change": 6.76,
+      "turnover": 2015108657
     },
     "FLOT": {
       "name": "Совкомфлот",
-      "price": 81.71,
-      "change": -3.73,
-      "turnover": 395215737
+      "price": 79.48,
+      "change": -2.73,
+      "turnover": 329738187
     },
     "FLOW": {
       "name": "FLOW ETF",
-      "price": 1015,
-      "change": 0.01,
-      "turnover": 69665301
+      "price": 1015.5,
+      "change": 0.05,
+      "turnover": 67538626
     },
     "FMBR": {
       "name": "FMBR ETF",
-      "price": 11.53,
-      "change": 0.43,
-      "turnover": 1187489
+      "price": 11.533,
+      "change": 0.03,
+      "turnover": 184493
     },
     "FMMM": {
       "name": "FMMM ETF",
-      "price": 14.134,
+      "price": 14.136,
       "change": 0.01,
-      "turnover": 221999863
+      "turnover": 64015745
     },
     "FMSA": {
       "name": "FMSA ETF",
-      "price": 10.54,
-      "change": -1.5,
-      "turnover": 183116
+      "price": 10.46,
+      "change": -0.76,
+      "turnover": 35948
     },
     "GAZA": {
       "name": "ГАЗ ао",
       "price": 437,
-      "change": -0.68,
-      "turnover": 216070
+      "change": 0,
+      "turnover": 61150
     },
     "GAZAP": {
       "name": "ГАЗ ап",
-      "price": 317,
-      "change": -0.31,
-      "turnover": 15815
+      "price": 315.5,
+      "change": 0,
+      "turnover": 0
     },
     "GAZC": {
       "name": "ГАЗКОН-ао",
@@ -1157,9 +1157,9 @@
     },
     "GAZP": {
       "name": "ГАЗПРОМ ао",
-      "price": 112.64,
-      "change": -1.31,
-      "turnover": 5056349971
+      "price": 112.27,
+      "change": -0.33,
+      "turnover": 4717485271
     },
     "GAZS": {
       "name": "ГАЗ-сервис",
@@ -1175,405 +1175,405 @@
     },
     "GCHE": {
       "name": "ЧеркизГ-ао",
-      "price": 3553,
-      "change": 0.03,
-      "turnover": 8117588
+      "price": 3550,
+      "change": -0.08,
+      "turnover": 1142270
     },
     "GECO": {
       "name": "iГЕНЕТИКО",
-      "price": 16.12,
-      "change": 0.69,
-      "turnover": 5434300
+      "price": 16.2,
+      "change": 0.5,
+      "turnover": 4475006
     },
     "GEMA": {
       "name": "iММЦБ ао",
-      "price": 85.1,
-      "change": -0.93,
-      "turnover": 4334986
+      "price": 84.6,
+      "change": -0.59,
+      "turnover": 2787348
     },
     "GEMC": {
       "name": "МКПАО ЮМГ",
-      "price": 637.1,
-      "change": -0.67,
-      "turnover": 3977138
+      "price": 630.2,
+      "change": -1.08,
+      "turnover": 2530294
     },
     "GLRX": {
       "name": "ГЛОРАКС",
-      "price": 36.6,
-      "change": -2.84,
-      "turnover": 52452997
+      "price": 36.11,
+      "change": -1.34,
+      "turnover": 22963365
     },
     "GMKN": {
       "name": "ГМКНорНик",
-      "price": 119.38,
-      "change": 2.24,
-      "turnover": 3380603935
+      "price": 118.94,
+      "change": -0.37,
+      "turnover": 1185622475
     },
     "GOLD": {
       "name": "GOLD ETF",
-      "price": 2.7545,
-      "change": -1.64,
-      "turnover": 143142851
+      "price": 2.7585,
+      "change": 0.15,
+      "turnover": 36366597
     },
     "GOOD": {
       "name": "GOOD ETF",
-      "price": 1423.9,
-      "change": 0.35,
-      "turnover": 1313073
+      "price": 1424.1,
+      "change": 0.01,
+      "turnover": 148137
     },
     "GROD": {
       "name": "ETF GROD",
-      "price": 753,
+      "price": 746.5,
       "change": -0.86,
-      "turnover": 85834
+      "turnover": 7499
     },
     "GTRK": {
       "name": "ГТМ ао",
-      "price": 47.2,
-      "change": -2.28,
-      "turnover": 7580724
+      "price": 46.7,
+      "change": -1.06,
+      "turnover": 6046687
     },
     "HEAD": {
       "name": "Хэдхантер",
-      "price": 2743,
-      "change": -1.47,
-      "turnover": 483683359
+      "price": 2737,
+      "change": -0.22,
+      "turnover": 151658919
     },
     "HIMCP": {
       "name": "Химпром ап",
-      "price": 14.28,
-      "change": 1.28,
-      "turnover": 637058
+      "price": 14.22,
+      "change": -0.42,
+      "turnover": 470440
     },
     "HNFG": {
       "name": "ХЭНДЕРСОН",
-      "price": 287.8,
-      "change": -1.24,
-      "turnover": 6298072
+      "price": 288.2,
+      "change": 0.14,
+      "turnover": 5286210
     },
     "HYDR": {
       "name": "РусГидро",
-      "price": 0.5107,
-      "change": -2.35,
-      "turnover": 364110023
+      "price": 0.5226,
+      "change": 2.33,
+      "turnover": 355971496
     },
     "IGST": {
       "name": "Ижсталь2ао",
-      "price": 4320,
-      "change": 0.47,
-      "turnover": 1697020
+      "price": 4240,
+      "change": -1.85,
+      "turnover": 711860
     },
     "IGSTP": {
       "name": "Ижсталь ап",
-      "price": 3220,
-      "change": -0.31,
-      "turnover": 390430
+      "price": 3190,
+      "change": -0.93,
+      "turnover": 452210
     },
     "INCB": {
       "name": "Инкаб",
-      "price": 78.34,
-      "change": 4.59,
-      "turnover": 6400711
+      "price": 77.96,
+      "change": -0.49,
+      "turnover": 8668905
     },
     "INFL": {
       "name": "INFL ETF",
-      "price": 154.12,
-      "change": -0.3,
-      "turnover": 4177840
+      "price": 154.3,
+      "change": 0.12,
+      "turnover": 995892
     },
     "INGO": {
       "name": "INGO ETF",
-      "price": 171.75,
+      "price": 171.9,
       "change": 0.09,
-      "turnover": 1573984
+      "turnover": 1430343
     },
     "IRAO": {
       "name": "ИнтерРАОао",
-      "price": 2.7605,
-      "change": -2.01,
-      "turnover": 413630958
+      "price": 2.7345,
+      "change": -0.94,
+      "turnover": 252802091
     },
     "IRKT": {
       "name": "Яковлев-3",
-      "price": 20.24,
-      "change": -1.65,
-      "turnover": 37605968
+      "price": 20.06,
+      "change": -0.89,
+      "turnover": 22617246
     },
     "IVAT": {
       "name": "iИВА",
-      "price": 67.05,
-      "change": -2.54,
-      "turnover": 68150151
+      "price": 67.25,
+      "change": 0.3,
+      "turnover": 34195887
     },
     "JNOS": {
       "name": "Славн-ЯНОС",
-      "price": 26.88,
-      "change": 0.37,
-      "turnover": 421196
+      "price": 26.96,
+      "change": 0.3,
+      "turnover": 385570
     },
     "JNOSP": {
       "name": "Слав-ЯНОСп",
-      "price": 12.2,
-      "change": 1.33,
-      "turnover": 121658
+      "price": 12.12,
+      "change": -0.66,
+      "turnover": 195608
     },
     "KAZT": {
       "name": "Куйбазот",
-      "price": 357,
-      "change": 0.17,
-      "turnover": 5079378
+      "price": 355.4,
+      "change": -0.45,
+      "turnover": 796644
     },
     "KAZTP": {
       "name": "Куйбазот-п",
-      "price": 374,
-      "change": -0.8,
-      "turnover": 532205
+      "price": 372.5,
+      "change": -0.4,
+      "turnover": 641910
     },
     "KBSB": {
       "name": "ТНСэКубань",
-      "price": 950,
-      "change": -1.04,
-      "turnover": 367380
+      "price": 958,
+      "change": 0.84,
+      "turnover": 47650
     },
     "KCHE": {
       "name": "КамчатЭ ао",
-      "price": 0.426,
-      "change": -1.84,
-      "turnover": 590920
+      "price": 0.429,
+      "change": 0.7,
+      "turnover": 175430
     },
     "KCHEP": {
       "name": "КамчатЭ ап",
-      "price": 0.85,
-      "change": 0,
-      "turnover": 2041100
+      "price": 0.84,
+      "change": -1.18,
+      "turnover": 92300
     },
     "KFBA": {
       "name": "ИНГРАД ао",
-      "price": 1635,
-      "change": -0.61,
-      "turnover": 60775
+      "price": 1620,
+      "change": -0.92,
+      "turnover": 32460
     },
     "KGKC": {
       "name": "КурганГКао",
       "price": 36.8,
-      "change": -0.54,
-      "turnover": 14002
+      "change": 0,
+      "turnover": 1472
     },
     "KGKCP": {
       "name": "КурганГКап",
-      "price": 37.6,
-      "change": 0,
-      "turnover": 8996
+      "price": 37.2,
+      "change": -1.06,
+      "turnover": 39118
     },
     "KLSB": {
       "name": "КалужскСК",
-      "price": 18.82,
-      "change": -0.26,
-      "turnover": 313115
+      "price": 18.76,
+      "change": -0.32,
+      "turnover": 195171
     },
     "KLVZ": {
       "name": "Кристалл",
-      "price": 1.922,
-      "change": -0.52,
-      "turnover": 1448824
+      "price": 1.856,
+      "change": -3.43,
+      "turnover": 258823
     },
     "KMAZ": {
       "name": "КАМАЗ",
-      "price": 64.1,
-      "change": -3.32,
-      "turnover": 114852880
+      "price": 62.4,
+      "change": -2.65,
+      "turnover": 21847287
     },
     "KMEZ": {
       "name": "КМЗ",
-      "price": 1092,
-      "change": -0.18,
-      "turnover": 3533216
+      "price": 1084,
+      "change": -0.73,
+      "turnover": 71972
     },
     "KOGK": {
       "name": "КоршГОК ао",
-      "price": 285.8,
-      "change": 8.67,
-      "turnover": 2378348
+      "price": 273.6,
+      "change": -4.27,
+      "turnover": 1199850
     },
     "KRKN": {
       "name": "СаратНПЗ",
-      "price": 10050,
-      "change": 0,
-      "turnover": 0
+      "price": 10100,
+      "change": 1,
+      "turnover": 80700
     },
     "KRKNP": {
       "name": "СаратНПЗ-п",
-      "price": 6620,
-      "change": 0.3,
-      "turnover": 250960
+      "price": 6540,
+      "change": -1.21,
+      "turnover": 130900
     },
     "KRKOP": {
       "name": "ТКЗКК ап",
-      "price": 13.12,
-      "change": -0.46,
-      "turnover": 48574
+      "price": 13.18,
+      "change": 0,
+      "turnover": 0
     },
     "KROT": {
       "name": "КрасОкт-ао",
-      "price": 1289,
-      "change": -1.23,
-      "turnover": 2760400
+      "price": 1292,
+      "change": 0.23,
+      "turnover": 1583270
     },
     "KROTP": {
       "name": "КрасОкт-1п",
-      "price": 540,
-      "change": -0.74,
-      "turnover": 180100
+      "price": 544,
+      "change": 0.74,
+      "turnover": 27240
     },
     "KRSB": {
       "name": "Красэсб ао",
-      "price": 20.48,
-      "change": -1.25,
-      "turnover": 253424
+      "price": 20.4,
+      "change": -0.39,
+      "turnover": 488858
     },
     "KRSBP": {
       "name": "Красэсб ап",
-      "price": 20.56,
-      "change": -0.77,
-      "turnover": 201916
+      "price": 20.44,
+      "change": -0.58,
+      "turnover": 134938
     },
     "KUZB": {
       "name": "КузнецкийБ",
-      "price": 0.0256,
-      "change": -0.97,
-      "turnover": 814533
+      "price": 0.02575,
+      "change": 0.59,
+      "turnover": 37898
     },
     "KZOS": {
       "name": "ОргСинт ао",
-      "price": 50.9,
-      "change": 2.41,
-      "turnover": 3119658
+      "price": 50.3,
+      "change": -1.18,
+      "turnover": 1118278
     },
     "KZOSP": {
       "name": "ОргСинт ап",
-      "price": 15.99,
-      "change": 4.51,
-      "turnover": 9675235
+      "price": 15.86,
+      "change": -0.81,
+      "turnover": 898060
     },
     "LEAS": {
       "name": "Европлан",
-      "price": 669.3,
-      "change": -0.03,
-      "turnover": 27706993
+      "price": 668.5,
+      "change": -0.12,
+      "turnover": 8249196
     },
     "LENT": {
       "name": "Лента ао",
-      "price": 1950,
-      "change": -0.79,
-      "turnover": 69448111
+      "price": 1957,
+      "change": 0.36,
+      "turnover": 47193531
     },
     "LIFE": {
       "name": "Фармсинтез",
       "price": 1.775,
-      "change": 0.85,
-      "turnover": 26839417
+      "change": 0,
+      "turnover": 1763444
     },
     "LKOH": {
       "name": "ЛУКОЙЛ",
-      "price": 5924.5,
-      "change": -1.22,
-      "turnover": 4669535925
+      "price": 5933,
+      "change": 0.14,
+      "turnover": 3293703696
     },
     "LMBZ": {
       "name": "Ламбумиз",
-      "price": 471.5,
-      "change": -0.63,
-      "turnover": 123703
+      "price": 472,
+      "change": 0.11,
+      "turnover": 63148
     },
     "LPSB": {
       "name": "ЛЭСК ао",
-      "price": 93.65,
-      "change": -0.05,
-      "turnover": 10611972
+      "price": 94.3,
+      "change": 0.69,
+      "turnover": 3359766
     },
     "LQDT": {
       "name": "LQDT ETF",
-      "price": 2.13,
-      "change": 0.04,
-      "turnover": 3304893201
+      "price": 2.1307,
+      "change": 0.03,
+      "turnover": 1218338622
     },
     "LSNG": {
       "name": "РСетиЛЭ",
-      "price": 14.3,
-      "change": -0.21,
-      "turnover": 2511293
+      "price": 14.15,
+      "change": -1.05,
+      "turnover": 994414
     },
     "LSNGP": {
       "name": "РСетиЛЭ-п",
-      "price": 351.3,
-      "change": 0.75,
-      "turnover": 58448069
+      "price": 350.25,
+      "change": -0.3,
+      "turnover": 28815383
     },
     "LSRG": {
       "name": "ЛСР ао",
-      "price": 898.2,
-      "change": -3.13,
-      "turnover": 311476801
+      "price": 905,
+      "change": 0.76,
+      "turnover": 116389429
     },
     "LVHK": {
       "name": "Левенгук",
-      "price": 21.75,
-      "change": 0.93,
-      "turnover": 93440
+      "price": 21.45,
+      "change": -1.38,
+      "turnover": 53750
     },
     "MAGE": {
       "name": "МагадЭн ао",
-      "price": 2.65,
-      "change": -2.75,
-      "turnover": 790087
+      "price": 2.665,
+      "change": 0.57,
+      "turnover": 272873
     },
     "MAGEP": {
       "name": "МагадЭн ап",
-      "price": 2.325,
-      "change": -1.69,
-      "turnover": 384276
+      "price": 2.315,
+      "change": -0.43,
+      "turnover": 234715
     },
     "MAGN": {
       "name": "ММК",
-      "price": 22.39,
-      "change": -2.38,
-      "turnover": 833106960
+      "price": 22.215,
+      "change": -0.78,
+      "turnover": 490974672
     },
     "MBNK": {
       "name": "МТС Банк",
-      "price": 982.5,
-      "change": 0.51,
-      "turnover": 80557031
+      "price": 967,
+      "change": -1.58,
+      "turnover": 34646395
     },
     "MDMG": {
       "name": "MDMG-ао",
-      "price": 1283.5,
-      "change": -1.32,
-      "turnover": 104143018
+      "price": 1280.8,
+      "change": -0.21,
+      "turnover": 25409876
     },
     "MFGS": {
       "name": "Мегион-ао",
-      "price": 308,
-      "change": -0.32,
-      "turnover": 1060170
+      "price": 302,
+      "change": -1.95,
+      "turnover": 1777130
     },
     "MFGSP": {
       "name": "Мегион-ап",
-      "price": 219.5,
-      "change": -0.68,
-      "turnover": 2160040
+      "price": 223,
+      "change": 1.59,
+      "turnover": 1395760
     },
     "MGKL": {
       "name": "МГКЛ",
-      "price": 0.415,
-      "change": -21.1,
-      "turnover": 94572633
+      "price": 0.458,
+      "change": 10.36,
+      "turnover": 86034993
     },
     "MGNT": {
       "name": "Магнит ао",
-      "price": 2028,
-      "change": 2.53,
-      "turnover": 4625267018
+      "price": 1974,
+      "change": -2.66,
+      "turnover": 1921473133
     },
     "MGNZ": {
       "name": "СМЗ-ао",
@@ -1583,279 +1583,279 @@
     },
     "MGTS": {
       "name": "МГТС-5ао",
-      "price": 1408,
-      "change": 3.53,
-      "turnover": 2424354
+      "price": 1394,
+      "change": -0.99,
+      "turnover": 275836
     },
     "MGTSP": {
       "name": "МГТС-4ап",
-      "price": 1146,
-      "change": -0.52,
-      "turnover": 439216
+      "price": 1112,
+      "change": -2.97,
+      "turnover": 676796
     },
     "MISB": {
       "name": "ТНСэнМарЭл",
-      "price": 51.5,
-      "change": -0.58,
-      "turnover": 88220
+      "price": 50.9,
+      "change": -1.17,
+      "turnover": 194970
     },
     "MISBP": {
       "name": "ТНСэМаЭл-п",
-      "price": 49.4,
-      "change": -0.6,
-      "turnover": 355970
+      "price": 49.1,
+      "change": -0.61,
+      "turnover": 118500
     },
     "MKBD": {
       "name": "MKBD ETF",
-      "price": 1026,
-      "change": -0.97,
-      "turnover": 237940
+      "price": 1007,
+      "change": -1.85,
+      "turnover": 10088
     },
     "MOEX": {
       "name": "МосБиржа",
-      "price": 159.56,
-      "change": -1.28,
-      "turnover": 676490311
+      "price": 161.22,
+      "change": 1.04,
+      "turnover": 536092082
     },
     "MONY": {
       "name": "MONY ETF",
-      "price": 135.49,
+      "price": 135.53,
       "change": 0.03,
-      "turnover": 266870
+      "turnover": 287063
     },
     "MRKC": {
       "name": "РоссЦентр",
-      "price": 0.7386,
-      "change": -1.49,
-      "turnover": 21491757
+      "price": 0.7372,
+      "change": -0.19,
+      "turnover": 28349851
     },
     "MRKK": {
       "name": "Россети СК",
-      "price": 15.48,
-      "change": -2.89,
-      "turnover": 16334885
+      "price": 15.8,
+      "change": 2.07,
+      "turnover": 1905272
     },
     "MRKP": {
       "name": "РСетиЦП ао",
-      "price": 0.582,
-      "change": -0.89,
-      "turnover": 15903669
+      "price": 0.5847,
+      "change": 0.46,
+      "turnover": 15879916
     },
     "MRKS": {
       "name": "РсетСиб ао",
-      "price": 0.475,
-      "change": 0,
-      "turnover": 259676
+      "price": 0.474,
+      "change": -0.21,
+      "turnover": 192158
     },
     "MRKU": {
       "name": "Россети Ур",
-      "price": 0.6506,
-      "change": 0.71,
-      "turnover": 23308720
+      "price": 0.6534,
+      "change": 0.43,
+      "turnover": 6090088
     },
     "MRKV": {
       "name": "РсетВол ао",
-      "price": 0.21715,
-      "change": -0.84,
-      "turnover": 26482474
+      "price": 0.21925,
+      "change": 0.97,
+      "turnover": 17990837
     },
     "MRKY": {
       "name": "РоссЮг ао",
-      "price": 0.07675,
-      "change": 0.33,
-      "turnover": 1059626
+      "price": 0.0762,
+      "change": -0.72,
+      "turnover": 1003650
     },
     "MRKZ": {
       "name": "РСетиСЗ ао",
-      "price": 0.1383,
-      "change": -0.5,
-      "turnover": 5151042
+      "price": 0.1364,
+      "change": -1.37,
+      "turnover": 5068736
     },
     "MRSB": {
       "name": "МордЭнСб",
-      "price": 1.144,
-      "change": -0.17,
-      "turnover": 1300900
+      "price": 1.13,
+      "change": -1.22,
+      "turnover": 725920
     },
     "MSNG": {
       "name": "+МосЭнерго",
-      "price": 1.343,
-      "change": -0.22,
-      "turnover": 54805463
+      "price": 1.335,
+      "change": -0.6,
+      "turnover": 23767440
     },
     "MSRS": {
       "name": "РСетиМР ао",
-      "price": 1.743,
-      "change": -0.46,
-      "turnover": 13949197
+      "price": 1.76,
+      "change": 0.98,
+      "turnover": 13981765
     },
     "MSTT": {
       "name": "Мостотрест",
-      "price": 81.55,
-      "change": -3.66,
-      "turnover": 2376897
+      "price": 79.6,
+      "change": -2.39,
+      "turnover": 2125165
     },
     "MTLR": {
       "name": "Мечел ао",
-      "price": 43.78,
-      "change": -1.49,
-      "turnover": 742994191
+      "price": 43.69,
+      "change": -0.21,
+      "turnover": 219225027
     },
     "MTLRP": {
       "name": "Мечел ап",
-      "price": 41.9,
-      "change": -1.99,
-      "turnover": 54594011
+      "price": 41.25,
+      "change": -1.55,
+      "turnover": 34582976
     },
     "MTSS": {
       "name": "МТС-ао",
-      "price": 177.9,
-      "change": -0.95,
-      "turnover": 308330265
+      "price": 178.65,
+      "change": 0.42,
+      "turnover": 270572472
     },
     "MVID": {
       "name": "М.видео",
-      "price": 52.8,
-      "change": -4.52,
-      "turnover": 115374869
+      "price": 51.05,
+      "change": -3.31,
+      "turnover": 38455870
     },
     "NAUK": {
       "name": "iНПОНаука",
-      "price": 428.5,
+      "price": 430,
       "change": 0.35,
-      "turnover": 38570
+      "turnover": 107515
     },
     "NFAZ": {
       "name": "НЕФАЗ",
-      "price": 203.5,
-      "change": -1.93,
-      "turnover": 1039620
+      "price": 200,
+      "change": -1.72,
+      "turnover": 231415
     },
     "NFKL": {
       "name": "NFKL ETF",
-      "price": 104.98,
-      "change": 0.03,
-      "turnover": 5143
+      "price": 105.02,
+      "change": 0.04,
+      "turnover": 360473
     },
     "NKHP": {
       "name": "НКХП ао",
-      "price": 412,
-      "change": -1.55,
-      "turnover": 6118695
+      "price": 402.5,
+      "change": -2.31,
+      "turnover": 3655880
     },
     "NKNC": {
       "name": "НКНХ ао",
-      "price": 51.3,
-      "change": -2.93,
-      "turnover": 1657004
+      "price": 50.1,
+      "change": -2.34,
+      "turnover": 1496272
     },
     "NKNCP": {
       "name": "НКНХ ап",
-      "price": 43.46,
-      "change": -1.94,
-      "turnover": 3325800
+      "price": 43.42,
+      "change": -0.09,
+      "turnover": 906164
     },
     "NKSH": {
       "name": "Нижкамшина",
-      "price": 32.35,
-      "change": -0.15,
-      "turnover": 58120
+      "price": 32.05,
+      "change": -0.93,
+      "turnover": 67485
     },
     "NLMK": {
       "name": "НЛМК ао",
-      "price": 75.8,
-      "change": -2.82,
-      "turnover": 773091329
+      "price": 75.26,
+      "change": -0.71,
+      "turnover": 375540667
     },
     "NMTP": {
       "name": "НМТП ао",
-      "price": 6.96,
-      "change": -0.57,
-      "turnover": 46651528
+      "price": 6.87,
+      "change": -1.29,
+      "turnover": 34738691
     },
     "NNSB": {
       "name": "ТНСэнНН ао",
-      "price": 2600,
-      "change": -0.76,
-      "turnover": 604110
+      "price": 2620,
+      "change": 0.77,
+      "turnover": 333310
     },
     "NNSBP": {
       "name": "ТНСэнНН ап",
-      "price": 1266,
-      "change": -0.94,
-      "turnover": 136580
+      "price": 1254,
+      "change": -0.95,
+      "turnover": 8852
     },
     "NSVZ": {
       "name": "iНаукаСвяз",
-      "price": 207,
-      "change": -1.9,
-      "turnover": 1507080
+      "price": 207.5,
+      "change": 0.24,
+      "turnover": 480985
     },
     "NVTK": {
       "name": "Новатэк ао",
-      "price": 1104.5,
-      "change": -1.42,
-      "turnover": 1944853163
+      "price": 1098.2,
+      "change": -0.57,
+      "turnover": 2743625179
     },
     "OBLG": {
       "name": "OBLG ETF",
-      "price": 215.56,
-      "change": -0.07,
-      "turnover": 67155637
+      "price": 215.16,
+      "change": -0.19,
+      "turnover": 57242607
     },
     "OFZS": {
       "name": "OFZS ETF",
-      "price": 103.88,
-      "change": -0.6,
-      "turnover": 262984
+      "price": 104.13,
+      "change": 0.24,
+      "turnover": 125290
     },
     "OGKB": {
       "name": "ОГК-2 ао",
-      "price": 0.2303,
-      "change": -2,
-      "turnover": 36537520
+      "price": 0.2296,
+      "change": -0.3,
+      "turnover": 24325603
     },
     "OKEY": {
       "name": "OKEY-гдр",
-      "price": 56.72,
-      "change": -3.86,
-      "turnover": 3918671
+      "price": 57.16,
+      "change": 0.78,
+      "turnover": 1125430
     },
     "OLIQ": {
       "name": "OLIQ ETF",
-      "price": 105.23,
-      "change": 0.05,
-      "turnover": 3955453
+      "price": 105.25,
+      "change": 0.02,
+      "turnover": 1270461
     },
     "OMZZP": {
       "name": "ОМЗ-ап",
-      "price": 9720,
-      "change": -1.02,
-      "turnover": 9720
+      "price": 9820,
+      "change": 0,
+      "turnover": 0
     },
     "OZON": {
       "name": "Озон",
-      "price": 3743.5,
-      "change": -0.85,
-      "turnover": 2297119703
+      "price": 3708.5,
+      "change": -0.93,
+      "turnover": 1613318039
     },
     "OZPH": {
       "name": "iОзонФарм",
-      "price": 47.01,
-      "change": 0.51,
-      "turnover": 58749910
+      "price": 47.07,
+      "change": 0.13,
+      "turnover": 23173765
     },
     "PAZA": {
       "name": "ПавлАвт ао",
-      "price": 8200,
-      "change": -0.49,
-      "turnover": 262680
+      "price": 8180,
+      "change": -0.24,
+      "turnover": 24420
     },
     "PHOR": {
       "name": "ФосАгро ао",
-      "price": 5151,
-      "change": -1.7,
-      "turnover": 557309268
+      "price": 5131,
+      "change": -0.39,
+      "turnover": 253309710
     },
     "PIKK": {
       "name": "ПИК ао",
@@ -1865,33 +1865,33 @@
     },
     "PLZL": {
       "name": "Полюс",
-      "price": 1107.6,
-      "change": -3.2,
-      "turnover": 4058586449
+      "price": 1110.6,
+      "change": 0.27,
+      "turnover": 2630967982
     },
     "PMSB": {
       "name": "ПермьЭнСб",
-      "price": 472,
-      "change": 0.68,
-      "turnover": 1524626
+      "price": 472.8,
+      "change": 0.17,
+      "turnover": 1959680
     },
     "PMSBP": {
       "name": "ПермьЭнС-п",
-      "price": 477,
-      "change": 0.34,
-      "turnover": 2648926
+      "price": 477.8,
+      "change": 0.17,
+      "turnover": 3342180
     },
     "POSI": {
       "name": "iПозитив",
-      "price": 1309.2,
-      "change": 0.32,
-      "turnover": 2504070392
+      "price": 1301.4,
+      "change": -0.6,
+      "turnover": 693993410
     },
     "PRFN": {
       "name": "ТЕПЛАНТ ао",
-      "price": 3.14,
-      "change": -0.57,
-      "turnover": 334862
+      "price": 3.12,
+      "change": -0.64,
+      "turnover": 136412
     },
     "PRIE": {
       "name": "PRIE ETF",
@@ -1901,195 +1901,195 @@
     },
     "PRMB": {
       "name": "Приморье",
-      "price": 17000,
-      "change": -1.16,
-      "turnover": 34200
+      "price": 17400,
+      "change": 2.35,
+      "turnover": 799200
     },
     "PRMD": {
       "name": "iПРОМОМЕД",
-      "price": 419.15,
-      "change": -0.64,
-      "turnover": 28977498
+      "price": 421.8,
+      "change": 0.63,
+      "turnover": 19929560
     },
     "PSGM": {
       "name": "PSGM ETF",
-      "price": 12.584,
-      "change": -2.21,
-      "turnover": 756289
+      "price": 12.591,
+      "change": 0.06,
+      "turnover": 123585
     },
     "PSMM": {
       "name": "PSMM ETF",
-      "price": 14.972,
-      "change": 0.05,
-      "turnover": 40634698
+      "price": 14.974,
+      "change": 0.01,
+      "turnover": 8631818
     },
     "PSRB": {
       "name": "PSRB ETF",
-      "price": 14.087,
-      "change": -0.27,
-      "turnover": 2650305
+      "price": 14.059,
+      "change": -0.2,
+      "turnover": 127047
     },
     "PSRE": {
       "name": "PSRE ETF",
-      "price": 9.67,
-      "change": -0.72,
-      "turnover": 329600
+      "price": 9.602,
+      "change": -0.7,
+      "turnover": 284341
     },
     "RAGR": {
       "name": "Русагро",
-      "price": 70.74,
-      "change": -0.9,
-      "turnover": 196205963
+      "price": 70.5,
+      "change": -0.34,
+      "turnover": 112553845
     },
     "RASP": {
       "name": "Распадская",
       "price": 140.25,
-      "change": -1.3,
-      "turnover": 81525279
+      "change": 0,
+      "turnover": 15401250
     },
     "RBCM": {
       "name": "ГК РБК ао",
-      "price": 7.85,
-      "change": 0.83,
-      "turnover": 4307308
+      "price": 7.845,
+      "change": -0.06,
+      "turnover": 883636
     },
     "RDRB": {
       "name": "РДБанк ао",
-      "price": 101.8,
-      "change": 0,
-      "turnover": 42636
+      "price": 101,
+      "change": -0.79,
+      "turnover": 21184
     },
     "RENI": {
       "name": "Ренессанс",
-      "price": 68.7,
-      "change": -1.58,
-      "turnover": 36853938
+      "price": 68.96,
+      "change": 0.38,
+      "turnover": 18617423
     },
     "RGSS": {
       "name": "РГС СК ао",
-      "price": 0.18,
-      "change": -0.55,
-      "turnover": 218600
+      "price": 0.1804,
+      "change": 0.22,
+      "turnover": 77536
     },
     "RKKE": {
       "name": "ЭнергияРКК",
-      "price": 11280,
-      "change": -0.88,
-      "turnover": 979770
+      "price": 11230,
+      "change": -0.44,
+      "turnover": 190240
     },
     "RNFT": {
       "name": "РуссНфт ао",
-      "price": 86.7,
-      "change": 0.41,
-      "turnover": 88445312
+      "price": 86.85,
+      "change": 0.17,
+      "turnover": 108572748
     },
     "ROBL": {
       "name": "ROBL ETF",
-      "price": 1008.12,
-      "change": 0.11,
-      "turnover": 31242
+      "price": 1008.2,
+      "change": 0.01,
+      "turnover": 139852
     },
     "ROLO": {
       "name": "Русолово",
-      "price": 0.3632,
-      "change": -2.05,
-      "turnover": 17687177
+      "price": 0.361,
+      "change": -0.61,
+      "turnover": 9184998
     },
     "ROSN": {
       "name": "Роснефть",
-      "price": 347.85,
-      "change": -1.74,
-      "turnover": 3278684407
+      "price": 350.7,
+      "change": 0.82,
+      "turnover": 1303624275
     },
     "ROST": {
       "name": "РОСИНТЕРао",
-      "price": 69.6,
-      "change": 0,
-      "turnover": 322840
+      "price": 68.2,
+      "change": -2.01,
+      "turnover": 121788
     },
     "RSHU": {
       "name": "RSHU ETF",
-      "price": 132.92,
-      "change": 0.29,
-      "turnover": 49007
+      "price": 133.98,
+      "change": 0.8,
+      "turnover": 25437
     },
     "RTGZ": {
       "name": "ГР Ростов",
-      "price": 34800,
+      "price": 34600,
       "change": -0.57,
-      "turnover": 69600
+      "turnover": 34600
     },
     "RTKM": {
       "name": "Ростел -ао",
-      "price": 46.56,
-      "change": -1.27,
-      "turnover": 635832581
+      "price": 45.22,
+      "change": -2.88,
+      "turnover": 448389849
     },
     "RTKMP": {
       "name": "Ростел -ап",
-      "price": 47.1,
-      "change": -1.36,
-      "turnover": 78951737
+      "price": 45.9,
+      "change": -2.55,
+      "turnover": 53623043
     },
     "RTSB": {
       "name": "ТНСэнРст",
-      "price": 2.75,
-      "change": 0.18,
-      "turnover": 148260
+      "price": 2.725,
+      "change": -0.91,
+      "turnover": 79605
     },
     "RTSBP": {
       "name": "ТНСэнРст-п",
-      "price": 1.416,
-      "change": 1.43,
-      "turnover": 97844
+      "price": 1.422,
+      "change": 0.42,
+      "turnover": 19846
     },
     "RU0005418747": {
       "name": "ФондПервый",
-      "price": 188.5,
-      "change": -1.05,
-      "turnover": 21523
+      "price": 184.5,
+      "change": 0,
+      "turnover": 0
     },
     "RU0006922010": {
       "name": "ФондКонс",
-      "price": 126.05,
-      "change": 0.16,
-      "turnover": 9114285
+      "price": 125.95,
+      "change": -0.08,
+      "turnover": 44243465
     },
     "RU0006922044": {
       "name": "БКСАкцрост",
-      "price": 158.4,
-      "change": -1.49,
-      "turnover": 5509533
+      "price": 158.6,
+      "change": 0.13,
+      "turnover": 1964609
     },
     "RU000A0HGNG6": {
       "name": "АрсагераФА",
-      "price": 13578,
-      "change": -1.18,
-      "turnover": 3082848
+      "price": 13522,
+      "change": -0.41,
+      "turnover": 26620
     },
     "RU000A0HGNH4": {
       "name": "ПИФАрсСИ",
-      "price": 10378,
-      "change": 0.23,
-      "turnover": 20756
+      "price": 10342,
+      "change": 0,
+      "turnover": 0
     },
     "RU000A0JP773": {
       "name": "БКС РосАкц",
-      "price": 4.77,
-      "change": 0.63,
-      "turnover": 6107811
+      "price": 4.75,
+      "change": -0.42,
+      "turnover": 5039594
     },
     "RU000A0JP799": {
       "name": "БКС РосОбл",
-      "price": 4.38,
-      "change": 0,
-      "turnover": 16436548
+      "price": 4.39,
+      "change": 0.23,
+      "turnover": 11408396
     },
     "RU000A0JPMD2": {
       "name": "ПИФАрс6.4",
-      "price": 10998,
-      "change": -1.03,
-      "turnover": 1198852
+      "price": 10972,
+      "change": -0.24,
+      "turnover": 32920
     },
     "RU000A0JPZP8": {
       "name": "АкБрс-Прсп",
@@ -2099,15 +2099,15 @@
     },
     "RU000A0JR282": {
       "name": "ПИФ Акции",
-      "price": 49.2,
-      "change": -1.6,
-      "turnover": 15565252
+      "price": 49.15,
+      "change": -0.1,
+      "turnover": 12298243
     },
     "RU000A0JR290": {
       "name": "ПИФИнМосБр",
-      "price": 8680,
-      "change": -1.36,
-      "turnover": 8680
+      "price": 8745,
+      "change": 0,
+      "turnover": 0
     },
     "RU000A0JR2A5": {
       "name": "ПИФСбалан",
@@ -2117,21 +2117,21 @@
     },
     "RU000A0JR2C1": {
       "name": "ПИФКазна",
-      "price": 113.1,
+      "price": 113.25,
       "change": 0.13,
-      "turnover": 2253697
+      "turnover": 466207
     },
     "RU000A0JRHC0": {
       "name": "ПИФ АТРИУМ",
-      "price": 3060,
-      "change": 0.16,
-      "turnover": 193815
+      "price": 3050,
+      "change": -0.33,
+      "turnover": 79710
     },
     "RU000A0JUR61": {
       "name": "ПИФ КОНСЕР",
-      "price": 5250,
-      "change": 0,
-      "turnover": 26250
+      "price": 5800,
+      "change": 10.48,
+      "turnover": 46350
     },
     "RU000A0JUYB1": {
       "name": "ЗПИФЛофтин",
@@ -2142,26 +2142,26 @@
     "RU000A0JVJ29": {
       "name": "БКСДрагМет",
       "price": 290.5,
-      "change": -0.85,
-      "turnover": 2011748
+      "change": 0,
+      "turnover": 512313
     },
     "RU000A0JWCE7": {
       "name": "Перловский",
-      "price": 1300,
+      "price": 1295,
       "change": -0.38,
-      "turnover": 20440
+      "turnover": 9065
     },
     "RU000A0JXP78": {
       "name": "ЗПИФДОМ.РФ",
-      "price": 14250,
-      "change": -1.72,
-      "turnover": 129400
+      "price": 14550,
+      "change": 2.11,
+      "turnover": 14550
     },
     "RU000A0JXWF0": {
       "name": "АрсКР1.55",
-      "price": 2856,
-      "change": 0.51,
-      "turnover": 185204
+      "price": 2846.5,
+      "change": 0,
+      "turnover": 0
     },
     "RU000A0ZYC64": {
       "name": "СоврАрБиз2",
@@ -2173,19 +2173,19 @@
       "name": "СоврАрБиз3",
       "price": 828,
       "change": 0,
-      "turnover": 1464918
+      "turnover": 1376492
     },
     "RU000A0ZZCD8": {
       "name": "ИПИФМирИнв",
-      "price": 3040,
-      "change": 1.33,
-      "turnover": 47126040
+      "price": 3020,
+      "change": -0.66,
+      "turnover": 2627400
     },
     "RU000A0ZZMD7": {
       "name": "РСХБ Облиг",
       "price": 3320,
-      "change": 0.3,
-      "turnover": 13275
+      "change": 0,
+      "turnover": 43160
     },
     "RU000A0ZZME5": {
       "name": "РСХБКазнач",
@@ -2195,9 +2195,9 @@
     },
     "RU000A0ZZML0": {
       "name": "РСХБ Сбал",
-      "price": 3295,
-      "change": -0.15,
-      "turnover": 32950
+      "price": 3285,
+      "change": -0.3,
+      "turnover": 522360
     },
     "RU000A0ZZMN6": {
       "name": "РСХБ Акции",
@@ -2213,9 +2213,9 @@
     },
     "RU000A1000W4": {
       "name": "ХаризмИдеи",
-      "price": 3790,
+      "price": 3560,
       "change": 0,
-      "turnover": 3790
+      "turnover": 0
     },
     "RU000A1000Y0": {
       "name": "iпре-АйПиО",
@@ -2225,45 +2225,45 @@
     },
     "RU000A100EQ2": {
       "name": "БКС РосЕвр",
-      "price": 12.65,
-      "change": -0.63,
-      "turnover": 679031
+      "price": 12.72,
+      "change": 0.55,
+      "turnover": 1785886
     },
     "RU000A100WZ5": {
       "name": "АКЦЕНТ 4",
-      "price": 1399,
+      "price": 1400,
       "change": 0.07,
-      "turnover": 504038
+      "turnover": 104975
     },
     "RU000A101NK4": {
       "name": "ЗПИФ ФПР",
-      "price": 772,
-      "change": -0.26,
-      "turnover": 9465787
+      "price": 764.5,
+      "change": -0.97,
+      "turnover": 34757537
     },
     "RU000A101UK9": {
       "name": "ОРЕОЛСтрой",
       "price": 9200,
-      "change": -23.33,
-      "turnover": 9200
-    },
-    "RU000A101UY0": {
-      "name": "ОПИФ MM",
-      "price": 1890,
       "change": 0,
       "turnover": 0
     },
+    "RU000A101UY0": {
+      "name": "ОПИФ MM",
+      "price": 1710,
+      "change": -12.76,
+      "turnover": 33160
+    },
     "RU000A1022Z1": {
       "name": "ПАРУС-ОЗН",
-      "price": 8999,
-      "change": 0.55,
-      "turnover": 1930978
+      "price": 9001,
+      "change": 0.02,
+      "turnover": 503807
     },
     "RU000A1027E5": {
       "name": "ЗПИФ ВДО",
-      "price": 15000,
-      "change": -0.79,
-      "turnover": 510640
+      "price": 15020,
+      "change": 0,
+      "turnover": 0
     },
     "RU000A102AH5": {
       "name": "ЗПИФСовр 6",
@@ -2274,20 +2274,20 @@
     "RU000A102N77": {
       "name": "ЗПИФРД",
       "price": 119250,
-      "change": 0.59,
-      "turnover": 4278500
+      "change": 0,
+      "turnover": 357550
     },
     "RU000A102PE0": {
       "name": "Фондсуб1",
       "price": 9950,
-      "change": -1,
-      "turnover": 5482450
+      "change": 0,
+      "turnover": 2009900
     },
     "RU000A102PF7": {
       "name": "Фондсуб2",
       "price": 11000,
       "change": 0,
-      "turnover": 2563000
+      "turnover": 583000
     },
     "RU000A102PQ4": {
       "name": "ФондСубРуб",
@@ -2297,15 +2297,15 @@
     },
     "RU000A1034U7": {
       "name": "СФНАрБиз7",
-      "price": 89000,
-      "change": -0.45,
-      "turnover": 51316400
+      "price": 89400,
+      "change": 0.45,
+      "turnover": 2419400
     },
     "RU000A103B62": {
       "name": "РенДохПРО",
-      "price": 1506.5,
-      "change": -0.36,
-      "turnover": 2176073
+      "price": 1514,
+      "change": 0.5,
+      "turnover": 460110
     },
     "RU000A103HD7": {
       "name": "ЗПИФРД2",
@@ -2315,39 +2315,39 @@
     },
     "RU000A104172": {
       "name": "ПАРУС-СБЛ",
-      "price": 1828,
-      "change": -0.98,
-      "turnover": 2641359
+      "price": 1844,
+      "change": 0.88,
+      "turnover": 930049
     },
     "RU000A104KU3": {
       "name": "ПАРУС-НОРД",
-      "price": 1229,
-      "change": 0.41,
-      "turnover": 3206928
+      "price": 1232,
+      "change": 0.24,
+      "turnover": 2837805
     },
     "RU000A104M43": {
       "name": "ПИФ Аленка",
-      "price": 22400,
-      "change": 0.45,
-      "turnover": 916600
+      "price": 22200,
+      "change": -0.89,
+      "turnover": 245000
     },
     "RU000A104YX8": {
       "name": "ЗПИФКомНед",
-      "price": 890,
-      "change": 2.06,
-      "turnover": 3833604
+      "price": 884,
+      "change": -0.67,
+      "turnover": 5284338
     },
     "RU000A105153": {
       "name": "ХеджФондР5",
-      "price": 1721,
-      "change": 0,
-      "turnover": 0
+      "price": 1701,
+      "change": -1.16,
+      "turnover": 3374784
     },
     "RU000A105328": {
       "name": "ПАРУС-ЛОГ",
-      "price": 1131,
-      "change": -0.44,
-      "turnover": 6752281
+      "price": 1133,
+      "change": 0.18,
+      "turnover": 3386094
     },
     "RU000A105GY0": {
       "name": "ЗПИФПервСп",
@@ -2364,20 +2364,20 @@
     "RU000A105RJ8": {
       "name": "РСХБДолРын",
       "price": 1605,
-      "change": 0.94,
-      "turnover": 9615
+      "change": 0,
+      "turnover": 17655
     },
     "RU000A105TU1": {
       "name": "БКСКапитал",
-      "price": 490,
-      "change": -0.24,
-      "turnover": 10956856
+      "price": 488,
+      "change": -0.41,
+      "turnover": 3455743
     },
     "RU000A1068X9": {
       "name": "ПАРУС-ДВН",
-      "price": 1130,
-      "change": -0.7,
-      "turnover": 4803184
+      "price": 1131,
+      "change": 0.09,
+      "turnover": 412897
     },
     "RU000A106CX9": {
       "name": "ЗПИФА-ЮМ",
@@ -2387,9 +2387,9 @@
     },
     "RU000A106G80": {
       "name": "ТКЗамещОбл",
-      "price": 894,
-      "change": 0.45,
-      "turnover": 59030
+      "price": 891,
+      "change": -0.34,
+      "turnover": 44612
     },
     "RU000A106LB6": {
       "name": "ВсеСзПортф",
@@ -2412,8 +2412,8 @@
     "RU000A106N57": {
       "name": "Атон-Об2.0",
       "price": 1265,
-      "change": 13.45,
-      "turnover": 10003620
+      "change": 0,
+      "turnover": 20240
     },
     "RU000A106SA3": {
       "name": "Телескоп А",
@@ -2447,9 +2447,9 @@
     },
     "RU000A107U08": {
       "name": "РазумИнвес",
-      "price": 825,
-      "change": -0.6,
-      "turnover": 422390
+      "price": 830,
+      "change": 0,
+      "turnover": 0
     },
     "RU000A108751": {
       "name": "ПИФПромПар",
@@ -2465,57 +2465,51 @@
     },
     "RU000A108TT7": {
       "name": "БКСДивАкци",
-      "price": 71.26,
-      "change": -0.28,
-      "turnover": 744157
+      "price": 70.8,
+      "change": -0.65,
+      "turnover": 1020329
     },
     "RU000A108UH0": {
       "name": "ПАРУС-КРАС",
-      "price": 829,
-      "change": -0.36,
-      "turnover": 5266455
+      "price": 828,
+      "change": -0.12,
+      "turnover": 2267049
     },
     "RU000A108VR7": {
       "name": "ПАРУС-МАКС",
-      "price": 1483,
-      "change": -0.54,
-      "turnover": 1512330
+      "price": 1485,
+      "change": 0.13,
+      "turnover": 684658
     },
     "RU000A108ZB2": {
       "name": "2хОФЗ",
-      "price": 134950,
-      "change": 0,
-      "turnover": 4323400
+      "price": 134100,
+      "change": -0.63,
+      "turnover": 14759750
     },
     "RU000A1092L4": {
       "name": "ПИФАКТИВ20",
-      "price": 72500,
+      "price": 72000,
       "change": 0,
-      "turnover": 290000
+      "turnover": 0
     },
     "RU000A1095D4": {
       "name": "Атон - ОФЗ",
-      "price": 1240,
+      "price": 1270,
       "change": 0,
-      "turnover": 0
+      "turnover": 2564130
     },
     "RU000A1099U0": {
       "name": "ЗПИФСовр 9",
-      "price": 7.19,
-      "change": -0.28,
-      "turnover": 3958475
-    },
-    "RU000A109G79": {
-      "name": "ПИФГРИНФЛО",
-      "price": 1160,
-      "change": 0,
-      "turnover": 0
+      "price": 7.49,
+      "change": 4.17,
+      "turnover": 20173544
     },
     "RU000A109GQ8": {
       "name": "ПИФСкладК2",
       "price": 939,
-      "change": 1.62,
-      "turnover": 78164
+      "change": 0,
+      "turnover": 5634
     },
     "RU000A109NL5": {
       "name": "ТЕТИС ИН",
@@ -2525,21 +2519,21 @@
     },
     "RU000A109QR5": {
       "name": "ААА Золото",
-      "price": 3060,
-      "change": -0.49,
-      "turnover": 70530
+      "price": 3050,
+      "change": -0.33,
+      "turnover": 83040
     },
     "RU000A109R27": {
       "name": "2х Акции",
-      "price": 658,
-      "change": -1.94,
-      "turnover": 39276764
+      "price": 653.5,
+      "change": -0.68,
+      "turnover": 7938155
     },
     "RU000A10A489": {
       "name": "ПИФПарки2",
-      "price": 840,
-      "change": 5.66,
-      "turnover": 840
+      "price": 795,
+      "change": 0,
+      "turnover": 0
     },
     "RU000A10AN72": {
       "name": "Синара",
@@ -2549,9 +2543,9 @@
     },
     "RU000A10AQT4": {
       "name": "Достояние",
-      "price": 12.835,
-      "change": 0.09,
-      "turnover": 1804968
+      "price": 12.9,
+      "change": 0.51,
+      "turnover": 6677901
     },
     "RU000A10ATA8": {
       "name": "ПИФАКТИВФЛ",
@@ -2561,21 +2555,21 @@
     },
     "RU000A10BBS6": {
       "name": "ПАРУС-НиНо",
-      "price": 702,
-      "change": -1.27,
-      "turnover": 5321340
+      "price": 703,
+      "change": 0.14,
+      "turnover": 3080515
     },
     "RU000A10BM31": {
       "name": "ВИМ Вал пл",
-      "price": 10690,
-      "change": 0.8,
-      "turnover": 534560
+      "price": 10665,
+      "change": -0.23,
+      "turnover": 21335
     },
     "RU000A10BQP0": {
       "name": "БКС ОФЗ ВД",
-      "price": 97.19,
-      "change": 0.05,
-      "turnover": 6618818
+      "price": 97.22,
+      "change": 0.03,
+      "turnover": 3842167
     },
     "RU000A10BQQ8": {
       "name": "ЛАХТА ПАРК",
@@ -2585,15 +2579,15 @@
     },
     "RU000A10BT42": {
       "name": "ФЖН-1",
-      "price": 1269.3,
-      "change": 0.09,
-      "turnover": 1269
+      "price": 1269.8,
+      "change": 0.04,
+      "turnover": 1270
     },
     "RU000A10CFM8": {
       "name": "ПАРУС-ЗОЛЯ",
-      "price": 794,
-      "change": 1.15,
-      "turnover": 780314
+      "price": 785,
+      "change": -1.13,
+      "turnover": 3452359
     },
     "RU000A10CKQ9": {
       "name": "АлфаКомНед",
@@ -2615,9 +2609,9 @@
     },
     "RU000A10D814": {
       "name": "ТермКап",
-      "price": 995,
-      "change": -0.2,
-      "turnover": 5970
+      "price": 997,
+      "change": 0.2,
+      "turnover": 1992
     },
     "RU000A10E3R7": {
       "name": "ПИФАКТИВ22",
@@ -2629,13 +2623,13 @@
       "name": "Атон-ПфСтр",
       "price": 1000,
       "change": 0,
-      "turnover": 1051000
+      "turnover": 0
     },
     "RU000A10EVE8": {
       "name": "ПАРУС-МВ",
-      "price": 891,
-      "change": -0.78,
-      "turnover": 58096396
+      "price": 885,
+      "change": -0.67,
+      "turnover": 25313357
     },
     "RU000A10FDU9": {
       "name": "РСХБ Смарт",
@@ -2645,177 +2639,177 @@
     },
     "RU000A10FQ17": {
       "name": "БКС ДР ВД",
-      "price": 503.6,
-      "change": 0,
-      "turnover": 725142
+      "price": 504,
+      "change": 0.08,
+      "turnover": 8950317
     },
     "RUAL": {
       "name": "РУСАЛ ао",
-      "price": 24.35,
-      "change": -1.12,
-      "turnover": 688506440
+      "price": 23.925,
+      "change": -1.75,
+      "turnover": 436278253
     },
     "RUFO": {
       "name": "RUFO ETF",
-      "price": 110.88,
-      "change": -0.49,
-      "turnover": 711766
+      "price": 111.35,
+      "change": 0.42,
+      "turnover": 90798
     },
     "RUSI": {
       "name": "ИКРУСС-ИНВ",
-      "price": 55.7,
-      "change": -1.76,
-      "turnover": 790755
+      "price": 55.9,
+      "change": 0.36,
+      "turnover": 157526
     },
     "RZSB": {
       "name": "РязЭнСб",
-      "price": 35.12,
-      "change": 0.06,
-      "turnover": 1028252
+      "price": 35.04,
+      "change": -0.23,
+      "turnover": 112232
     },
     "SAFE": {
       "name": "SAFE ETF",
-      "price": 18.83,
+      "price": 18.835,
       "change": 0.03,
-      "turnover": 1826464309
+      "turnover": 683788871
     },
     "SAGO": {
       "name": "СамарЭн-ао",
-      "price": 3.155,
-      "change": -0.63,
-      "turnover": 1935080
+      "price": 3.185,
+      "change": 0.95,
+      "turnover": 714750
     },
     "SAGOP": {
       "name": "СамарЭн-ап",
-      "price": 3.155,
-      "change": -0.94,
-      "turnover": 3679940
+      "price": 3.195,
+      "change": 1.27,
+      "turnover": 436080
     },
     "SARE": {
       "name": "СаратЭн-ао",
-      "price": 0.771,
-      "change": 0.39,
-      "turnover": 287730
+      "price": 0.76,
+      "change": -1.43,
+      "turnover": 1183890
     },
     "SAREP": {
       "name": "СаратЭн-ап",
-      "price": 0.434,
-      "change": 0.35,
-      "turnover": 39055
+      "price": 0.4325,
+      "change": -0.35,
+      "turnover": 17305
     },
     "SBBC": {
       "name": "SBBC ETF",
-      "price": 9.814,
-      "change": -0.7,
-      "turnover": 974388
+      "price": 9.754,
+      "change": -0.61,
+      "turnover": 4580167
     },
     "SBBY": {
       "name": "SBBY ETF",
-      "price": 11.974,
-      "change": 1.72,
-      "turnover": 4560362
+      "price": 11.948,
+      "change": -0.22,
+      "turnover": 2120419
     },
     "SBCB": {
       "name": "SBCB ETF",
-      "price": 1461,
-      "change": 1.39,
-      "turnover": 40083299
+      "price": 1451.5,
+      "change": -0.65,
+      "turnover": 11403958
     },
     "SBCN": {
       "name": "SBCN ETF",
-      "price": 13.473,
-      "change": 0.68,
-      "turnover": 5132894
+      "price": 13.445,
+      "change": -0.21,
+      "turnover": 2649790
     },
     "SBDS": {
       "name": "SBDS ETF",
       "price": 3.41,
-      "change": -0.58,
-      "turnover": 33712
+      "change": 0,
+      "turnover": 21437
     },
     "SBER": {
       "name": "Сбербанк",
-      "price": 293.1,
-      "change": -0.73,
-      "turnover": 4761978119
+      "price": 293.17,
+      "change": 0.02,
+      "turnover": 3301703837
     },
     "SBERP": {
       "name": "Сбербанк-п",
-      "price": 293.28,
-      "change": -0.76,
-      "turnover": 334078431
+      "price": 293.13,
+      "change": -0.05,
+      "turnover": 338657884
     },
     "SBFR": {
       "name": "SBFR ETF",
-      "price": 15.83,
-      "change": 0.16,
-      "turnover": 3575757142
+      "price": 15.816,
+      "change": -0.09,
+      "turnover": 1299452493
     },
     "SBGB": {
       "name": "SBGB ETF",
-      "price": 15.497,
-      "change": -0.01,
-      "turnover": 18411747
+      "price": 15.512,
+      "change": 0.1,
+      "turnover": 5407266
     },
     "SBGD": {
       "name": "SBGD ETF",
-      "price": 31.68,
-      "change": -1.17,
-      "turnover": 40937804
+      "price": 31.625,
+      "change": -0.17,
+      "turnover": 11334657
     },
     "SBHI": {
       "name": "SBHI ETF",
-      "price": 6.816,
-      "change": -1.79,
-      "turnover": 709774
+      "price": 6.8,
+      "change": -0.23,
+      "turnover": 460311
     },
     "SBLB": {
       "name": "SBLB ETF",
-      "price": 12.278,
-      "change": -0.32,
-      "turnover": 9151114
+      "price": 12.308,
+      "change": 0.24,
+      "turnover": 4179556
     },
     "SBMM": {
       "name": "SBMM ETF",
-      "price": 19.815,
+      "price": 19.8225,
       "change": 0.04,
-      "turnover": 3359887546
+      "turnover": 1032792183
     },
     "SBMX": {
       "name": "SBMX ETF",
-      "price": 17.625,
-      "change": -0.7,
-      "turnover": 47360184
+      "price": 17.526,
+      "change": -0.56,
+      "turnover": 111860483
     },
     "SBPS": {
       "name": "SBPS ETF",
-      "price": 2.895,
-      "change": -0.86,
-      "turnover": 385712
+      "price": 2.885,
+      "change": -0.35,
+      "turnover": 94885
     },
     "SBRB": {
       "name": "SBRB ETF",
-      "price": 19.378,
-      "change": 0.02,
-      "turnover": 226525100
+      "price": 19.416,
+      "change": 0.2,
+      "turnover": 170454375
     },
     "SBRI": {
       "name": "SBRI ETF",
-      "price": 10.65,
-      "change": -0.41,
-      "turnover": 352869
+      "price": 10.502,
+      "change": -1.39,
+      "turnover": 135472
     },
     "SBRS": {
       "name": "SBRS ETF",
       "price": 14.49,
-      "change": 0.03,
-      "turnover": 3193382
+      "change": 0,
+      "turnover": 6254607
     },
     "SBSC": {
       "name": "SBSC ETF",
-      "price": 7.421,
-      "change": -1.59,
-      "turnover": 1625732
+      "price": 7.335,
+      "change": -1.16,
+      "turnover": 2792056
     },
     "SCFT": {
       "name": "SCFT ETF",
@@ -2825,555 +2819,555 @@
     },
     "SCLI": {
       "name": "SCLI ETF",
-      "price": 7.334,
-      "change": 0.03,
-      "turnover": 10518050
+      "price": 7.339,
+      "change": 0.07,
+      "turnover": 2707828
     },
     "SECR": {
       "name": "SECR ETF",
-      "price": 10.07,
-      "change": 0.12,
-      "turnover": 1048516816
+      "price": 10.076,
+      "change": 0.06,
+      "turnover": 798453150
     },
     "SELG": {
       "name": "Селигдар",
-      "price": 38.46,
-      "change": -2.41,
-      "turnover": 290072392
+      "price": 38.71,
+      "change": 0.65,
+      "turnover": 93509838
     },
     "SFIN": {
       "name": "ЭсЭфАй ао",
-      "price": 636.4,
-      "change": -0.81,
-      "turnover": 244746368
+      "price": 604,
+      "change": -5.09,
+      "turnover": 370235705
     },
     "SGZH": {
       "name": "Сегежа",
-      "price": 0.792,
-      "change": -1.61,
-      "turnover": 217828703
+      "price": 0.803,
+      "change": 1.39,
+      "turnover": 262086536
     },
     "SIBN": {
       "name": "Газпрнефть",
-      "price": 521.85,
-      "change": -0.28,
-      "turnover": 419558309
+      "price": 530.15,
+      "change": 1.59,
+      "turnover": 336055247
     },
     "SILA": {
       "name": "SILA ETF",
-      "price": 114.63,
-      "change": 0.04,
-      "turnover": 477677
+      "price": 114.66,
+      "change": 0.03,
+      "turnover": 871457
     },
     "SIPO": {
       "name": "SIPO ETF",
-      "price": 7.353,
-      "change": -0.42,
-      "turnover": 6674028
+      "price": 7.305,
+      "change": -0.65,
+      "turnover": 48390
     },
     "SLEN": {
       "name": "Сахэнер ао",
-      "price": 3.44,
-      "change": 1.18,
-      "turnover": 1489841
+      "price": 3.51,
+      "change": 2.03,
+      "turnover": 960850
     },
     "SMCF": {
       "name": "SMCF ETF",
-      "price": 1002,
-      "change": 0.49,
-      "turnover": 30046
+      "price": 1002.4,
+      "change": 0.04,
+      "turnover": 10025
     },
     "SMLT": {
       "name": "Самолет ао",
-      "price": 299,
-      "change": -8.7,
-      "turnover": 8272728803
+      "price": 305.2,
+      "change": 2.07,
+      "turnover": 2751604566
     },
     "SNGS": {
       "name": "Сургнфгз",
-      "price": 17.23,
-      "change": -1.2,
-      "turnover": 331999616
+      "price": 17.21,
+      "change": -0.12,
+      "turnover": 276427111
     },
     "SNGSP": {
       "name": "Сургнфгз-п",
-      "price": 42.905,
-      "change": -0.89,
-      "turnover": 1145380470
+      "price": 42.5,
+      "change": -0.94,
+      "turnover": 580782981
     },
     "SOFL": {
       "name": "iСофтлайн",
-      "price": 53.22,
-      "change": -1.81,
-      "turnover": 28340843
+      "price": 52.78,
+      "change": -0.83,
+      "turnover": 31696053
     },
     "SPBE": {
       "name": "СПБ Биржа",
-      "price": 172.4,
-      "change": -2.32,
-      "turnover": 573152175
+      "price": 172.6,
+      "change": 0.12,
+      "turnover": 522149944
     },
     "SPRN": {
       "name": "SPRN ETF",
-      "price": 9.919,
-      "change": -0.77,
-      "turnover": 2984923
+      "price": 9.902,
+      "change": -0.17,
+      "turnover": 2999309
     },
     "STME": {
       "name": "STME ETF",
-      "price": 4.125,
-      "change": -0.36,
-      "turnover": 69286659
+      "price": 4.12,
+      "change": -0.12,
+      "turnover": 25567890
     },
     "STSB": {
       "name": "ЕГП",
-      "price": 4.105,
-      "change": -1.2,
-      "turnover": 402080
+      "price": 4.155,
+      "change": 1.22,
+      "turnover": 111515
     },
     "STSBP": {
       "name": "ЕГП ап",
-      "price": 4.535,
-      "change": -1.41,
-      "turnover": 500281
+      "price": 4.565,
+      "change": 0.66,
+      "turnover": 191861
     },
     "SUGB": {
       "name": "SUGB ETF",
-      "price": 1561.5,
-      "change": 0.13,
-      "turnover": 493156
+      "price": 1569,
+      "change": 0.48,
+      "turnover": 9412
     },
     "SVAV": {
       "name": "СОЛЛЕРС",
-      "price": 394.5,
-      "change": -1.99,
-      "turnover": 101048494
+      "price": 396,
+      "change": 0.38,
+      "turnover": 17458338
     },
     "SVCB": {
       "name": "Совкомбанк",
-      "price": 10.53,
-      "change": 0.29,
-      "turnover": 576421590
+      "price": 10.505,
+      "change": -0.24,
+      "turnover": 295390978
     },
     "SVET": {
       "name": "Светофор",
-      "price": 10.16,
-      "change": -1.74,
-      "turnover": 1226507
+      "price": 10.34,
+      "change": 1.77,
+      "turnover": 3895496
     },
     "SVETP": {
       "name": "Светофор п",
-      "price": 15,
-      "change": -0.66,
-      "turnover": 2011108
+      "price": 15.25,
+      "change": 1.67,
+      "turnover": 3521654
     },
     "T": {
       "name": "Т-Техно ао",
-      "price": 274.88,
-      "change": 1.28,
-      "turnover": 6674779687
+      "price": 274.02,
+      "change": -0.31,
+      "turnover": 3298503571
     },
     "TASB": {
       "name": "ТамбЭнСб",
-      "price": 1.37,
-      "change": -1.15,
-      "turnover": 285188
+      "price": 1.376,
+      "change": 0.44,
+      "turnover": 61860
     },
     "TASBP": {
       "name": "ТамбЭнСб-п",
-      "price": 0.848,
-      "change": -1.62,
-      "turnover": 8480
+      "price": 0.852,
+      "change": 0.47,
+      "turnover": 42760
     },
     "TATN": {
       "name": "Татнфт 3ао",
-      "price": 581,
-      "change": -3.28,
-      "turnover": 2427212734
+      "price": 580,
+      "change": -0.17,
+      "turnover": 1419114797
     },
     "TATNP": {
       "name": "Татнфт 3ап",
-      "price": 565,
-      "change": -2.97,
-      "turnover": 630102018
+      "price": 564.7,
+      "change": -0.05,
+      "turnover": 386243747
     },
     "TBEU": {
       "name": "TBEU ETF",
-      "price": 11.61,
-      "change": -0.34,
-      "turnover": 58848
+      "price": 11.59,
+      "change": -0.17,
+      "turnover": 4023
     },
     "TBRU": {
       "name": "TBRU ETF",
-      "price": 8.66,
+      "price": 8.67,
       "change": 0.12,
-      "turnover": 842692
+      "turnover": 487229
     },
     "TDIV": {
       "name": "TDIV ETF",
-      "price": 10.28,
-      "change": -0.19,
-      "turnover": 18843
+      "price": 10.11,
+      "change": -1.65,
+      "turnover": 2806
     },
     "TEUR": {
       "name": "TEUR ETF",
-      "price": 7.02,
-      "change": 0.14,
-      "turnover": 842624
+      "price": 7.01,
+      "change": -0.14,
+      "turnover": 344001
     },
     "TGKA": {
       "name": "ТГК-1",
-      "price": 0.004838,
-      "change": 0.33,
-      "turnover": 37351351
+      "price": 0.004942,
+      "change": 2.15,
+      "turnover": 81867443
     },
     "TGKB": {
       "name": "ТГК-2",
-      "price": 0.004985,
-      "change": -0.7,
-      "turnover": 757415
+      "price": 0.004945,
+      "change": -0.8,
+      "turnover": 381760
     },
     "TGKBP": {
       "name": "ТГК-2 ап",
-      "price": 0.00755,
-      "change": -0.53,
-      "turnover": 79213
+      "price": 0.00749,
+      "change": -0.79,
+      "turnover": 48840
     },
     "TGKN": {
       "name": "ТГК-14",
-      "price": 0.00391,
-      "change": -2.01,
-      "turnover": 6867762
+      "price": 0.00394,
+      "change": 0.77,
+      "turnover": 13341306
     },
     "TGLD": {
       "name": "TGLD ETF",
-      "price": 13.14,
-      "change": -1.2,
-      "turnover": 2206314
+      "price": 13.17,
+      "change": 0.23,
+      "turnover": 719606
     },
     "TITR": {
       "name": "TITR ETF",
-      "price": 4.8,
-      "change": -1.03,
-      "turnover": 23780
+      "price": 4.77,
+      "change": -0.63,
+      "turnover": 6938
     },
     "TLCB": {
       "name": "TLCB ETF",
       "price": 11.12,
-      "change": 1,
-      "turnover": 2021906
+      "change": 0,
+      "turnover": 6867961
     },
     "TMON": {
       "name": "TMON ETF",
-      "price": 167.53,
-      "change": 0.02,
-      "turnover": 41554616
+      "price": 167.58,
+      "change": 0.03,
+      "turnover": 6859991
     },
     "TMOS": {
       "name": "TMOS ETF",
       "price": 6.15,
-      "change": -1.13,
-      "turnover": 4536157
+      "change": 0,
+      "turnover": 19185735
     },
     "TNSE": {
       "name": "ТНСэнрг ао",
-      "price": 3490,
-      "change": -0.57,
-      "turnover": 200385
+      "price": 3515,
+      "change": 0.72,
+      "turnover": 7035
     },
     "TOFZ": {
       "name": "TOFZ ETF",
-      "price": 13.94,
-      "change": 0,
-      "turnover": 10701
+      "price": 13.95,
+      "change": 0.07,
+      "turnover": 8071
     },
     "TOPS": {
       "name": "TOPS ETF",
-      "price": 115.21,
-      "change": -1.4,
-      "turnover": 1052049
+      "price": 114.55,
+      "change": -0.57,
+      "turnover": 659003
     },
     "TORS": {
       "name": "РСТомск ао",
-      "price": 0.74,
-      "change": 1.37,
-      "turnover": 1280900
+      "price": 0.738,
+      "change": -0.27,
+      "turnover": 979780
     },
     "TORSP": {
       "name": "РСТомск ап",
-      "price": 0.524,
-      "change": -0.19,
-      "turnover": 93972
+      "price": 0.515,
+      "change": -1.72,
+      "turnover": 18288
     },
     "TPAY": {
       "name": "TPAY ETF",
-      "price": 101.86,
-      "change": 0.14,
-      "turnover": 309785345
+      "price": 101.9,
+      "change": 0.04,
+      "turnover": 116190564
     },
     "TRMK": {
       "name": "ТМК ао",
-      "price": 68.38,
-      "change": 0.32,
-      "turnover": 306665496
+      "price": 67.58,
+      "change": -1.17,
+      "turnover": 144565853
     },
     "TRND": {
       "name": "TRND ETF",
-      "price": 9.25,
-      "change": -0.54,
-      "turnover": 330642
+      "price": 9.18,
+      "change": -0.76,
+      "turnover": 2111
     },
     "TRNFP": {
       "name": "Транснф ап",
-      "price": 1038.4,
-      "change": -1.03,
-      "turnover": 538803589
+      "price": 1040.2,
+      "change": 0.17,
+      "turnover": 294547839
     },
     "TRUR": {
       "name": "TRUR ETF",
-      "price": 10.02,
-      "change": -0.3,
-      "turnover": 362051
+      "price": 10,
+      "change": -0.2,
+      "turnover": 38929
     },
     "TSAV": {
       "name": "TSAV ETF",
-      "price": 5.22,
-      "change": -0.19,
-      "turnover": 35710
+      "price": 5.23,
+      "change": 0.19,
+      "turnover": 224
     },
     "TTLK": {
       "name": "Таттел. ао",
       "price": 0.6035,
-      "change": 2.99,
-      "turnover": 2316037
+      "change": 0,
+      "turnover": 4096826
     },
     "TUSD": {
       "name": "TUSD ETF",
       "price": 7.28,
-      "change": 0.14,
-      "turnover": 846606
+      "change": 0,
+      "turnover": 542209
     },
     "TUZA": {
       "name": "ТЗА ао",
-      "price": 97,
-      "change": 1.46,
-      "turnover": 5247481
+      "price": 94.6,
+      "change": -2.47,
+      "turnover": 1204026
     },
     "UGLD": {
       "name": "ЮГК",
-      "price": 0.6733,
-      "change": -2.22,
-      "turnover": 83481138
+      "price": 0.6726,
+      "change": -0.1,
+      "turnover": 27905345
     },
     "UKUZ": {
       "name": "ЮжКузб. ао",
-      "price": 1078,
-      "change": 9.33,
-      "turnover": 15562618
+      "price": 1194,
+      "change": 10.76,
+      "turnover": 27894786
     },
     "UNAC": {
       "name": "iАвиастКао",
-      "price": 0.393,
-      "change": -2.72,
-      "turnover": 29875013
+      "price": 0.387,
+      "change": -1.53,
+      "turnover": 17009976
     },
     "UNKL": {
       "name": "ЮУНК ао",
-      "price": 3470,
-      "change": 4.2,
-      "turnover": 5233960
+      "price": 3480,
+      "change": 0.29,
+      "turnover": 9981200
     },
     "UPRO": {
       "name": "Юнипро ао",
-      "price": 1.147,
-      "change": -1.42,
-      "turnover": 150720563
+      "price": 1.1405,
+      "change": -0.57,
+      "turnover": 91608402
     },
     "URKZ": {
       "name": "УрКузница",
-      "price": 256,
-      "change": 14.49,
-      "turnover": 11167353
+      "price": 250,
+      "change": -2.34,
+      "turnover": 4634212
     },
     "USBN": {
       "name": "УралСиб ао",
-      "price": 0.1801,
-      "change": 3.74,
-      "turnover": 38520408
+      "price": 0.177,
+      "change": -1.72,
+      "turnover": 22323483
     },
     "UTAR": {
       "name": "ЮТэйр ао",
-      "price": 8.97,
-      "change": 0.22,
-      "turnover": 226440
+      "price": 9.02,
+      "change": 0.56,
+      "turnover": 14388
     },
     "UWGN": {
       "name": "ОВК ао",
-      "price": 24.18,
-      "change": -3.28,
-      "turnover": 350551117
+      "price": 24.72,
+      "change": 2.23,
+      "turnover": 74724842
     },
     "VDOR": {
       "name": "VDOR ETF",
-      "price": 1041,
-      "change": -0.77,
-      "turnover": 5541060
+      "price": 1046.67,
+      "change": 0.54,
+      "turnover": 1914479
     },
     "VEON-RX": {
       "name": "VEON",
-      "price": 84.5,
-      "change": -3.87,
-      "turnover": 2427488
+      "price": 88,
+      "change": 4.14,
+      "turnover": 399175
     },
     "VGSB": {
       "name": "ВолгЭнСб",
-      "price": 14.25,
+      "price": 14.15,
       "change": -0.7,
-      "turnover": 267850
+      "turnover": 83750
     },
     "VGSBP": {
       "name": "ВолгЭнСб-п",
-      "price": 10.85,
-      "change": 0,
-      "turnover": 10850
+      "price": 10.8,
+      "change": -0.46,
+      "turnover": 76150
     },
     "VJGZ": {
       "name": "Варьеган",
-      "price": 2555,
-      "change": -0.58,
-      "turnover": 261590
+      "price": 2565,
+      "change": 0.39,
+      "turnover": 122965
     },
     "VJGZP": {
       "name": "Варьеган-п",
-      "price": 1186,
-      "change": -0.84,
-      "turnover": 46416
+      "price": 1178,
+      "change": -0.67,
+      "turnover": 438228
     },
     "VKCO": {
       "name": "iМКПАО ВК",
-      "price": 220.1,
-      "change": -3.51,
-      "turnover": 3259319444
+      "price": 219.3,
+      "change": -0.36,
+      "turnover": 2506403554
     },
     "VLHZ": {
       "name": "ВХЗ-ао",
-      "price": 136,
-      "change": 0.15,
-      "turnover": 656053
+      "price": 134.2,
+      "change": -1.32,
+      "turnover": 717193
     },
     "VRSB": {
       "name": "ТНСэнВорон",
-      "price": 250,
-      "change": 1.21,
-      "turnover": 1315310
+      "price": 244.5,
+      "change": -2.2,
+      "turnover": 2128990
     },
     "VRSBP": {
       "name": "ТНСэнВор-п",
-      "price": 128.6,
-      "change": 0.47,
-      "turnover": 1242002
+      "price": 128.4,
+      "change": -0.16,
+      "turnover": 17972
     },
     "VSEH": {
       "name": "ВИ.ру",
-      "price": 91.24,
-      "change": 2.39,
-      "turnover": 188081023
+      "price": 91.66,
+      "change": 0.46,
+      "turnover": 85710403
     },
     "VSMO": {
       "name": "ВСМПО-АВСМ",
-      "price": 23760,
-      "change": -1.08,
-      "turnover": 6141560
+      "price": 23660,
+      "change": -0.42,
+      "turnover": 2326600
     },
     "VSYD": {
       "name": "ВыбСудЗ ао",
-      "price": 10800,
-      "change": -6.49,
-      "turnover": 6735350
+      "price": 10650,
+      "change": -1.39,
+      "turnover": 1549650
     },
     "VSYDP": {
       "name": "ВыбСудЗ ап",
-      "price": 7550,
-      "change": 6.34,
-      "turnover": 3853550
+      "price": 8150,
+      "change": 7.95,
+      "turnover": 4281700
     },
     "VTBR": {
       "name": "ВТБ ао",
-      "price": 57.95,
-      "change": 0.8,
-      "turnover": 3976640515
+      "price": 57.26,
+      "change": -1.19,
+      "turnover": 3006498770
     },
     "WFLO": {
       "name": "WFLO ETF",
-      "price": 102.15,
-      "change": 0.02,
-      "turnover": 4140639
+      "price": 102.19,
+      "change": 0.04,
+      "turnover": 3156829
     },
     "WFUT": {
       "name": "WFUT ETF",
-      "price": 102.92,
-      "change": -0.1,
-      "turnover": 265386
+      "price": 102.76,
+      "change": -0.16,
+      "turnover": 167908
     },
     "WILD": {
       "name": "WILD ETF",
       "price": 968.8,
-      "change": -0.9,
-      "turnover": 654147
+      "change": 0,
+      "turnover": 51566
     },
     "WOFZ": {
       "name": "WOFZ ETF",
-      "price": 101.88,
-      "change": 0.13,
-      "turnover": 6088039
+      "price": 101.7,
+      "change": -0.18,
+      "turnover": 196527
     },
     "WTCM": {
       "name": "ЦМТ ао",
-      "price": 15.06,
-      "change": 2.03,
-      "turnover": 200074
+      "price": 15,
+      "change": -0.4,
+      "turnover": 184368
     },
     "WTCMP": {
       "name": "ЦМТ ап",
-      "price": 12.5,
-      "change": -2.65,
-      "turnover": 819468
+      "price": 12.56,
+      "change": 0.48,
+      "turnover": 101396
     },
     "WUSD": {
       "name": "WUSD ETF",
-      "price": 100.61,
-      "change": 0.45,
-      "turnover": 38619541
+      "price": 100.42,
+      "change": -0.19,
+      "turnover": 25152970
     },
     "WUSH": {
       "name": "iВУШХолднг",
-      "price": 38.27,
-      "change": -8.23,
-      "turnover": 368898373
+      "price": 37.38,
+      "change": -2.33,
+      "turnover": 107699458
     },
     "X5": {
       "name": "КЦ ИКС 5",
-      "price": 2329,
-      "change": -0.34,
-      "turnover": 1280639705
+      "price": 2332,
+      "change": 0.13,
+      "turnover": 755389480
     },
     "XACCSK": {
       "name": "Акцент 5",
-      "price": 889,
-      "change": 0.23,
-      "turnover": 2335642
+      "price": 897,
+      "change": 0.9,
+      "turnover": 2497246
     },
     "XAVIUM": {
       "name": "Авиум",
       "price": 1030,
       "change": 0,
-      "turnover": 59740
+      "turnover": 3090
     },
     "XCREDI": {
       "name": "ПИФКредрес",
       "price": 900,
       "change": 0,
-      "turnover": 900
+      "turnover": 0
     },
     "XEQTRU": {
       "name": "РуАк120/80",
@@ -3396,74 +3390,68 @@
     "XHEDGE": {
       "name": "Тактикреш",
       "price": 273.95,
-      "change": 0.11,
-      "turnover": 7299057
+      "change": 0,
+      "turnover": 0
     },
     "XHOUSE": {
       "name": "ЗПИФ ИНВНД",
-      "price": 1163,
+      "price": 1166,
       "change": 0.26,
-      "turnover": 164061
+      "turnover": 9337
     },
     "XIPKSV": {
       "name": "ИПИФСтабВл",
       "price": 10100,
-      "change": -1.94,
-      "turnover": 1911700
+      "change": 0,
+      "turnover": 20200
     },
     "XKLUCH": {
       "name": "КлючАктив",
-      "price": 11.02,
-      "change": 0.05,
-      "turnover": 1763
+      "price": 11.023,
+      "change": 0.03,
+      "turnover": 110
     },
     "XLAMIX": {
       "name": "2xAMIX",
-      "price": 1081,
-      "change": -0.73,
-      "turnover": 7576
+      "price": 1053,
+      "change": -2.59,
+      "turnover": 1073225
     },
     "XNIRUM": {
       "name": "Нирум Кап",
-      "price": 1073.6,
-      "change": 0.22,
-      "turnover": 9662
+      "price": 1070.2,
+      "change": 0,
+      "turnover": 0
     },
     "XQUANT": {
       "name": "ПИФ КВАНТ",
       "price": 1290,
-      "change": -4.44,
-      "turnover": 76110000
+      "change": 0,
+      "turnover": 0
     },
     "XSBORA": {
       "name": "Бора-Бора",
-      "price": 7200,
-      "change": 0,
-      "turnover": 1771100
+      "price": 7180,
+      "change": -0.28,
+      "turnover": 122060
     },
     "XSECUR": {
       "name": "XSECUR",
       "price": 10.61,
-      "change": 0.19,
-      "turnover": 236708981
+      "change": 0,
+      "turnover": 15590655
     },
     "XSKLAD": {
       "name": "ЗПИФСовр10",
-      "price": 112.01,
-      "change": 0.82,
-      "turnover": 56437
+      "price": 113.56,
+      "change": 1.38,
+      "turnover": 154275
     },
     "XTRIUMF": {
       "name": "ПАРУС-ТРМ",
-      "price": 819,
-      "change": 0,
-      "turnover": 933307
-    },
-    "XWIMRD": {
-      "name": "ВИМ РД 3",
-      "price": 1040.91,
-      "change": 0,
-      "turnover": 0
+      "price": 821,
+      "change": 0.24,
+      "turnover": 2862959
     },
     "XXRONE": {
       "name": "ОблигацииР",
@@ -3473,74 +3461,74 @@
     },
     "XXXXXX": {
       "name": "Рентал ПРО",
-      "price": 901.5,
-      "change": 0.14,
-      "turnover": 4981565
+      "price": 898.9,
+      "change": -0.29,
+      "turnover": 660758
     },
     "YAKG": {
       "name": "ЯТЭК ао",
-      "price": 35.9,
-      "change": -1.51,
-      "turnover": 1144702
+      "price": 35.4,
+      "change": -1.39,
+      "turnover": 473492
     },
     "YDEX": {
       "name": "ЯНДЕКС",
-      "price": 3397.5,
-      "change": -0.01,
-      "turnover": 2775505377
+      "price": 3390.5,
+      "change": -0.21,
+      "turnover": 2089276832
     },
     "YKEN": {
       "name": "Якутскэнрг",
-      "price": 0.37,
-      "change": -1.33,
-      "turnover": 155030
+      "price": 0.373,
+      "change": 0.81,
+      "turnover": 170690
     },
     "YKENP": {
       "name": "Якутскэн-п",
-      "price": 0.281,
-      "change": -1.06,
-      "turnover": 163740
+      "price": 0.283,
+      "change": 0.71,
+      "turnover": 11350
     },
     "YRSB": {
       "name": "ТНСэнЯр",
-      "price": 626,
-      "change": -0.32,
-      "turnover": 50100
+      "price": 636,
+      "change": 1.6,
+      "turnover": 12720
     },
     "YRSBP": {
       "name": "ТНСэнЯр-п",
       "price": 192,
       "change": 0,
-      "turnover": 128710
+      "turnover": 9630
     },
     "YUAN": {
       "name": "YUAN ETF",
-      "price": 132.22,
-      "change": 1,
-      "turnover": 213450
+      "price": 132.12,
+      "change": -0.08,
+      "turnover": 199429
     },
     "ZAYM": {
       "name": "Займер ао",
-      "price": 132.6,
-      "change": -0.19,
-      "turnover": 4810020
+      "price": 132.15,
+      "change": -0.34,
+      "turnover": 1195438
     },
     "ZILL": {
       "name": "ЗИЛ ао",
-      "price": 4900,
+      "price": 4890,
       "change": -0.2,
-      "turnover": 997780
+      "turnover": 48960
     },
     "ZVEZ": {
       "name": "ЗВЕЗДА ао",
-      "price": 5.29,
-      "change": -0.94,
-      "turnover": 58190
+      "price": 5.3,
+      "change": 0.19,
+      "turnover": 37150
     }
   },
   "session": {
-    "status": "closed",
-    "time": "2026-11-10 23:50:43",
+    "status": "open",
+    "time": "2026-11-11 14:39:52",
     "fromExchange": true
   }
 }
